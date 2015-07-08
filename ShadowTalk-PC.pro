@@ -1,15 +1,9 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-07-07T17:40:16
-#
-#-------------------------------------------------
-
-QT += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = ShadowTalk-pc
 TEMPLATE = app
+
+QT += qml quick
+
+#SOURCES += main.cpp
+
 
 CONFIG += c++11
 QMAKE_CXXFLAGS += -fno-exceptions
@@ -20,7 +14,6 @@ INCLUDEPATH += src/net
 INCLUDEPATH += src/widget
 
 HEADERS += \
-        include/mainwindow.h \
         src/core/core.h \
         src/net/net.h \
         src/widget/friend_list_layout.h \
@@ -35,7 +28,6 @@ HEADERS += \
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp \
         src/core/core.cpp \
         src/net/net.cpp \
         src/widget/friend_list_layout.cpp \
@@ -48,5 +40,11 @@ SOURCES += \
         src/widget/qr_widget.cpp \
         src/widget/system_tray_icon.cpp
 
-FORMS += \
-        ./ui/mainwindow.ui
+
+RESOURCES += qml/qml.qrc
+
+# Additional import path used to resolve QML modules in Qt Creator's code model
+QML_IMPORT_PATH =
+
+# Default rules for deployment.
+include(deployment.pri)
