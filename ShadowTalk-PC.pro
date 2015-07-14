@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick widgets
 
 #SOURCES += main.cpp
 
@@ -40,11 +40,13 @@ SOURCES += \
         src/widget/qr_widget.cpp \
         src/widget/system_tray_icon.cpp
 
-
-RESOURCES += qml/qml.qrc
+		
+RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+DISTFILES +=

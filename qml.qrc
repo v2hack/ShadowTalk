@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>img/st_bottom_background.png</file>
+        <file>img/st_friend_list.png</file>
+        <file>img/st_left_background.png</file>
+        <file>img/st_top_search_area.png</file>
+    </qresource>
+</RCC>

@@ -2,41 +2,33 @@ import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
+import QtQuick.Controls.Styles 1.3
 
 ApplicationWindow {
+
     title: qsTr("Hello World")
-    width: 640
-    height: 480
+    width: 850
+    height: 600
     visible: true
+    opacity: 0.9
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("&File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: messageDialog.show(qsTr("Open action triggered"));
-            }
-            MenuItem {
-                text: qsTr("E&xit")
-                onTriggered: Qt.quit();
-            }
+    // 背景图片
+    style: ApplicationWindowStyle {
+        background: BorderImage {
+            source: "background.png"
+            border { left: 20; top: 20; right: 20; bottom: 20 }
         }
     }
 
-    MainForm {
-        anchors.fill: parent
-        button1.onClicked: messageDialog.show(qsTr("Button 1 pressed"))
-        button2.onClicked: messageDialog.show(qsTr("Button 2 pressed"))
-        button3.onClicked: messageDialog.show(qsTr("Button 3 pressed"))
+
+    Rectangle {
+        id: root;
+
+
+
+
+
     }
 
-    MessageDialog {
-        id: messageDialog
-        title: qsTr("May I have your attention, please?")
 
-        function show(caption) {
-            messageDialog.text = caption;
-            messageDialog.open();
-        }
-    }
 }
