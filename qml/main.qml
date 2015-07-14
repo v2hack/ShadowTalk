@@ -10,12 +10,12 @@ ApplicationWindow {
     width: 850
     height: 600
     visible: true
-    opacity: 0.9
+    opacity: 1
 
     // 背景图片
     style: ApplicationWindowStyle {
         background: BorderImage {
-            source: "background.png"
+            source: "qrc:/img/st_left_background.png"
             border { left: 20; top: 20; right: 20; bottom: 20 }
         }
     }
