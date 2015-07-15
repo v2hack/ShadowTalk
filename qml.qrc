@@ -5,5 +5,9 @@
         <file>img/st_friend_list.png</file>
         <file>img/st_left_background.png</file>
         <file>img/st_top_search_area.png</file>
+        <file>img/st_setting_exit.png</file>
+        <file>img/st_setting_lock_screen.png</file>
+        <file>img/st_setting_no_sound.png</file>
+        <file>img/st_setting_sound.png</file>
     </qresource>
 </RCC>
