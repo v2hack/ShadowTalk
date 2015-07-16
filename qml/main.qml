@@ -6,46 +6,82 @@ import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
 
 
-ApplicationWindow {
+Rectangle {
     id: baseWindows;
-
-    width: 890
-    height: 640
-    minimumWidth: 890
-    minimumHeight: 640
+    width: Math.round(890)
+    height: Math.round(640)
+    radius: 5;
+    color: "transparent"
 
     /* 主窗口可见 */
     visible: true
     /* 透明度 */
     opacity: 0.97
-    /* 无边框 */
-    flags: Qt.FramelessWindowHint
+
+    /* 主窗口鼠标拖拽 */
+    MouseArea {
+        id: dragRegion
+        anchors.fill: parent
+        property point clickPos: "0,0"
+
+        onPressed: {
+            clickPos = Qt.point(mouse.x, mouse.y)
+        }
+        onPositionChanged: {
+            /* 鼠标偏移量 */
+            var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
+            /* 如果mainwindow继承自QWidget,用setPos */
+            mainwindow.setX(mainwindow.x + delta.x)
+            mainwindow.setY(mainwindow.y + delta.y)
+        }
+    }
+
+    /* 添加关闭按钮 */
+    Rectangle{
+
+        id:closeBtn
+        height: 25
+        width: 25
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        anchors.top: parent.top
+        anchors.topMargin: 5
+        color:"#000000"
+        z: 100
+
+        Text{
+            text:"x"
+            anchors.centerIn: parent
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                //Qt.quit()无法关闭窗口
+                mainwindow.close()
+            }
+        }
+    }
 
     Rectangle {
         id: firstLayerWindows
-        width: Math.round(baseWindows.width - 10)
-        height: Math.round(baseWindows.height - 10)
+        width: Math.round(baseWindows.width - 2)
+        height: Math.round(baseWindows.height - 2)
         anchors.centerIn: parent
         radius: 5
-
-        /* 底层阴影 */
-        RectangularGlow {
-            id: firseLayerEffect
-            anchors.fill: parent
-            glowRadius: 20
-            spread: 0.01
-            color: "black"
-            cornerRadius: 100
-        }
+        border.color: "#a0a0a4"
+        border.width: 2
 
         Rectangle {
             id: secondLayerWindows
-            width: Math.round(firstLayerWindows.width - 1)
-            height: Math.round(firstLayerWindows.height - 1)
+            width: Math.round(firstLayerWindows.width - 2)
+            height: Math.round(firstLayerWindows.height - 2)
             smooth: true
             radius: 5
             anchors.left: parent.left;
+            anchors.leftMargin: 1
             anchors.top: parent.top;
+            anchors.topMargin: 1
 
             /* 背景 */
             Component {
@@ -173,18 +209,6 @@ ApplicationWindow {
                             height: parent.height;
                             source: "qrc:/img/st_setting_exit.png";
                             fillMode: Image.PreserveAspectFit
-
-//                            SequentialAnimation on width {
-//                                id: animation;
-//                                PropertyAnimation { to: 50; duration: 500 }
-//                                PropertyAnimation { to: 25; duration: 500 }
-//                            }
-
-//                            MouseArea {
-//                                anchors.fill: parent;
-//                                onClicked: animation.running = true;
-//                            }
-
                         }
                         style: ButtonStyle {
                             background: Rectangle {
@@ -276,8 +300,8 @@ ApplicationWindow {
 
             Loader {
                 id: bottomSettingLoader;
-                anchors.top: listLoader.bottom;
-                anchors.topMargin: 511;
+                anchors.bottom: backGroundLoader.bottom;
+                anchors.topMargin: 515;
                 anchors.left: backGroundLoader.left
                 sourceComponent: bottomSettingComponent;
             }
