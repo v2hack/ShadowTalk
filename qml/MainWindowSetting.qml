@@ -28,12 +28,23 @@ Rectangle {
             width: 20;
             height: 25;
             Image {
-                id: exitButtonImage;
+                id: exitButtonImage1;
                 width: parent.width;
                 height: parent.height;
-                source: "qrc:/img/st_setting_exit.png";
-                fillMode: Image.PreserveAspectFit
+                source: "qrc:/img/st_setting_exit_1.png";
+                fillMode: Image.PreserveAspectFit;
+                visible: ture;
             }
+
+            Image {
+                id: exitButtonImage2;
+                width: parent.width;
+                height: parent.height;
+                source: "qrc:/img/st_setting_exit_2.png";
+                fillMode: Image.PreserveAspectFit;
+                visible: false;
+            }
+
             style: ButtonStyle {
                 background: Rectangle {
                     opacity: 0
@@ -43,6 +54,24 @@ Rectangle {
             anchors.leftMargin: parent.width/4 - 16;
             anchors.top: parent.top;
             anchors.topMargin: bottomSettingComponentRectangle.height/2 - height/2;
+
+            MouseArea {
+                id: exitButtonArea
+                anchors.fill: parent;
+                hoverEnabled: true;
+
+                onClicked: {
+                    // TODO
+                }
+                onEntered: {
+                    exitButtonImage1.visible = false;
+                    exitButtonImage2.visible = true;
+                }
+                onExited: {
+                    exitButtonImage1.visible = true;
+                    exitButtonImage2.visible = false;
+                }
+            }
         }
 
 
@@ -51,12 +80,25 @@ Rectangle {
             id: soundButton;
             width: 30;
             height: 25;
+
             Image {
+                id: soundButtonImage1;
                 width: parent.width;
                 height: parent.height;
-                source: "qrc:/img/st_setting_sound.png"
-                fillMode: Image.PreserveAspectFit
+                source: "qrc:/img/st_setting_sound_1.png";
+                fillMode: Image.PreserveAspectFit;
+                visible: true;
             }
+
+            Image {
+                id: soundButtonImage2;
+                width: parent.width;
+                height: parent.height;
+                source: "qrc:/img/st_setting_sound_2.png";
+                fillMode: Image.PreserveAspectFit;
+                visible: false;
+            }
+
             style: ButtonStyle {
                 background: Rectangle {
                     opacity: 0
@@ -66,6 +108,24 @@ Rectangle {
             anchors.leftMargin: parent.width/2 - 16;
             anchors.top: parent.top;
             anchors.topMargin: bottomSettingComponentRectangle.height/2 - height/2;
+
+            MouseArea {
+                id: soundButtonArea;
+                anchors.fill: parent;
+                hoverEnabled: true;
+
+                onClicked: {
+                    // TODO
+                }
+                onEntered: {
+                    soundButtonImage1.visible = false;
+                    soundButtonImage2.visible = true;
+                }
+                onExited: {
+                    soundButtonImage1.visible = true;
+                    soundButtonImage2.visible = false;
+                }
+            }
         }
 
         /* 锁屏按钮 */
@@ -79,16 +139,47 @@ Rectangle {
                     opacity: 0
                 }
             }
+
             Image {
+                id: lockButtonImage1;
                 width: parent.width;
                 height: parent.height;
-                source: "qrc:/img/st_setting_lock_screen.png"
-                fillMode: Image.PreserveAspectFit
+                source: "qrc:/img/st_setting_lock_screen_1.png";
+                fillMode: Image.PreserveAspectFit;
+                visible: true;
             }
+
+            Image {
+                id: lockButtonImage2;
+                width: parent.width;
+                height: parent.height;
+                source: "qrc:/img/st_setting_lock_screen_2.png";
+                fillMode: Image.PreserveAspectFit;
+                visible: false;
+            }
+
             anchors.left: parent.left;
             anchors.leftMargin: parent.width/4*3 - 16;
             anchors.top: parent.top;
             anchors.topMargin: bottomSettingComponentRectangle.height/2 - height/2;
+
+            MouseArea {
+                id: lockButtonArea;
+                anchors.fill: parent;
+                hoverEnabled: true;
+
+                onClicked: {
+                    // TODO
+                }
+                onEntered: {
+                    lockButtonImage1.visible = false;
+                    lockButtonImage2.visible = true;
+                }
+                onExited: {
+                    lockButtonImage1.visible = true;
+                    lockButtonImage2.visible = false;
+                }
+            }
         }
     }
 

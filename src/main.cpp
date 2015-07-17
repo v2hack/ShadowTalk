@@ -33,5 +33,4 @@ int main(int argc, char *argv[])
     }
     viewer.show();
     return app.exec();
-
 }
