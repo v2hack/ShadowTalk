@@ -17,7 +17,7 @@ Rectangle {
     width: Math.round(890)
     height: Math.round(640)
     radius: 5;
-    color: "transparent"
+//    color: "transparent"
 
     /* 主窗口可见 */
     visible: true
@@ -71,7 +71,6 @@ Rectangle {
         anchors.topMargin: 3
         z:100
     }
-
 
     /* 主窗口 */
     Rectangle {

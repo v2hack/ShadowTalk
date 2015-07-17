@@ -33,7 +33,7 @@ Rectangle {
                 height: parent.height;
                 source: "qrc:/img/st_setting_exit_1.png";
                 fillMode: Image.PreserveAspectFit;
-                visible: ture;
+                visible: true;
             }
 
             Image {
