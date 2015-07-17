@@ -16,21 +16,21 @@ Rectangle {
         id: flipable
 
         property bool flipped: false;
-        width: friendAndContact.second_layer_width - 4
+        width: friendAndContact.second_layer_width - 4;
         height: 30
 
         /* 前页面-好友列表 */
         front: Rectangle {
             Rectangle {
                 id: titleFront
-                width: friendAndContact.second_layer_width - 4
-                height: 30
-                color: "#33ccbf"
+                width: friendAndContact.second_layer_width - 4;
+                height: 30;
+                color: "#33ccbf";
             }
             Rectangle {
                 id: friendList
                 anchors.top: titleFront.bottom;
-                width: friendAndContact.second_layer_width - 4
+                width: friendAndContact.second_layer_width - 4;
                 height: second_layer_height - titleFront.height - window_setting_height;
 
                 color: "#2c2c2c"

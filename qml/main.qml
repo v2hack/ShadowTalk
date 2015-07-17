@@ -36,23 +36,27 @@ Rectangle {
         color: "#111111";
         smooth: true;
         source: baseWindows;
-     }
+    }
 
     /* 主窗口鼠标拖拽 */
     MouseArea {
         id: dragRegion
         anchors.fill: parent
-        property point clickPos: "0,0"
+        property point clickPos: "1,1"
 
         onPressed: {
-            clickPos = Qt.point(mouse.x, mouse.y)
+            clickPos = Qt.point(mouse.x, mouse.y);
+//            Qt.msetcursor(baseWindows, "SizeAllCursor");
+        }
+        onReleased: {
+//            Qt.msetcursor(baseWindows, "ArrowCursor");
         }
         onPositionChanged: {
             /* 鼠标偏移量 */
-            var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
+            var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
             /* 如果mainwindow继承自QWidget,用setPos */
-            mainwindow.setX(mainwindow.x + delta.x)
-            mainwindow.setY(mainwindow.y + delta.y)
+            mainwindow.setX(mainwindow.x + delta.x);
+            mainwindow.setY(mainwindow.y + delta.y);
         }
     }
 
@@ -108,12 +112,26 @@ Rectangle {
             Component {
                 id: searchComponent;
                 Rectangle {
-                    id:searchRectangle
+                    id: searchRectangle
                     width: Math.round(200)
                     height: Math.round(20)
                     radius: 5
                     border.color: "#a0a0a4"
                     color: "#515050"
+
+                    Image {
+                        id: searchButton;
+                        height: 16
+                        width: 15
+                        anchors {
+                            top: parent.top;
+                            topMargin: 2;
+                            left: parent.left;
+                            leftMargin: 5;
+                        }
+                        source: "qrc:/img/st_button_search.png";
+                        fillMode: Image.PreserveAspectFit
+                    }
                 }
             }
 
