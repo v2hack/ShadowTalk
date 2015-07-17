@@ -5,7 +5,6 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
 
-
 Rectangle {
     id: baseWindows;
     width: Math.round(890)
@@ -17,6 +16,20 @@ Rectangle {
     visible: true
     /* 透明度 */
     opacity: 0.97
+
+    /* 绘制阴影 */
+    InnerShadow  {
+        id: baseShadow;
+        cached: true;
+        radius: 16;
+        samples: 14;
+        horizontalOffset: 0
+        verticalOffset: 0
+        spread: 0.2
+        color: "#111111";
+        smooth: true;
+        source: baseWindows;
+     }
 
     /* 主窗口鼠标拖拽 */
     MouseArea {
@@ -36,33 +49,20 @@ Rectangle {
         }
     }
 
-    /* 添加关闭按钮 */
-    Rectangle{
-
-        id:closeBtn
-        height: 25
-        width: 25
+    /* 主窗口按钮 */
+    MainWindowButton {
+        id: mainButton;
+        width: 100;
+        height: 40;
         anchors.right: parent.right
-        anchors.rightMargin: 5
+        anchors.rightMargin: 3
         anchors.top: parent.top
-        anchors.topMargin: 5
-        color:"#000000"
-        z: 100
-
-        Text{
-            text:"x"
-            anchors.centerIn: parent
-        }
-
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                //Qt.quit()无法关闭窗口
-                mainwindow.close()
-            }
-        }
+        anchors.topMargin: 3
+        z:100
     }
 
+
+    /* 主窗口 */
     Rectangle {
         id: firstLayerWindows
         width: Math.round(baseWindows.width - 2)
@@ -83,12 +83,14 @@ Rectangle {
             anchors.top: parent.top;
             anchors.topMargin: 1
 
+            property int fix_width: 295
+
             /* 背景 */
             Component {
                 id: backGroundComponent;
                 Rectangle {
                     id: backGroundRectangle
-                    width: Math.round(secondLayerWindows.width/3 - 4);
+                    width: Math.round(secondLayerWindows.fix_width - 4);
                     height: Math.round(secondLayerWindows.height - 4);
                     color: "#000000"
                     radius: 5
@@ -114,7 +116,7 @@ Rectangle {
 
                 Flipable {
                     id: flipable
-                    width: secondLayerWindows.width/3 - 4
+                    width: secondLayerWindows.fix_width - 4
                     height: 30
 
                     property bool flipped: false
@@ -122,14 +124,14 @@ Rectangle {
                     front: Rectangle {
                         Rectangle {
                             id: titleFront
-                            width: secondLayerWindows.width/3 - 4
+                            width: secondLayerWindows.fix_width - 4
                             height: 30
                             color: "#33ccbf"
                         }
                         Rectangle {
                             id: friendList
                             anchors.top: titleFront.bottom;
-                            width: secondLayerWindows.width/3 - 4
+                            width: secondLayerWindows.fix_width - 4
                             height: 512
                             color: "#2c2c2c"
                             opacity: 0.8
@@ -139,14 +141,14 @@ Rectangle {
                     back: Rectangle {
                         Rectangle {
                             id: titleBack
-                            width: secondLayerWindows.width/3 - 4
+                            width: secondLayerWindows.fix_width - 4
                             height: 30
                             color: "#33ccbf"
                         }
                         Rectangle {
                             id: contactList
                             anchors.top: titleBack.bottom;
-                            width: secondLayerWindows.width/3 - 4
+                            width: secondLayerWindows.fix_width - 4
                             height: 512
                             color: "#2c2c2c"
                             opacity: 0.8
@@ -160,7 +162,7 @@ Rectangle {
                         axis.x: 0;
                         axis.y: 1;
                         axis.z: 0;
-                        angle: 1;    // the default angle
+                        angle: 1;
                     }
 
                     states: State {
@@ -192,7 +194,7 @@ Rectangle {
                 id: bottomSettingComponent;
                 Rectangle {
                     id: bottomSettingComponentRectangle;
-                    width: Math.round(secondLayerWindows.width/3 - 4);
+                    width: Math.round(secondLayerWindows.fix_width - 4);
                     height: Math.round(52);
                     radius: 5;
                     color: "#515050"
@@ -215,7 +217,6 @@ Rectangle {
                                 opacity: 0
                             }
                         }
-
                         anchors.left: parent.left;
                         anchors.leftMargin: parent.width/4 - 16;
                         anchors.top: parent.top;
@@ -286,7 +287,7 @@ Rectangle {
                 anchors.top: parent.top;
                 anchors.topMargin: 8
                 anchors.left: backGroundLoader.left
-                anchors.leftMargin: (secondLayerWindows.width/3 - 4)/2 - 100;
+                anchors.leftMargin: secondLayerWindows.fix_width/2 - 100;
                 sourceComponent: searchComponent;
             }
 

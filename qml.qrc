@@ -5,5 +5,14 @@
         <file>img/st_setting_lock_screen.png</file>
         <file>img/st_setting_no_sound.png</file>
         <file>img/st_setting_sound.png</file>
+        <file>img/st_button_close_1.png</file>
+        <file>img/st_button_max_1.png</file>
+        <file>img/st_button_min_1.png</file>
+        <file>img/st_button_normal_1.png</file>
+        <file>qml/MainWindowButton.qml</file>
+        <file>img/st_button_close_2.png</file>
+        <file>img/st_button_max_2.png</file>
+        <file>img/st_button_min_2.png</file>
+        <file>img/st_button_normal_2.png</file>
     </qresource>
 </RCC>
