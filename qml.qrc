@@ -14,5 +14,7 @@
         <file>img/st_button_max_2.png</file>
         <file>img/st_button_min_2.png</file>
         <file>img/st_button_normal_2.png</file>
+        <file>qml/FriendAndContact.qml</file>
+        <file>qml/MainWindowSetting.qml</file>
     </qresource>
 </RCC>

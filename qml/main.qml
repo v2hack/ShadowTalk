@@ -1,3 +1,10 @@
+/*
+ *  文件: main.qml
+ *  功能: 主窗口按钮UI布局
+ *  作者: 南野
+ *  时间: 2015年7月13日
+ */
+
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
@@ -106,168 +113,7 @@ Rectangle {
                     height: Math.round(20)
                     radius: 5
                     border.color: "#a0a0a4"
-                    color: "#808080"
-                }
-            }
-
-            /* 友好及联系人组件 */
-            Component {
-                id: listComponent;
-
-                Flipable {
-                    id: flipable
-                    width: secondLayerWindows.fix_width - 4
-                    height: 30
-
-                    property bool flipped: false
-
-                    front: Rectangle {
-                        Rectangle {
-                            id: titleFront
-                            width: secondLayerWindows.fix_width - 4
-                            height: 30
-                            color: "#33ccbf"
-                        }
-                        Rectangle {
-                            id: friendList
-                            anchors.top: titleFront.bottom;
-                            width: secondLayerWindows.fix_width - 4
-                            height: 512
-                            color: "#2c2c2c"
-                            opacity: 0.8
-                        }
-                    }
-
-                    back: Rectangle {
-                        Rectangle {
-                            id: titleBack
-                            width: secondLayerWindows.fix_width - 4
-                            height: 30
-                            color: "#33ccbf"
-                        }
-                        Rectangle {
-                            id: contactList
-                            anchors.top: titleBack.bottom;
-                            width: secondLayerWindows.fix_width - 4
-                            height: 512
-                            color: "#2c2c2c"
-                            opacity: 0.8
-                        }
-                    }
-
-                    transform: Rotation {
-                        id: rotation
-                        origin.x: flipable.width/2
-                        origin.y: flipable.height/2
-                        axis.x: 0;
-                        axis.y: 1;
-                        axis.z: 0;
-                        angle: 1;
-                    }
-
-                    states: State {
-                        name: "back"
-                        PropertyChanges {
-                            target: rotation;
-                            angle: 180;
-                        }
-                        when: flipable.flipped
-                    }
-
-                    transitions: Transition {
-                        NumberAnimation {
-                            target: rotation;
-                            property: "angle";
-                            duration: 200;
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: flipable.flipped = !flipable.flipped
-                    }
-                }
-            }
-
-            /* 低端设置组件 */
-            Component {
-                id: bottomSettingComponent;
-                Rectangle {
-                    id: bottomSettingComponentRectangle;
-                    width: Math.round(secondLayerWindows.fix_width - 4);
-                    height: Math.round(52);
-                    radius: 5;
                     color: "#515050"
-
-                    /* 退出按钮 */
-                    Button {
-                        id: exitButton;
-                        text: "";
-                        width: 25;
-                        height: 30;
-                        Image {
-                            id: exitButtonImage;
-                            width: parent.width;
-                            height: parent.height;
-                            source: "qrc:/img/st_setting_exit.png";
-                            fillMode: Image.PreserveAspectFit
-                        }
-                        style: ButtonStyle {
-                            background: Rectangle {
-                                opacity: 0
-                            }
-                        }
-                        anchors.left: parent.left;
-                        anchors.leftMargin: parent.width/4 - 16;
-                        anchors.top: parent.top;
-                        anchors.topMargin: bottomSettingComponentRectangle.height/2 - height/2;
-                    }
-
-
-                    /* 声音按钮 */
-                    Button {
-                        id: soundButton;
-                        width: 35;
-                        height: 30;
-                        Image {
-                            width: parent.width;
-                            height: parent.height;
-                            source: "qrc:/img/st_setting_sound.png"
-                            fillMode: Image.PreserveAspectFit
-                        }
-                        style: ButtonStyle {
-                            background: Rectangle {
-                                opacity: 0
-                            }
-                        }
-                        anchors.left: parent.left;
-                        anchors.leftMargin: parent.width/2 - 16;
-                        anchors.top: parent.top;
-                        anchors.topMargin: bottomSettingComponentRectangle.height/2 - height/2;
-                    }
-
-                    /* 锁屏按钮 */
-                    Button {
-                        id: lockScreenButton;
-                        width: 38;
-                        height: 33;
-
-                        style: ButtonStyle {
-                            background: Rectangle {
-                                opacity: 0
-                            }
-                        }
-                        Image {
-                            width: parent.width;
-                            height: parent.height;
-                            source: "qrc:/img/st_setting_lock_screen.png"
-                            fillMode: Image.PreserveAspectFit
-                        }
-                        anchors.left: parent.left;
-                        anchors.leftMargin: parent.width/4*3 - 16;
-                        anchors.top: parent.top;
-                        anchors.topMargin: bottomSettingComponentRectangle.height/2 - height/2;
-                    }
                 }
             }
 
@@ -291,20 +137,26 @@ Rectangle {
                 sourceComponent: searchComponent;
             }
 
-            Loader {
+            /* 友好及联系人组件 */
+            FriendAndContact {
                 id: listLoader;
+                height: parent.height - 75;
                 anchors.top: searchLoader.bottom;
                 anchors.topMargin: 6;
-                anchors.left: backGroundLoader.left
-                sourceComponent: listComponent;
+                anchors.left: backGroundLoader.left;
+                second_layer_width: secondLayerWindows.fix_width;
+                second_layer_height: parent.height;
+                window_setting_height: 75;
             }
 
-            Loader {
+            /* 主页设置按钮 */
+            MainWindowSetting {
                 id: bottomSettingLoader;
-                anchors.bottom: backGroundLoader.bottom;
-                anchors.topMargin: 515;
+                anchors.top: listLoader.bottom;
+                anchors.topMargin: 1
                 anchors.left: backGroundLoader.left
-                sourceComponent: bottomSettingComponent;
+                second_layer_width: secondLayerWindows.fix_width;
+                second_layer_height: parent.height;
             }
         }
     }

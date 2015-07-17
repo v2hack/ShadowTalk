@@ -1,3 +1,9 @@
+/*
+ *  文件: mainWindowButton.qml
+ *  功能: 主要是窗口按钮UI实现
+ *  作者: 南野
+ *  时间: 2015年7月15日
+ */
 import QtQuick 2.0
 
 Rectangle {
