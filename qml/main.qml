@@ -17,7 +17,6 @@ Rectangle {
     width: Math.round(890)
     height: Math.round(640)
     radius: 5;
-//    color: "transparent"
 
     /* 主窗口可见 */
     visible: true
@@ -115,7 +114,6 @@ Rectangle {
                     width: Math.round(200)
                     height: Math.round(20)
                     radius: 5
-                    border.color: "#a0a0a4"
                     color: "#515050"
 
                     Image {
@@ -174,6 +172,31 @@ Rectangle {
                 anchors.left: backGroundLoader.left
                 second_layer_width: secondLayerWindows.fix_width;
                 second_layer_height: parent.height;
+            }
+
+
+            /* 文字输入对话框 */
+            ChatTextInput {
+                id: chatTextInputWindow;
+                height: 200;
+                width: firstLayerWindows.width - secondLayerWindows.fix_width - 2;
+
+                anchors {
+                    left: backGroundLoader.right;
+                    bottom: backGroundLoader.bottom;
+                }
+            }
+
+            FriendList {
+                id: friendListDisplay;
+                height:100;
+                width:200
+
+                anchors {
+                    top: parent.top
+                    topMargin: 200
+
+                }
             }
         }
     }

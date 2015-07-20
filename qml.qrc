@@ -21,5 +21,12 @@
         <file>img/st_setting_no_sound_2.png</file>
         <file>img/st_setting_sound_1.png</file>
         <file>img/st_setting_sound_2.png</file>
+        <file>qml/ChatDisplay.qml</file>
+        <file>qml/ChatTextInput.qml</file>
+        <file>img/st_chat_delivery.png</file>
+        <file>img/st_chat_expression.png</file>
+        <file>img/st_chat_screenshot.png</file>
+        <file>qml/ChatList.qml</file>
+        <file>qml/FriendList.qml</file>
     </qresource>
 </RCC>
