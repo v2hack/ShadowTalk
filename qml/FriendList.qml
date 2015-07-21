@@ -1,6 +1,6 @@
 /*
  *  文件: FriendList.qml
- *  功能: 聊天内容显示
+ *  功能: 好友通讯录
  *  作者: 南野
  *  时间: 2015年7月20日
  */
@@ -137,6 +137,7 @@ Rectangle {
                         color: "white"
                         font.pixelSize: 15
                         text: name
+
                         FontLoader {
                             id: chineseFont
                             source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"

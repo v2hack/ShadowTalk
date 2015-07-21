@@ -1,3 +1,9 @@
+/*
+ *  文件: function.qml
+ *  功能: 汉字转字母处理模块
+ *  作者: 南野
+ *  时间: 2015年7月13日
+ */
 
 var pinyin = (function (){
     var Pinyin = function (ops){

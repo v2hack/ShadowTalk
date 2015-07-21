@@ -1,5 +1,5 @@
 /*
- *  文件: MainWindowTextInput.qml
+ *  文件: ChatTextInput.qml
  *  功能: 聊天输入框
  *  作者: 南野
  *  时间: 2015年7月20日

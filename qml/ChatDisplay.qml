@@ -1,6 +1,6 @@
 /*
- *  文件: MainWindowDisplay.qml
- *  功能: 聊天内容显示
+ *  文件: ChatDisplay.qml
+ *  功能: 聊天内容显示模块
  *  作者: 南野
  *  时间: 2015年7月20日
  */
