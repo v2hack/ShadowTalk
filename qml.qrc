@@ -30,5 +30,6 @@
         <file>qml/FriendList.qml</file>
         <file>qml/functions.js</file>
         <file>qml/common.js</file>
+        <file>img/head/st_ball_white.png</file>
     </qresource>
 </RCC>

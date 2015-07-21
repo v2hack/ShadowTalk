@@ -90,23 +90,39 @@ Rectangle {
                 Rectangle {
                     id: friendItem
                     width: 300
-                    height: 40
+                    height: 80
                     color: "transparent"
                     anchors.verticalCenter: parent.verticalCenter
 
-                    /* 好友头像 */
+                    /* 好友头像底色 */
                     Rectangle {
                         id: friendItemIcon
-                        width: 31
-                        height: 31
+                        width: 35
+                        height: 35
                         radius: width / 2
                         color: JsCommon.getColor(name);
 
                         anchors {
                             verticalCenter: parent.verticalCenter
                             left: parent.left
-                            leftMargin: 10
+                            leftMargin: 14
                         }
+                    }
+                     /* 好友头像球体 */
+                    Image {
+                        id: searchButton;
+                        width: 68
+                        height: 68
+
+                        anchors {
+                            top: parent.top
+                            topMargin: 15
+                            left: parent.left
+                            leftMargin: -7
+                        }
+                        opacity: 1
+                        source: "qrc:/img/head/st_ball_white.png";
+                        fillMode: Image.PreserveAspectFit
                     }
 
                     /* 好友名字 */
