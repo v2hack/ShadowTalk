@@ -78,3 +78,41 @@ function getColor(name) {
         return "#7c509d";
     }
 }
+
+
+function getDateTime() {
+
+    var date = new Date();
+    var hour = date.getHours();			//小时
+    var minute = date.getMinutes();		//分钟
+    var second = date.getSeconds();		//秒钟
+
+    //小时小于10时显示为'0X'
+    if (hour < 10) {
+        hour = "0" + hour;
+    }
+
+    //分钟小于10时显示为'0X'
+    if (minute < 10) {
+        minute = "0" + minute;
+    }
+
+    //秒钟小于10时显示为'0X'
+    if (second < 10) {
+        second = "0" + second;
+    }
+    var colon = ":";
+    var dash = "-";
+    var result = "";
+
+    result += (hour + colon + minute);
+    return result;
+}
+
+
+
+
+
+
+
+

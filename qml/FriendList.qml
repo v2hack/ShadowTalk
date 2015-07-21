@@ -46,7 +46,7 @@ Rectangle {
     Component {
         id: friendListModel
         ListModel {
-            //            dynamicRoles: true;
+            // dynamicRoles: true;
             ListElement {
                 name: "南野";
             }
@@ -137,8 +137,24 @@ Rectangle {
                         color: "white"
                         font.pixelSize: 15
                         text: name
-                        style: Text.Raised;
+                        FontLoader {
+                            id: chineseFont
+                            source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                        }
+                        font.family: chineseFont.name;
+                    }
 
+                    /* 好友上线时间 */
+                    Text {
+                        id: friendOnlineTime;
+                        anchors {
+                            right: friendItem.right
+                            rightMargin: 54
+                            verticalCenter: parent.verticalCenter
+                        }
+                        color: "white"
+                        font.pixelSize: 11
+                        text: JsCommon.getDateTime();
                     }
 
                     MouseArea {
