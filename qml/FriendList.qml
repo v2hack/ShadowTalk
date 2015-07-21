@@ -27,8 +27,7 @@ Rectangle {
         friendListModel.clear()
     }
 
-
-
+    /* ListView */
     ListView {
         id: friendListView
         anchors.fill: parent;
@@ -43,6 +42,7 @@ Rectangle {
         }
     }
 
+    /* Model */
     Component {
         id: friendListModel
         ListModel {
@@ -51,28 +51,40 @@ Rectangle {
                 name: "南野";
             }
             ListElement {
-                name: "hello";
+                name: "卢小明";
             }
             ListElement {
-                name: "123";
+                name: "闫立捷";
             }
             ListElement {
-                name: "nanye";
+                name: "吴自立";
+            }
+            ListElement {
+                name: "刘榴";
+            }
+            ListElement {
+                name: "陈姝";
+            }
+            ListElement {
+                name: "陈宝辉";
+            }
+            ListElement {
+                name: "沈艳匣";
             }
         }
     }
 
+    /* Delegate */
     Component {
         id: friendListDelegate
         Item {
             height:50;
-            width:200
+            width:284
 
             Rectangle {
                 id: cellRect
                 anchors.fill: parent
                 color: "transparent"
-
 
                 /* 好友item */
                 Rectangle {
@@ -80,15 +92,21 @@ Rectangle {
                     width: 300
                     height: 40
                     color: "transparent"
-
+                    anchors.verticalCenter: parent.verticalCenter
 
                     /* 好友头像 */
                     Rectangle {
                         id: friendItemIcon
-                        width: 36
-                        height: 36
+                        width: 31
+                        height: 31
                         radius: width / 2
                         color: JsCommon.getColor(name);
+
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            left: parent.left
+                            leftMargin: 10
+                        }
                     }
 
                     /* 好友名字 */
@@ -97,12 +115,14 @@ Rectangle {
 
                         anchors {
                             left: friendItemIcon.right
-                            leftMargin: 4
+                            leftMargin: 8
+                            verticalCenter: parent.verticalCenter
                         }
-                        color: "red"
-                        font.pixelSize: 20
+                        color: "white"
+                        font.pixelSize: 15
                         text: name
-                        anchors.verticalCenter: parent.verticalCenter
+                        style: Text.Raised;
+
                     }
 
                     MouseArea {
@@ -114,14 +134,13 @@ Rectangle {
                             // TODO
                         }
                         onEntered: {
-                            cellRect.color = "blue";
+                            cellRect.color = "#353535";
                         }
                         onExited: {
                             cellRect.color = "transparent";
                         }
                     }
                 }
-
             }
         }
     }

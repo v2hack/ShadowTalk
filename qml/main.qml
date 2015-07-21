@@ -174,7 +174,6 @@ Rectangle {
                 second_layer_height: parent.height;
             }
 
-
             /* 文字输入对话框 */
             ChatTextInput {
                 id: chatTextInputWindow;
@@ -184,18 +183,6 @@ Rectangle {
                 anchors {
                     left: backGroundLoader.right;
                     bottom: backGroundLoader.bottom;
-                }
-            }
-
-            FriendList {
-                id: friendListDisplay;
-                height:100;
-                width:200
-
-                anchors {
-                    top: parent.top
-                    topMargin: 200
-
                 }
             }
         }

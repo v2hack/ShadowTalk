@@ -35,6 +35,20 @@ Rectangle {
 
                 color: "#2c2c2c"
                 opacity: 0.8
+
+                /* 好友列表细节动态 */
+                FriendList {
+                    id: friendListDisplay;
+                    height: parent.height - 2;
+                    width: parent - 8
+                    anchors {
+                        top: parent.top
+                        topMargin: 4
+                        left:parent.left
+                        leftMargin: 4
+
+                    }
+                }
             }
         }
 
