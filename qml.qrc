@@ -28,5 +28,7 @@
         <file>img/st_chat_screenshot.png</file>
         <file>qml/ChatList.qml</file>
         <file>qml/FriendList.qml</file>
+        <file>qml/functions.js</file>
+        <file>qml/common.js</file>
     </qresource>
 </RCC>
