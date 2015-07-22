@@ -31,8 +31,5 @@
         <file>qml/functions.js</file>
         <file>qml/common.js</file>
         <file>img/head/st_ball_white.png</file>
-        <file>res/fonts/方正兰亭刊黑_GBK.ttf</file>
-        <file>res/fonts/KhmerUI.ttf</file>
-        <file>res/fonts/KhmerUIb.ttf</file>
     </qresource>
 </RCC>

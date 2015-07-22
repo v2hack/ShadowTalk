@@ -27,6 +27,16 @@ Rectangle {
         friendListModel.clear()
     }
 
+    function setStateColor(state) {
+        if (state === "online") {
+            return "#7dc163"
+        } else if (state === "outline") {
+            return "##a1a1a1";
+        } else {
+            return "#21ade5"
+        }
+    }
+
     /* ListView */
     ListView {
         id: friendListView
@@ -42,35 +52,36 @@ Rectangle {
         }
     }
 
+
     /* Model */
     Component {
         id: friendListModel
         ListModel {
-            // dynamicRoles: true;
-            ListElement {
-                name: "南野";
-            }
-            ListElement {
-                name: "卢小明";
-            }
-            ListElement {
-                name: "闫立捷";
-            }
-            ListElement {
-                name: "吴自立";
-            }
-            ListElement {
-                name: "刘榴";
-            }
-            ListElement {
-                name: "陈姝";
-            }
-            ListElement {
-                name: "陈宝辉";
-            }
-            ListElement {
-                name: "沈艳匣";
-            }
+            //             dynamicRoles: true;
+            ListElement { name: "南野";  }
+            ListElement { name: "卢小明"; }
+            ListElement { name: "闫立捷"; }
+            ListElement { name: "吴自立"; }
+            ListElement { name: "刘榴";  }
+            ListElement { name: "陈姝";  }
+            ListElement { name: "陈宝辉"; }
+            ListElement { name: "沈艳匣"; }
+            ListElement { name: "严挺"; }
+            ListElement { name: "黄松方"; }
+            ListElement { name: "闫立捷"; }
+            ListElement { name: "吴自立"; }
+            ListElement { name: "刘榴"; }
+            ListElement { name: "陈姝"; }
+            ListElement { name: "陈宝辉"; }
+            ListElement { name: "沈艳匣"; }
+            ListElement { name: "南野"; }
+            ListElement { name: "卢小明"; }
+            ListElement { name: "闫立捷"; }
+            ListElement { name: "吴自立"; }
+            ListElement { name: "刘榴"; }
+            ListElement { name: "陈姝"; }
+            ListElement { name: "陈宝辉"; }
+            ListElement { name: "沈艳匣"; }
         }
     }
 
@@ -108,7 +119,7 @@ Rectangle {
                             leftMargin: 14
                         }
                     }
-                     /* 好友头像球体 */
+                    /* 好友头像球体 */
                     Image {
                         id: searchButton;
                         width: 68
@@ -131,31 +142,61 @@ Rectangle {
 
                         anchors {
                             left: friendItemIcon.right
-                            leftMargin: 8
+                            leftMargin: 2
                             verticalCenter: parent.verticalCenter
                         }
                         color: "white"
                         font.pixelSize: 15
                         text: name
 
+                        /* 字体先注释，编译太慢
                         FontLoader {
                             id: chineseFont
                             source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
                         }
                         font.family: chineseFont.name;
+                        */
                     }
 
                     /* 好友上线时间 */
                     Text {
                         id: friendOnlineTime;
                         anchors {
-                            right: friendItem.right
-                            rightMargin: 54
-                            verticalCenter: parent.verticalCenter
+                            right: friendItem.right;
+                            rightMargin: 30;
+                            top: parent.top;
+                            topMargin: 25
                         }
                         color: "white"
-                        font.pixelSize: 11
+                        font.pixelSize: 13
                         text: JsCommon.getDateTime();
+                    }
+
+                    /* 在线状态 */
+                    Rectangle {
+                        id: friendState;
+                        width: 13
+                        height: 13
+                        radius: width / 2
+                        color: setStateColor("online");
+
+                        anchors {
+                            right: friendItem.right;
+                            rightMargin: 30;
+                            top: friendOnlineTime.bottom;
+                            topMargin: 8
+                        }
+
+                        Rectangle {
+                            width: 9
+                            height: 9
+                            radius: width / 2
+                            color: parent.color;
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            border.color: "black"
+                            border.width: 2
+                        }
                     }
 
                     MouseArea {
@@ -168,14 +209,56 @@ Rectangle {
                         }
                         onEntered: {
                             cellRect.color = "#353535";
+                            friendListScrollbar.visible = true;
                         }
                         onExited: {
                             cellRect.color = "transparent";
+                            friendListScrollbar.visible = false;
                         }
+                        z:300
                     }
                 }
             }
         }
     }
+
+    /* 滚动条 */
+    Rectangle {
+        id: friendListScrollbar
+        x: 280
+        y: 0
+        width: 8
+        height: parent.height
+        color: "transparent"
+        visible: false
+
+        // 按钮
+        Rectangle {
+            id: button
+            x: 0
+            y: friendListView.visibleArea.yPosition * friendListScrollbar.height
+            width: 6
+            height: friendListView.visibleArea.heightRatio * friendListScrollbar.height;
+            color: "#959595"
+            radius: 100
+
+            // 鼠标区域
+            MouseArea {
+                id: mouseArea2
+                anchors.fill: button
+                drag.target: button
+                drag.axis: Drag.YAxis
+                drag.minimumY: 0
+                drag.maximumY: friendListScrollbar.height - button.height
+
+                // 拖动
+                onMouseYChanged: {
+                    friendListView.contentY = button.y / friendListScrollbar.height * friendListView.contentHeight
+                }
+                z:310
+            }
+        }
+    }
+
 }
 
