@@ -199,6 +199,7 @@ Rectangle {
                         }
                     }
 
+                    /* 鼠标滤过的阴影效果 */
                     MouseArea {
                         id: firneItemArea
                         anchors.fill: parent;
@@ -215,7 +216,15 @@ Rectangle {
                             cellRect.color = "transparent";
                             friendListScrollbar.visible = false;
                         }
-                        z:300
+                        onWheel: {
+                            if (wheel.angleDelta.y > 0) {
+                                friendListView.contentY += 30;
+                            }
+
+                            if (wheel.angleDelta.y < 0) {
+                                friendListView.contentY -= 30;
+                            }
+                        }
                     }
                 }
             }
@@ -255,10 +264,8 @@ Rectangle {
                 onMouseYChanged: {
                     friendListView.contentY = button.y / friendListScrollbar.height * friendListView.contentHeight
                 }
-                z:310
             }
         }
     }
-
 }
 
