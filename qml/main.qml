@@ -18,6 +18,8 @@ Rectangle {
     height: Math.round(640)
     radius: 5;
 
+    Drag.active: true
+
     /* 主窗口可见 */
     visible: true
     /* 透明度 */
@@ -37,11 +39,17 @@ Rectangle {
         source: baseWindows;
     }
 
+
     /* 主窗口鼠标拖拽 */
     MouseArea {
         id: dragRegion
         anchors.fill: parent
-        property point clickPos: "1,1"
+//        drag.axis:Drag.XAndYAxis
+//        drag.target: parent
+//        drag.smoothed: true
+
+
+        property point clickPos: "10,10"
 
         onPressed: {
             clickPos = Qt.point(mouse.x, mouse.y);
@@ -53,9 +61,11 @@ Rectangle {
         onPositionChanged: {
             /* 鼠标偏移量 */
             var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
-            /* 如果mainwindow继承自QWidget,用setPos */
+
+//            /* 如果mainwindow继承自QWidget,用setPos */
             mainwindow.setX(mainwindow.x + delta.x);
             mainwindow.setY(mainwindow.y + delta.y);
+
         }
     }
 
@@ -68,6 +78,7 @@ Rectangle {
         anchors.rightMargin: 3
         anchors.top: parent.top
         anchors.topMargin: 3
+        color: "#efefef"
         z:100
     }
 
@@ -91,8 +102,8 @@ Rectangle {
             anchors.leftMargin: 1
             anchors.top: parent.top;
             anchors.topMargin: 1
-
             property int fix_width: 295
+            color: "#efefef"
 
             /* 背景 */
             Component {
@@ -183,6 +194,17 @@ Rectangle {
                 anchors {
                     left: backGroundLoader.right;
                     bottom: backGroundLoader.bottom;
+                }
+            }
+
+            /* 聊天内容 */
+            ChatDisplay {
+                id: chatContent;
+                height: firstLayerWindows.height - chatTextInputWindow.height - 45;
+                width: firstLayerWindows.width - secondLayerWindows.fix_width - 2;
+                anchors {
+                    left:backGroundLoader.right;
+                    bottom: chatTextInputWindow.top;
                 }
             }
         }

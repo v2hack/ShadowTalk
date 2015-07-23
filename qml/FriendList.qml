@@ -121,7 +121,6 @@ Rectangle {
                     }
                     /* 好友头像球体 */
                     Image {
-                        id: searchButton;
                         width: 68
                         height: 68
 
@@ -221,13 +220,13 @@ Rectangle {
                             console.log("2 : " + friendListView.contentHeight);
                             console.log(friendListScrollbar.height);
 
-                            if (wheel.angleDelta.y > 0) {
+                            if (wheel.angleDelta.y < 0) {
                                 if (friendListView.contentY <= friendListView.contentHeight - friendListScrollbar.height) {
                                       friendListView.contentY += 30;
                                 }
                             }
 
-                            if (wheel.angleDelta.y < 0 && friendListView.contentY > 0) {
+                            if (wheel.angleDelta.y > 0 && friendListView.contentY > 0) {
                                 friendListView.contentY -= 30;
                             }
                         }

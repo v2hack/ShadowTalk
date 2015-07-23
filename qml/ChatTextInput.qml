@@ -27,7 +27,7 @@ Rectangle {
                 top: parent.top;
                 topMargin: 2;
                 left: parent.left;
-                leftMargin: 2
+                leftMargin: 6
             }
 
             Image {
@@ -58,7 +58,7 @@ Rectangle {
                 top: parent.top;
                 topMargin: 2;
                 left: chatExpressionRectangle.right;
-                leftMargin: 4
+                leftMargin: 6
             }
 
             Image {
@@ -90,7 +90,7 @@ Rectangle {
                 top: parent.top;
                 topMargin: 2;
                 left: screenshotRectangle.right;
-                leftMargin: 4
+                leftMargin: 6
             }
             Image {
                 id: deliveryImage;

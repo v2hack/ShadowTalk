@@ -20,6 +20,7 @@ Rectangle {
         anchors.rightMargin: 2
         anchors.top: parent.top
         anchors.topMargin: 10
+        color: parent.color
 
         Image {
             id: closeButtonImage;
@@ -55,6 +56,7 @@ Rectangle {
         anchors.rightMargin: 15
         anchors.top: parent.top
         anchors.topMargin: 10
+        color: parent.color
 
         property bool window_max_flag: false;
 
@@ -118,6 +120,7 @@ Rectangle {
         anchors.rightMargin: 15
         anchors.top: parent.top
         anchors.topMargin: 14
+        color: parent.color
 
         Image {
             id: minButtonImage;
