@@ -217,11 +217,17 @@ Rectangle {
                             friendListScrollbar.visible = false;
                         }
                         onWheel: {
+                            console.log("1 : " + friendListView.contentY);
+                            console.log("2 : " + friendListView.contentHeight);
+                            console.log(friendListScrollbar.height);
+
                             if (wheel.angleDelta.y > 0) {
-                                friendListView.contentY += 30;
+                                if (friendListView.contentY <= friendListView.contentHeight - friendListScrollbar.height) {
+                                      friendListView.contentY += 30;
+                                }
                             }
 
-                            if (wheel.angleDelta.y < 0) {
+                            if (wheel.angleDelta.y < 0 && friendListView.contentY > 0) {
                                 friendListView.contentY -= 30;
                             }
                         }
