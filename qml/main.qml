@@ -39,7 +39,6 @@ Rectangle {
         source: baseWindows;
     }
 
-
     /* 主窗口鼠标拖拽 */
     MouseArea {
         id: dragRegion
@@ -112,7 +111,7 @@ Rectangle {
                     id: backGroundRectangle
                     width: Math.round(secondLayerWindows.fix_width - 4);
                     height: Math.round(secondLayerWindows.height - 4);
-                    color: "#000000"
+                    color: "#111111"
                     radius: 5
                 }
             }

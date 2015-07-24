@@ -116,6 +116,63 @@ function getDateTime() {
     return result;
 }
 
+/* 计算聊天内容长度 */
+function strlen(str) {
+    var s = 0;
+    for (var i = 0; i < str.length; i++) {
+        if(str.charAt(i).match(/[u0391-uFFE5]/)) {
+            s += 2;
+        } else {
+            s++;
+        }
+    }
+    return s;
+}
+
+
+function getByteLen(val) {
+    var len = 0;
+    for (var i = 0; i < val.length; i++) {
+        var a = val.charAt(i);
+        if (a.match(/[^\x00-\xff]/ig) != null){
+            len += 2;
+        } else {
+            len += 1;
+        }
+    }
+    return len;
+}
+
+/* 计算聊天框的高度 */
+function getMessageFrameHeight(message, windows_width) {
+    var message_len = getByteLen(message);
+
+    console.log("Window widh - " + windows_width);
+    console.log("Message width - " + message_len);
+
+    var windows_height = message_len / windows_width;
+
+    if (message_len % windows_width > 0) {
+        windows_height += 1;
+    }
+    console.log("Message height - " + windows_height);
+    return windows_height * 30;
+}
+
+function getMessageFrameWidth(message, windows_width) {
+    var message_len = getByteLen(message) * 10;
+
+    if (message_len > windows_width) {
+        console.log("Frame width - " + windows_width);
+        return windows_width;
+    } else {
+        console.log("Frame width - " + message_len);
+        return message_len;
+    }
+}
+
+
+
 
 
 

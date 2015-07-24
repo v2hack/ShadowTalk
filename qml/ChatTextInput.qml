@@ -125,6 +125,7 @@ Rectangle {
         TextInput {
             id: chatTextEdit;
             anchors.fill: chatTextEditRectangle;
+            wrapMode: Text.Wrap
         }
     }
 }

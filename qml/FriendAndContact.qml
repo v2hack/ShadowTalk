@@ -19,55 +19,48 @@ Rectangle {
         width: friendAndContact.second_layer_width - 4;
         height: 30
 
+
+        Rectangle {
+            id: titleFilpable
+            width: friendAndContact.second_layer_width - 4;
+            height: 30;
+            color: "#33ccbf";
+        }
+
         /* 前页面-好友列表 */
         front: Rectangle {
-            Rectangle {
-                id: titleFront
-                width: friendAndContact.second_layer_width - 4;
-                height: 30;
-                color: "#33ccbf";
-            }
-            Rectangle {
-                id: friendList
-                anchors.top: titleFront.bottom;
-                width: friendAndContact.second_layer_width - 4;
-                height: second_layer_height - titleFront.height - window_setting_height;
+            id: friendList
+            anchors.top: titleFilpable.bottom;
+            width: friendAndContact.second_layer_width - 4;
+            height: second_layer_height - titleFilpable.height - window_setting_height;
 
-                color: "#2c2c2c"
-                opacity: 0.8
+            color: "#2c2c2c"
+            opacity: 0.8
 
-                /* 好友列表细节动态 */
-                FriendList {
-                    id: friendListDisplay;
-                    height: parent.height - 2;
-                    width: parent - 8
-                    anchors {
-                        top: parent.top
-                        topMargin: 4
-                        left:parent.left
-                        leftMargin: 4
-
-                    }
+            /* 好友列表细节动态 */
+            FriendList {
+                id: friendListDisplay;
+                height: parent.height - 2;
+                width: parent - 8
+                anchors {
+                    top: friendList.top
+                    topMargin: 4
+                    left:friendList.left
+                    leftMargin: 4
                 }
             }
         }
 
         /* 被页面-联系人列表 */
         back: Rectangle {
-            Rectangle {
-                id: titleBack
-                width: friendAndContact.second_layer_width - 4
-                height: 30
-                color: "#33ccbf"
-            }
-            Rectangle {
-                id: contactList
-                anchors.top: titleBack.bottom;
-                width: friendAndContact.second_layer_width - 4
-                height: second_layer_height - titleFront.height - window_setting_height;
-                color: "#2c2c2c"
-                opacity: 0.8
-            }
+            id: contactList
+            anchors.top: titleFilpable.bottom;
+            width: friendAndContact.second_layer_width - 4
+            height: second_layer_height - titleFilpable.height - window_setting_height;
+            color: "#2c2c2c"
+            opacity: 0.8
+
+            // TODO:
         }
 
         transform: Rotation {
@@ -77,11 +70,11 @@ Rectangle {
             axis.x: 0;
             axis.y: 1;
             axis.z: 0;
-            angle: 1;
+            angle: 0;
         }
 
         states: State {
-            name: "back"
+            name: "front"
             PropertyChanges {
                 target: rotation;
                 angle: 180;
@@ -93,15 +86,15 @@ Rectangle {
             NumberAnimation {
                 target: rotation;
                 property: "angle";
-                duration: 150;
+                duration: 200;
             }
         }
 
         MouseArea {
-            anchors.fill: parent
+            anchors.fill: titleFilpable
             onClicked: flipable.flipped = !flipable.flipped
         }
     }
-   
+
 }
 

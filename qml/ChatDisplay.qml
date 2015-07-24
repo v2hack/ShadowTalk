@@ -51,24 +51,9 @@ Rectangle {
                 name: "南野";
                 type: 1;  /* 文字:1 图片:2 语音:3 */
                 driect: 0; /* 0: 收到的， 1: 发出的 */
-                data: "hello world";
+                user_message: "hello world";
             }
 
-            ListElement {
-                uid: 100;
-                name: "闫立解";
-                type: 1;  /* 文字:1 图片:2 语音:3 */
-                driect: 0; /* 0: 收到的， 1: 发出的 */
-                data: "hello world";
-            }
-
-            ListElement {
-                uid: 100;
-                name: "张三";
-                type: 1;  /* 文字:1 图片:2 语音:3 */
-                driect: 0; /* 0: 收到的， 1: 发出的 */
-                data: "hello world";
-            }
         }
     }
 
@@ -99,6 +84,7 @@ Rectangle {
                     }
                     /* 好友头像球体 */
                     Image {
+                        id: firendItemImage
                         width: 68
                         height: 68
 
@@ -112,27 +98,77 @@ Rectangle {
                         source: "qrc:/img/head/st_ball_white.png";
                         fillMode: Image.PreserveAspectFit
                     }
-                }
-                /* 好友名字 */
-                Text {
-                    id: friendItemName
+                    /* 好友名字 */
+                    Text {
+                        id: friendItemName
 
-                    anchors {
-                        left: friendItemIcon.right
-                        leftMargin: 2
-                        verticalCenter: parent.verticalCenter
-                    }
-                    color: "white"
-                    font.pixelSize: 15
-                    text: name
+                        anchors {
+                            fill: parent
+                            top: parent.top
+                            topMargin: 12
+                            left:parent.left
+                            leftMargin: 5
+                        }
 
-                    /* 字体先注释，编译太慢
-                    FontLoader {
-                        id: chineseFont
-                        source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                        color: "#cecece"
+                        font.pixelSize: 12
+                        text: name
+                        font.bold: true
+                        font.family: "Cronyx"
+                        font.letterSpacing: 2
+                        style: Text.Raised
+
+
+                        /* 字体先注释，编译太慢
+                        FontLoader {
+                            id: chineseFont
+                            source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                        }
+                        font.family: chineseFont.name;
+                        */
                     }
-                    font.family: chineseFont.name;
-                    */
+
+                    /* 对话框小箭头 */
+                    Image {
+                        id: friendMessagePointImage
+                        width: 30
+                        height: 30
+
+                        anchors {
+                            top: parent.top
+                            topMargin: 8
+                            left: firendItemImage.right
+                            leftMargin: -5
+                        }
+                        opacity: 1
+                        source: "qrc:/img/head/st_message_point.png";
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    Rectangle {
+                        id: friendMessageContent
+                        anchors {
+                            top: parent.top
+                            topMargin: 8
+                            left: friendMessagePointImage.right
+                            leftMargin: 0
+                        }
+
+                        width: JsCommon.getMessageFrameWidth(user_message, messageRectangle.width);
+                        height: JsCommon.getMessageFrameHeight(user_message, friendMessageContent.width) + 4;
+                        color: "transparent"
+
+                        BorderImage {
+                            id: friendMessageFrameImage
+//                            width: parent.width - 5
+//                            height: parent.height - 5
+                            width: 300
+                            height:300
+                            source: "qrc:/img/head/st_message_frame.png";
+//                            fillMode: Image.PreserveAspectFit
+
+                        }
+                    }
                 }
             }
         }

@@ -14,6 +14,7 @@ import "common.js" as JsCommon
 
 Rectangle {
     id: friendList
+    anchors.top: parent.top
 
     signal sig_add_friend
     signal sig_clear_friend
@@ -27,6 +28,7 @@ Rectangle {
         friendListModel.clear()
     }
 
+    /* 设置在线离线的颜色 */
     function setStateColor(state) {
         if (state === "online") {
             return "#7dc163"
@@ -43,13 +45,6 @@ Rectangle {
         anchors.fill: parent;
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
-
-        highlight: highlight
-        highlightFollowsCurrentItem: false
-        focus: true
-        move: Transition {
-            NumberAnimation { properties: "x, y"; duration: 1000 }
-        }
     }
 
 
@@ -89,8 +84,8 @@ Rectangle {
     Component {
         id: friendListDelegate
         Item {
-            height:50;
             width:284
+            height:55;
 
             Rectangle {
                 id: cellRect
@@ -101,32 +96,32 @@ Rectangle {
                 Rectangle {
                     id: friendItem
                     width: 300
-                    height: 80
+                    height: 55
                     color: "transparent"
-                    anchors.verticalCenter: parent.verticalCenter
 
                     /* 好友头像底色 */
                     Rectangle {
                         id: friendItemIcon
-                        width: 35
-                        height: 35
+                        width: 34
+                        height: 34
                         radius: width / 2
                         color: JsCommon.getColor(name);
 
                         anchors {
-                            verticalCenter: parent.verticalCenter
                             left: parent.left
                             leftMargin: 14
+                            top: parent.top
+                            topMargin: 6
                         }
                     }
                     /* 好友头像球体 */
                     Image {
-                        width: 68
-                        height: 68
+                        width: 65
+                        height: 65
 
                         anchors {
                             top: parent.top
-                            topMargin: 15
+                            topMargin: 1
                             left: parent.left
                             leftMargin: -7
                         }
@@ -138,15 +133,17 @@ Rectangle {
                     /* 好友名字 */
                     Text {
                         id: friendItemName
-
                         anchors {
                             left: friendItemIcon.right
-                            leftMargin: 2
-                            verticalCenter: parent.verticalCenter
+                            leftMargin: 6
+                            top: parent.top;
+                            topMargin: 15
                         }
                         color: "white"
                         font.pixelSize: 15
+                        font.letterSpacing: 1
                         text: name
+                        font.bold: true
 
                         /* 字体先注释，编译太慢
                         FontLoader {
@@ -164,7 +161,7 @@ Rectangle {
                             right: friendItem.right;
                             rightMargin: 30;
                             top: parent.top;
-                            topMargin: 25
+                            topMargin: 10
                         }
                         color: "white"
                         font.pixelSize: 13
@@ -205,15 +202,19 @@ Rectangle {
                         hoverEnabled: true;
 
                         onClicked: {
-                            // TODO
+                            cellRect.color = "white";
+                            friendListScrollbar.visible = true;
+                            cellRect.opacity = 0.9
                         }
                         onEntered: {
                             cellRect.color = "#353535";
                             friendListScrollbar.visible = true;
+                            cellRect.opacity = 0.9
                         }
                         onExited: {
                             cellRect.color = "transparent";
                             friendListScrollbar.visible = false;
+                            cellRect.opacity = 1
                         }
                         onWheel: {
                             console.log("1 : " + friendListView.contentY);
@@ -222,7 +223,7 @@ Rectangle {
 
                             if (wheel.angleDelta.y < 0) {
                                 if (friendListView.contentY <= friendListView.contentHeight - friendListScrollbar.height) {
-                                      friendListView.contentY += 30;
+                                    friendListView.contentY += 30;
                                 }
                             }
 
