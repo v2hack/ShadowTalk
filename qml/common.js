@@ -144,27 +144,30 @@ function getByteLen(val) {
 }
 
 /* 计算聊天框的高度 */
-function getMessageFrameHeight(message, windows_width) {
+function getMessageFrameHeight(message, max_width) {
     var message_len = getByteLen(message);
 
-    console.log("Window widh - " + windows_width);
-    console.log("Message width - " + message_len);
+//    console.log("Window widh - " + max_width);
+//    console.log("Message width - " + message_len);
 
-    var windows_height = message_len / windows_width;
+    var windows_height = message_len / max_width;
 
-    if (message_len % windows_width > 0) {
+    if (message_len % max_width > 0) {
         windows_height += 1;
     }
-    console.log("Message height - " + windows_height);
+
+    windows_height = Math.ceil(windows_height);
+
+    console.log("Frame height - " + windows_height * 30);
     return windows_height * 30;
 }
 
-function getMessageFrameWidth(message, windows_width) {
+function getMessageFrameWidth(message, max_width) {
     var message_len = getByteLen(message) * 10;
 
-    if (message_len > windows_width) {
-        console.log("Frame width - " + windows_width);
-        return windows_width;
+    if (message_len > max_width) {
+        console.log("Frame width - " + max_width);
+        return max_width;
     } else {
         console.log("Frame width - " + message_len);
         return message_len;

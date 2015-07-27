@@ -17,15 +17,13 @@ Rectangle {
     color: "#efefef"
 
     function addMessage(uid, name, type) {
-        messageModel.append({
-                                uid: uid,
-                                name: name,
-                                type: type,
-                            })
+        messageModel.append({uid: uid, name: name, type: type,});
     }
+
     function cleanMessage() {
-        messageModel.clear()
+        messageModel.clear();
     }
+
 
 
     ListView {
@@ -50,10 +48,37 @@ Rectangle {
                 uid: 100;
                 name: "南野";
                 type: 1;  /* 文字:1 图片:2 语音:3 */
-                driect: 0; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello world";
+                direct: 0; /* 0: 收到的， 1: 发出的 */
+                user_message: "hello world to nanye";
             }
-
+            ListElement {
+                uid: 101;
+                name: "张丹";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 1; /* 0: 收到的， 1: 发出的 */
+                user_message: "hello sdfgkhjdslfkghjksdlxjgfhlksdjhglkjsdhgjfsdgworld to nanye";
+            }
+            ListElement {
+                uid: 101;
+                name: "张丹";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 1; /* 0: 收到的， 1: 发出的 */
+                user_message: "hello worlddsgkhjfdsjhgfsdg to nanye";
+            }
+            ListElement {
+                uid: 100;
+                name: "南野";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 0; /* 0: 收到的， 1: 发出的 */
+                user_message: "hello world to nanye";
+            }
+            ListElement {
+                uid: 100;
+                name: "南野";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 0; /* 0: 收到的， 1: 发出的 */
+                user_message: "hello slkdfgjlkdsfjglfkds;gjsdgflksdgjlfksd;gfjlksdfjglkfsd;jglk;fsdjgflkfdsjglkfdworld to nanye";
+            }
         }
     }
 
@@ -62,7 +87,8 @@ Rectangle {
         id: messageDelegate
 
         Item {
-            height:100
+            height:JsCommon.getMessageFrameHeight(user_message, 300) + 10
+            width: parent.width
 
             Rectangle {
                 id: messageItem;
@@ -79,8 +105,10 @@ Rectangle {
 
                     anchors {
                         verticalCenter: parent.verticalCenter
-                        left: parent.left
-                        leftMargin: 14
+                        left:  direct === 0 ? parent.left : undefined
+                        leftMargin: direct === 0 ? 14 : undefined
+                        right: direct === 1 ? parent.right : undefined
+                        rightMargin: direct === 1 ? 14 : undefined
                     }
                     /* 好友头像球体 */
                     Image {
@@ -91,8 +119,10 @@ Rectangle {
                         anchors {
                             top: parent.top
                             topMargin: -5
-                            left: parent.left
-                            leftMargin: -21
+                            left: direct === 0 ? parent.left : undefined
+                            leftMargin: direct === 0 ? -21 : undefined
+                            right: direct === 1 ? parent.right : undefined
+                            rightMargin: direct === 1 ? -11 : undefined
                         }
                         opacity: 1
                         source: "qrc:/img/head/st_ball_white.png";
@@ -136,37 +166,47 @@ Rectangle {
 
                         anchors {
                             top: parent.top
-                            topMargin: 8
-                            left: firendItemImage.right
-                            leftMargin: -5
+                            topMargin: 7
+                            left: direct === 0 ? firendItemImage.right : undefined
+                            leftMargin: direct === 0 ? -5 : undefined
+                            right: direct == 1 ? firendItemImage.right : undefined
+                            rightMargin: direct === 1 ? 53 : undefined
                         }
-                        opacity: 1
+                        opacity: 0.6
                         source: "qrc:/img/head/st_message_point.png";
                         fillMode: Image.PreserveAspectFit
+                        mirror: direct === 0 ? false : true
                     }
 
+                    /* 消息内容 */
                     Rectangle {
                         id: friendMessageContent
                         anchors {
                             top: parent.top
                             topMargin: 8
-                            left: friendMessagePointImage.right
-                            leftMargin: 0
+                            left: direct === 0 ?  friendMessagePointImage.right : undefined
+                            leftMargin:  direct === 0 ? 1 : undefined
+                            right: direct === 1 ? friendMessagePointImage.left : undefined
+                            rightMargin: direct === 1 ? 1 :undefined
                         }
+                        opacity: 0.6
 
-                        width: JsCommon.getMessageFrameWidth(user_message, messageRectangle.width);
-                        height: JsCommon.getMessageFrameHeight(user_message, friendMessageContent.width) + 4;
+                        width: JsCommon.getMessageFrameWidth(user_message, 300);
+                        height: JsCommon.getMessageFrameHeight(user_message, 300);
                         color: "transparent"
 
                         BorderImage {
                             id: friendMessageFrameImage
-//                            width: parent.width - 5
-//                            height: parent.height - 5
-                            width: 300
-                            height:300
-                            source: "qrc:/img/head/st_message_frame.png";
-//                            fillMode: Image.PreserveAspectFit
 
+                            border.top: 40;
+                            border.bottom: 40;
+                            border.left: 40;
+                            border.right: 40;
+                            smooth: true
+
+                            width: parent.width + 2
+                            height: parent.height + 2
+                            source: "qrc:/img/head/st_message_frame.png";
                         }
                     }
                 }
