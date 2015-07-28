@@ -1,10 +1,3 @@
-#ifndef ST_CORE_H_
-#define ST_CORE_H_
-
-
-
-
-
 
 
 

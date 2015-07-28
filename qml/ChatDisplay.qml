@@ -4,13 +4,16 @@
  *  作者: 南野
  *  时间: 2015年7月20日
  */
-import QtQuick 2.0
+import QtQuick 2.4
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 
 import "functions.js" as PinYin
 import "common.js" as JsCommon
+
+/* 导入文字与像素计算类型 */
+import st.font.PointSizeToPixelSize 1.0
 
 Rectangle {
     id: messageRectangle;
@@ -23,8 +26,6 @@ Rectangle {
     function cleanMessage() {
         messageModel.clear();
     }
-
-
 
     ListView {
         id: messageView;
@@ -81,7 +82,6 @@ Rectangle {
             }
         }
     }
-
 
     Component {
         id: messageDelegate
@@ -189,11 +189,19 @@ Rectangle {
                             right: direct === 1 ? friendMessagePointImage.left : undefined
                             rightMargin: direct === 1 ? 1 :undefined
                         }
-                        opacity: 0.6
+                        opacity: 0.3
 
-                        width: JsCommon.getMessageFrameWidth(user_message, 300);
-                        height: JsCommon.getMessageFrameHeight(user_message, 300);
+//                        width: JsCommon.getMessageFrameWidth(user_message, 300);
+//                        height: JsCommon.getMessageFrameHeight(user_message, 300);
                         color: "transparent"
+
+
+                        width: JsCommon.getMessageFrameWidth(getPixelSize.width(10, user_message));
+                        height: JsCommon.getMessageFrameHeight(getPixelSize.height(10), getPixelSize.width(10, user_message)) + 10;
+
+                        PointSizeToPixelSize {
+                            id: getPixelSize;
+                        }
 
                         BorderImage {
                             id: friendMessageFrameImage
@@ -203,10 +211,26 @@ Rectangle {
                             border.left: 40;
                             border.right: 40;
                             smooth: true
-
-                            width: parent.width + 2
-                            height: parent.height + 2
+                            width: friendMessageContent.width + 60
+                            height: friendMessageContent.height + 2
                             source: "qrc:/img/head/st_message_frame.png";
+                        }
+
+
+                        Text {
+                            anchors {
+                                fill: parent
+                                top: parent.top
+                                topMargin: 5
+                                left:parent.left
+                                leftMargin: 5
+                            }
+                            text: user_message;
+                            wrapMode: Text.Wrap
+                            color: "black"
+                            font.pointSize: 10
+                            horizontalAlignment: direct === 0 ? Text.AlignLeft : Text.AlignRight
+                            verticalAlignment: Text.AlignVCenter
                         }
                     }
                 }

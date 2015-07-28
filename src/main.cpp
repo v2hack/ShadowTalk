@@ -4,11 +4,21 @@
 #include <QString>
 #include <QDir>
 #include <QDebug>
+#include <QGuiApplication>
+
+#include <QtQuick/QQuickView>
+#include <QtQml>
+
+#include "pixelsize.h"
+
+
+QGuiApplication *globalApp;
 
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    globalApp = &app;
 
     /* 设置程序路径 */
     QString dir = QGuiApplication::applicationDirPath();
@@ -16,6 +26,9 @@ int main(int argc, char *argv[])
 
     /* 库加载路径 */
     QGuiApplication::addLibraryPath("./plugins");
+
+    /* 注册C++类型到QML */
+    qmlRegisterType<PointSizeToPixelSize>("st.font.PointSizeToPixelSize", 1, 0, "PointSizeToPixelSize");
 
     /* 加载qml */
     QQuickView viewer;

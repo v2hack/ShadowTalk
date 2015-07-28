@@ -140,38 +140,35 @@ function getByteLen(val) {
             len += 1;
         }
     }
+    console.log("bytes - " + len);
     return len;
 }
 
 /* 计算聊天框的高度 */
-function getMessageFrameHeight(message, max_width) {
-    var message_len = getByteLen(message);
+function getMessageFrameHeight(height_pixel_size, total_width) {
 
-//    console.log("Window widh - " + max_width);
-//    console.log("Message width - " + message_len);
+    var row_num = parseInt(total_width / 250);
 
-    var windows_height = message_len / max_width;
-
-    if (message_len % max_width > 0) {
-        windows_height += 1;
+    if (row_num === 0) {
+        row_num = 1;
+        return row_num;
     }
 
-    windows_height = Math.ceil(windows_height);
+    if ((total_width % 250 > 0) && row_num != 0) {
+        row_num = row_num + 1;
+    }
 
-    console.log("Frame height - " + windows_height * 30);
-    return windows_height * 30;
+    console.log("height - " + row_num * height_pixel_size);
+    console.log("row num - " + row_num);
+    console.log("row pixel - " + height_pixel_size);
+    console.log("------------------------");
+    return row_num * height_pixel_size;
 }
 
-function getMessageFrameWidth(message, max_width) {
-    var message_len = getByteLen(message) * 10;
-
-    if (message_len > max_width) {
-        console.log("Frame width - " + max_width);
-        return max_width;
-    } else {
-        console.log("Frame width - " + message_len);
-        return message_len;
-    }
+function getMessageFrameWidth(total_width) {
+    var width = total_width > 250 ? 250 : total_width;
+    console.log("width - " + width);
+    return width;
 }
 
 

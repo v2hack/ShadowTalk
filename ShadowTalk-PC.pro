@@ -24,7 +24,8 @@ HEADERS += \
         src/widget/friend_widget.h \
         src/widget/gui.h \
         src/widget/qr_widget.h \
-        src/widget/system_tray_icon.h
+        src/widget/system_tray_icon.h \
+    src/core/pixelsize.h
 
 SOURCES += \
         src/main.cpp \
@@ -38,7 +39,8 @@ SOURCES += \
         src/widget/friend_widget.cpp \
         src/widget/gui.cpp \
         src/widget/qr_widget.cpp \
-        src/widget/system_tray_icon.cpp
+        src/widget/system_tray_icon.cpp \
+    src/core/pixelsize.cpp
 
 		
 RESOURCES += qml.qrc
