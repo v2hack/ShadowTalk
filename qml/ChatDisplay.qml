@@ -39,6 +39,9 @@ Rectangle {
         move: Transition {
             NumberAnimation { properties: "x, y"; duration: 1000 }
         }
+        addDisplaced: Transition {
+              NumberAnimation { properties: "x,y"; duration: 1000 }
+        }
     }
 
     Component {
@@ -47,53 +50,76 @@ Rectangle {
             //  dynamicRoles: true;
             ListElement {
                 uid: 100;
-                name: "南野";
+                name: "我";
                 type: 1;  /* 文字:1 图片:2 语音:3 */
                 direct: 0; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello world to nanye";
+                user_message: "hello wsdfsfdsddfsdfdsdfsdfdsdfsdfsddforld to nanye";
             }
-            ListElement {
-                uid: 101;
-                name: "张丹";
-                type: 1;  /* 文字:1 图片:2 语音:3 */
-                direct: 1; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello sdfgkhjdslfkghjksdlxjgfhlksdjhglkjsdhgjfsdgworld to nanye";
-            }
-            ListElement {
-                uid: 101;
-                name: "张丹";
-                type: 1;  /* 文字:1 图片:2 语音:3 */
-                direct: 1; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello worlddsgkhjfdsjhgfsdg to nanye";
-            }
-            ListElement {
-                uid: 100;
-                name: "南野";
-                type: 1;  /* 文字:1 图片:2 语音:3 */
-                direct: 0; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello world to nanye";
-            }
-            ListElement {
-                uid: 100;
-                name: "南野";
-                type: 1;  /* 文字:1 图片:2 语音:3 */
-                direct: 0; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello slkdfgjlkdsfjglfkds;gjsdgflksdgjlfksd;gfjlksdfjglkfsd;jglk;fsdjgflkfdsjglkfdworld to nanye";
-            }
+                        ListElement {
+                            uid: 101;
+                            name: "张丹";
+                            type: 1;  /* 文字:1 图片:2 语音:3 */
+                            direct: 1; /* 0: 收到的， 1: 发出的 */
+                            user_message: "hello sdfgkhjdslfkghjksdlxjgfhlksdjhglkjsdhgjfsdgworld to nanye";
+                        }
+                                    ListElement {
+                                        uid: 101;
+                                        name: "张丹";
+                                        type: 1;  /* 文字:1 图片:2 语音:3 */
+                                        direct: 0; /* 0: 收到的， 1: 发出的 */
+                                        user_message: "hello worlddsgsadfszfdsdfkhjfdsjhgfsdg to nanye";
+                                    }
+                                    ListElement {
+                                        uid: 100;
+                                        name: "南野";
+                                        type: 1;  /* 文字:1 图片:2 语音:3 */
+                                        direct: 1; /* 0: 收到的， 1: 发出的 */
+                                        user_message: "hellsdfsdfsdfsdrfo world to nanye";
+                                    }
+                                    ListElement {
+                                        uid: 100;
+                                        name: "南野";
+                                        type: 1;  /* 文字:1 图片:2 语音:3 */
+                                        direct: 0; /* 0: 收到的， 1: 发出的 */
+                                        user_message: "hello slkdfgjlkdsfjglfkjglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgflds;gjsdgflksdgjlfksd;gfjlksdfjglkfsd;jglk;fsdjgflkfdsjglkfdworld to nanye";
+                                    }
         }
+    }
+
+    PointSizeToPixelSize {
+        id: getPixelSize;
     }
 
     Component {
         id: messageDelegate
 
         Item {
-            height:JsCommon.getMessageFrameHeight(user_message, 300) + 10
-            width: parent.width
+            id: messageDelegateItem
+
+            function getItemHeight() {
+                var height =  JsCommon.getMessageFrameHeight(
+                                getPixelSize.height(10),
+                                getPixelSize.width(10 , user_message), 250);
+
+                var row_num = height/17;
+                return (row_num * 17) * 1.1 + 40;
+            }
+
+            height: getItemHeight();
+            width: parent.width;
+
+            /* C++ 计算像素的类 */
+            PointSizeToPixelSize {
+                id: getPixelSize;
+            }
 
             Rectangle {
                 id: messageItem;
+                width: 68
+                height: messageDelegateItem.height
                 anchors.fill: parent
-                color: "transparent"
+                color: direct === 0 ? "green" : "blue"
+                //                color: "transparent"
 
                 /* 好友头像 */
                 Rectangle {
@@ -104,7 +130,8 @@ Rectangle {
                     color: JsCommon.getColor(name);
 
                     anchors {
-                        verticalCenter: parent.verticalCenter
+                        top: parent.top
+                        topMargin: 5
                         left:  direct === 0 ? parent.left : undefined
                         leftMargin: direct === 0 ? 14 : undefined
                         right: direct === 1 ? parent.right : undefined
@@ -128,6 +155,7 @@ Rectangle {
                         source: "qrc:/img/head/st_ball_white.png";
                         fillMode: Image.PreserveAspectFit
                     }
+
                     /* 好友名字 */
                     Text {
                         id: friendItemName
@@ -166,11 +194,11 @@ Rectangle {
 
                         anchors {
                             top: parent.top
-                            topMargin: 7
+                            topMargin: 10
                             left: direct === 0 ? firendItemImage.right : undefined
-                            leftMargin: direct === 0 ? -5 : undefined
-                            right: direct == 1 ? firendItemImage.right : undefined
-                            rightMargin: direct === 1 ? 53 : undefined
+                            leftMargin: direct === 0 ? -10 : undefined
+                            right: direct == 1 ? firendItemImage.left : undefined
+                            rightMargin: direct === 1 ? -16 : undefined
                         }
                         opacity: 0.6
                         source: "qrc:/img/head/st_message_point.png";
@@ -181,55 +209,59 @@ Rectangle {
                     /* 消息内容 */
                     Rectangle {
                         id: friendMessageContent
-                        anchors {
-                            top: parent.top
-                            topMargin: 8
-                            left: direct === 0 ?  friendMessagePointImage.right : undefined
-                            leftMargin:  direct === 0 ? 1 : undefined
-                            right: direct === 1 ? friendMessagePointImage.left : undefined
-                            rightMargin: direct === 1 ? 1 :undefined
-                        }
-                        opacity: 0.3
-
-//                        width: JsCommon.getMessageFrameWidth(user_message, 300);
-//                        height: JsCommon.getMessageFrameHeight(user_message, 300);
+                        radius: 10
                         color: "transparent"
 
-
-                        width: JsCommon.getMessageFrameWidth(getPixelSize.width(10, user_message));
-                        height: JsCommon.getMessageFrameHeight(getPixelSize.height(10), getPixelSize.width(10, user_message)) + 10;
-
-                        PointSizeToPixelSize {
-                            id: getPixelSize;
+                        function getMessageHeight() {
+                            var height =  JsCommon.getMessageFrameHeight(
+                                        getPixelSize.height(10),
+                                        getPixelSize.width(10 , user_message), 250);
+                            console.log("height - " + height);
+                            return height * 1.2
                         }
 
-                        BorderImage {
-                            id: friendMessageFrameImage
-
-                            border.top: 40;
-                            border.bottom: 40;
-                            border.left: 40;
-                            border.right: 40;
-                            smooth: true
-                            width: friendMessageContent.width + 60
-                            height: friendMessageContent.height + 2
-                            source: "qrc:/img/head/st_message_frame.png";
+                        function getMessageWidth() {
+                            var width = JsCommon.getMessageFrameWidth(getPixelSize.width(10, user_message)) + 20;
+                            console.log("width - " + width);
+                            return width;
                         }
 
+                        height: getMessageHeight();
+                        width: getMessageWidth();
+
+                        anchors {
+                            top: parent.top
+                            topMargin: 20
+                            left: direct === 0 ? friendMessagePointImage.right : undefined
+                            leftMargin:  direct === 0 ? 3 : undefined
+                            right: direct === 1 ? friendMessagePointImage.left : undefined
+                            rightMargin: direct === 1 ? 3 :undefined
+                        }
+
+                        /* 透明颜色背景 */
+                        Rectangle {
+                            id: freindMessageContenColor;
+                            color: JsCommon.getColor(name);
+                            opacity: 0.4
+                            radius: 10
+                            width: friendMessageContent.width
+                            height: friendMessageContent.height;
+                            anchors.fill: friendMessageContent
+                        }
 
                         Text {
+                            id: friendMessageText
+                            width: parent.width
+//                            fontSizeMode: Text.HorizontalFit
                             anchors {
-                                fill: parent
-                                top: parent.top
-                                topMargin: 5
+                                fill: friendMessageContent
                                 left:parent.left
-                                leftMargin: 5
+                                leftMargin: 10
                             }
                             text: user_message;
                             wrapMode: Text.Wrap
                             color: "black"
                             font.pointSize: 10
-                            horizontalAlignment: direct === 0 ? Text.AlignLeft : Text.AlignRight
                             verticalAlignment: Text.AlignVCenter
                         }
                     }

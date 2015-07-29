@@ -144,30 +144,27 @@ function getByteLen(val) {
     return len;
 }
 
-/* 计算聊天框的高度 */
-function getMessageFrameHeight(height_pixel_size, total_width) {
 
-    var row_num = parseInt(total_width / 250);
+/* 计算聊天框的高度 */
+function getMessageFrameHeight(height_size, user_data_width, max_row_width) {
+
+    var total_bytes_width = user_data_width;
+    var row_num = parseInt(total_bytes_width / max_row_width);
+
 
     if (row_num === 0) {
         row_num = 1;
-        return row_num;
+        return row_num * height_size;
     }
 
-    if ((total_width % 250 > 0) && row_num != 0) {
+    if ((total_bytes_width % 250 > 0) && row_num != 0) {
         row_num = row_num + 1;
     }
-
-    console.log("height - " + row_num * height_pixel_size);
-    console.log("row num - " + row_num);
-    console.log("row pixel - " + height_pixel_size);
-    console.log("------------------------");
-    return row_num * height_pixel_size;
+    return row_num * height_size;
 }
 
 function getMessageFrameWidth(total_width) {
     var width = total_width > 250 ? 250 : total_width;
-    console.log("width - " + width);
     return width;
 }
 

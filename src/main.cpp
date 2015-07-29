@@ -35,6 +35,9 @@ int main(int argc, char *argv[])
     viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
+    /* 注册C++类型到QML为属性 */
+//    viewer.rootContext()->setContextProperty("PointSizeToPixelSize", new PointSizeToPixelSize);
+
     /* 设置无边框及透明 */
     viewer.setFlags(Qt::FramelessWindowHint|Qt::Window);
     viewer.setColor(QColor(Qt::transparent));
