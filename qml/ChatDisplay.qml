@@ -40,7 +40,7 @@ Rectangle {
             NumberAnimation { properties: "x, y"; duration: 1000 }
         }
         addDisplaced: Transition {
-              NumberAnimation { properties: "x,y"; duration: 1000 }
+            NumberAnimation { properties: "x,y"; duration: 1000 }
         }
     }
 
@@ -53,36 +53,36 @@ Rectangle {
                 name: "我";
                 type: 1;  /* 文字:1 图片:2 语音:3 */
                 direct: 0; /* 0: 收到的， 1: 发出的 */
-                user_message: "hello wsdfsfdsddfsdfdsdfsdfdsdfsdfsddforld to nanye";
+                user_message: "一个是TextView的contentWidth的调整fixWidth()";
             }
-                        ListElement {
-                            uid: 101;
-                            name: "张丹";
-                            type: 1;  /* 文字:1 图片:2 语音:3 */
-                            direct: 1; /* 0: 收到的， 1: 发出的 */
-                            user_message: "hello sdfgkhjdslfkghjksdlxjgfhlksdjhglkjsdhgjfsdgworld to nanye";
-                        }
-                                    ListElement {
-                                        uid: 101;
-                                        name: "张丹";
-                                        type: 1;  /* 文字:1 图片:2 语音:3 */
-                                        direct: 0; /* 0: 收到的， 1: 发出的 */
-                                        user_message: "hello worlddsgsadfszfdsdfkhjfdsjhgfsdg to nanye";
-                                    }
-                                    ListElement {
-                                        uid: 100;
-                                        name: "南野";
-                                        type: 1;  /* 文字:1 图片:2 语音:3 */
-                                        direct: 1; /* 0: 收到的， 1: 发出的 */
-                                        user_message: "hellsdfsdfsdfsdrfo world to nanye";
-                                    }
-                                    ListElement {
-                                        uid: 100;
-                                        name: "南野";
-                                        type: 1;  /* 文字:1 图片:2 语音:3 */
-                                        direct: 0; /* 0: 收到的， 1: 发出的 */
-                                        user_message: "hello slkdfgjlkdsfjglfkjglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgflds;gjsdgflksdgjlfksd;gfjlksdfjglkfsd;jglk;fsdjgflkfdsjglkfdworld to nanye";
-                                    }
+            ListElement {
+                uid: 101;
+                name: "张丹";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 1; /* 0: 收到的， 1: 发出的 */
+                user_message: "如果你创建一个新的QTextEdit并且想允许用户编辑多信息文本,请调用setTextFormat(Qt::RichText)来确保文本被看做多信息文本。(多信息文本使用HTML标记来设置文本格式属..";
+            }
+            ListElement {
+                uid: 101;
+                name: "张丹";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 0; /* 0: 收到的， 1: 发出的 */
+                user_message: "自己绘制。上所说的估计是Qt 4的东西了。因为Qt Declarative模块就继承自Qt Graphics View。文本展开和行号我觉得可能用tableView会好一些。但没试过，也只是猜测。";
+            }
+            ListElement {
+                uid: 100;
+                name: "南野";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 1; /* 0: 收到的， 1: 发出的 */
+                user_message: "hellsdfsdfsdfsdrfo world to nanye";
+            }
+            ListElement {
+                uid: 100;
+                name: "南野";
+                type: 1;  /* 文字:1 图片:2 语音:3 */
+                direct: 0; /* 0: 收到的， 1: 发出的 */
+                user_message: "hello slkdfgjlkdsfjglfkjglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgfljglfkds;gjsdgflds;gjsdgflksdgjlfksd;gfjlksdfjglkfsd;jglk;fsdjgflkfdsjglkfdworld to nanye";
+            }
         }
     }
 
@@ -98,8 +98,8 @@ Rectangle {
 
             function getItemHeight() {
                 var height =  JsCommon.getMessageFrameHeight(
-                                getPixelSize.height(10),
-                                getPixelSize.width(10 , user_message), 250);
+                            getPixelSize.height(10),
+                            getPixelSize.width(10 , user_message), 250);
 
                 var row_num = height/17;
                 return (row_num * 17) * 1.1 + 40;
@@ -118,8 +118,7 @@ Rectangle {
                 width: 68
                 height: messageDelegateItem.height
                 anchors.fill: parent
-                color: direct === 0 ? "green" : "blue"
-                //                color: "transparent"
+                color: "transparent"
 
                 /* 好友头像 */
                 Rectangle {
@@ -221,7 +220,8 @@ Rectangle {
                         }
 
                         function getMessageWidth() {
-                            var width = JsCommon.getMessageFrameWidth(getPixelSize.width(10, user_message)) + 20;
+                            var width = JsCommon.getMessageFrameWidth(
+                                        getPixelSize.width(10, user_message)) + 20;
                             console.log("width - " + width);
                             return width;
                         }
@@ -252,14 +252,13 @@ Rectangle {
                         Text {
                             id: friendMessageText
                             width: parent.width
-//                            fontSizeMode: Text.HorizontalFit
                             anchors {
                                 fill: friendMessageContent
                                 left:parent.left
                                 leftMargin: 10
                             }
                             text: user_message;
-                            wrapMode: Text.Wrap
+                            wrapMode: Text.WrapAnywhere
                             color: "black"
                             font.pointSize: 10
                             verticalAlignment: Text.AlignVCenter

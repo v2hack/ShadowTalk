@@ -26,6 +26,7 @@ Rectangle {
     opacity: 0.97
 
     /* 绘制阴影 */
+    /*
     InnerShadow  {
         id: baseShadow;
         cached: true;
@@ -38,30 +39,26 @@ Rectangle {
         smooth: true;
         source: baseWindows;
     }
+    */
 
     /* 主窗口鼠标拖拽 */
     MouseArea {
         id: dragRegion
         anchors.fill: parent
-//        drag.axis:Drag.XAndYAxis
-//        drag.target: parent
-//        drag.smoothed: true
-
-
         property point clickPos: "10,10"
 
         onPressed: {
             clickPos = Qt.point(mouse.x, mouse.y);
-//            Qt.msetcursor(baseWindows, "SizeAllCursor");
+            //            Qt.msetcursor(baseWindows, "SizeAllCursor");
         }
         onReleased: {
-//            Qt.msetcursor(baseWindows, "ArrowCursor");
+            //            Qt.msetcursor(baseWindows, "ArrowCursor");
         }
         onPositionChanged: {
             /* 鼠标偏移量 */
             var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
 
-//            /* 如果mainwindow继承自QWidget,用setPos */
+            //            /* 如果mainwindow继承自QWidget,用setPos */
             mainwindow.setX(mainwindow.x + delta.x);
             mainwindow.setY(mainwindow.y + delta.y);
 
@@ -71,25 +68,26 @@ Rectangle {
     /* 主窗口按钮 */
     MainWindowButton {
         id: mainButton;
-        width: 100;
+        width: firstLayerWindows.width - secondLayerWindows.fix_width - 2
         height: 40;
         anchors.right: parent.right
         anchors.rightMargin: 3
         anchors.top: parent.top
-        anchors.topMargin: 3
+        anchors.topMargin: 0
         color: "#efefef"
+        opacity: 1
         z:100
     }
 
     /* 主窗口 */
     Rectangle {
         id: firstLayerWindows
-        width: Math.round(baseWindows.width - 2)
-        height: Math.round(baseWindows.height - 2)
+        width: Math.round(baseWindows.width)
+        height: Math.round(baseWindows.height)
         anchors.centerIn: parent
         radius: 5
         border.color: "#a0a0a4"
-        border.width: 2
+        border.width: 0
 
         Rectangle {
             id: secondLayerWindows

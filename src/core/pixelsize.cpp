@@ -28,7 +28,6 @@ int PointSizeToPixelSize::height(int pointSize) {
     QFont font = globalApp->font();
     font.setPointSize(pointSize);
     QFontMetrics fm(font);
-//    qDebug() << "c++: height - " << fm.height();
     return fm.height();
 }
 
@@ -36,6 +35,5 @@ int PointSizeToPixelSize::width(int pointSize, QString text) {
     QFont font = globalApp->font();
     font.setPointSize(pointSize);
     QFontMetrics fm(font);
-//    qDebug() << "c++: width - " << fm.width(text);
     return fm.width(text);
 }
