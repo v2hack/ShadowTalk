@@ -60,8 +60,6 @@ Rectangle {
             //            ListElement { name: "卢小明"; }
             //            ListElement { name: "闫立捷"; }
             //            ListElement { name: "吴自立",; }
-
-
         }
     }
 

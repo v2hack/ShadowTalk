@@ -14,21 +14,9 @@ import QtQuick.Window 2.2
 Rectangle {
     ListView {
         id: chatMessageList;
-
-
         model: ListModel {}
 
 
-
-
-
-
-
-
-
-
     }
-
-
 }
 

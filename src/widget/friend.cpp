@@ -9,8 +9,9 @@ extern QQuickView *globalViewer;
 void sleep(unsigned int msec)
 {
     QTime dieTime = QTime::currentTime().addMSecs(msec);
-    while( QTime::currentTime() < dieTime )
+    while (QTime::currentTime() < dieTime) {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 }
 
 Friend::Friend()
@@ -29,19 +30,18 @@ Friend::Friend()
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListMod");
     if (rect) {
-        sleep(1000);
+        sleep(10);
         QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement1)));
-        sleep(1000);
+        sleep(10);
         QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement2)));
-        sleep(1000);
+        sleep(10);
         QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement3)));
         qDebug() << "find it";
     } else {
         qDebug() << "can not find";
     }
-
-
 }
+
 
 Friend::~Friend()
 {

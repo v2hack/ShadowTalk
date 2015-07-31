@@ -19,12 +19,57 @@ Rectangle {
         width: friendAndContact.second_layer_width - 4;
         height: 30
 
+        function getMiddleImage() {
+            if (flipped === false) {
+                return "qrc:/img/choice/st_chat_list.png";
+            } else {
+                return "qrc:/img/choice/st_contact_list.png"
+            }
+        }
 
         Rectangle {
             id: titleFilpable
             width: friendAndContact.second_layer_width - 4;
             height: 30;
             color: "#33ccbf";
+
+            Image {
+                id: leftButton;
+                width: 25
+                height: 18
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left;
+                    leftMargin: 0;
+                }
+                source: "qrc:/img/choice/st_choice_button.png";
+                fillMode: Image.PreserveAspectFit
+                mirror: true
+            }
+
+            Image {
+                id: middleImage;
+                width: 20
+                height: 20
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    horizontalCenter: parent.horizontalCenter
+                }
+                source: "qrc:/img/choice/st_chat_list.png";
+            }
+
+            Image {
+                id: rightButton;
+                width: 25
+                height: 18
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    right: parent.right;
+                    rightMargin: 0;
+                }
+                source: "qrc:/img/choice/st_choice_button.png";
+                fillMode: Image.PreserveAspectFit
+            }
         }
 
         /* 前页面-好友列表 */
@@ -92,9 +137,14 @@ Rectangle {
 
         MouseArea {
             anchors.fill: titleFilpable
-            onClicked: flipable.flipped = !flipable.flipped
+            onClicked: {
+                flipable.flipped = !flipable.flipped;
+                middleImage.source = flipable.getMiddleImage();
+                if (middleImage.mirror != false) {
+                    middleImage.mirror = false
+                }
+            }
         }
     }
-
 }
 

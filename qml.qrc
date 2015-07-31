@@ -33,5 +33,8 @@
         <file>img/head/st_ball_white.png</file>
         <file>img/head/st_message_frame.png</file>
         <file>img/head/st_message_point.png</file>
+        <file>img/choice/st_chat_list.png</file>
+        <file>img/choice/st_choice_button.png</file>
+        <file>img/choice/st_contact_list.png</file>
     </qresource>
 </RCC>
