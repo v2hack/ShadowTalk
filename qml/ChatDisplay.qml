@@ -215,14 +215,14 @@ Rectangle {
                             var height =  JsCommon.getMessageFrameHeight(
                                         getPixelSize.height(10),
                                         getPixelSize.width(10 , user_message), 250);
-                            console.log("height - " + height);
+//                            console.log("height - " + height);
                             return height * 1.2
                         }
 
                         function getMessageWidth() {
                             var width = JsCommon.getMessageFrameWidth(
                                         getPixelSize.width(10, user_message)) + 20;
-                            console.log("width - " + width);
+//                            console.log("width - " + width);
                             return width;
                         }
 

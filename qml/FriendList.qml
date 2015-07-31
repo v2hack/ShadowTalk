@@ -12,6 +12,7 @@ import QtQuick.Window 2.2
 import "functions.js" as PinYin
 import "common.js" as JsCommon
 
+
 Rectangle {
     id: friendList
     anchors.top: parent.top
@@ -19,14 +20,6 @@ Rectangle {
     signal sig_add_friend
     signal sig_clear_friend
     color: "transparent"
-
-    function addFriend(name) {
-        friendListModel.append({name: name})
-    }
-
-    function clearFriend() {
-        friendListModel.clear()
-    }
 
     /* 设置在线离线的颜色 */
     function setStateColor(state) {
@@ -42,9 +35,19 @@ Rectangle {
     /* ListView */
     ListView {
         id: friendListView
+        objectName: "FriendListMod"
         anchors.fill: parent;
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
+
+        function addFriend(data) {
+            model.append(data)
+            console.log("friend count - ");
+        }
+
+        function clearFriend() {
+            model.clear()
+        }
     }
 
 
@@ -52,31 +55,13 @@ Rectangle {
     Component {
         id: friendListModel
         ListModel {
-            //             dynamicRoles: true;
-            ListElement { name: "南野";  }
-            ListElement { name: "卢小明"; }
-            ListElement { name: "闫立捷"; }
-            ListElement { name: "吴自立"; }
-            ListElement { name: "刘榴";  }
-            ListElement { name: "陈姝";  }
-            ListElement { name: "陈宝辉"; }
-            ListElement { name: "沈艳匣"; }
-            ListElement { name: "严挺"; }
-            ListElement { name: "黄松方"; }
-            ListElement { name: "闫立捷"; }
-            ListElement { name: "吴自立"; }
-            ListElement { name: "刘榴"; }
-            ListElement { name: "陈姝"; }
-            ListElement { name: "陈宝辉"; }
-            ListElement { name: "沈艳匣"; }
-            ListElement { name: "南野"; }
-            ListElement { name: "卢小明"; }
-            ListElement { name: "闫立捷"; }
-            ListElement { name: "吴自立"; }
-            ListElement { name: "刘榴"; }
-            ListElement { name: "陈姝"; }
-            ListElement { name: "陈宝辉"; }
-            ListElement { name: "沈艳匣"; }
+            dynamicRoles: true;
+            //            ListElement { name: "南野";  }
+            //            ListElement { name: "卢小明"; }
+            //            ListElement { name: "闫立捷"; }
+            //            ListElement { name: "吴自立",; }
+
+
         }
     }
 

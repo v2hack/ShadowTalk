@@ -1,9 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets
-
-#SOURCES += main.cpp
-
+QT += qml quick widgets core
 
 CONFIG += c++11
 QMAKE_CXXFLAGS += -fno-exceptions
@@ -14,33 +11,28 @@ INCLUDEPATH += src/net
 INCLUDEPATH += src/widget
 
 HEADERS += \
-        src/core/core.h \
-        src/net/net.h \
-        src/widget/friend_list_layout.h \
-        src/widget/group_widget.h \
-        src/widget/login.h \
-        src/widget/style.h \
-        src/widget/widget.h \
-        src/widget/friend_widget.h \
-        src/widget/gui.h \
-        src/widget/qr_widget.h \
-        src/widget/system_tray_icon.h \
-    src/core/pixelsize.h
+    src/net/net.h \
+    src/widget/friend_list_layout.h \
+    src/widget/login.h \
+    src/core/pixelsize.h \
+    src/widget/friend.h \
+    src/core/cache.h \
+    src/widget/group.h \
+    src/widget/message.h \
+    src/widget/trayicon.h \
+    src/core/dbase.h
 
 SOURCES += \
-        src/main.cpp \
-        src/core/core.cpp \
-        src/net/net.cpp \
-        src/widget/friend_list_layout.cpp \
-        src/widget/group_widget.cpp \
-        src/widget/login.cpp \
-        src/widget/style.cpp \
-        src/widget/widget.cpp \
-        src/widget/friend_widget.cpp \
-        src/widget/gui.cpp \
-        src/widget/qr_widget.cpp \
-        src/widget/system_tray_icon.cpp \
-    src/core/pixelsize.cpp
+    src/main.cpp \
+    src/net/net.cpp \
+    src/widget/login.cpp \
+    src/core/pixelsize.cpp \
+    src/core/cache.cpp \
+    src/widget/group.cpp \
+    src/widget/friend.cpp \
+    src/widget/message.cpp \
+    src/widget/trayicon.cpp \
+    src/core/dbase.cpp
 
 		
 RESOURCES += qml.qrc
