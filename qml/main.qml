@@ -49,19 +49,17 @@ Rectangle {
 
         onPressed: {
             clickPos = Qt.point(mouse.x, mouse.y);
-            //            Qt.msetcursor(baseWindows, "SizeAllCursor");
+            // Qt.msetcursor(baseWindows, "SizeAllCursor");
         }
         onReleased: {
-            //            Qt.msetcursor(baseWindows, "ArrowCursor");
+            // Qt.msetcursor(baseWindows, "ArrowCursor");
         }
         onPositionChanged: {
             /* 鼠标偏移量 */
             var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
-
             //            /* 如果mainwindow继承自QWidget,用setPos */
             mainwindow.setX(mainwindow.x + delta.x);
             mainwindow.setY(mainwindow.y + delta.y);
-
         }
     }
 

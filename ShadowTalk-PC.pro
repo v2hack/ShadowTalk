@@ -20,7 +20,9 @@ HEADERS += \
     src/widget/group.h \
     src/widget/message.h \
     src/widget/trayicon.h \
-    src/core/dbase.h
+    src/core/dbase.h \
+    src/core/utils.h \
+    src/core/context.h
 
 SOURCES += \
     src/main.cpp \

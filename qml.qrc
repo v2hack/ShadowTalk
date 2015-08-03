@@ -36,5 +36,8 @@
         <file>img/choice/st_chat_list.png</file>
         <file>img/choice/st_choice_button.png</file>
         <file>img/choice/st_contact_list.png</file>
+        <file>qml/login.qml</file>
+        <file>img/st_qr_code.png</file>
+        <file>img/st_qr_hint.png</file>
     </qresource>
 </RCC>

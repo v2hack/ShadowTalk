@@ -6,7 +6,6 @@
 #include <QGuiApplication>
 
 
-extern QGuiApplication *globalApp;
 
 class PointSizeToPixelSize : public QObject
 {

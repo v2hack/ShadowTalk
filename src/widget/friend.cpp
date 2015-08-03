@@ -1,10 +1,23 @@
-#include "friend.h"
+/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称:
+ *  简要描述:
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/07/20
+ *  说明:
+ ******************************************************************/
 #include <QWidget>
 #include <QtQuick/QQuickView>
 #include <QThread>
 
-extern QQuickView *globalViewer;
+#include "friend.h"
+#include "context.h"
 
+extern struct ShadowTalkContext gCtx;
 
 void sleep(unsigned int msec)
 {
@@ -14,31 +27,22 @@ void sleep(unsigned int msec)
     }
 }
 
-Friend::Friend()
+Friend::Friend(QString friendName)
 {
-    QQuickItem *rootObject = globalViewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
     }
 
-    QVariantMap newElement1;
-    QVariantMap newElement2;
-    QVariantMap newElement3;
-    newElement1.insert("name", "Image1");
-    newElement2.insert("name", "Image2");
-    newElement3.insert("name", "Image3");
+    QVariantMap newElement;
+    newElement.insert("name", friendName);
 
-    QObject *rect = rootObject->findChild<QObject*>("FriendListMod");
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
-        sleep(10);
-        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement1)));
-        sleep(10);
-        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement2)));
-        sleep(10);
-        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement3)));
-        qDebug() << "find it";
+        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement)));
+        qDebug() << "insert one friend ok";
     } else {
-        qDebug() << "can not find";
+        qDebug() << "insert one friend fail";
     }
 }
 

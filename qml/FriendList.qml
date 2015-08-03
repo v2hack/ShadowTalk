@@ -35,18 +35,30 @@ Rectangle {
     /* ListView */
     ListView {
         id: friendListView
-        objectName: "FriendListMod"
+        objectName: "FriendListModel"
         anchors.fill: parent;
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
 
+        /* 添加好友 */
         function addFriend(data) {
             model.append(data)
             console.log("friend count - ");
         }
 
+        /* 清理所有好友 */
         function clearFriend() {
             model.clear()
+        }
+
+        /* 修改好友在线状态 */
+        function modifyFriendState() {
+
+        }
+
+        /* 修改还有名字 */
+        function modifyFriendName() {
+
         }
     }
 
@@ -56,10 +68,7 @@ Rectangle {
         id: friendListModel
         ListModel {
             dynamicRoles: true;
-            //            ListElement { name: "南野";  }
-            //            ListElement { name: "卢小明"; }
-            //            ListElement { name: "闫立捷"; }
-            //            ListElement { name: "吴自立",; }
+            // ListElement { name: "南野";}
         }
     }
 
@@ -200,12 +209,9 @@ Rectangle {
                             cellRect.opacity = 1
                         }
                         onWheel: {
-                            console.log("1 : " + friendListView.contentY);
-                            console.log("2 : " + friendListView.contentHeight);
-                            console.log(friendListScrollbar.height);
-
                             if (wheel.angleDelta.y < 0) {
-                                if (friendListView.contentY <= friendListView.contentHeight - friendListScrollbar.height) {
+                                if (friendListView.contentY <= friendListView.contentHeight -
+                                        friendListScrollbar.height) {
                                     friendListView.contentY += 30;
                                 }
                             }

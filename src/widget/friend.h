@@ -18,7 +18,7 @@ Q_OBJECT
 
 
 public:
-    Friend();
+    Friend(QString name);
     ~Friend();
 
     QString name;   // 用户名

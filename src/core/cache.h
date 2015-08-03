@@ -19,7 +19,8 @@ public:
     QMap<int, Friend> friendList; // 好友列表
 
     Q_INVOKABLE int getFriendCount();
-//    Q_INVOKABLE void insertOneFriend();
+
+    void insertOneFriend(Friend *newFriend);
 
 
 };

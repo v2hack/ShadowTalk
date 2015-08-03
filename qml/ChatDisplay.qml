@@ -1,9 +1,15 @@
-/*
- *  文件: ChatDisplay.qml
- *  功能: 聊天内容显示模块
+/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: ChatDisplay.qml
+ *  简要描述: 聊天内容显示模块
+ *
+ *  当前版本:1.0
  *  作者: 南野
- *  时间: 2015年7月20日
- */
+ *  日期: 2015/07/20
+ *  说明:
+ ******************************************************************/
 import QtQuick 2.4
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
@@ -215,14 +221,12 @@ Rectangle {
                             var height =  JsCommon.getMessageFrameHeight(
                                         getPixelSize.height(10),
                                         getPixelSize.width(10 , user_message), 250);
-//                            console.log("height - " + height);
                             return height * 1.2
                         }
 
                         function getMessageWidth() {
                             var width = JsCommon.getMessageFrameWidth(
                                         getPixelSize.width(10, user_message)) + 20;
-//                            console.log("width - " + width);
                             return width;
                         }
 
