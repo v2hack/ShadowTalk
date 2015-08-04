@@ -15,13 +15,13 @@ import QtGraphicalEffects 1.0
 Rectangle {
     id: loginWindow;
     height: 600
-    width: 940
+    width: 1100
     color: "transparent"
 
     Rectangle {
         id: loginQrWindow;
-        width: Math.round(245)
-        height: Math.round(330)
+        width: Math.round(320)
+        height: Math.round(450)
         radius: 5;
         color: "#efefef"
         opacity: 0.97
@@ -35,8 +35,8 @@ Rectangle {
         /* 二维码图片 */
         Image {
             id: qrCodeImage
-            height: 180
-            width: 180
+            height: 250
+            width: 250
             source: "qrc:/img/st_qr_code.png";
             fillMode: Image.PreserveAspectFit
 
@@ -63,13 +63,14 @@ Rectangle {
         /* 二维码提示图片 */
         Image {
             id: hintImage
-            height: 600
-            width: 330
+            height: 550
+            width: 300
             source: "qrc:/img/st_qr_hint.png";
             anchors {
                 left: qrCodeImage.right
-                leftMargin: 45
-                verticalCenter: parent.verticalCenter
+                leftMargin: 50
+                top: parent.top
+                topMargin: -50
             }
             z:500
             opacity: 0
@@ -79,7 +80,7 @@ Rectangle {
                 id: hintImageAnim1
                 target: hintImage
                 property: "opacity"
-                duration: 800
+                duration: 400
                 easing.type: Easing.InOutQuad
                 to: 1
             }
@@ -87,7 +88,7 @@ Rectangle {
                 id: hintImageAnim2
                 target: hintImage
                 property: "opacity"
-                duration: 800
+                duration: 400
                 easing.type: Easing.InOutQuad
                 to: 0
             }
@@ -101,7 +102,7 @@ Rectangle {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: qrCodeImage.bottom
-                topMargin: 17;
+                topMargin: 28;
             }
             color: "#4f4f4f"
             font.pixelSize: 14
