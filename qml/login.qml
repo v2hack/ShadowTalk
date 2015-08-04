@@ -15,10 +15,8 @@ import QtGraphicalEffects 1.0
 Rectangle {
     id: loginWindow;
     height: 600
-    width: 900
+    width: 940
     color: "transparent"
-    //    color: "blue"
-
 
     Rectangle {
         id: loginQrWindow;
@@ -34,6 +32,7 @@ Rectangle {
             verticalCenter: parent.verticalCenter
         }
 
+        /* 二维码图片 */
         Image {
             id: qrCodeImage
             height: 180
@@ -47,25 +46,25 @@ Rectangle {
                 topMargin: 42
             }
 
+            /* 二维码动画区域 */
             MouseArea {
                 id: hintImageArea
                 anchors.fill: parent;
                 hoverEnabled: true;
-
                 onEntered: {
-                    hintImage.visible = true
+                    hintImageAnim1.start();
                 }
                 onExited: {
-                    hintImage.visible = false
+                    hintImageAnim2.start();
                 }
             }
         }
 
-
+        /* 二维码提示图片 */
         Image {
             id: hintImage
-            height: 550
-            width: 300
+            height: 600
+            width: 330
             source: "qrc:/img/st_qr_hint.png";
             anchors {
                 left: qrCodeImage.right
@@ -73,9 +72,29 @@ Rectangle {
                 verticalCenter: parent.verticalCenter
             }
             z:500
-            visible: false
+            opacity: 0
+
+            /* 提示图片的动画效果 */
+            NumberAnimation {
+                id: hintImageAnim1
+                target: hintImage
+                property: "opacity"
+                duration: 800
+                easing.type: Easing.InOutQuad
+                to: 1
+            }
+            NumberAnimation {
+                id: hintImageAnim2
+                target: hintImage
+                property: "opacity"
+                duration: 800
+                easing.type: Easing.InOutQuad
+                to: 0
+            }
+
         }
 
+        /* 二维码的文字显示 */
         Text {
             id: companyName
             text: "沙话";
