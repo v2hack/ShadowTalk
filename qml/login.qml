@@ -95,17 +95,41 @@ Rectangle {
                 z:511
             }
 
+            /* 进度箭头 */
+            Image {
+                id: qrProcessPoint
+                height: 210
+                width: 210
+                source: "qrc:/img/st_qr_point.png";
+                fillMode: Image.PreserveAspectFit
+                anchors {
+                    verticalCenter: qrProcessImage.verticalCenter
+                    horizontalCenter: qrProcessImage.horizontalCenter
+                }
+                rotation: 0
+
+                states: State {
+                    name: "rotated"
+                    when: loginProcessLoader1.gValue != 0
+                    PropertyChanges {
+                        target: qrProcessPoint;
+                        rotation: 2 + loginProcessLoader1.gValue;
+                    }
+                }
+                z:511
+            }
+
             Text {
                 id: loginProcessPercent
                 anchors {
                     top: parent.top
-                    topMargin: 108
+                    topMargin: 112
                     horizontalCenter: parent.horizontalCenter
                 }
-                font.pixelSize : 70
+                font.pixelSize : 60
                 font.bold : true
                 color: "#00b9fe"
-                z: 512
+                z: 513
             }
         }
 

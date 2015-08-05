@@ -41,5 +41,6 @@
         <file>img/st_qr_hint.png</file>
         <file>img/st_qr_process.png</file>
         <file>qml/LoginProcess.qml</file>
+        <file>img/st_qr_point.png</file>
     </qresource>
 </RCC>
