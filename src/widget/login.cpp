@@ -11,8 +11,32 @@
  *  说明:
  ******************************************************************/
 #include <Qstring>
+#include <QWidget>
+#include <QtQuick/QQuickView>
+
 #include "login.h"
+#include "context.h"
 #include "utils.h"
+
+extern struct ShadowTalkContext gCtx;
+
+/* 设置界面上的同步进度 */
+void ShadowTalkSetSyncProcess(int processValue) {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QVariant newProcessValue = processValue;
+    QObject *rect = rootObject->findChild<QObject*>("objectLoginProcessPaint");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "processPaint", Q_ARG(QVariant, newProcessValue));
+        qDebug() << "paint login process ok";
+    } else {
+        qDebug() << "paint login process fail";
+    }
+    return;
+}
 
 
 /* 生成二维码 */
@@ -37,9 +61,7 @@ void ShadowTalkAddFriendWidget() {
 
     // 好友添加到cache
 
-
 }
-
 
 
 

@@ -18,18 +18,95 @@ Rectangle {
     width: 1100
     color: "transparent"
 
+    property int loginProcessLoaderFlag: 0
+
     Rectangle {
         id: loginQrWindow;
         width: Math.round(320)
         height: Math.round(450)
         radius: 5;
         color: "#efefef"
-        opacity: 0.97
         z:500
 
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
+        }
+
+        /* 同步进度条 */
+        Rectangle {
+            id: qrProcessRect
+            height: 300
+            width: parent.width
+            visible: false
+            color : "#efefef"
+            anchors {
+                top: parent.top
+                topMargin: 20
+            }
+
+            /* 底色 */
+            Rectangle {
+                id: qrProcessLayer1
+                height: 300
+                width: 300
+                anchors.fill: qrProcessRect
+                color: "#ccc6bf"
+            }
+
+            /* 画同步进度组件 */
+            LoginProcess {
+                id: loginProcessLoader1
+                width: qrProcessImage.width
+                height: qrProcessImage.height
+                anchors {
+                    top: parent.top
+                    topMargin: -30
+                }
+                z:510
+            }
+
+            /* 进度框 */
+            Rectangle {
+                id: loginProcessPaint
+                objectName: "objectLoginProcessPaint"
+
+                /* c++调用，画进度原型 */
+                function processPaint(value) {
+                    loginProcessLoader1.gValue = value;
+                    loginProcessLoader1.rePaint();
+                    loginProcessLoader1.visible = true;
+                    loginProcessPercent.text = parseInt(value * 100 /359)  + "%";
+                }
+            }
+
+            /* 进度图片 */
+            Image {
+                id: qrProcessImage
+                height: 320
+                width: 320
+                source: "qrc:/img/st_qr_process.png";
+                fillMode: Image.PreserveAspectFit
+
+                anchors {
+                    top: parent.top
+                    topMargin: -10
+                }
+                z:511
+            }
+
+            Text {
+                id: loginProcessPercent
+                anchors {
+                    top: parent.top
+                    topMargin: 108
+                    horizontalCenter: parent.horizontalCenter
+                }
+                font.pixelSize : 70
+                font.bold : true
+                color: "#00b9fe"
+                z: 512
+            }
         }
 
         /* 二维码图片 */
@@ -57,6 +134,11 @@ Rectangle {
                 onExited: {
                     hintImageAnim2.start();
                 }
+                onClicked: {
+                    qrCodeImage.visible = false;
+                    qrProcessRect.visible = true;
+                    recommodWord.text = "正在同步手机数据";
+                }
             }
         }
 
@@ -66,14 +148,15 @@ Rectangle {
             height: 550
             width: 300
             source: "qrc:/img/st_qr_hint.png";
+            z:500
+            opacity: 0
+
             anchors {
                 left: qrCodeImage.right
                 leftMargin: 50
                 top: parent.top
                 topMargin: -50
             }
-            z:500
-            opacity: 0
 
             /* 提示图片的动画效果 */
             NumberAnimation {
@@ -92,7 +175,6 @@ Rectangle {
                 easing.type: Easing.InOutQuad
                 to: 0
             }
-
         }
 
         /* 二维码的文字显示 */
@@ -102,7 +184,7 @@ Rectangle {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: qrCodeImage.bottom
-                topMargin: 28;
+                topMargin: 35;
             }
             color: "#4f4f4f"
             font.pixelSize: 14
@@ -126,6 +208,7 @@ Rectangle {
             font.letterSpacing: 2
         }
 
+        /* 关闭按钮 */
         Rectangle {
             id: windowCloseButton
             height: 20

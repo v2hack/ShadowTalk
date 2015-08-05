@@ -24,6 +24,8 @@
 #include "friend.h"
 #include "cache.h"
 #include "context.h"
+#include "utils.h"
+#include "login.h"
 
 /* 全局上下文 */
 struct ShadowTalkContext gCtx;
@@ -157,6 +159,11 @@ int main(int argc, char *argv[])
 
     /* 缓存 */
     createCache();
+
+    for (int i = 0 ; i < 360; i++) {
+        ShadowTalkSleep(4);
+        ShadowTalkSetSyncProcess(i);
+    }
 
     return app.exec();
 }

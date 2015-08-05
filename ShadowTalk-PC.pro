@@ -34,7 +34,8 @@ SOURCES += \
     src/widget/friend.cpp \
     src/widget/message.cpp \
     src/widget/trayicon.cpp \
-    src/core/dbase.cpp
+    src/core/dbase.cpp \
+    src/core/utils.cpp
 
 		
 RESOURCES += qml.qrc

@@ -6,6 +6,7 @@
 #define ST_CREATE_QRCODE_FAIL -1
 
 
+void ShadowTalkSleep(unsigned int msec);
 
 #endif // UTILS_H
 

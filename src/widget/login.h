@@ -3,6 +3,8 @@
 
 
 
+void ShadowTalkSetSyncProcess(int processValue);
+
 
 
 #endif //ST_LOGIN_H_

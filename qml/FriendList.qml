@@ -43,7 +43,6 @@ Rectangle {
         /* 添加好友 */
         function addFriend(data) {
             model.append(data)
-            console.log("friend count - ");
         }
 
         /* 清理所有好友 */

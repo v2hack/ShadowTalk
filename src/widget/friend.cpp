@@ -12,20 +12,12 @@
  ******************************************************************/
 #include <QWidget>
 #include <QtQuick/QQuickView>
-#include <QThread>
 
 #include "friend.h"
 #include "context.h"
 
 extern struct ShadowTalkContext gCtx;
 
-void sleep(unsigned int msec)
-{
-    QTime dieTime = QTime::currentTime().addMSecs(msec);
-    while (QTime::currentTime() < dieTime) {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    }
-}
 
 Friend::Friend(QString friendName)
 {
