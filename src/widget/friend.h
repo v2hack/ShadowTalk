@@ -28,7 +28,7 @@ public:
     int netState;   // 网络状态
     QTime time;     // 上线时间
 
-    QMap<int, Message> messageList; // 好友列表
+    QMap<int, Message> messageList; // 消息列表
 
 };
 

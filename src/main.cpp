@@ -26,6 +26,7 @@
 #include "context.h"
 #include "utils.h"
 #include "login.h"
+#include "message.h"
 
 /* 全局上下文 */
 struct ShadowTalkContext gCtx;
@@ -164,6 +165,20 @@ int main(int argc, char *argv[])
         ShadowTalkSleep(4);
         ShadowTalkSetSyncProcess(i);
     }
+
+    loginer.hide();
+    ShadowTalkSleep(1000);
+    viewer.show();
+    addMessageToWidget(100, "nanye", 1, 1, "hello world");
+    addMessageToWidget(100, "nanye", 1, 0, "hello world");
+    ShadowTalkSleep(2000);
+    clearMessageFromWidget();
+    ShadowTalkSleep(2000);
+    addMessageToWidget(100, "nanye", 1, 1, "hello world");
+    ShadowTalkSleep(2000);
+    addMessageToWidget(100, "nanye", 1, 0, "hello world");
+    ShadowTalkSleep(2000);
+    removeMessageByIndex(0, 2);
 
     return app.exec();
 }

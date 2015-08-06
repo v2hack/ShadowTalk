@@ -18,4 +18,8 @@ struct Message
 
 };
 
+void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData);
+void clearMessageFromWidget();
+void removeMessageByIndex(int index, int count);
+
 #endif // MESSAGE_H

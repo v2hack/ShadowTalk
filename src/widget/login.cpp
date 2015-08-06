@@ -64,7 +64,6 @@ void ShadowTalkAddFriendWidget() {
 }
 
 
-
 /* 登陆 */
 int ShadowTalkLogin() {
     QString qrCodeSource;
@@ -80,8 +79,6 @@ int ShadowTalkLogin() {
 
     /* 界面上设置二维码图片*/
     ShadowTalkQrImage(qrImagePath);
-
-
     return ST_SUCCESS;
 }
 
