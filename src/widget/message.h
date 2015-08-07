@@ -1,6 +1,8 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#include <QObject>
+
 
 /* 消息内容类型 */
 enum MessageContentType {
@@ -16,6 +18,16 @@ struct Message
     int friendIndex; /* 好友map索引 */
     int messageType; /* 聊天信息类型 */
 
+};
+
+/* 聊天消息管理结构 */
+class MessageManager : public QObject {
+    Q_OBJECT
+
+public:
+    MessageManager(QObject *parent = 0);
+    ~MessageManager();
+    Q_INVOKABLE void sendMessage(int index, QString message);
 };
 
 void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData);

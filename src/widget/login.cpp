@@ -31,7 +31,6 @@ void ShadowTalkSetSyncProcess(int processValue) {
     QObject *rect = rootObject->findChild<QObject*>("objectLoginProcessPaint");
     if (rect) {
         QMetaObject::invokeMethod(rect, "processPaint", Q_ARG(QVariant, newProcessValue));
-        qDebug() << "paint login process ok";
     } else {
         qDebug() << "paint login process fail";
     }

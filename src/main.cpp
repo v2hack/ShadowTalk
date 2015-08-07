@@ -55,9 +55,8 @@ void setAppParameter() {
  */
 void registerQmlTye() {
     /* 注册C++类型到QML */
-    qmlRegisterType<PointSizeToPixelSize>(
-                "st.font.PointSizeToPixelSize",
-                1, 0, "PointSizeToPixelSize");
+    qmlRegisterType<PointSizeToPixelSize>("st.font.PointSizeToPixelSize", 1, 0, "PointSizeToPixelSize");
+    qmlRegisterType<MessageManager>("st.info.MessageManager", 1, 1, "MessageManager");
     return;
 }
 
@@ -161,24 +160,20 @@ int main(int argc, char *argv[])
     /* 缓存 */
     createCache();
 
+
+
     for (int i = 0 ; i < 360; i++) {
         ShadowTalkSleep(4);
         ShadowTalkSetSyncProcess(i);
     }
-
     loginer.hide();
-    ShadowTalkSleep(1000);
     viewer.show();
-    addMessageToWidget(100, "nanye", 1, 1, "hello world");
-    addMessageToWidget(100, "nanye", 1, 0, "hello world");
-    ShadowTalkSleep(2000);
-    clearMessageFromWidget();
-    ShadowTalkSleep(2000);
-    addMessageToWidget(100, "nanye", 1, 1, "hello world");
-    ShadowTalkSleep(2000);
-    addMessageToWidget(100, "nanye", 1, 0, "hello world");
-    ShadowTalkSleep(2000);
-    removeMessageByIndex(0, 2);
+//    ShadowTalkSleep(1000);
+//    addMessageToWidget(100, "nanye", 1, 1, "hello world");
+//    addMessageToWidget(100, "nanye", 1, 0, "hello world");
+//    ShadowTalkSleep(2000);
+//    clearMessageFromWidget();
+//    removeMessageByIndex(0, 2);
 
     return app.exec();
 }

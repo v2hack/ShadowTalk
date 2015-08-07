@@ -18,9 +18,20 @@
 #include "context.h"
 #include "message.h"
 
+/* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
 
+/**
+ *  功能描述: addMessageToWidget 添加消息到界面
+ *  @param uid         用户索引
+ *  @param name        用户名
+ *  @param type        消息类型: 文字、声音、图片
+ *  @param direct      消息的方向
+ *  @param messageData 数据内容
+ *
+ *  @return 无
+ */
 void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -44,6 +55,13 @@ void addMessageToWidget(int uid, QString name, int type, int direct, QString mes
     }
 }
 
+
+/**
+ *  功能描述: clearMessageFromWidget 清理所有消息
+ *  @param 无
+ *
+ *  @return 无
+ */
 void clearMessageFromWidget() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -60,6 +78,14 @@ void clearMessageFromWidget() {
     return;
 }
 
+
+/**
+ *  功能描述: removeMessageByIndex
+ *  @param index     消息索引
+ *  @param message   在index基础上删除消息的数量
+ *
+ *  @return 无
+ */
 void removeMessageByIndex(int index, int count) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -80,4 +106,24 @@ void removeMessageByIndex(int index, int count) {
     return;
 }
 
+
+MessageManager::MessageManager(QObject *parent) {
+
+}
+MessageManager::~MessageManager() {
+
+}
+
+/**
+ *  功能描述: sendMessage
+ *  @param index     用户索引，这里就是0
+ *  @param message   发送的消息内容，已经在QML层过滤
+ *
+ *  @return 无
+ */
+void MessageManager::sendMessage(int index, QString message) {
+    qDebug() << "c++: user_index - " << index << " message - " << message;
+    addMessageToWidget(0, "我", 1, 1, message);
+        Friend f4("高音4");
+}
 

@@ -32,11 +32,41 @@ Rectangle {
         delegate: messageDelegate
         model: messageModel.createObject(messageView)
 
+        highlightRangeMode: ListView.ApplyRange
+
+        /* 消息出现的动态效果 */
+        add: Transition {
+             NumberAnimation {
+                 property: "opacity";
+                 from: 0;
+                 to: 1.0;
+                 duration: 400
+             }
+             NumberAnimation {
+                 property: "scale";
+                 from: 0;
+                 to: 1.0;
+                 duration: 400
+             }
+         }
+         displaced: Transition {
+             NumberAnimation {
+                 properties: "x,y";
+                 duration: 400;
+                 easing.type: Easing.OutBounce
+             }
+         }
+
         /* c++调用: 添加消息
          * 这里item是QVariant类型：包含 index、name、type、dircect、user_messsage成员
          */
         function addMessage(data) {
             model.append(data);
+            var height =  JsCommon.getMessageFrameHeight(
+                        getPixelSize.height(10),
+                        getPixelSize.width(10 , data.user_message), 250);
+            console.log(height);
+            messageView.contentY += height + (68 - 17);
         }
         /* c++调用:清除消息 */
         function clearMessage() {
@@ -70,7 +100,7 @@ Rectangle {
                             getPixelSize.height(10),
                             getPixelSize.width(10 , user_message), 250);
                 var row_num = height/17;
-                return (row_num * 17) * 1.1 + 40;
+                return (row_num * 17) + 10 + 20;
             }
 
             height: getItemHeight();
@@ -182,7 +212,7 @@ Rectangle {
                             var height =  JsCommon.getMessageFrameHeight(
                                         getPixelSize.height(10),
                                         getPixelSize.width(10 , user_message), 250);
-                            return height * 1.2
+                            return height + 10
                         }
 
                         function getMessageWidth() {

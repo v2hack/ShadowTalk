@@ -4,18 +4,15 @@
 #include <QObject>
 #include <QQuickItem>
 #include <QGuiApplication>
-
+#include <QtQuick/QQuickView>
 #include <QString>
 #include <QTime>
 #include <QMap>
+
 #include "message.h"
 
-#include <QtQuick/QQuickView>
-
 class Friend : public QObject {
-
 Q_OBJECT
-
 
 public:
     Friend(QString name);
@@ -29,7 +26,6 @@ public:
     QTime time;     // 上线时间
 
     QMap<int, Message> messageList; // 消息列表
-
 };
 
 

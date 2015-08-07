@@ -40,6 +40,30 @@ Rectangle {
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
 
+         highlightRangeMode: ListView.ApplyRange
+        /* 好友出现的动态效果 */
+        add: Transition {
+             NumberAnimation {
+                 property: "opacity";
+                 from: 0;
+                 to: 1.0;
+                 duration: 1000
+             }
+             NumberAnimation {
+                 property: "scale";
+                 from: 0;
+                 to: 1.0;
+                 duration: 1000
+             }
+         }
+         displaced: Transition {
+             NumberAnimation {
+                 properties: "x,y";
+                 duration: 1000;
+                 easing.type: Easing.OutBounce
+             }
+         }
+
         /* 添加好友 */
         function addFriend(data) {
             model.append(data)
@@ -193,7 +217,7 @@ Rectangle {
                         hoverEnabled: true;
 
                         onClicked: {
-                            cellRect.color = "white";
+                            cellRect.color = "#555555";
                             friendListScrollbar.visible = true;
                             cellRect.opacity = 0.9
                         }

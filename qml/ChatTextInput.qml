@@ -15,9 +15,13 @@ import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 
+import st.info.MessageManager 1.1
+
 Rectangle {
     id: chatTextInput
     z:400
+
+    property int friendIndex: 0
 
     /* 输入工具栏 */
     Rectangle {
@@ -120,15 +124,23 @@ Rectangle {
     }
 
 
+    /* C++ 计算像素的类 */
+    MessageManager {
+        id: cppSendMessage;
+    }
+
     /* 发送消息链接 */
     Connections {
         target: chatMouseArea
 
         onClicked: {
-            /* 清理数据需要恢复光标的位置 */
-            chatTextEdit.cursorPosition = 0;
             /* TODO: 这里要修改为具体发送消息 */
-            chatTextEdit.text = "";
+            if (chatTextEdit.text != "") {
+                cppSendMessage.sendMessage(friendIndex, chatTextEdit.text);
+                /* 清理数据需要恢复光标的位置 */
+                chatTextEdit.cursorPosition = 0;
+                chatTextEdit.text = "";
+            }
         }
     }
 
@@ -143,6 +155,7 @@ Rectangle {
         anchors {
             top: chatTool.bottom;
         }
+
         /* 输入编辑栏 */
         TextArea {
             id: chatTextEdit;
@@ -151,6 +164,18 @@ Rectangle {
             selectByMouse: true
             backgroundVisible: false
             frameVisible: false
+
+            focus: true
+            Keys.onReturnPressed: {
+                if (chatTextEdit.text != "") {
+                    /* TODO: 这里要修改为具体发送消息 */
+                    cppSendMessage.sendMessage(friendIndex, chatTextEdit.text);
+                    /* 恢复提示符位置 */
+                    chatTextEdit.cursorPosition = 0;
+                    /* 清理内容 */
+                    chatTextEdit.text = "";
+                }
+            }
         }
     }
 

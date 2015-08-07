@@ -16,9 +16,10 @@
 
 Cache::Cache(): friendCount(0)
 {
-    Friend f("高音");
-
-
+    Friend f1("高音1");
+    Friend f2("高音2");
+    Friend f3("高音3");
+    Friend f4("高音4");
 }
 
 Cache::~Cache()
