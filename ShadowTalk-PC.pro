@@ -22,7 +22,8 @@ HEADERS += \
     src/widget/trayicon.h \
     src/core/dbase.h \
     src/core/utils.h \
-    src/core/context.h
+    src/core/context.h \
+    src/core/log.h
 
 SOURCES += \
     src/main.cpp \
@@ -35,7 +36,8 @@ SOURCES += \
     src/widget/message.cpp \
     src/widget/trayicon.cpp \
     src/core/dbase.cpp \
-    src/core/utils.cpp
+    src/core/utils.cpp \
+    src/core/log.cpp
 
 		
 RESOURCES += qml.qrc

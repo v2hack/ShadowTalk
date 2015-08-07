@@ -17,6 +17,7 @@
 #include "friend.h"
 #include "context.h"
 #include "message.h"
+#include "log.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -122,8 +123,10 @@ MessageManager::~MessageManager() {
  *  @return 无
  */
 void MessageManager::sendMessage(int index, QString message) {
-    qDebug() << "c++: user_index - " << index << " message - " << message;
     addMessageToWidget(0, "我", 1, 1, message);
-        Friend f4("高音4");
+    slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
+         __func__, "send one message", index, message.toLatin1().data());
+
+
 }
 
