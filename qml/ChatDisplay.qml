@@ -66,7 +66,7 @@ Rectangle {
                         getPixelSize.height(10),
                         getPixelSize.width(10 , data.user_message), 250);
             console.log(height);
-            messageView.contentY += height + (68 - 17);
+            messageView.contentY += height + (100);
         }
         /* c++调用:清除消息 */
         function clearMessage() {
@@ -100,7 +100,7 @@ Rectangle {
                             getPixelSize.height(10),
                             getPixelSize.width(10 , user_message), 250);
                 var row_num = height/17;
-                return (row_num * 17) + 10 + 20;
+                return (row_num * 17) + 10 + 40;
             }
 
             height: getItemHeight();
@@ -218,7 +218,7 @@ Rectangle {
                         function getMessageWidth() {
                             var width = JsCommon.getMessageFrameWidth(
                                         getPixelSize.width(10, user_message)) + 20;
-                            return width;
+                            return width + 10;
                         }
 
                         height: getMessageHeight();

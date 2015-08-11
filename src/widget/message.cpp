@@ -124,9 +124,27 @@ MessageManager::~MessageManager() {
  */
 void MessageManager::sendMessage(int index, QString message) {
     addMessageToWidget(0, "我", 1, 1, message);
+
+    Cache *c = gCtx.cache;
+    qDebug() << "id - " << c->currentUseFriendId;
+
+    QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseFriendId);
+    if (it == c->friendList.end()) {
+        qDebug() << "can't friend firned - " << c->currentUseFriendId;
+        return;
+    }
+    Friend *f = &(*it);
+
+    qDebug() << "name - " << f->name;
+
+    Message *m = new Message;
+    m->data        = message;
+    m->driect      = MessageDriectMe;
+    m->messageType = MessageTypeWord;
+    m->friendIndex = c->currentUseFriendId;
+
+    f->insertOneMessage(m);
     slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
-         __func__, "send one message", index, message.toLatin1().data());
-
-
+         __func__, "send one message", c->currentUseFriendId, message.toLatin1().data());
 }
 

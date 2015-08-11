@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets core
+QT += qml quick widgets core network
 
 CONFIG += c++11
 QMAKE_CXXFLAGS += -fno-exceptions

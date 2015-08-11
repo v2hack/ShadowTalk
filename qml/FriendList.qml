@@ -12,6 +12,9 @@ import QtQuick.Window 2.2
 import "functions.js" as PinYin
 import "common.js" as JsCommon
 
+/* 选择好友，动态改变消息栏内容 */
+import st.info.SelectFriend 1.0
+
 
 Rectangle {
     id: friendList
@@ -41,6 +44,7 @@ Rectangle {
         model: friendListModel.createObject(friendListView)
 
          highlightRangeMode: ListView.ApplyRange
+         highlightFollowsCurrentItem: true
         /* 好友出现的动态效果 */
         add: Transition {
              NumberAnimation {
@@ -91,7 +95,9 @@ Rectangle {
         id: friendListModel
         ListModel {
             dynamicRoles: true;
-            // ListElement { name: "南野";}
+            /*
+             * cpp传递过来的属性有 friendName, friendIndex
+             */
         }
     }
 
@@ -120,7 +126,7 @@ Rectangle {
                         width: 34
                         height: 34
                         radius: width / 2
-                        color: JsCommon.getColor(name);
+                        color: JsCommon.getColor(friendName);
 
                         anchors {
                             left: parent.left
@@ -157,7 +163,7 @@ Rectangle {
                         color: "white"
                         font.pixelSize: 15
                         font.letterSpacing: 1
-                        text: name
+                        text: friendName
                         font.bold: true
 
                         /* 字体先注释，编译太慢
@@ -210,6 +216,11 @@ Rectangle {
                         }
                     }
 
+                    /* cpp层类对象 */
+                    SelectFriend {
+                        id: selectFriend
+                    }
+
                     /* 鼠标滤过的阴影效果 */
                     MouseArea {
                         id: firneItemArea
@@ -217,10 +228,12 @@ Rectangle {
                         hoverEnabled: true;
 
                         onClicked: {
-                            cellRect.color = "#555555";
+                            cellRect.color = "#444555";
                             friendListScrollbar.visible = true;
-                            cellRect.opacity = 0.9
-                        }
+                            cellRect.opacity = 0.9;
+                            /* 选中好友，消息栏同步更新 */
+                            selectFriend.changeMessageList(friendIndex, friendName);
+                         }
                         onEntered: {
                             cellRect.color = "#353535";
                             friendListScrollbar.visible = true;

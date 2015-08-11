@@ -15,7 +15,7 @@ import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 
-import st.info.MessageManager 1.1
+import st.info.MessageManager 1.0
 
 Rectangle {
     id: chatTextInput

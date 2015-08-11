@@ -10,34 +10,47 @@
  *  日期: 2015/07/20
  *  说明:
  ******************************************************************/
+#include <QMap>
+
 #include "cache.h"
 #include "friend.h"
+#include "context.h"
 
 
-Cache::Cache(): friendCount(0)
-{
-    Friend f1("高音1");
-    Friend f2("高音2");
-    Friend f3("高音3");
-    Friend f4("高音4");
-}
-
-Cache::~Cache()
-{
+Cache::Cache(): friendCount(0), currentUseFriendId(-1) {
 
 }
 
-int Cache::getFriendCount()
-{
+Cache::~Cache() {
 
-    return 0;
+}
+
+int Cache::getNextIndex() {
+    return this->getFriendCount() + 1;
 }
 
 
-void Cache::insertOneFriend(Friend *newFriend)
-{
+int Cache::getFriendCount() {
+    return friendList.size();
+}
+
+void Cache::setCurrentFriendId(int id) {
+    this->currentUseFriendId = id;
+}
 
 
+Friend *Cache::getOneFriend(int index) {
+    QMap<int, Friend>::iterator it = friendList.find(index);
+    if (it == friendList.end()) {
+        return nullptr;
+    }
+    return &(*it);
+}
+
+
+void Cache::insertOneFriend(Friend *newFriend) {
+    this->friendCount++;
+    friendList.insert(this->friendCount, *newFriend);
     return;
 }
 

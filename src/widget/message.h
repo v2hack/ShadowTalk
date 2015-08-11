@@ -12,12 +12,18 @@ enum MessageContentType {
     MessagetypeFile,     /* 文件 */
 };
 
+enum MessageDriectType {
+    MessageDriectMe = 1,   /* 我发的消息 */
+    MessageDirectOpposite, /* 对方发的消息 */
+};
+
 /* 聊天信息内容结构 */
 struct Message
 {
-    int friendIndex; /* 好友map索引 */
-    int messageType; /* 聊天信息类型 */
-
+    int driect;       /* 是我的？还是对方的？*/
+    int friendIndex;  /* 好友map索引 */
+    int messageType;  /* 聊天信息类型 */
+    QString data; /* 消息内容 */
 };
 
 /* 聊天消息管理结构 */
@@ -30,7 +36,7 @@ public:
     Q_INVOKABLE void sendMessage(int index, QString message);
 };
 
-void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData);
+void addMessageToWidget(int uid, QString name, int messType, int direct, QString messageData);
 void clearMessageFromWidget();
 void removeMessageByIndex(int index, int count);
 
