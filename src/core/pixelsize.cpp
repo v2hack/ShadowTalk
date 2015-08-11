@@ -21,15 +21,35 @@
 
 extern struct ShadowTalkContext gCtx;
 
+
+/**
+ *  功能描述: 像素大小转换构造函数
+ *  @param index  好友索引
+ *
+ *  @return 无
+ */
 PointSizeToPixelSize::PointSizeToPixelSize(QObject *parent) {
     return;
 }
 
+
+/**
+ *  功能描述: 像素大小转换析构函数
+ *  @param index  好友索引
+ *
+ *  @return 无
+ */
 PointSizeToPixelSize::~PointSizeToPixelSize() {
     return;
 }
 
 
+/**
+ *  功能描述: 像素点支持尺寸大小计算
+ *  @param index  好友索引
+ *
+ *  @return 无
+ */
 int PointSizeToPixelSize::pixelSize(int pointSize) {
     QScreen *screen = gCtx.app->primaryScreen();
     if (!screen) {
@@ -39,6 +59,13 @@ int PointSizeToPixelSize::pixelSize(int pointSize) {
     return point_size;
 }
 
+
+/**
+ *  功能描述: 计算界面文字高度
+ *  @param pointSize  文字像素点
+ *
+ *  @return 无
+ */
 int PointSizeToPixelSize::height(int pointSize) {
     QFont font = gCtx.app->font();
     font.setPointSize(pointSize);
@@ -46,6 +73,13 @@ int PointSizeToPixelSize::height(int pointSize) {
     return fm.height();
 }
 
+
+/**
+ *  功能描述: 计算界面文字宽度
+ *  @param index  文字像素点
+ *
+ *  @return 无
+ */
 int PointSizeToPixelSize::width(int pointSize, QString text) {
     QFont font = gCtx.app->font();
     font.setPointSize(pointSize);

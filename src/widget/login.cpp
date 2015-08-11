@@ -53,13 +53,10 @@ void ShadowTalkQrImage(QString qrImagePath) {
 
 /* 添加好友控件 */
 void ShadowTalkAddFriendWidget() {
-
-
     // 添加控件
 
-
     // 好友添加到cache
-
+    return;
 }
 
 
