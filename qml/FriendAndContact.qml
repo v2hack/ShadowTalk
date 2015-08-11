@@ -5,6 +5,7 @@
  *  时间: 2015年7月15日
  */
 import QtQuick 2.4
+import QtMultimedia 5.0
 
 Rectangle {
     id:friendAndContact
@@ -135,6 +136,12 @@ Rectangle {
             }
         }
 
+        MediaPlayer {
+            id: soundEvet
+            autoLoad: true;
+            source: "qrc:/sound/event.wav"
+        }
+
         MouseArea {
             anchors.fill: titleFilpable
             onClicked: {
@@ -143,6 +150,7 @@ Rectangle {
                 if (middleImage.mirror != false) {
                     middleImage.mirror = false
                 }
+                soundEvet.play();
             }
         }
     }

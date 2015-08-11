@@ -42,5 +42,8 @@
         <file>img/st_qr_process.png</file>
         <file>qml/LoginProcess.qml</file>
         <file>img/st_qr_point.png</file>
+        <file>sound/event.wav</file>
+        <file>sound/message.wav</file>
+        <file>sound/online.mp3</file>
     </qresource>
 </RCC>
