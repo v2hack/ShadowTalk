@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets core network
+QT += qml quick widgets core network xml
 
 CONFIG += c++11
 QMAKE_CXXFLAGS += -fno-exceptions
@@ -11,6 +11,7 @@ INCLUDEPATH += src/net
 INCLUDEPATH += src/widget
 
 HEADERS += \
+    im.h \
     src/net/net.h \
     src/widget/friend_list_layout.h \
     src/widget/login.h \
@@ -23,7 +24,8 @@ HEADERS += \
     src/core/dbase.h \
     src/core/utils.h \
     src/core/context.h \
-    src/core/log.h
+    src/core/log.h \
+    src/core/parsexml.h
 
 SOURCES += \
     src/main.cpp \
@@ -37,11 +39,50 @@ SOURCES += \
     src/widget/trayicon.cpp \
     src/core/dbase.cpp \
     src/core/utils.cpp \
-    src/core/log.cpp
+    src/core/log.cpp \
+    src/core/parsexml.cpp
+
+
+win32 {
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_chrono-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_chrono-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_chrono-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_date_time-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_date_time-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_filesystem-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_filesystem-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_program_options-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_program_options-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_regex-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_regex-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_system-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_system-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_thread-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_thread-vc120-mt-gd-1_57
+
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lcryptopp-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lmaidsafe_common-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lmaidsafe_network_viewer-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lmaidsafe_passport-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_channel-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_imapi-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_network-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_oudp-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_visit-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lproto_compiler-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lprotobuf_lite-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -lprotobuf-msr
+    LIBS += -L$$PWD/lib/x64/peersafe/ -ltorrent-rasterbar
+} else {
+    macx {
+
+    } else {
+
+    }
+}
 
 		
 RESOURCES += qml.qrc
-
 
 RC_FILE += ShadowTalk.rc
 
@@ -52,3 +93,7 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 DISTFILES +=
+
+
+INCLUDEPATH += $$PWD/lib/x64/boost
+DEPENDPATH += $$PWD/lib/x64/boost
