@@ -48,7 +48,7 @@ SOURCES += \
     src/widget/st_trayicon.cpp
 
 
-#win32 {
+win32 {
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-gd-1_57
@@ -82,50 +82,13 @@ SOURCES += \
     LIBS += -L$$PWD/lib/x32/ice/ -llibpj
     LIBS += -L$$PWD/lib/x32/ice/ -llibpjlib-util
     LIBS += -L$$PWD/lib/x32/ice/ -llibpjnath
+} else {
+    macx {
 
+    } else {
 
-
-#    LIBS += $$PWD/lib/x32/boost/libboost_chrono-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_chrono-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_chrono-vc120-mt-gd-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_date_time-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_date_time-vc120-mt-gd-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_filesystem-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_filesystem-vc120-mt-gd-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_program_options-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_program_options-vc120-mt-gd-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_regex-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_regex-vc120-mt-gd-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_system-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_system-vc120-mt-gd-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_thread-vc120-mt-1_57.lib
-#    LIBS += $$PWD/lib/x32/boost/libboost_thread-vc120-mt-gd-1_57.lib
-
-#    LIBS += $$PWD/lib/x32/peersafe/cryptopp-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/maidsafe_common-msr.lib
-#    #LIBS += $$PWD/lib/x32/peersafe/maidsafe_network_viewer-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/maidsafe_passport-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/peersafe_channel-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/peersafe_imapi-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/peersafe_network-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/peersafe_oudp-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/peersafe_visit-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/proto_compiler-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/protobuf_lite-msr.lib
-#    LIBS += $$PWD/lib/x32/peersafe/protobuf-msr.lib
-    LIBS += $$PWD/lib/x32/peersafe/torrent-rasterbar.lib
-
-    LIBS += $$PWD/lib/x32/ice/libpj.lib
-    LIBS += $$PWD/lib/x32/ice/libpjlib-util.lib
-    LIBS += $$PWD/lib/x32/ice/libpjnath.lib
-
-#} else {
-#    macx {
-
-#    } else {
-
-#    }
-#}
+    }
+}
 
 		
 RESOURCES += qml.qrc
