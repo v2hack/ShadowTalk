@@ -3,83 +3,129 @@ TEMPLATE = app
 QT += qml quick widgets core network xml
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -fno-exceptions
 
+
+# This
+#QMAKE_CXXFLAGS += /MD
+
+# Or that
+
+QMAKE_LFLAGS += /NODEFAULTLIB:libcmtd.lib
 INCLUDEPATH += include
 INCLUDEPATH += src/core
 INCLUDEPATH += src/net
 INCLUDEPATH += src/widget
 
 HEADERS += \
-    im.h \
-    src/net/net.h \
-    src/widget/friend_list_layout.h \
-    src/widget/login.h \
-    src/core/pixelsize.h \
-    src/widget/friend.h \
-    src/core/cache.h \
-    src/widget/group.h \
-    src/widget/message.h \
-    src/widget/trayicon.h \
-    src/core/dbase.h \
-    src/core/utils.h \
-    src/core/context.h \
-    src/core/log.h \
-    src/core/parsexml.h
+    include/im.h \
+    src/core/st_cache.h \
+    src/core/st_pixelsize.h \
+    src/core/st_parsexml.h \
+    src/core/st_log.h \
+    src/core/st_context.h \
+    src/core/st_utils.h \
+    src/core/st_zebra.h \
+    src/net/st_net.h \
+    src/widget/st_friend.h \
+    src/widget/st_message.h \
+    src/widget/st_login.h \
+    src/widget/st_group.h \
+    src/widget/st_trayicon.h
 
 SOURCES += \
     src/main.cpp \
-    src/net/net.cpp \
-    src/widget/login.cpp \
-    src/core/pixelsize.cpp \
-    src/core/cache.cpp \
-    src/widget/group.cpp \
-    src/widget/friend.cpp \
-    src/widget/message.cpp \
-    src/widget/trayicon.cpp \
-    src/core/dbase.cpp \
-    src/core/utils.cpp \
-    src/core/log.cpp \
-    src/core/parsexml.cpp
+    src/core/st_cache.cpp \
+    src/core/st_log.cpp \
+    src/core/st_parsexml.cpp \
+    src/core/st_pixelsize.cpp \
+    src/core/st_utils.cpp \
+    src/core/st_zebra.cpp \
+    src/net/st_net.cpp \
+    src/widget/st_friend.cpp \
+    src/widget/st_group.cpp \
+    src/widget/st_login.cpp \
+    src/widget/st_message.cpp \
+    src/widget/st_trayicon.cpp
 
 
-win32 {
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_chrono-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_chrono-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_chrono-vc120-mt-gd-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_date_time-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_date_time-vc120-mt-gd-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_filesystem-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_filesystem-vc120-mt-gd-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_program_options-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_program_options-vc120-mt-gd-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_regex-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_regex-vc120-mt-gd-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_system-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_system-vc120-mt-gd-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_thread-vc120-mt-1_57
-    LIBS += -L$$PWD/lib/x64/boost/ -llibboost_thread-vc120-mt-gd-1_57
+#win32 {
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_date_time-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_date_time-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_filesystem-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_filesystem-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_program_options-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_program_options-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_regex-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_regex-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_system-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_system-vc120-mt-gd-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_thread-vc120-mt-1_57
+    LIBS += -L$$PWD/lib/x32/boost/ -llibboost_thread-vc120-mt-gd-1_57
 
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lcryptopp-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lmaidsafe_common-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lmaidsafe_network_viewer-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lmaidsafe_passport-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_channel-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_imapi-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_network-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_oudp-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lpeersafe_visit-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lproto_compiler-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lprotobuf_lite-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -lprotobuf-msr
-    LIBS += -L$$PWD/lib/x64/peersafe/ -ltorrent-rasterbar
-} else {
-    macx {
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lcryptopp-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lmaidsafe_common-msr
+#    LIBS += -L$$PWD/lib/x32/peersafe/ -lmaidsafe_network_viewer-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lmaidsafe_passport-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_channel-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_imapi-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_network-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_oudp-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_visit-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lproto_compiler-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lprotobuf_lite-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -lprotobuf-msr
+    LIBS += -L$$PWD/lib/x32/peersafe/ -ltorrent-rasterbar
 
-    } else {
+    LIBS += -L$$PWD/lib/x32/ice/ -llibpj
+    LIBS += -L$$PWD/lib/x32/ice/ -llibpjlib-util
+    LIBS += -L$$PWD/lib/x32/ice/ -llibpjnath
 
-    }
-}
+
+
+#    LIBS += $$PWD/lib/x32/boost/libboost_chrono-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_chrono-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_chrono-vc120-mt-gd-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_date_time-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_date_time-vc120-mt-gd-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_filesystem-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_filesystem-vc120-mt-gd-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_program_options-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_program_options-vc120-mt-gd-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_regex-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_regex-vc120-mt-gd-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_system-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_system-vc120-mt-gd-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_thread-vc120-mt-1_57.lib
+#    LIBS += $$PWD/lib/x32/boost/libboost_thread-vc120-mt-gd-1_57.lib
+
+#    LIBS += $$PWD/lib/x32/peersafe/cryptopp-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/maidsafe_common-msr.lib
+#    #LIBS += $$PWD/lib/x32/peersafe/maidsafe_network_viewer-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/maidsafe_passport-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/peersafe_channel-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/peersafe_imapi-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/peersafe_network-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/peersafe_oudp-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/peersafe_visit-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/proto_compiler-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/protobuf_lite-msr.lib
+#    LIBS += $$PWD/lib/x32/peersafe/protobuf-msr.lib
+    LIBS += $$PWD/lib/x32/peersafe/torrent-rasterbar.lib
+
+    LIBS += $$PWD/lib/x32/ice/libpj.lib
+    LIBS += $$PWD/lib/x32/ice/libpjlib-util.lib
+    LIBS += $$PWD/lib/x32/ice/libpjnath.lib
+
+#} else {
+#    macx {
+
+#    } else {
+
+#    }
+#}
 
 		
 RESOURCES += qml.qrc

@@ -20,13 +20,24 @@
 #include <QtQuick/QQuickView>
 #include <QtQml>
 
-#include "pixelsize.h"
-#include "friend.h"
-#include "cache.h"
-#include "context.h"
-#include "utils.h"
-#include "login.h"
-#include "message.h"
+#include "st_pixelsize.h"
+#include "st_friend.h"
+#include "st_cache.h"
+#include "st_context.h"
+#include "st_utils.h"
+#include "st_login.h"
+#include "st_message.h"
+#include "im.h"
+#include "st_zebra.h"
+#include "st_net.h"
+
+//#pragma comment(lib, "peersafe_imapi-msr.lib")
+//#pragma comment(lib,"ws2_32.lib")
+
+
+
+peersafe::im::Message_client client;
+zebraDeleagates zebarDele;
 
 /* 全局上下文 */
 struct ShadowTalkContext gCtx;
@@ -159,6 +170,13 @@ void loadFriend() {
 }
 
 
+
+void initZebraEngine() {
+  // gCtx.zebra = &zebraClient;
+
+
+}
+
 /**
  *  功能描述: 主函数
  *  @param argc   入参数量
@@ -200,12 +218,7 @@ int main(int argc, char *argv[])
     loginer.hide();
     viewer.show();
 
-    //    ShadowTalkSleep(1000);
-    //    addMessageToWidget(100, "nanye", 1, 1, "hello world");
-    //    addMessageToWidget(100, "nanye", 1, 0, "hello world");
-    //    ShadowTalkSleep(2000);
-    //    clearMessageFromWidget();
-    //    removeMessageByIndex(0, 2);
+    getLocalIp();
 
     return app.exec();
 }
