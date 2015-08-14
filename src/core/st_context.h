@@ -18,7 +18,7 @@ struct ShadowTalkContext
     QQuickView *viewer;    /* 主窗口viewer指针 */
     QQuickView *loginer;   /* 登陆窗口viewer指针 */
     Cache *cache;          /* 缓存指针 */
-    class peersafe::im::Message_client *zebra;
+    peersafe::im::Message_client *zebra;
 };
 
 #endif // CONTEXT_H

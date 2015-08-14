@@ -1,7 +1,9 @@
-#include "st_parsexml.h"
 #include <QString>
 #include <QFile>
 #include <QDomDocument>
+#include <QDebug>
+
+#include "st_parsexml.h"
 
 ParseXml::ParseXml() {
 
@@ -11,56 +13,79 @@ ParseXml::~ParseXml() {
 
 }
 
-
-
-int ParseXml::parseEncryptXml(QString xmlFile) {
-
-    char *filename = xmlFile.toLatin1().data();
-    if (NULL == filename) {
-        return -1;
+int ParseXml::parseContactXml(QDomElement &array) {
+    QDomNode n = array.firstChild();
+    while (!n.isNull()) {
+        if (n.isElement()) {
+            QDomElement e = n.toElement();
+            qDebug() << "Element name: " << e.tagName();
+            break;
+        }
+        n = n.nextSibling();
     }
+    return 0;
+}
 
-    QFile file(filename);
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        printf( "open file '%s' failed, error: %s !\n", filename, file.errorString().toStdString().c_str() );
-        return -1;
+int ParseXml::parseQrChannelXml(QDomElement &array) {
+    QDomNode n = array.firstChild();
+    while (!n.isNull()) {
+        if (n.isElement()) {
+            QDomElement e = n.toElement();
+            qDebug() << "Element name: " << e.tagName();
+            break;
+        }
+        n = n.nextSibling();
     }
+    return 0;
+}
+
+
+int ParseXml::parseKeyValueXml(QDomElement &array) {
+    QDomNode n = array.firstChild();
+    while (!n.isNull()) {
+        if (n.isElement()) {
+            QDomElement e = n.toElement();
+            qDebug() << "Element name: " << e.tagName();
+            break;
+        }
+        n = n.nextSibling();
+    }
+    return 0;
+}
+
+
+int ParseXml::parseDencryptXml(const QString plainData) {
 
     QDomDocument document;
     QString strError;
     int errLin = 0, errCol = 0;
-    if (!document.setContent(&file, false, &strError, &errLin, &errCol)) {
-        printf("parse file failed at line %d column %d, error: %s !\n", errLin, errCol, strError.toStdString().c_str());
+
+    if (!document.setContent(plainData, false, &strError, &errLin, &errCol)) {
+        qDebug() << "parse file failed at line " << errLin << " column " << errCol << " " << strError;
         return -1;
     }
 
     if (document.isNull()) {
-        printf( "document is null !\n" );
+        qDebug() << "document is null";
         return -1;
     }
 
-    QDomElement root = document.documentElement();
-    printf("%s ", root.tagName().toStdString().c_str());
-    if (root.hasAttribute("name")) {
-        printf("%s\n", root.attributeNode("name").value().toStdString().c_str());
-    }
+    QDomElement plist = document.documentElement();
+    qDebug() << "root - " << plist.tagName();
 
-    QDomElement files = root.firstChildElement();
-    if (files.isNull()) {
-        return -1;
-    } else {
-        printf("\t%s\n", files.tagName().toStdString().c_str());
-    }
+    QDomElement rootArray = plist.firstChildElement("array");
+    qDebug() << "root - " << rootArray.tagName();
 
-    QDomElement element = files.firstChildElement();
-    while (!element.isNull()) {
-        if (element.hasAttribute("name")) {
-            printf("\t\t file: %s", element.attributeNode("name").value().toStdString().c_str());
+    QDomElement elt = rootArray.firstChildElement("array");
+    QDomElement array[3];
+    for (int i = 0; !elt.isNull(); elt = elt.nextSiblingElement("array"), i++) {
+        if (elt.isNull()) {
+            qDebug() << "can't find the array child";
+            return -1;
+        } else {
+            array[i] = elt;
+            qDebug() << " array - " << elt.tagName();
         }
-        if (element.hasAttribute("size")) {
-            printf("\t %s", element.attributeNode("size").value().toStdString().c_str());
-        }
-        printf("\n");
-        element = element.nextSiblingElement();
     }
+    return 0;
 }

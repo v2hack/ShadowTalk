@@ -36,14 +36,19 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{39936099-b484-409f-9bf9-d55c1bd37fd6}</UniqueIdentifier>
+      <UniqueIdentifier>{ede2b422-45f0-45af-9f02-4972830adeb4}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{eeea0d16-4468-4bb8-b55f-b958f8ab7c9f}</UniqueIdentifier>
+      <UniqueIdentifier>{1994d0c5-2585-470b-94ad-760ff0221751}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+      <ParseFiles>false</ParseFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -302,6 +307,9 @@
     </None>
     <None Include="img\st_setting_sound_2.png">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shadowtalk-pc_zh.ts">
+      <Filter>Translation Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

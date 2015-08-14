@@ -20,6 +20,8 @@
 #include <QtQuick/QQuickView>
 #include <QtQml>
 
+#include <iostream>
+
 #include "st_pixelsize.h"
 #include "st_friend.h"
 #include "st_cache.h"
@@ -30,13 +32,9 @@
 #include "im.h"
 #include "st_zebra.h"
 #include "st_net.h"
+#include "st_parsexml.h"
 
-//#pragma comment(lib, "peersafe_imapi-msr.lib")
-//#pragma comment(lib,"ws2_32.lib")
-
-
-
-peersafe::im::Message_client client;
+peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
 
 /* 全局上下文 */
@@ -52,6 +50,7 @@ struct ShadowTalkContext gCtx;
 void setAppParameter() {
     /* 设置程序路径 */
     QString dir = QGuiApplication::applicationDirPath();
+    qDebug() << "Application current dir - " << dir;
     QDir::setCurrent(dir);
     /* 库加载路径 */
     QGuiApplication::addLibraryPath("./plugins");
@@ -145,36 +144,84 @@ void createCache() {
     }
 }
 
+#include <fstream>
+#include <stdint.h>
+#include "boost/filesystem/operations.hpp"
+#include "boost/filesystem/path.hpp"
+
+namespace fs = boost::filesystem;
 
 /* 测试使用 */
-void loadFriend() {
-    QSettings *settings = new QSettings("list.ini", QSettings::IniFormat);
+int parseEncryptXml(QString fileName, QString passwd) {
+    QString qPlainData;
 
-    QString friend1 = settings->value("friend1").toString();
-    Friend *f1 = new Friend(friend1, gCtx.cache->getNextIndex());
-    gCtx.cache->insertOneFriend(f1);
-    qDebug() << "add friend - " << friend1;
+    std::string sPasswd = passwd.toStdString();
+    std::string sDecryptData;
+    std::string sPlainData;
+    std::string sEncryptData;
+    ParseXml xml;
 
-    QString friend2 = settings->value("friend2").toString();
-    Friend *f2 = new Friend(friend2, gCtx.cache->getNextIndex());
-    gCtx.cache->insertOneFriend(f2);
+    /* 读入文件 */
+    std::ifstream file;
+    file.open(fileName.toStdString().c_str(), std::ios::in | std::ios::binary);
+    file.seekg(0, file.end);
+    int length = file.tellg();
+    file.seekg(0, file.beg);
+    char *buffer = new char[length];
+    if (!buffer) {
+        return -1;
+    }
+    file.read(buffer, length);
+    sEncryptData.assign(buffer, length);
 
-    QString friend3 = settings->value("friend3").toString();
-    Friend *f3 = new Friend(friend3, gCtx.cache->getNextIndex());
-    gCtx.cache->insertOneFriend(f3);
+    /* 开始解密 */
+    sDecryptData = zebraClient->decrypt(sEncryptData, sPasswd);
+    if (sDecryptData.empty()) {
+        qDebug() << "xml: decrypt xml file fail";
+		return -1;
+    }
+    qDebug() << "decrypt file ok";
 
-    QString friend4 = settings->value("friend4").toString();
-    Friend *f4 = new Friend(friend4, gCtx.cache->getNextIndex());
-    gCtx.cache->insertOneFriend(f4);
-    return;
+    /* 开始解压 */
+    sPlainData = gCtx.zebra->gzipUncompress(sDecryptData);
+    if (sPlainData.empty()) {
+        qDebug() << "xml: unzip xml file fail";
+        return -1;
+    }
+    qDebug() << "uncompress file ok";
+
+    qPlainData = QString::fromStdString(sPlainData);
+    if (xml.parseDencryptXml(qPlainData) < 0){
+        return -1;
+    }
+    return 0;
+
+
+    //    QSettings *settings = new QSettings("list.ini", QSettings::IniFormat);
+
+    //    QString friend1 = settings->value("friend1").toString();
+    //    Friend *f1 = new Friend(friend1, gCtx.cache->getNextIndex());
+    //    gCtx.cache->insertOneFriend(f1);
+    //    qDebug() << "add friend - " << friend1;
+
+    //    QString friend2 = settings->value("friend2").toString();
+    //    Friend *f2 = new Friend(friend2, gCtx.cache->getNextIndex());
+    //    gCtx.cache->insertOneFriend(f2);
+
+    //    QString friend3 = settings->value("friend3").toString();
+    //    Friend *f3 = new Friend(friend3, gCtx.cache->getNextIndex());
+    //    gCtx.cache->insertOneFriend(f3);
+
+    //    QString friend4 = settings->value("friend4").toString();
+    //    Friend *f4 = new Friend(friend4, gCtx.cache->getNextIndex());
+    //    gCtx.cache->insertOneFriend(f4);
+    //    return;
 }
 
 
 
 void initZebraEngine() {
-  // gCtx.zebra = &zebraClient;
-
-
+    gCtx.zebra = zebraClient;
 }
 
 /**
@@ -191,6 +238,7 @@ int main(int argc, char *argv[])
 
     /* 设置启动参数 */
     setAppParameter();
+    initZebraEngine();
 
     /* 注册QML */
     registerQmlTye();
@@ -211,14 +259,19 @@ int main(int argc, char *argv[])
         ShadowTalkSetSyncProcess(i);
     }
 
-    /* 从ini文件添加好好友 */
-    loadFriend();
-
     /* 界面交换 */
     loginer.hide();
     viewer.show();
 
     getLocalIp();
+
+
+    ShadowTalkSleep(5);
+    /* 加载XML文件 */
+    if (parseEncryptXml(QString("shadowSecret"), QString("SHADOWTALK1")) < 0) {
+        std::cout << "parse xml fail" << std::endl;
+        return -1;
+    }
 
     return app.exec();
 }
