@@ -21,6 +21,8 @@
 #include <QtQml>
 
 #include <iostream>
+#include <fstream>
+#include <stdint.h>
 
 #include "st_pixelsize.h"
 #include "st_friend.h"
@@ -33,6 +35,8 @@
 #include "st_zebra.h"
 #include "st_net.h"
 #include "st_parsexml.h"
+
+
 
 peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
@@ -144,12 +148,7 @@ void createCache() {
     }
 }
 
-#include <fstream>
-#include <stdint.h>
-#include "boost/filesystem/operations.hpp"
-#include "boost/filesystem/path.hpp"
-
-namespace fs = boost::filesystem;
+//namespace fs = boost::filesystem;
 
 /* 测试使用 */
 int parseEncryptXml(QString fileName, QString passwd) {
@@ -268,7 +267,7 @@ int main(int argc, char *argv[])
 
     ShadowTalkSleep(5);
     /* 加载XML文件 */
-    if (parseEncryptXml(QString("shadowSecret"), QString("SHADOWTALK1")) < 0) {
+    if (parseEncryptXml(QString("shadowSecret"), QString("SHADOWTALK123")) < 0) {
         std::cout << "parse xml fail" << std::endl;
         return -1;
     }

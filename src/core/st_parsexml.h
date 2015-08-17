@@ -10,8 +10,13 @@ public:
     ~ParseXml();
 
     int parseContactXml(QDomElement &array);
+
+    int parseQrChannelDict(QDomElement dict);
     int parseQrChannelXml(QDomElement &array);
+
+    int parseKeyValueDict(QDomElement dict);
     int parseKeyValueXml(QDomElement &array);
+
     int parseDencryptXml(const QString plainData);
 };
 
