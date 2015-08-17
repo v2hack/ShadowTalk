@@ -74,7 +74,7 @@ int ParseXml::parseQrChannelDict(QDomElement dict) {
                             qDebug() << "[expiredTime] - " << en.text();
                         } else {
                             qDebug() << "[expiredTime] - error " << en.tagName();
-//                            return -1;
+//                          return -1;
                         }
                     }
                 }
@@ -87,9 +87,6 @@ int ParseXml::parseQrChannelDict(QDomElement dict) {
                         QDomElement en = n.toElement();
                         if (en.tagName() == QString("string")) {
                             qDebug() << "[shortCode] - " << en.text();
-                        } else {
-                            qDebug() << "[shortCode] - error " << en.tagName();
-//                            return -1;
                         }
                     }
                 }
