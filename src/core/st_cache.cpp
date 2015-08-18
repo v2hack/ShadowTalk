@@ -122,13 +122,18 @@ void Cache::deleteChannel(QString channeldId) {
  *
  *  @return 成功 返回键值对指针   失败 返回nullptr
  */
-QString Cache::getKeyValue(QString key) {
-    QMap<QString, QString>::iterator it;
+
+
+#include <map>
+#include <string>
+
+std::string Cache::getKeyValue(std::string key) {
+    std::map<std::string, std::string>::iterator it;
     it = this->keyValueList.find(key);
     if (it == this->keyValueList.end()) {
         return "";
     }
-    return it.value();
+    return it->second;
 }
 
 
@@ -139,10 +144,9 @@ QString Cache::getKeyValue(QString key) {
  *
  *  @return 无
  */
-void Cache::insertKeyValue(QString key, QString value){
-    this->keyValueList.insert(key, value);
+void Cache::insertKeyValue(std::string key, std::string value){
+    this->keyValueList.insert(pair<std::string, std::string>(key, value));
 }
-
 
 /**
  *  功能描述: 删除key,value对
@@ -150,8 +154,8 @@ void Cache::insertKeyValue(QString key, QString value){
  *
  *  @return 无
  */
-void Cache::deleteKeyValue(QString key) {
-    this->keyValueList.remove(key);
+void Cache::deleteKeyValue(std::string key) {
+    this->keyValueList.erase(key);
 }
 
 

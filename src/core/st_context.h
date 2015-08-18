@@ -7,9 +7,9 @@
 
 #include "st_friend.h"
 #include "st_cache.h"
+#include "st_zebra.h"
+
 #include "im.h"
-
-
 
 /* 全局上下文索引 */
 struct ShadowTalkContext
@@ -17,8 +17,11 @@ struct ShadowTalkContext
     QGuiApplication *app;  /* application 指针*/
     QQuickView *viewer;    /* 主窗口viewer指针 */
     QQuickView *loginer;   /* 登陆窗口viewer指针 */
+
     Cache *cache;          /* 缓存指针 */
+
     peersafe::im::Message_client *zebra;
+    zebraDeleagates *delegate;
 };
 
 #endif // CONTEXT_H

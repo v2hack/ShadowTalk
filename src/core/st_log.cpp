@@ -3,7 +3,7 @@
 #include <QString>
 #include <QTime>
 
-#define ShadwoTalk_Log_File "./ShadowTalk.log"
+#define ShadwoTalk_Log_File "ShadowTalk.log"
 
 #define LOG_ENABLE 1
 

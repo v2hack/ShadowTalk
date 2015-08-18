@@ -1,6 +1,27 @@
 #include "st_zebra.h"
+#include <iostream>
+
+#include "st_cache.h"
+#include "st_context.h"
+
+/* 全局上下文 */
+extern struct ShadowTalkContext gCtx;
 
 
+
+std::string StringToHex(std::string s) {
+    peersafe::im::Message_client *z = gCtx.zebra;
+    return z->hex_decode(s);
+}
+
+std::string HexToString(std::string s) {
+    peersafe::im::Message_client *z = gCtx.zebra;
+    if (!z) {
+        std::cout << "zebra is null" << std::endl;
+        return "";
+    }
+    return z->hex_encode(s);
+}
 
 zebraDeleagates::zebraDeleagates() {
 
@@ -13,6 +34,7 @@ zebraDeleagates::~zebraDeleagates() {
 /* 网络状态改变 */
 void zebraDeleagates::network_state(int stat_code)
 {
+std:cout << "network_state - " << std::endl;
 
 }
 
@@ -21,6 +43,7 @@ void zebraDeleagates::friend_state(
         const string &friend_channel_id,
         int state_code)
 {
+    std::cout << "friend_state" << std::endl;
 
 
 }
@@ -36,6 +59,7 @@ void zebraDeleagates::friend_offline_message(
         int length,
         int timestamp)
 {
+    std::cout << "friend_offline_message" << std::endl;
 
 
 }
@@ -51,7 +75,7 @@ void zebraDeleagates::friend_online_message(
         int length,
         int timestamp)
 {
-
+    std::cout << "friend_online_message" << std::endl;
 
 
 }
@@ -62,7 +86,7 @@ void zebraDeleagates::friend_request_via_qr(
         const string &info,
         const string &friend_channel_id)
 {
-
+    std::cout << "friend_request_via_qr" << std::endl;
 
 }
 
@@ -72,39 +96,59 @@ void zebraDeleagates::friend_request_reply(
         const string &friend_channel_id,
         bool accepted)
 {
-
+    std::cout << "friend_request_reply" << std::endl;
 
 }
 
 /* 已被对方通知删除好友 */
 void zebraDeleagates::friend_deleted(const string &friend_channel_id)
 {
-
+    std::cout << "friend_deleted" << std::endl;
 
 }
 
 /* 数据操作 */
 void zebraDeleagates::store_data(const string &key_id, const string &read_data)
 {
-
+    std::cout << "store_data - " << HexToString(key_id) << std::endl;
 
 }
 
+
 void zebraDeleagates::read_data(const string &key_id, string &read_data)
 {
+	std::cout << "read_data - " << HexToString(key_id) << std::endl;
 
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+
+//    QMap<QString, QString>::iterator it;
+//    for(it = c->keyValueList.begin(); it != c->keyValueList.end(); it++) {
+//        if (HexToString(it.key().toStdString()) == HexToString(key_id)) {
+//            std::cout << "list key - " << it.key().toStdString() << std::endl;
+//            return;
+//        }
+//    }
+//    std::cout << "no find value" << std::endl;
+//    read_data.clear();
+
+    return ;
 }
 
 void zebraDeleagates::delete_data(const string &key_id)
 {
-
+    std::cout << "delete_data" << std::endl;
 
 }
 
 /* deduplication */
 bool zebraDeleagates::isExisted(const string &item, unsigned int expire)
 {
-    return true;
+    std::cout << "isExisted" << std::endl;
+
+    return false;
 
 }
 
@@ -113,6 +157,7 @@ void zebraDeleagates::handler_write_message_reply(
         const std::string &channel_id,
         unsigned long message_id, int ret_code)
 {
+    std::cout << "handler_write_message_reply" << std::endl;
 
 
 }
@@ -120,7 +165,7 @@ void zebraDeleagates::handler_write_message_reply(
 /* ice 通道状态 非0为异常 */
 void zebraDeleagates::ice_session_state(const std::string &channel_id, int state)
 {
-
+    std::cout << "ice_session_state" << std::endl;
 
 }
 
@@ -131,6 +176,7 @@ int zebraDeleagates::send_message_via_direct_connection(
         unsigned long message_id,
         const std::string &data)
 {
+    std::cout << "send_message_via_direct_connection" << std::endl;
 
     return 0;
 }
@@ -139,6 +185,6 @@ void zebraDeleagates::bind_friend_channel(
         const std::string &connection_id,
         const std::string &friend_channel_id)
 {
-
+    std::cout << "bind_friend_channel" << std::endl;
 
 }

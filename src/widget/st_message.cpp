@@ -20,6 +20,8 @@
 #include "st_context.h"
 #include "st_message.h"
 #include "st_log.h"
+#include "st_net.h"
+
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -127,26 +129,33 @@ MessageManager::~MessageManager() {
 void MessageManager::sendMessage(int index, QString message) {
     addMessageToWidget(0, "Me", 1, 1, message);
 
+    /* 找到缓存 */
     Cache *c = gCtx.cache;
-    qDebug() << "id - " << c->currentUseFriendId;
-
     QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseFriendId);
     if (it == c->friendList.end()) {
         qDebug() << "can't friend firned - " << c->currentUseFriendId;
         return;
     }
     Friend *f = &(*it);
+    if (!f) {
+        return;
+    }
 
+    /* 组装缓存 */
     qDebug() << "name - " << f->name;
-
     Message *m = new Message;
     m->data        = message;
     m->driect      = MessageDriectMe;
     m->messageType = MessageTypeWord;
     m->friendIndex = c->currentUseFriendId;
 
+    /* 添加到缓存 */
     f->insertOneMessage(m);
     slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
          "sendMessage", "send one message", c->currentUseFriendId, message.toLatin1().data());
+
+    /* impai 发送消息 */
+    adaptSendMessage(f->friendChannelId, 1, message, f->messageCount);
+    return;
 }
 

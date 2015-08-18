@@ -8,6 +8,7 @@
 #include "st_cache.h"
 #include "st_context.h"
 #include "st_base64.h"
+#include "st_zebra.h"
 
 #define ST_XML_TAG_DICT                 "dict"
 #define ST_XML_TAG_ARRAY                "array"
@@ -45,12 +46,17 @@ extern struct ShadowTalkContext gCtx;
 void addCacheForKeyValue(QString key, QString value) {
     QString QsKey   = Base64::decode(key);
     QString QsValue = Base64::decode(value);
+
     Cache *c = gCtx.cache;
     if (!c) {
         qDebug() << "insert cache fail";
         return;
     }
-    c->insertKeyValue(QsKey, QsValue);
+
+    c->insertKeyValue(
+                StringToHex(QsKey.toStdString()),
+                StringToHex(QsValue.toStdString())
+    );
 }
 
 /**
@@ -89,6 +95,17 @@ void addCacheForChannel(
 }
 
 
+/**
+*  功能描述: 将联系人信息加入到缓存
+*  @param  defaultExpiredTime  默认超时时间
+*  @param  friendChannelId     好友channel索引
+*  @param  inSession           是否在聊天列表中
+*  @param  friendName          好友名字
+*  @param  netStatus           网络状态
+*  @param  updateTime          更新时间
+*
+*  @return 0 成功  -1 失败
+*/
 void addCacheForContact(
         QString defaultExpiredTime,
         QString friendChannelId,
@@ -109,7 +126,6 @@ void addCacheForContact(
     if (!newOne) {
         return;
     }
-    qDebug() << "add friend - " << friendName;
     gCtx.cache->insertOneFriend(newOne);
     return;
 }
@@ -452,6 +468,8 @@ void ParseXml::writeXmlFile(QString plainData) {
 *  @return 0成功  -1失败
 */
 int ParseXml::parseDencryptXml(const QString plainData) {
+
+    writeXmlFile(plainData);
 
     QDomDocument document;
     QString strError;

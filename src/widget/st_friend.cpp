@@ -94,6 +94,7 @@ Friend::~Friend() {
  */
 void Friend::insertOneMessage(Message *message) {
     this->messageList.insert(this->messageList.size() + 1, *message);
+    this->messageCount++;
     return;
 }
 

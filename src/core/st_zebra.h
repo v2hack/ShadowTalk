@@ -9,6 +9,10 @@
 using namespace peersafe::im;
 using namespace std;
 
+std::string StringToHex(std::string s);
+std::string HexToString(std::string s);
+
+
 class zebraDeleagates : public peersafe::im::Message_delegates {
 
 public:
