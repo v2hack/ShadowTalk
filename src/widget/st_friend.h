@@ -20,17 +20,20 @@
 class Friend{
 public:
     Friend(QString name, int friendIndex);
+    Friend(QString friendName, int expiredTime, QString channelId,
+                   int session, int status, int friendIndex);
     ~Friend();
 
-    QString id;     // 好友id
-    QString name;   // 用户名
-    QString qrCode; // 二维码
+    QString id;              // 好友id,用于界面
+    QString qrCode;          // 二维码
+    int defaultExpiredTime;  // 默认的超时时间
+    QString friendChannelId; // 好友通道
+    int inSession;           // 联系人是否在聊天列表中
+    QString name;            // 用户名
+    int netStatus;            // 在线状态
 
-    int netState;   // 网络状态
-    QTime time;     // 上线时间
-
-    int messageCount;       /* 消息数量 */
-    int messageUnreadCount; /* 消息未读数量 */
+    int messageCount;        // 消息数量
+    int messageUnreadCount;  // 消息未读数量
     QMap<int, Message> messageList; // 消息列表
 
     void insertOneMessage(Message *message);

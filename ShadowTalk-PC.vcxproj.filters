@@ -36,18 +36,21 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{f047033c-dd09-4aed-a3df-919a6b46f669}</UniqueIdentifier>
+      <UniqueIdentifier>{76c73b3b-c79c-4104-91ad-c329bc1d0cce}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{f39c52bd-dfc7-46ee-aa22-a3c00a6e5a92}</UniqueIdentifier>
+      <UniqueIdentifier>{06f63473-9e95-4d49-832f-e5ad4b346c80}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\st_base64.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\st_cache.cpp">
@@ -122,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\im.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\st_base64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <CustomBuild Include="src\core\st_cache.h">

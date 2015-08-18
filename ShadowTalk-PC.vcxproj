@@ -175,6 +175,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\core\st_base64.cpp" />
     <ClCompile Include="src\core\st_cache.cpp" />
     <ClCompile Include="src\widget\st_friend.cpp" />
     <ClCompile Include="src\widget\st_group.cpp" />
@@ -190,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\im.h" />
+    <ClInclude Include="src\core\st_base64.h" />
     <CustomBuild Include="src\core\st_cache.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd

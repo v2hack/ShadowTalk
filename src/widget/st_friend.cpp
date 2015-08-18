@@ -51,6 +51,39 @@ Friend::Friend(QString friendName, int friendIndex):
     }
 }
 
+
+Friend::Friend(QString friendName, int expiredTime, QString channelId,
+               int session, int status, int friendIndex)
+{
+    name = friendName;
+    defaultExpiredTime = expiredTime;
+    friendChannelId = channelId;
+    inSession = session;
+    netStatus = status;
+    messageCount = 0;
+
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QVariantMap newElement;
+    newElement.insert("friendName", friendName);
+    newElement.insert("friendIndex", friendIndex);
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement)));
+        slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
+             "Friend", "add friend to widget success", friendIndex, friendName.toLatin1().data());
+    } else {
+        slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
+             "Friend", "add friend to widget fail", friendIndex, friendName.toLatin1().data());
+    }
+}
+
+
+
 Friend::~Friend() {
 
 }
@@ -86,7 +119,7 @@ void Friend::setName(QString name) {
  *  @return 无
  */
 void Friend::setNetState(int state) {
-    this->netState = state;
+    this->netStatus = state;
 }
 
 /**

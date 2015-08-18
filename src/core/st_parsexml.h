@@ -9,6 +9,9 @@ public:
     ParseXml();
     ~ParseXml();
 
+    void writeXmlFile(QString context);
+
+    int parseContactDict(QDomElement dict);
     int parseContactXml(QDomElement &array);
 
     int parseQrChannelDict(QDomElement dict);

@@ -36,14 +36,11 @@
 #include "st_net.h"
 #include "st_parsexml.h"
 
-
-
 peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
 
 /* 全局上下文 */
 struct ShadowTalkContext gCtx;
-
 
 /**
  *  功能描述: 设置启动参数
@@ -148,9 +145,14 @@ void createCache() {
     }
 }
 
-//namespace fs = boost::filesystem;
 
-/* 测试使用 */
+/**
+ *  功能描述: 解析xml文件
+ *  @param fileName   文件名
+ *  @param passwd     解密密码
+ *
+ *  @return
+ */
 int parseEncryptXml(QString fileName, QString passwd) {
     QString qPlainData;
 
@@ -269,7 +271,6 @@ int main(int argc, char *argv[])
     /* 加载XML文件 */
     if (parseEncryptXml(QString("shadowSecret"), QString("SHADOWTALK123")) < 0) {
         std::cout << "parse xml fail" << std::endl;
-        return -1;
     }
 
     return app.exec();

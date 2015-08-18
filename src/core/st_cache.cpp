@@ -16,14 +16,9 @@
 #include "st_friend.h"
 #include "st_context.h"
 
-
-
 Cache::Cache(): friendCount(0), currentUseFriendId(-1) {
-
 }
-
 Cache::~Cache() {
-
 }
 
 /**
@@ -81,6 +76,93 @@ void Cache::insertOneFriend(Friend *newFriend) {
     friendList.insert(this->friendCount, *newFriend);
     return;
 }
+
+/**
+ *  功能描述: 获取channel信息结构
+ *  @param  channel  channel索引
+ *
+ *  @return 成功 返回结构指针   失败 返回nullptr
+ */
+struct LocalChannel *Cache::getChannel(QString channelId){
+    QMap<QString, struct LocalChannel *>::iterator it;
+    it = this->channelList.find(channelId);
+    if (it == this->channelList.end()) {
+        return nullptr;
+    }
+    return it.value();
+}
+
+/**
+ *  功能描述: 插入channel信息到列表
+ *  @param channel   channel信息结构指针
+ *
+ *  @return 无
+ */
+void Cache::insertChannel(struct LocalChannel *channel) {
+    this->channelList.insert(channel->channelId, channel);
+}
+
+
+/**
+ *  功能描述: 从映射表删除channel信息
+ *  @param channelId channel索引
+ *
+ *  @return 无
+ */
+void Cache::deleteChannel(QString channeldId) {
+    struct LocalChannel *c = nullptr;
+    c = getChannel(channeldId);
+    this->channelList.remove(channeldId);
+    delete c;
+}
+
+/**
+ *  功能描述: 获取key,value对
+ *  @param key    密钥索引
+ *
+ *  @return 成功 返回键值对指针   失败 返回nullptr
+ */
+QString Cache::getKeyValue(QString key) {
+    QMap<QString, QString>::iterator it;
+    it = this->keyValueList.find(key);
+    if (it == this->keyValueList.end()) {
+        return "";
+    }
+    return it.value();
+}
+
+
+/**
+ *  功能描述: 插入key,value对
+ *  @param key    密钥索引
+ *  @param value  密钥字符串
+ *
+ *  @return 无
+ */
+void Cache::insertKeyValue(QString key, QString value){
+    this->keyValueList.insert(key, value);
+}
+
+
+/**
+ *  功能描述: 删除key,value对
+ *  @param key   密钥索引
+ *
+ *  @return 无
+ */
+void Cache::deleteKeyValue(QString key) {
+    this->keyValueList.remove(key);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
