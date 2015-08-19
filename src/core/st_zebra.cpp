@@ -1,8 +1,9 @@
-#include "st_zebra.h"
 #include <iostream>
+#include <map>
 
 #include "st_cache.h"
 #include "st_context.h"
+#include "st_zebra.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -107,33 +108,42 @@ void zebraDeleagates::friend_deleted(const string &friend_channel_id)
 
 }
 
+
 /* 数据操作 */
 void zebraDeleagates::store_data(const string &key_id, const string &read_data)
 {
-    std::cout << "store_data - " << HexToString(key_id) << std::endl;
-
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+    std::map<std::string, std::string>::iterator it;
+    it = c->keyValueList.find(key_id);
+    if (it != c->keyValueList.end()) {
+        it->second = read_data;
+        std::cout << "update store key ok" << std::endl;
+        return;
+    } else {
+        c->keyValueList.insert(std::pair<std::string, std::string>(key_id, read_data));
+        std::cout << "insert key ok" << std::endl;
+    }
 }
 
 
 void zebraDeleagates::read_data(const string &key_id, string &read_data)
 {
-	std::cout << "read_data - " << HexToString(key_id) << std::endl;
-
     Cache *c = gCtx.cache;
     if (!c) {
         return;
     }
-
-//    QMap<QString, QString>::iterator it;
-//    for(it = c->keyValueList.begin(); it != c->keyValueList.end(); it++) {
-//        if (HexToString(it.key().toStdString()) == HexToString(key_id)) {
-//            std::cout << "list key - " << it.key().toStdString() << std::endl;
-//            return;
-//        }
-//    }
-//    std::cout << "no find value" << std::endl;
-//    read_data.clear();
-
+    std::map<std::string, std::string>::iterator it;
+    it = c->keyValueList.find(key_id);
+    if (it != c->keyValueList.end()) {
+        std::cout << "find key ok - " << std::endl;
+        read_data = it->second;
+        return;
+    }
+    std::cout << "no find value" << std::endl;
+    read_data.clear();
     return ;
 }
 

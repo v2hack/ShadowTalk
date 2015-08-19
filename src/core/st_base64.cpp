@@ -10,18 +10,21 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
-QString Base64::encode(const QString &binaryData) {
-	return "";
-}
-
-
-QString Base64::decode(const QString &base64String) {
+std::string Base64::encode(const std::string &binaryData) {
     peersafe::im::Message_client *zebra = gCtx.zebra;
     if (!zebra) {
         qDebug() << "base64 error";
         return "";
     }
-    std::string plainString = zebra->base64Decode(base64String.toStdString());
-    QString qPlainString = QString::fromStdString(plainString);
-    return qPlainString;
+	return zebra->base64Encode(binaryData);
+}
+
+
+std::string Base64::decode(const std::string &base64String) {
+    peersafe::im::Message_client *zebra = gCtx.zebra;
+    if (!zebra) {
+        qDebug() << "base64 error";
+        return "";
+    }
+    return zebra->base64Decode(base64String);
 }

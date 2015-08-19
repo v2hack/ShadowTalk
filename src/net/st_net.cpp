@@ -37,11 +37,16 @@ void adaptSendMessage(QString channelId, int messageType,
     peersafe::im::Message_client *z = gCtx.zebra;
     if (z) {
 
-        std::cout << "friend channel id - " << channelId.toStdString() << std::endl;
+        std::cout << "messageType - " << messageType << std::endl;
+        std::cout << "message - " << message.toStdString() << std::endl;
+        std::cout << "Epoch - " << QDateTime::currentMSecsSinceEpoch()/1000 << std::endl;
+        std::cout << "message size - " << message.toStdString().size() << std::endl;
+
         z->send_offline_message(StringToHex(channelId.toStdString()),
                                 messageType,
                                 message.toStdString(),
-                                60, 60, 0, message.size(), messageId);
+                                60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                                message.toStdString().size(), 0);
     }
     return;
 }

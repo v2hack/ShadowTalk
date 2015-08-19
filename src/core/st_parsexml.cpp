@@ -4,6 +4,8 @@
 #include <QDateTime>
 #include <QDebug>
 
+#include <iostream>
+
 #include "st_parsexml.h"
 #include "st_cache.h"
 #include "st_context.h"
@@ -44,8 +46,11 @@ extern struct ShadowTalkContext gCtx;
 *  @return 0 ³É¹¦  -1 Ê§°Ü
 */
 void addCacheForKeyValue(QString key, QString value) {
-    QString QsKey   = Base64::decode(key);
-    QString QsValue = Base64::decode(value);
+    std::string cKey = key.toStdString();
+    std::string cValue = value.toStdString();
+
+    std::string plainKey   = Base64::decode(cKey);
+    std::string plainValue = Base64::decode(cValue);
 
     Cache *c = gCtx.cache;
     if (!c) {
@@ -53,10 +58,10 @@ void addCacheForKeyValue(QString key, QString value) {
         return;
     }
 
-    c->insertKeyValue(
-                StringToHex(QsKey.toStdString()),
-                StringToHex(QsValue.toStdString())
-    );
+//    std::cout << "key - " << HexToString(plainKey) << std::endl;
+//    std::cout << "value - " << HexToString(plainValue) << std::endl;
+
+    c->insertKeyValue(plainKey,  plainValue);
 }
 
 /**

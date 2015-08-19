@@ -263,7 +263,6 @@ int main(int argc, char *argv[])
 
     ShadowTalkSleep(5);
 
-
     /* 加载XML文件 */
     if (parseEncryptXml(QString("shadowSecret"), QString("SHADOWTALK123")) < 0) {
         std::cout << "parse xml fail" << std::endl;

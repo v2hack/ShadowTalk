@@ -8,9 +8,9 @@
 class Base64
 {
 public:
+    static std::string encode(const std::string &binaryData);
+    static std::string decode(const std::string &base64String);
 
-    static QString encode(const QString &binaryData);
-    static QString decode(const QString &base64String);
 };
 
 #endif // BASE64_H

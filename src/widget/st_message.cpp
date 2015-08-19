@@ -155,6 +155,7 @@ void MessageManager::sendMessage(int index, QString message) {
          "sendMessage", "send one message", c->currentUseFriendId, message.toLatin1().data());
 
     /* impai 发送消息 */
+    qDebug() << "message id - " << f->messageCount;
     adaptSendMessage(f->friendChannelId, 1, message, f->messageCount);
     return;
 }
