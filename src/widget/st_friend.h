@@ -40,6 +40,7 @@ public:
     void setQrCode(QString qrCode);
     void setName(QString name);
     void setNetState(int state);
+    void displayUnreadCount(int index, int count);
 };
 
 

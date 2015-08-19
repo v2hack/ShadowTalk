@@ -35,10 +35,13 @@ void ShadowTalkSleep(unsigned int msec) {
     }
 }
 
-
-
-void playMessageSound()
-{
+/**
+ *  功能描述: 播放接收消息声音
+ *  @param  无
+ *
+ *  @return 无
+ */
+void playMessageSound() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -49,3 +52,12 @@ void playMessageSound()
         QMetaObject::invokeMethod(rect, "playMessageSound");
     }
 }
+
+
+
+
+
+
+
+
+

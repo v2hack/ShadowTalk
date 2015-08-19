@@ -63,8 +63,6 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     messageCount = 0;
     id = friendIndex;
 
-    qDebug() << "######## id" << id;
-
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -73,6 +71,7 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     QVariantMap newElement;
     newElement.insert("friendName", friendName);
     newElement.insert("friendIndex", friendIndex);
+    newElement.insert("unReadCount", 0);
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
@@ -125,6 +124,27 @@ void Friend::setName(QString name) {
 void Friend::setNetState(int state) {
     this->netStatus = state;
 }
+
+
+
+void Friend::displayUnreadCount(int idx, int count)
+{
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "modifyUnreadCount",
+                                  Q_ARG(QVariant, idx),
+                                  Q_ARG(QVariant, count));
+        qDebug() << "set unread count ok";
+    } else {
+        qDebug() << "set unread count fail";
+    }
+}
+
 
 /**
  *  功能描述: SelectFriend构造函数
@@ -188,5 +208,9 @@ void SelectFriend::changeMessageList(int index, QString name) {
         /* 添加消息到界面 */
         addMessageToWidget(f->id, name, it->messageType, it->driect, it->data);
     }
+    f->displayUnreadCount(f->id - 1, 0);
     return;
 }
+
+
+

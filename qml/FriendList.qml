@@ -19,21 +19,7 @@ import st.info.SelectFriend 1.0
 Rectangle {
     id: friendList
     anchors.top: parent.top
-
-    signal sig_add_friend
-    signal sig_clear_friend
     color: "transparent"
-
-    /* 设置在线离线的颜色 */
-    function setStateColor(state) {
-        if (state === "online") {
-            return "#7dc163"
-        } else if (state === "outline") {
-            return "##a1a1a1";
-        } else {
-            return "#21ade5"
-        }
-    }
 
     /* ListView */
     ListView {
@@ -78,14 +64,14 @@ Rectangle {
             model.clear()
         }
 
-        /* 修改好友在线状态 */
-        function modifyFriendState() {
+        /* 修改好友名字 */
+        function modifyFriendName() {
 
         }
 
-        /* 修改还有名字 */
-        function modifyFriendName() {
-
+        /* 修改未读消息数量 */
+        function modifyUnreadCount(index, count) {
+            model.setProperty(index, "unReadCount", count);
         }
     }
 
@@ -96,7 +82,7 @@ Rectangle {
         ListModel {
             dynamicRoles: true;
             /*
-             * cpp传递过来的属性有 friendName, friendIndex
+             * cpp传递过来的属性有 friendName, friendIndex, unReadCount
              */
         }
     }
@@ -189,13 +175,15 @@ Rectangle {
                         text: JsCommon.getDateTime();
                     }
 
-                    /* 在线状态 */
+                    /* 未读消息数量 */
                     Rectangle {
-                        id: friendState;
-                        width: 13
-                        height: 13
+                        id: unReadCountRectangle;
+
+                        width: 15
+                        height: 15
                         radius: width / 2
-                        color: setStateColor("online");
+                        color: "red";
+                        visible: unReadCount == 0 ? false : true
 
                         anchors {
                             right: friendItem.right;
@@ -204,15 +192,15 @@ Rectangle {
                             topMargin: 8
                         }
 
-                        Rectangle {
-                            width: 9
-                            height: 9
-                            radius: width / 2
-                            color: parent.color;
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                            border.color: "black"
-                            border.width: 2
+                        Text {
+                            id: unReadText
+                            anchors {
+                                horizontalCenter:unReadCountRectangle.horizontalCenter
+                                verticalCenter: unReadCountRectangle.verticalCenter
+                            }
+                            color: "white"
+                            font.pixelSize: 13
+                            text: unReadCount
                         }
                     }
 
@@ -233,7 +221,7 @@ Rectangle {
                             cellRect.opacity = 0.9;
                             /* 选中好友，消息栏同步更新 */
                             selectFriend.changeMessageList(friendIndex, friendName);
-                         }
+                        }
                         onEntered: {
                             cellRect.color = "#353535";
                             friendListScrollbar.visible = true;
