@@ -271,6 +271,5 @@ int main(int argc, char *argv[])
     if (parseEncryptXml(QString("shadowSecret"), QString("SHADOWTALK123")) < 0) {
         std::cout << "parse xml fail" << std::endl;
     }
-
     return app.exec();
 }

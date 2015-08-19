@@ -14,7 +14,6 @@
 #include <QWidget>
 #include <QtQuick/QQuickView>
 
-
 #include "st_login.h"
 #include "st_context.h"
 #include "st_utils.h"

@@ -56,12 +56,4 @@ public:
     Q_INVOKABLE void changeMessageList(int index, QString name);
 };
 
-
-
-
-
-
-
-
-
 #endif //ST_FRIEND_H_

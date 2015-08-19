@@ -14,6 +14,7 @@ import QtQuick 2.4
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
+import QtMultimedia 5.0
 
 import "functions.js" as PinYin
 import "common.js" as JsCommon
@@ -24,6 +25,18 @@ import st.font.PointSizeToPixelSize 1.0
 Rectangle {
     id: messageRectangle;
     color: "#efefef"
+
+
+    MediaPlayer {
+        id: soundMessage
+        objectName: "MessageSound"
+        autoLoad: true;
+        source: "qrc:/sound/message.wav"
+
+        function playMessageSound() {
+            soundMessage.play();
+        }
+    }
 
     ListView {
         id: messageView;

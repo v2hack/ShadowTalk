@@ -7,6 +7,7 @@
 
 
 void ShadowTalkSleep(unsigned int msec);
+void playMessageSound();
 
 #endif // UTILS_H
 

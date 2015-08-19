@@ -22,10 +22,8 @@
 #include "st_log.h"
 #include "st_net.h"
 
-
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
-
 
 /**
  *  功能描述: addMessageToWidget 添加消息到界面

@@ -1,4 +1,15 @@
-
+/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_log.cpp
+ *  简要描述: 日志接口封装
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
 #include <QDebug>
 #include <QString>
 #include <QTime>
@@ -6,9 +17,7 @@
 #define ShadwoTalk_Log_File "ShadowTalk.log"
 
 #define LOG_ENABLE 1
-
 #ifdef LOG_ENABLE
-
 
 void slog(const char *format, ...) {
     FILE *logfile;

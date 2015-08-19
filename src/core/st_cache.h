@@ -30,12 +30,7 @@ public:
     int currentUseFriendId;                    /* 界面上当前显示好友id */
     QMap<int, Friend> friendList;              /* 好友列表 */
     QMap<QString, struct LocalChannel *> channelList;  /* channel映射表 */
-
-
-    std::map<std::string, std::string> keyValueList;
-
-//    QMap<QString, QString> keyValueList;      /* 密钥映射表 */
-
+    std::map<std::string, std::string> keyValueList;   /* 密钥映射表 */
 
     /* 好友操作函数 */
     void insertOneFriend(Friend *newFriend);

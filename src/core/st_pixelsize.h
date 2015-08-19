@@ -5,9 +5,6 @@
 #include <QQuickItem>
 #include <QGuiApplication>
 
-
-
-
 class PointSizeToPixelSize : public QObject
 {
     Q_OBJECT
