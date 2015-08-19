@@ -5,7 +5,9 @@
 
 
 void getLocalIp();
-void adaptSendMessage(QString channelId, int messageType,
-                      QString message, int messageId);
+void adaptSendMessage(QString channelId, int messageType, QString message, int messageId);
+void adaptListenFriends(std::string friendChannelId);
+void adaptUnistenFriends(std::string friendChannelId);
+void adaptListenAllFriends();
 
 #endif // ST_NET_H_

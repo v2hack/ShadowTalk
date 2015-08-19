@@ -147,7 +147,8 @@ void MessageManager::sendMessage(int index, QString message) {
     m->data        = message;
     m->driect      = MessageDriectMe;
     m->messageType = MessageTypeWord;
-    m->friendIndex = c->currentUseFriendId;
+    //m->friendIndex = c->currentUseFriendId;
+    m->MessageMethord = MessageMethodOffline;
 
     /* 添加到缓存 */
     f->insertOneMessage(m);

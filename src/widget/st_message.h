@@ -13,18 +13,27 @@ enum MessageContentType {
     MessagetypeFile,     /* 文件 */
 };
 
+/* 发送方向 */
 enum MessageDriectType {
     MessageDriectMe = 1,   /* 我发的消息 */
     MessageDirectOpposite, /* 对方发的消息 */
 };
 
+/* 消息发送方式 */
+enum MessageMethod {
+    MessageMethodOnline = 1, /* 在线消息 */
+    MessageMethodOffline,    /* 离线消息 */
+};
+
+
 /* 聊天信息内容结构 */
 struct Message
 {
-    int driect;       /* 是我的？还是对方的？*/
-    int friendIndex;  /* 好友map索引 */
-    int messageType;  /* 聊天信息类型 */
-    QString data; /* 消息内容 */
+    int driect;         /* 是我的？还是对方的？*/
+    int friendIndex;    /* 好友map索引 */
+    int messageType;    /* 聊天信息类型 */
+    int MessageMethord; /* 离线或者在线 */
+    QString data;       /* 消息内容 */
 };
 
 /* 聊天消息管理结构 */

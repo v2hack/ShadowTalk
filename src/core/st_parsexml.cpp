@@ -11,6 +11,7 @@
 #include "st_context.h"
 #include "st_base64.h"
 #include "st_zebra.h"
+#include "st_net.h"
 
 #define ST_XML_TAG_DICT                 "dict"
 #define ST_XML_TAG_ARRAY                "array"
@@ -131,6 +132,7 @@ void addCacheForContact(
     if (!newOne) {
         return;
     }
+    /* ¼ÓÈë»º´æ */
     gCtx.cache->insertOneFriend(newOne);
     return;
 }

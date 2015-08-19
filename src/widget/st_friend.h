@@ -24,7 +24,7 @@ public:
                    int session, int status, int friendIndex);
     ~Friend();
 
-    QString id;              // 好友id,用于界面
+    int id;                  // 好友id,用于界面
     QString qrCode;          // 二维码
     int defaultExpiredTime;  // 默认的超时时间
     QString friendChannelId; // 好友通道

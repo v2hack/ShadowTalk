@@ -61,6 +61,9 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     inSession = session;
     netStatus = status;
     messageCount = 0;
+    id = friendIndex;
+
+    qDebug() << "######## id" << id;
 
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -183,7 +186,7 @@ void SelectFriend::changeMessageList(int index, QString name) {
             name = f->name;
         }
         /* 添加消息到界面 */
-        addMessageToWidget(f->id.toInt(), name, it->messageType, it->driect, it->data);
+        addMessageToWidget(f->id, name, it->messageType, it->driect, it->data);
     }
     return;
 }

@@ -4,6 +4,7 @@
 #include "st_cache.h"
 #include "st_context.h"
 #include "st_zebra.h"
+#include "st_log.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -62,6 +63,38 @@ void zebraDeleagates::friend_offline_message(
 {
     std::cout << "friend_offline_message" << std::endl;
 
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+
+    QMap<int, Friend>::iterator it;
+    for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
+        Friend &f = it.value();
+        if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
+
+            Message *m = new Message;
+            m->data        = QString::fromStdString(message);
+            m->driect      = 0;
+            m->messageType = MessageTypeWord;
+            //m->friendIndex = c->currentUseFriendId;
+            m->MessageMethord = MessageMethodOffline;
+
+            f.insertOneMessage(m);
+            slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
+                 "friend_online_message", "receive one online message", f.id, message.c_str());
+
+            /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
+
+            std::cout << "current id - " << c->currentUseFriendId << std::endl;
+            std::cout << "friend id  - " << f.id << std::endl;
+
+            if (c->currentUseFriendId == f.id) {
+                addMessageToWidget(f.id, f.name, type, 0, m->data);
+            }
+        }
+    }
+
 
 }
 
@@ -78,7 +111,36 @@ void zebraDeleagates::friend_online_message(
 {
     std::cout << "friend_online_message" << std::endl;
 
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
 
+    QMap<int, Friend>::iterator it;
+    for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
+        Friend &f = it.value();
+        if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
+
+            Message *m = new Message;
+            m->data        = QString::fromStdString(message);
+            m->driect      = 0;
+            m->messageType = MessageTypeWord;
+            //m->friendIndex = c->currentUseFriendId;
+            m->MessageMethord = MessageMethodOnline;
+
+            f.insertOneMessage(m);
+            slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
+                 "friend_online_message", "receive one online message", f.id, message.c_str());
+
+            std::cout << "current id - " << c->currentUseFriendId << std::endl;
+            std::cout << "friend id  - " << f.id << std::endl;
+
+            /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
+            if (c->currentUseFriendId == f.id) {
+                addMessageToWidget(f.id, f.name, type, 0, m->data);
+            }
+        }
+    }
 }
 
 /* 接收添加好友请求 */
@@ -149,17 +211,31 @@ void zebraDeleagates::read_data(const string &key_id, string &read_data)
 
 void zebraDeleagates::delete_data(const string &key_id)
 {
-    std::cout << "delete_data" << std::endl;
-
+    int deleteFlag = 0;
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+    std::map<std::string, std::string>::iterator it;
+    it = c->keyValueList.find(key_id);
+    if (it != c->keyValueList.end()) {
+        deleteFlag = 1;
+    }
+    c->keyValueList.erase(key_id);
+    return;
 }
 
-/* deduplication */
+/* 去重函数 */
 bool zebraDeleagates::isExisted(const string &item, unsigned int expire)
 {
-    std::cout << "isExisted" << std::endl;
-
+    static std::string zebraIsExisted;
+    if (item == zebraIsExisted) {
+        return true;
+    } else {
+        zebraIsExisted = item;
+        return false;
+    }
     return false;
-
 }
 
 /* 数据是否发送成功 */

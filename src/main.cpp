@@ -24,6 +24,8 @@
 #include <fstream>
 #include <stdint.h>
 
+#include "im.h"
+
 #include "st_pixelsize.h"
 #include "st_friend.h"
 #include "st_cache.h"
@@ -31,7 +33,6 @@
 #include "st_utils.h"
 #include "st_login.h"
 #include "st_message.h"
-#include "im.h"
 #include "st_zebra.h"
 #include "st_net.h"
 #include "st_parsexml.h"
@@ -202,6 +203,9 @@ int parseEncryptXml(QString fileName, QString passwd) {
     if (xml.parseDencryptXml(qPlainData) < 0){
         return -1;
     }
+
+    /* 监听好友 */
+    adaptListenAllFriends();
     return 0;
 }
 
