@@ -3,13 +3,16 @@
 
 #include <QObject>
 
-
+#define SHADOWTALK_TEMP_DIR       "temp"  /* 临时文件目录 */
+#define SHADOWTALK_IMAGE_PREFIX   ".img"  /* 图片文件扩展名 */
+#define SHADOWTALK_SOUND_PREFIX   ".snd"  /* 声音文件扩展名 */
 
 /* 消息内容类型 */
 enum MessageContentType {
-    MessageTypeWord = 1, /* 文字 */
-    MessageTypeVoice,    /* 语音 */
+    MessageTypeNone = 0,
+    MessageTypeWord, /* 文字 */
     MessageTypeImage,    /* 图片 */
+    MessageTypeVoice,    /* 语音 */
     MessagetypeFile,     /* 文件 */
 };
 
@@ -33,6 +36,7 @@ struct Message
     int friendIndex;    /* 好友map索引 */
     int messageType;    /* 聊天信息类型 */
     int MessageMethord; /* 离线或者在线 */
+    int voiceSeconds;   /* 如果是语音数据表示秒数 */
     QString data;       /* 消息内容 */
 };
 
@@ -47,6 +51,9 @@ public:
 };
 
 void addMessageToWidget(int uid, QString name, int messType, int direct, QString messageData);
+void addImageToWidget(int uid, QString name, int type, int direct, QString messageData);
+void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds);
+
 void clearMessageFromWidget();
 void removeMessageByIndex(int index, int count);
 

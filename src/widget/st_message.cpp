@@ -59,6 +59,23 @@ void addMessageToWidget(int uid, QString name, int type, int direct, QString mes
 }
 
 
+void addImageToWidget(int uid, QString name, int type, int direct, QString messageData)
+{
+    qDebug() << "receive one image";
+
+
+
+}
+
+
+void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds)
+{
+    qDebug() << "receive one voice";
+
+
+}
+
+
 /**
  *  功能描述: clearMessageFromWidget 清理所有消息
  *  @param 无

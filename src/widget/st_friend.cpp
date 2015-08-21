@@ -207,8 +207,21 @@ void SelectFriend::changeMessageList(int index, QString name) {
         } else {
             name = f->name;
         }
+
         /* 添加消息到界面 */
-        addMessageToWidget(f->id, name, it->messageType, it->driect, it->data);
+        switch (it->messageType) {
+        case MessageTypeWord:
+            addMessageToWidget(f->id, name, it->messageType, it->driect, it->data);
+            break;
+        case MessageTypeImage:
+            addImageToWidget(f->id, name, it->messageType, it->driect, it->data);
+            break;
+        case MessageTypeVoice:
+            addVoiceToWidget(f->id, name, it->messageType, it->driect, it->data, it->voiceSeconds);
+            break;
+        default:
+            break;
+        }
     }
 
     displayCurrentFriendName(f->name);

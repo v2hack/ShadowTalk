@@ -22,8 +22,6 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
-
-
 std::string StringToHex(std::string s) {
     peersafe::im::Message_client *z = gCtx.zebra;
     return z->hex_decode(s);
@@ -47,8 +45,7 @@ zebraDeleagates::~zebraDeleagates() {
 }
 
 /* 网络状态改变 */
-void zebraDeleagates::network_state(int stat_code)
-{
+void zebraDeleagates::network_state(int stat_code) {
 std:cout << "network_state - " << std::endl;
 
 }
@@ -56,11 +53,8 @@ std:cout << "network_state - " << std::endl;
 /* 好友上线或者离线状态 */
 void zebraDeleagates::friend_state(
         const string &friend_channel_id,
-        int state_code)
-{
+        int state_code) {
     std::cout << "friend_state" << state_code << std::endl;
-
-
 }
 
 /* 接受离线消息 */
@@ -86,32 +80,49 @@ void zebraDeleagates::friend_offline_message(
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
-            Message *m = new Message;
-            m->data        = QString::fromStdString(message);
-            m->driect      = 0;
-            m->messageType = MessageTypeWord;
-            //m->friendIndex = c->currentUseFriendId;
+            Message *m        = new Message;
+            m->data           = QString::fromStdString(message);
+            m->driect         = 0;
+            m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOffline;
+            m->voiceSeconds   = 0;
 
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
-                 "friend_online_message", "receive one online message", f.id, message.c_str());
-
-            std::cout << "current id - " << c->currentUseFriendId << std::endl;
-            std::cout << "friend id  - " << f.id << std::endl;
+                 "friend_offline_message", "receive one online message", f.id, message.c_str());
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseFriendId == f.id) {
                 f.messageUnreadCount = 0;
-                addMessageToWidget(f.id, f.name, type, 0, m->data);
+
+                /* 判断类型 */
+                switch (type) {
+                case MessageTypeWord:
+                    m->messageType = MessageTypeWord;
+                    addMessageToWidget(f.id, f.name, type, 0, m->data);
+                    break;
+                case MessageTypeImage:
+                    m->messageType = MessageTypeImage;
+                    addImageToWidget(f.id, f.name, type, 0, m->data);
+                    break;
+                case MessageTypeVoice:
+                    m->messageType = MessageTypeVoice;
+                    addVoiceToWidget(f.id, f.name, type, 0, m->data, length);
+                    break;
+                default:
+                    break;
+                }
             } else {
+                m->messageType = type;
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
             }
+
+            f.insertOneMessage(m);
+            slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
+                 "friend_offline_message", "receive one online message", f.id, message.c_str());
         }
     }
-
-
 }
 
 /* 接受在线消息 */
@@ -137,28 +148,44 @@ void zebraDeleagates::friend_online_message(
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
-            Message *m = new Message;
-            m->data        = QString::fromStdString(message);
-            m->driect      = 0;
-            m->messageType = MessageTypeWord;
-            //m->friendIndex = c->currentUseFriendId;
+
+            Message *m        = new Message;
+            m->data           = QString::fromStdString(message);
+            m->driect         = 0;
+            m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOnline;
-
-            f.insertOneMessage(m);
-            slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
-                 "friend_online_message", "receive one online message", f.id, message.c_str());
-
-            std::cout << "current id - " << c->currentUseFriendId << std::endl;
-            std::cout << "friend id  - " << f.id << std::endl;
+            m->voiceSeconds   = 0;
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseFriendId == f.id) {
                 f.messageUnreadCount = 0;
-                addMessageToWidget(f.id, f.name, type, 0, m->data);
+
+                /* 判断类型 */
+                switch (type) {
+                case MessageTypeWord:
+                    m->messageType = MessageTypeWord;
+                    addMessageToWidget(f.id, f.name, type, 0, m->data);
+                    break;
+                case MessageTypeImage:
+                    m->messageType = MessageTypeImage;
+                    addImageToWidget(f.id, f.name, type, 0, m->data);
+                    break;
+                case MessageTypeVoice:
+                    m->messageType = MessageTypeVoice;
+                    addVoiceToWidget(f.id, f.name, type, 0, m->data, length);
+                    break;
+                default:
+                    break;
+                }
             } else {
+                m->messageType = type;
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
             }
+
+            f.insertOneMessage(m);
+            slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
+                 "friend_online_message", "receive one online message", f.id, message.c_str());
         }
     }
 }
