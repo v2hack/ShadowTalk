@@ -53,7 +53,27 @@ void playMessageSound() {
     }
 }
 
+/**
+ *  功能描述: 设置界面上当前还有的名字
+ *  @param  currentFriendName 当前好友名
+ *
+ *  @return 无
+ */
+void displayCurrentFriendName(QString currentFriendName)
+{
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
 
+    QObject *rect = rootObject->findChild<QObject*>("DispalyCurrentFriendName");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setCurrentFriendName",  Q_ARG(QVariant, currentFriendName));
+    } else {
+        qDebug() << "can't find object DispalyCurrentFriendName";
+
+    }
+}
 
 
 

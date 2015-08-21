@@ -179,28 +179,29 @@ Rectangle {
                     Rectangle {
                         id: unReadCountRectangle;
 
-                        width: 15
-                        height: 15
+                        width : 18
+                        height: 18
                         radius: width / 2
-                        color: "red";
+                        color : "red";
                         visible: unReadCount == 0 ? false : true
 
                         anchors {
                             right: friendItem.right;
                             rightMargin: 30;
                             top: friendOnlineTime.bottom;
-                            topMargin: 8
+                            topMargin: 5
                         }
 
                         Text {
                             id: unReadText
                             anchors {
-                                horizontalCenter:unReadCountRectangle.horizontalCenter
-                                verticalCenter: unReadCountRectangle.verticalCenter
+                                horizontalCenter:parent.horizontalCenter
+                                verticalCenter: parent.verticalCenter
                             }
                             color: "white"
-                            font.pixelSize: 13
-                            text: unReadCount
+                            font.pixelSize: 12
+                            font.bold: true
+                            text: unReadCount > 99 ? "99+" : unReadCount
                         }
                     }
 

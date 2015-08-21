@@ -21,6 +21,7 @@ Rectangle {
         radius: 5;
         color: "#515050"
 
+
         /* 退出按钮 */
         Button {
             id: exitButton;

@@ -102,9 +102,11 @@ void zebraDeleagates::friend_offline_message(
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseFriendId == f.id) {
+                f.messageUnreadCount = 0;
                 addMessageToWidget(f.id, f.name, type, 0, m->data);
             } else {
-                f.displayUnreadCount(f.id - 1, 20);
+                f.messageUnreadCount++;
+                f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
             }
         }
     }
@@ -151,9 +153,11 @@ void zebraDeleagates::friend_online_message(
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseFriendId == f.id) {
+                f.messageUnreadCount = 0;
                 addMessageToWidget(f.id, f.name, type, 0, m->data);
             } else {
-                f.displayUnreadCount(f.id - 1, 20);
+                f.messageUnreadCount++;
+                f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
             }
         }
     }

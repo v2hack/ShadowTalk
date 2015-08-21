@@ -20,6 +20,7 @@
 #include "st_context.h"
 #include "st_log.h"
 #include "st_message.h"
+#include "st_utils.h"
 
 extern struct ShadowTalkContext gCtx;
 
@@ -61,6 +62,7 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     inSession = session;
     netStatus = status;
     messageCount = 0;
+    messageUnreadCount = 0;
     id = friendIndex;
 
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -208,7 +210,12 @@ void SelectFriend::changeMessageList(int index, QString name) {
         /* 添加消息到界面 */
         addMessageToWidget(f->id, name, it->messageType, it->driect, it->data);
     }
+
+    displayCurrentFriendName(f->name);
+    /* 界面显示清零 */
     f->displayUnreadCount(f->id - 1, 0);
+    /* 未读消息计数清零 */
+    f->messageUnreadCount = 0;
     return;
 }
 

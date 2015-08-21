@@ -9,8 +9,36 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
 Rectangle {
-
     id:mainWindowButton
+
+    /* 当前用户名显示 */
+    Rectangle {
+        id: displayFirnedName;
+        objectName: "DispalyCurrentFriendName"
+        height:35
+        width: 50
+        color: "transparent"
+
+        function setCurrentFriendName(name) {
+            currentFriendName.text = name;
+            console.log("current friend name - " + name);
+        }
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+        Text {
+            id: currentFriendName;
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+            font.pixelSize: 15
+            font.bold: true
+            color: "#515050"
+        }
+    }
+
     /* 添加关闭按钮 */
     Rectangle {
         id: windowCloseButton
