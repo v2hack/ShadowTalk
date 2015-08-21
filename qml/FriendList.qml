@@ -152,13 +152,12 @@ Rectangle {
                         text: friendName
                         font.bold: true
 
-                        /* 字体先注释，编译太慢
+                        //字体先注释，编译太慢
                         FontLoader {
                             id: chineseFont
                             source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
                         }
                         font.family: chineseFont.name;
-                        */
                     }
 
                     /* 好友上线时间 */
@@ -173,6 +172,7 @@ Rectangle {
                         color: "white"
                         font.pixelSize: 13
                         text: JsCommon.getDateTime();
+                        font.family: chineseFont.name;
                     }
 
                     /* 未读消息数量 */
@@ -202,6 +202,7 @@ Rectangle {
                             font.pixelSize: 12
                             font.bold: true
                             text: unReadCount > 99 ? "99+" : unReadCount
+                            font.family: chineseFont.name;
                         }
                     }
 

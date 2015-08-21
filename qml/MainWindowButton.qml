@@ -36,6 +36,12 @@ Rectangle {
             font.pixelSize: 15
             font.bold: true
             color: "#515050"
+
+            FontLoader {
+                id: chineseFont
+                source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+            }
+            font.family: chineseFont.name;
         }
     }
 

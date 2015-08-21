@@ -45,5 +45,11 @@
         <file>sound/event.wav</file>
         <file>sound/message.wav</file>
         <file>sound/online.mp3</file>
+        <file>img/sound/st_m_sound_1.png</file>
+        <file>img/sound/st_m_sound_2.png</file>
+        <file>img/sound/st_m_sound_3.png</file>
+        <file>res/fonts/KhmerUI.ttf</file>
+        <file>res/fonts/KhmerUIb.ttf</file>
+        <file>res/fonts/方正兰亭刊黑_GBK.ttf</file>
     </qresource>
 </RCC>

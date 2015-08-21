@@ -26,6 +26,9 @@ Rectangle {
     id: messageRectangle;
     color: "#efefef"
 
+    property int wordsType: 1
+    property int imageType: 2
+    property int voiceType: 3
 
     MediaPlayer {
         id: soundMessage
@@ -44,40 +47,39 @@ Rectangle {
         anchors.fill: parent;
         delegate: messageDelegate
         model: messageModel.createObject(messageView)
-
         highlightRangeMode: ListView.ApplyRange
 
         /* 消息出现的动态效果 */
         add: Transition {
-             NumberAnimation {
-                 property: "opacity";
-                 from: 0;
-                 to: 1.0;
-                 duration: 400
-             }
-             NumberAnimation {
-                 property: "scale";
-                 from: 0;
-                 to: 1.0;
-                 duration: 400
-             }
-         }
-         displaced: Transition {
-             NumberAnimation {
-                 properties: "x,y";
-                 duration: 400;
-                 easing.type: Easing.OutBounce
-             }
-         }
+            NumberAnimation {
+                property: "opacity";
+                from: 0;
+                to: 1.0;
+                duration: 400
+            }
+            NumberAnimation {
+                property: "scale";
+                from: 0;
+                to: 1.0;
+                duration: 400
+            }
+        }
+        displaced: Transition {
+            NumberAnimation {
+                properties: "x,y";
+                duration: 400;
+                easing.type: Easing.OutBounce
+            }
+        }
 
         /* c++调用: 添加消息
-         * 这里item是QVariant类型：包含 index、name、type、dircect、user_messsage成员
+         * 这里item是QVariant类型：包含 index、name、dataType、dircect、user_messsage成员
          */
         function addMessage(data) {
             model.append(data);
             var height =  JsCommon.getMessageFrameHeight(
                         getPixelSize.height(10),
-                        getPixelSize.width(10 , data.user_message), 250);
+                        getPixelSize.width(10 , data.userMessage), 250);
             console.log(height);
             messageView.contentY += height + (100);
         }
@@ -111,12 +113,22 @@ Rectangle {
             function getItemHeight() {
                 var height =  JsCommon.getMessageFrameHeight(
                             getPixelSize.height(10),
-                            getPixelSize.width(10 , user_message), 250);
+                            getPixelSize.width(10 , userMessage), 250);
                 var row_num = height/17;
                 return (row_num * 17) + 10 + 40;
             }
 
-            height: getItemHeight();
+            height: {
+                if (dataType == wordsType) {
+                    return getItemHeight();
+                }
+                if (dataType == voiceType) {
+                    return 90
+                }
+                if (dataType == imageType) {
+                    return 100;
+                }
+            }
             width: parent.width;
 
             /* C++ 计算像素的类 */
@@ -182,17 +194,15 @@ Rectangle {
                         font.pixelSize: 12
                         text: name
                         font.bold: true
-                        font.family: "Cronyx"
                         font.letterSpacing: 2
                         style: Text.Raised
 
-                        /* 字体先注释，编译太慢
+                        //字体先注释，编译太慢
                         FontLoader {
                             id: chineseFont
                             source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
                         }
                         font.family: chineseFont.name;
-                        */
                     }
 
                     /* 对话框小箭头 */
@@ -224,18 +234,46 @@ Rectangle {
                         function getMessageHeight() {
                             var height =  JsCommon.getMessageFrameHeight(
                                         getPixelSize.height(10),
-                                        getPixelSize.width(10 , user_message), 250);
+                                        getPixelSize.width(10 , userMessage), 250);
                             return height + 10
                         }
 
                         function getMessageWidth() {
                             var width = JsCommon.getMessageFrameWidth(
-                                        getPixelSize.width(10, user_message)) + 20;
+                                        getPixelSize.width(10, userMessage)) + 20;
                             return width + 10;
                         }
 
-                        height: getMessageHeight();
-                        width: getMessageWidth();
+                        height: {
+                            if (dataType == wordsType) {
+                                return getMessageHeight();
+                            }
+                            if (dataType == voiceType) {
+                                return 35
+                            }
+                            if (dataType == imageType) {
+                                return 100;
+                            }
+                        }
+                        width: {
+                            if (dataType == wordsType) {
+                                return getMessageWidth();
+                            }
+                            if (dataType == voiceType) {
+                                if (voiceSeconds < 10) {
+                                    return 70;
+                                } else {
+                                    if ((70 + voiceSeconds) > 150){
+                                        return 150
+                                    } else {
+                                        return 70 + voiceSeconds
+                                    }
+                                }
+                            }
+                            if (dataType == imageType) {
+                                return 100;
+                            }
+                        }
 
                         anchors {
                             top: parent.top
@@ -257,6 +295,70 @@ Rectangle {
                             anchors.fill: friendMessageContent
                         }
 
+
+                        /* 语音显示 */
+                        Rectangle {
+                            id: friendMessageVoice
+                            visible: dataType == voiceType ? true : false
+                            color: "transparent"
+
+                            anchors {
+                                fill: friendMessageContent
+                                left:parent.left
+                                leftMargin: 10
+                            }
+
+                            Image {
+                                id: voiceImage1
+                                height : 22
+                                width: 22
+                                anchors {
+                                    verticalCenter: parent.verticalCenter
+                                    left: parent.left
+                                }
+                                source: "qrc:/img/sound/st_m_sound_1.png";
+                                fillMode: Image.PreserveAspectFit
+                                mirror: direct === 0 ? false : true
+                            }
+                            Image {
+                                id: voiceImage2
+                                height : 22
+                                width: 22
+                                anchors {
+                                    verticalCenter: parent.verticalCenter
+                                    left: parent.left
+                                }
+                                source: "qrc:/img/sound/st_m_sound_2.png";
+                                fillMode: Image.PreserveAspectFit
+                                mirror: direct === 0 ? false : true
+                            }
+                            Image {
+                                id: voiceImage3
+                                height : 22
+                                width: 22
+                                anchors {
+                                    verticalCenter: parent.verticalCenter
+                                    left: parent.left
+                                }
+                                source: "qrc:/img/sound/st_m_sound_3.png";
+                                fillMode: Image.PreserveAspectFit
+                                mirror: direct === 0 ? false : true
+                            }
+
+
+                            Text {
+                                id: voicePlaySeconds;
+                                text: voiceSeconds + "s"
+                                anchors {
+                                    verticalCenter: parent.verticalCenter
+                                    right: parent.right
+                                    rightMargin: 8
+                                }
+                                font.family: chineseFont.name;
+                            }
+                        }
+
+                        /* 文字显示 */
                         Text {
                             id: friendMessageText
                             width: parent.width
@@ -265,11 +367,13 @@ Rectangle {
                                 left:parent.left
                                 leftMargin: 10
                             }
-                            text: user_message;
+                            text: dataType == wordsType ? userMessage : ""
                             wrapMode: Text.WrapAnywhere
                             color: "black"
                             font.pointSize: 10
                             verticalAlignment: Text.AlignVCenter
+                            visible: dataType == wordsType ? true : false
+                            font.family: chineseFont.name;
                         }
                     }
                 }

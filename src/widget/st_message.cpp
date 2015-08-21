@@ -45,9 +45,10 @@ void addMessageToWidget(int uid, QString name, int type, int direct, QString mes
     QVariantMap data;
     data.insert("uid", uid);
     data.insert("name", name);
-    data.insert("type", type);
+    data.insert("dataType", type);
     data.insert("direct", direct);
-    data.insert("user_message", messageData);
+    data.insert("userMessage", messageData);
+    data.insert("voiceSeconds", 0);
 
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
@@ -71,8 +72,28 @@ void addImageToWidget(int uid, QString name, int type, int direct, QString messa
 void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds)
 {
     qDebug() << "receive one voice";
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
 
+    QVariantMap data;
+    data.insert("uid", uid);
+    data.insert("name", name);
+    data.insert("dataType", type);
+    data.insert("direct", direct);
+    data.insert("userMessage", voiceData);
+    data.insert("voiceSeconds", voiceSeconds);
 
+    qDebug() << "message type - " << type;
+
+    QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
+        qDebug() << "insert one voice ok";
+    } else {
+        qDebug() << "insert one voice fail";
+    }
 }
 
 

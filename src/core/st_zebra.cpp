@@ -107,6 +107,7 @@ void zebraDeleagates::friend_offline_message(
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
+                    m->voiceSeconds = length;
                     addVoiceToWidget(f.id, f.name, type, 0, m->data, length);
                     break;
                 default:
@@ -172,6 +173,7 @@ void zebraDeleagates::friend_online_message(
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
+                    m->voiceSeconds = length;
                     addVoiceToWidget(f.id, f.name, type, 0, m->data, length);
                     break;
                 default:

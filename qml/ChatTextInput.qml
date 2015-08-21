@@ -164,6 +164,7 @@ Rectangle {
             selectByMouse: true
             backgroundVisible: false
             frameVisible: false
+            font.family: chineseFont.name;
 
             focus: true
             Keys.onReturnPressed: {
@@ -215,9 +216,13 @@ Rectangle {
                 color: "#4f4f4f"
                 font.pixelSize: 12
                 font.bold: true
-                font.family: "Cronyx"
                 font.letterSpacing: 2
                 text: "发送(S)"
+                FontLoader {
+                    id: chineseFont
+                    source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                }
+                font.family: chineseFont.name;
             }
 
             MouseArea{
