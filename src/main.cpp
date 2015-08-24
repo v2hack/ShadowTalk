@@ -37,6 +37,7 @@
 #include "st_net.h"
 #include "st_parsexml.h"
 #include "st_log.h"
+#include "st_voice.h"
 
 peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
@@ -57,6 +58,14 @@ void setAppParameter() {
     QDir::setCurrent(dir);
     /* 库加载路径 */
     QGuiApplication::addLibraryPath("./plugins");
+
+    /* 创建工作目录 */
+	QDir workDir(dir + "/temp");
+    if (!workDir.exists()) {
+        workDir.mkdir(dir + "/temp");
+    } else {
+
+    }
     return;
 }
 
@@ -71,6 +80,7 @@ void registerQmlTye() {
     qmlRegisterType<PointSizeToPixelSize>("st.font.PointSizeToPixelSize", 1, 0, "PointSizeToPixelSize");
     qmlRegisterType<MessageManager>("st.info.MessageManager", 1, 0, "MessageManager");
     qmlRegisterType<SelectFriend>("st.info.SelectFriend", 1, 0, "SelectFriend");
+    qmlRegisterType<Voice>("st.info.Voice", 1, 0, "Voice");
     return;
 }
 

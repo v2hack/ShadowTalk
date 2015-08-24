@@ -21,6 +21,7 @@ import "common.js" as JsCommon
 
 /* 导入文字与像素计算类型 */
 import st.font.PointSizeToPixelSize 1.0
+import st.info.Voice 1.0
 
 Rectangle {
     id: messageRectangle;
@@ -30,6 +31,7 @@ Rectangle {
     property int imageType: 2
     property int voiceType: 3
 
+    /* 消息提示声音 */
     MediaPlayer {
         id: soundMessage
         objectName: "MessageSound"
@@ -38,6 +40,19 @@ Rectangle {
 
         function playMessageSound() {
             soundMessage.play();
+        }
+    }
+
+    /* 播放语音 */
+    MediaPlayer {
+        id: voiceMessage
+        objectName: "MessageVoice"
+        source: voiceUrl
+
+        function playMessageVoice(voiceFile) {
+            console.log("qml voice file - " + voiceMessage.voiceUrl);
+//            voiceMessage.source = voiceFile
+            voiceMessage.play();
         }
     }
 
@@ -73,7 +88,8 @@ Rectangle {
         }
 
         /* c++调用: 添加消息
-         * 这里item是QVariant类型：包含 index、name、dataType、dircect、user_messsage成员
+         * 这里item是QVariant类型：包含
+         * index、name、dataType、dircect、user_messsage、messageIndex
          */
         function addMessage(data) {
             model.append(data);
@@ -134,6 +150,9 @@ Rectangle {
             /* C++ 计算像素的类 */
             PointSizeToPixelSize {
                 id: getPixelSize;
+            }
+            Voice {
+                id: playVoice;
             }
 
             Rectangle {
@@ -355,6 +374,15 @@ Rectangle {
                                     rightMargin: 8
                                 }
                                 font.family: chineseFont.name;
+                            }
+
+                            /* 点击播放语音 */
+                            MouseArea{
+                                anchors.centerIn: parent
+                                anchors.fill: parent
+                                onClicked: {
+                                    playVoice.playVoice(uid, messageIndex);
+                                }
                             }
                         }
 

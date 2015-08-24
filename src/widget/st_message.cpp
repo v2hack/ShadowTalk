@@ -35,7 +35,7 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData)
+void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData, int messageIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -49,6 +49,7 @@ void addMessageToWidget(int uid, QString name, int type, int direct, QString mes
     data.insert("direct", direct);
     data.insert("userMessage", messageData);
     data.insert("voiceSeconds", 0);
+    data.insert("messageIndex", messageIndex);
 
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
@@ -60,7 +61,7 @@ void addMessageToWidget(int uid, QString name, int type, int direct, QString mes
 }
 
 
-void addImageToWidget(int uid, QString name, int type, int direct, QString messageData)
+void addImageToWidget(int uid, QString name, int type, int direct, QString messageData, int messageIndex)
 {
     qDebug() << "receive one image";
 
@@ -69,7 +70,7 @@ void addImageToWidget(int uid, QString name, int type, int direct, QString messa
 }
 
 
-void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds)
+void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds, int messageIndex)
 {
     qDebug() << "receive one voice";
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -84,6 +85,7 @@ void addVoiceToWidget(int uid, QString name, int type, int direct, QString voice
     data.insert("direct", direct);
     data.insert("userMessage", voiceData);
     data.insert("voiceSeconds", voiceSeconds);
+    data.insert("messageIndex", messageIndex);
 
     qDebug() << "message type - " << type;
 
@@ -163,7 +165,6 @@ MessageManager::~MessageManager() {
  *  @return 无
  */
 void MessageManager::sendMessage(int index, QString message) {
-    addMessageToWidget(0, "Me", 1, 1, message);
 
     /* 找到缓存 */
     Cache *c = gCtx.cache;
@@ -176,11 +177,14 @@ void MessageManager::sendMessage(int index, QString message) {
     if (!f) {
         return;
     }
+    int idx = f->messageList.size() + 1;
+
+    addMessageToWidget(0, "Me", 1, 1, message, idx);
 
     /* 组装缓存 */
     qDebug() << "name - " << f->name;
     Message *m = new Message;
-    m->data        = message;
+    m->data        = message.toStdString();
     m->driect      = MessageDriectMe;
     m->messageType = MessageTypeWord;
     //m->friendIndex = c->currentUseFriendId;

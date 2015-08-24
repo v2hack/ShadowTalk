@@ -16,8 +16,12 @@
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 
+#include <iostream>
+#include <fstream>
+
 #include "st_context.h"
 #include "st_cache.h"
+#include "st_utils.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -53,6 +57,20 @@ void playMessageSound() {
     }
 }
 
+void playMessageVoice(QString voiceFilePath) {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("MessageVoice");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "playMessageVoice",  Q_ARG(QVariant, voiceFilePath));
+    }
+}
+
+
+
 /**
  *  功能描述: 设置界面上当前还有的名字
  *  @param  currentFriendName 当前好友名
@@ -74,3 +92,4 @@ void displayCurrentFriendName(QString currentFriendName)
 
     }
 }
+

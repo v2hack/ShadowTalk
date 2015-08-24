@@ -3,10 +3,6 @@
 
 #include <QObject>
 
-#define SHADOWTALK_TEMP_DIR       "temp"  /* 临时文件目录 */
-#define SHADOWTALK_IMAGE_PREFIX   ".img"  /* 图片文件扩展名 */
-#define SHADOWTALK_SOUND_PREFIX   ".snd"  /* 声音文件扩展名 */
-
 /* 消息内容类型 */
 enum MessageContentType {
     MessageTypeNone = 0,
@@ -37,7 +33,7 @@ struct Message
     int messageType;    /* 聊天信息类型 */
     int MessageMethord; /* 离线或者在线 */
     int voiceSeconds;   /* 如果是语音数据表示秒数 */
-    QString data;       /* 消息内容 */
+    std::string data;       /* 消息内容 */
 };
 
 /* 聊天消息管理结构 */
@@ -50,9 +46,30 @@ public:
     Q_INVOKABLE void sendMessage(int index, QString message);
 };
 
-void addMessageToWidget(int uid, QString name, int messType, int direct, QString messageData);
-void addImageToWidget(int uid, QString name, int type, int direct, QString messageData);
-void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds);
+void addMessageToWidget(
+        int uid,
+        QString name,
+        int messType,
+        int direct,
+        QString messageData,
+        int messageIndex);
+
+void addImageToWidget(
+        int uid,
+        QString name,
+        int type,
+        int direct,
+        QString messageData,
+        int messageIndex);
+
+void addVoiceToWidget(
+        int uid,
+        QString name,
+        int type,
+        int direct,
+        QString voiceData,
+        int voiceSeconds,
+        int messageIndex);
 
 void clearMessageFromWidget();
 void removeMessageByIndex(int index, int count);

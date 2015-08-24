@@ -223,6 +223,8 @@ void SelectFriend::changeMessageList(int index, QString name) {
 
     /* 添加消息 */
     for (int i = 0; i < f->messageList.size(); i++) {
+
+        int idx = f->messageList.size() + 1;
         QMap<int, Message>::iterator it = f->messageList.find(i + 1);
         if (it == f->messageList.end()) {
             return;
@@ -239,13 +241,13 @@ void SelectFriend::changeMessageList(int index, QString name) {
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            addMessageToWidget(f->id, name, it->messageType, it->driect, it->data);
+            addMessageToWidget(f->id, name, it->messageType, it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeImage:
-            addImageToWidget(f->id, name, it->messageType, it->driect, it->data);
+            addImageToWidget(f->id, name, it->messageType, it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeVoice:
-            addVoiceToWidget(f->id, name, it->messageType, it->driect, it->data, it->voiceSeconds);
+            addVoiceToWidget(f->id, name, it->messageType, it->driect, QString::fromStdString(it->data), it->voiceSeconds, idx);
             break;
         default:
             break;

@@ -79,9 +79,11 @@ void zebraDeleagates::friend_offline_message(
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
+        int idx = f.messageList.size() + 1;
+
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
             Message *m        = new Message;
-            m->data           = QString::fromStdString(message);
+            m->data           = message;
             m->driect         = 0;
             m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOffline;
@@ -99,16 +101,16 @@ void zebraDeleagates::friend_offline_message(
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    addMessageToWidget(f.id, f.name, type, 0, m->data);
+                    addMessageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
                     break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    addImageToWidget(f.id, f.name, type, 0, m->data);
+                    addImageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    addVoiceToWidget(f.id, f.name, type, 0, m->data, length);
+                    addVoiceToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), length, idx);
                     break;
                 default:
                     break;
@@ -149,10 +151,11 @@ void zebraDeleagates::friend_online_message(
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
+        int idx = f.messageList.size() + 1;
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
 
             Message *m        = new Message;
-            m->data           = QString::fromStdString(message);
+            m->data           = message;
             m->driect         = 0;
             m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOnline;
@@ -166,16 +169,16 @@ void zebraDeleagates::friend_online_message(
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    addMessageToWidget(f.id, f.name, type, 0, m->data);
+                    addMessageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
                     break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    addImageToWidget(f.id, f.name, type, 0, m->data);
+                    addImageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    addVoiceToWidget(f.id, f.name, type, 0, m->data, length);
+                    addVoiceToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), length, idx);
                     break;
                 default:
                     break;

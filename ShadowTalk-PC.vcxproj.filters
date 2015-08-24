@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{ef89ab9a-a737-4792-9752-65ba23746c49}</UniqueIdentifier>
+      <UniqueIdentifier>{3837fda2-2996-44be-bbd5-349c050c6fba}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{aa8e13f1-dcdd-4a5b-a239-04afa9d04163}</UniqueIdentifier>
+      <UniqueIdentifier>{1d4974af-4e6b-4b4e-9d4e-717ac080c48d}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -86,6 +86,9 @@
     <ClCompile Include="src\core\st_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\st_voice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\core\st_zebra.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +120,12 @@
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Release\moc_st_pixelsize.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug\moc_st_voice.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_st_voice.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_qml.cpp">
@@ -166,6 +175,9 @@
     <ClInclude Include="src\core\st_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <CustomBuild Include="src\core\st_voice.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <ClInclude Include="src\core\st_zebra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
