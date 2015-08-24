@@ -12,6 +12,8 @@
  ******************************************************************/
 #include <QWidget>
 #include <QtQuick/QQuickView>
+#include <QDateTime>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -71,9 +73,12 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     }
 
     QVariantMap newElement;
+    QDateTime currentTime = QDateTime::currentDateTime();
     newElement.insert("friendName", friendName);
     newElement.insert("friendIndex", friendIndex);
     newElement.insert("unReadCount", 0);
+    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
+    newElement.insert("netState", MessageMethodOffline);
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
@@ -129,8 +134,7 @@ void Friend::setNetState(int state) {
 
 
 
-void Friend::displayUnreadCount(int idx, int count)
-{
+void Friend::displayUnreadCount(int idx, int count) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -146,6 +150,30 @@ void Friend::displayUnreadCount(int idx, int count)
         qDebug() << "set unread count fail";
     }
 }
+
+
+
+void Friend::setTimeAndState(int idx, int state) {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+
+        QDateTime currentTime = QDateTime::currentDateTime();
+        QMetaObject::invokeMethod(rect, "modifyFriendTime",
+                                  Q_ARG(QVariant, idx),
+                                  Q_ARG(QVariant, currentTime.toString("HH:mm:ss")),
+                                  Q_ARG(QVariant, state));
+        qDebug() << "set time and state ok";
+    } else {
+        qDebug() << "set time and state fail";
+    }
+}
+
+
 
 
 /**

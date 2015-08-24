@@ -119,6 +119,7 @@ void zebraDeleagates::friend_offline_message(
                 f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
             }
 
+            f.setTimeAndState(f.id - 1, MessageMethodOffline);
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_offline_message", "receive one online message", f.id, message.c_str());
@@ -185,6 +186,7 @@ void zebraDeleagates::friend_online_message(
                 f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
             }
 
+            f.setTimeAndState(f.id - 1, MessageMethodOnline);
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_online_message", "receive one online message", f.id, message.c_str());

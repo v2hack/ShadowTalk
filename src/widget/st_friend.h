@@ -41,6 +41,7 @@ public:
     void setName(QString name);
     void setNetState(int state);
     void displayUnreadCount(int index, int count);
+    void setTimeAndState(int idx, int state);
 };
 
 

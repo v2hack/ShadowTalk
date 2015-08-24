@@ -74,10 +74,3 @@ void displayCurrentFriendName(QString currentFriendName)
 
     }
 }
-
-
-
-
-
-
-

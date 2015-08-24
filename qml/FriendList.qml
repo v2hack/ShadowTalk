@@ -21,6 +21,10 @@ Rectangle {
     anchors.top: parent.top
     color: "transparent"
 
+    /* 网络状态和st_message.h中保持一致 */
+    property int fiendOnline  : 1
+    property int friendOutline: 2
+
     /* ListView */
     ListView {
         id: friendListView
@@ -29,30 +33,30 @@ Rectangle {
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
 
-         highlightRangeMode: ListView.ApplyRange
-         highlightFollowsCurrentItem: true
+        highlightRangeMode: ListView.ApplyRange
+        highlightFollowsCurrentItem: true
         /* 好友出现的动态效果 */
         add: Transition {
-             NumberAnimation {
-                 property: "opacity";
-                 from: 0;
-                 to: 1.0;
-                 duration: 1000
-             }
-             NumberAnimation {
-                 property: "scale";
-                 from: 0;
-                 to: 1.0;
-                 duration: 1000
-             }
-         }
-         displaced: Transition {
-             NumberAnimation {
-                 properties: "x,y";
-                 duration: 1000;
-                 easing.type: Easing.OutBounce
-             }
-         }
+            NumberAnimation {
+                property: "opacity";
+                from: 0;
+                to: 1.0;
+                duration: 1000
+            }
+            NumberAnimation {
+                property: "scale";
+                from: 0;
+                to: 1.0;
+                duration: 1000
+            }
+        }
+        displaced: Transition {
+            NumberAnimation {
+                properties: "x,y";
+                duration: 1000;
+                easing.type: Easing.OutBounce
+            }
+        }
 
         /* 添加好友 */
         function addFriend(data) {
@@ -72,6 +76,12 @@ Rectangle {
         /* 修改未读消息数量 */
         function modifyUnreadCount(index, count) {
             model.setProperty(index, "unReadCount", count);
+        }
+
+        /* 修改还有最后一条信息的时间 */
+        function modifyFriendTime(index, time, state) {
+            model.setProperty(index, "messageTime", time);
+            model.setProperty(index, "netState", state);
         }
     }
 
@@ -160,7 +170,7 @@ Rectangle {
                         font.family: chineseFont.name;
                     }
 
-                    /* 好友上线时间 */
+                    /* 最后一天消息发送时间 */
                     Text {
                         id: friendOnlineTime;
                         anchors {
@@ -169,9 +179,10 @@ Rectangle {
                             top: parent.top;
                             topMargin: 10
                         }
-                        color: "white"
+                        color: netState == fiendOnline ? "green" : "white"
                         font.pixelSize: 13
-                        text: JsCommon.getDateTime();
+                        //                        text: JsCommon.getDateTime();
+                        text: messageTime
                         font.family: chineseFont.name;
                     }
 
