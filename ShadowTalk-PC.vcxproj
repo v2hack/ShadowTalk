@@ -190,6 +190,7 @@
     <ClCompile Include="src\widget\st_message.cpp" />
     <ClCompile Include="src\net\st_net.cpp" />
     <ClCompile Include="src\core\st_parsexml.cpp" />
+    <ClCompile Include="src\core\st_picture.cpp" />
     <ClCompile Include="src\core\st_pixelsize.cpp" />
     <ClCompile Include="src\widget\st_trayicon.cpp" />
     <ClCompile Include="src\core\st_utils.cpp" />
@@ -284,6 +285,7 @@ endlocal
     </CustomBuild>
     <ClInclude Include="src\net\st_net.h" />
     <ClInclude Include="src\core\st_parsexml.h" />
+    <ClInclude Include="src\core\st_picture.h" />
     <CustomBuild Include="src\core\st_pixelsize.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd

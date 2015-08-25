@@ -109,6 +109,11 @@ Rectangle {
         function removeMessage(item) {
             model.remove(parseInt(item.index),  parseInt(item.count));
         }
+
+        /* c++调用: 设置图片显示 */
+        function setFriendImage(index, picturePath) {
+            model.setProperty(index, "userPicture", picturePath);
+        }
     }
 
     Component {
@@ -142,7 +147,7 @@ Rectangle {
                     return 90
                 }
                 if (dataType == imageType) {
-                    return 100;
+                    return 150;
                 }
             }
             width: parent.width;
@@ -271,7 +276,7 @@ Rectangle {
                                 return 35
                             }
                             if (dataType == imageType) {
-                                return 100;
+                                return 160;
                             }
                         }
                         width: {
@@ -290,7 +295,7 @@ Rectangle {
                                 }
                             }
                             if (dataType == imageType) {
-                                return 100;
+                                return 160;
                             }
                         }
 
@@ -402,6 +407,23 @@ Rectangle {
                             verticalAlignment: Text.AlignVCenter
                             visible: dataType == wordsType ? true : false
                             font.family: chineseFont.name;
+                        }
+
+                        /*  图片显示 */
+                        Image {
+                            id: friendMessagePicture
+                            visible: dataType == imageType ? true : false
+
+                            height: 155
+                            width: 155
+
+                            source: userPicture
+                            fillMode: Image.PreserveAspectFit
+
+                            anchors {
+                                horizontalCenter: parent.horizontalCenter
+                                verticalCenter: parent.verticalCenter
+                            }
                         }
                     }
                 }

@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{d446223e-2115-4d7c-861e-df769b1d924e}</UniqueIdentifier>
+      <UniqueIdentifier>{d0b4910b-0b1f-4464-9a2c-7067cd69db69}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{c69dec0d-4c49-4009-8278-c3c43d0aaf26}</UniqueIdentifier>
+      <UniqueIdentifier>{b5c11b9f-a0d0-4cd4-b3e1-c4610839f9dc}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -75,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\st_parsexml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\st_picture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\st_pixelsize.cpp">
@@ -164,6 +167,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\st_parsexml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\st_picture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <CustomBuild Include="src\core\st_pixelsize.h">

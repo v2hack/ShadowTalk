@@ -59,7 +59,7 @@ void addImageToWidget(
         QString name,
         int type,
         int direct,
-        QString messageData,
+        std::string messageData,
         int messageIndex);
 
 void addVoiceToWidget(

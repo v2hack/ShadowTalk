@@ -310,7 +310,7 @@ void SelectFriend::changeMessageList(int index, QString name) {
                 name,
                 it->messageType,
                 it->driect,
-                QString::fromStdString(it->data),
+                it->data,
                 idx
             );
             break;

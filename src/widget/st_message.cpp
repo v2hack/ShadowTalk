@@ -21,6 +21,7 @@
 #include "st_message.h"
 #include "st_log.h"
 #include "st_net.h"
+#include "st_picture.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -57,6 +58,7 @@ void addMessageToWidget(
     data.insert("userMessage", messageData);
     data.insert("voiceSeconds", 0);
     data.insert("messageIndex", messageIndex);
+    data.insert("userPicture", "");
 
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
@@ -87,12 +89,43 @@ void addImageToWidget(
         QString name,
         int type,
         int direct,
-        QString messageData,
+        std::string messageData,
         int messageIndex)
 {
     qDebug() << "receive one image";
 
+    QString picturePath = displayPicture(
+                QString::number(uid),
+                QString::number(messageIndex),
+                messageData);
+    if (picturePath.isEmpty()) {
+        return;
+    }
 
+//    const QUrl pictureUrl = QUrl::fromLocalFile(picturePath);
+
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QVariantMap data;
+    data.insert("uid", uid);
+    data.insert("name", name);
+    data.insert("dataType", type);
+    data.insert("direct", direct);
+    data.insert("userMessage", 0);
+    data.insert("voiceSeconds", 0);
+    data.insert("messageIndex", messageIndex);
+	data.insert("userPicture", picturePath);
+
+    QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
+        qDebug() << "insert one voice ok";
+    } else {
+        qDebug() << "insert one voice fail";
+    }
 }
 
 /**
@@ -123,6 +156,7 @@ void addVoiceToWidget(int uid, QString name, int type, int direct, QString voice
     data.insert("userMessage", voiceData);
     data.insert("voiceSeconds", voiceSeconds);
     data.insert("messageIndex", messageIndex);
+    data.insert("userPicture", "");
 
     qDebug() << "message type - " << type;
 

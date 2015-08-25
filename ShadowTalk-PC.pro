@@ -39,7 +39,8 @@ HEADERS += \
     src/widget/st_group.h \
     src/widget/st_trayicon.h \
     src/core/st_base64.h \
-    src/core/st_voice.h
+    src/core/st_voice.h \
+    src/core/st_picture.h
 	
 SOURCES += \
     src/main.cpp \
@@ -56,7 +57,8 @@ SOURCES += \
     src/widget/st_message.cpp \
     src/widget/st_trayicon.cpp \
     src/core/st_base64.cpp \
-    src/core/st_voice.cpp
+    src/core/st_voice.cpp \
+    src/core/st_picture.cpp
    
 win32 {
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57

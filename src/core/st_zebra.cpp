@@ -140,7 +140,7 @@ void zebraDeleagates::friend_offline_message(
                     break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    addImageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
+                    addImageToWidget(f.id, f.name, type, 0, m->data, idx);
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
@@ -234,7 +234,7 @@ void zebraDeleagates::friend_online_message(
                     break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    addImageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
+                    addImageToWidget(f.id, f.name, type, 0, m->data, idx);
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
