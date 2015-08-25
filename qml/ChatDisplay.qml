@@ -47,11 +47,11 @@ Rectangle {
     MediaPlayer {
         id: voiceMessage
         objectName: "MessageVoice"
-        source: voiceUrl
+        source: ""
 
         function playMessageVoice(voiceFile) {
-            console.log("qml voice file - " + voiceMessage.voiceUrl);
-//            voiceMessage.source = voiceFile
+            console.log("qml voice file - " + voiceFile);
+            voiceMessage.source = voiceFile
             voiceMessage.play();
         }
     }

@@ -48,7 +48,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ShadowTalk-PC</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ShadowTalk-PC</TargetName>
@@ -72,7 +72,6 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
-      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <Link>
       <AdditionalDependencies>D:\code\ShadowTalk\lib\x32\boost\\libboost_chrono-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_chrono-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_date_time-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_date_time-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_filesystem-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_filesystem-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_program_options-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_program_options-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_regex-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_regex-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_system-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_system-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_thread-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_thread-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\peersafe\\cryptopp-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\maidsafe_common-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\maidsafe_passport-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_channel-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_imapi-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_network-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_oudp-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_visit-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\proto_compiler-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\protobuf_lite-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\protobuf-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\torrent-rasterbar.lib;D:\code\ShadowTalk\lib\x32\ice\\libpj.lib;D:\code\ShadowTalk\lib\x32\ice\\libpjlib-util.lib;D:\code\ShadowTalk\lib\x32\ice\\libpjnath.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Multimedia.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Xml.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>

@@ -20,10 +20,6 @@ Voice::Voice(QObject *parent) : QObject(parent) {
 }
 
 void Voice::writeVoiceFile(std::string fileName, std::string data) {
-//    std::ofstream outfile (fileName, std::ofstream::binary);
-//    outfile.write(data.c_str(), data.size());
-//    outfile.close();
-
     std::ofstream file;
     file.open(fileName, std::ios::out | std::ios::binary);
     file.write(data.c_str(), data.size());
@@ -73,7 +69,6 @@ void Voice::playVoice(QString fidx, QString midx) {
 
     QString tempPath = QString("%0%1%2-%3%4").arg(
                 QGuiApplication::applicationDirPath(),"/temp/", fidx, midx, SHADOWTALK_SOUND_PREFIX);
-
 
     const QUrl commandLineUrl = QUrl::fromLocalFile(tempPath);
     qDebug() << "voice file :  - " << commandLineUrl;

@@ -102,7 +102,7 @@ Friend::~Friend() {
  *  @return 无
  */
 void Friend::insertOneMessage(Message *message) {
-    this->messageList.insert(this->messageList.size() + 1, *message);
+    this->messageList.insert(this->messageList.size(), *message);
     this->messageCount++;
     return;
 }
@@ -118,6 +118,7 @@ void Friend::setQrCode(QString qrCode) {
 
 /**
  *  功能描述: 存储名字到缓存
+ *
  *  @return 无
  */
 void Friend::setName(QString name) {
@@ -224,8 +225,8 @@ void SelectFriend::changeMessageList(int index, QString name) {
     /* 添加消息 */
     for (int i = 0; i < f->messageList.size(); i++) {
 
-        int idx = f->messageList.size() + 1;
-        QMap<int, Message>::iterator it = f->messageList.find(i + 1);
+        int idx = i;
+        QMap<int, Message>::iterator it = f->messageList.find(i);
         if (it == f->messageList.end()) {
             return;
         }

@@ -79,7 +79,7 @@ void zebraDeleagates::friend_offline_message(
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
-        int idx = f.messageList.size() + 1;
+        int idx = f.messageList.size();
 
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
             Message *m        = new Message;
@@ -116,11 +116,24 @@ void zebraDeleagates::friend_offline_message(
                     break;
                 }
             } else {
-                m->messageType = type;
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
+                /* 判断类型 */
+                switch (type) {
+                case MessageTypeWord:
+                    m->messageType = MessageTypeWord;
+                    break;
+                case MessageTypeImage:
+                    m->messageType = MessageTypeImage;
+                    break;
+                case MessageTypeVoice:
+                    m->messageType = MessageTypeVoice;
+                    m->voiceSeconds = length;
+                    break;
+                default:
+                    break;
+                }
             }
-
             f.setTimeAndState(f.id - 1, MessageMethodOffline);
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
@@ -151,7 +164,7 @@ void zebraDeleagates::friend_online_message(
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
-        int idx = f.messageList.size() + 1;
+        int idx = f.messageList.size();
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
 
             Message *m        = new Message;
@@ -184,9 +197,23 @@ void zebraDeleagates::friend_online_message(
                     break;
                 }
             } else {
-                m->messageType = type;
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id - 1, f.messageUnreadCount);
+                /* 判断类型 */
+                switch (type) {
+                case MessageTypeWord:
+                    m->messageType = MessageTypeWord;
+                    break;
+                case MessageTypeImage:
+                    m->messageType = MessageTypeImage;
+                    break;
+                case MessageTypeVoice:
+                    m->messageType = MessageTypeVoice;
+                    m->voiceSeconds = length;
+                    break;
+                default:
+                    break;
+                }
             }
 
             f.setTimeAndState(f.id - 1, MessageMethodOnline);

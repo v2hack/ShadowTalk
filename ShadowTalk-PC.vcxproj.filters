@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{3837fda2-2996-44be-bbd5-349c050c6fba}</UniqueIdentifier>
+      <UniqueIdentifier>{1243ffe2-4749-404a-9010-98ffe9d2bae6}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{1d4974af-4e6b-4b4e-9d4e-717ac080c48d}</UniqueIdentifier>
+      <UniqueIdentifier>{2a474718-5696-46e3-8d3c-4a016ce2a1b9}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
