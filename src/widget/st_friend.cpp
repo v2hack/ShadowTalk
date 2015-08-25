@@ -45,27 +45,47 @@ Friend::Friend(QString friendName, int friendIndex):
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
-        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement)));
+        QMetaObject::invokeMethod(
+                    rect,
+                    "addFriend",
+                    Q_ARG(QVariant, QVariant::fromValue(newElement))
+        );
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
-             "Friend", "add friend to widget success", friendIndex, friendName.toLatin1().data());
+             "Friend",
+             "add friend to widget success",
+             friendIndex,
+             friendName.toLatin1().data());
     } else {
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
-             "Friend", "add friend to widget fail", friendIndex, friendName.toLatin1().data());
+             "Friend",
+             "add friend to widget fail",
+             friendIndex,
+             friendName.toLatin1().data());
     }
 }
 
-
+/**
+ *  功能描述: 好友构造函数，初始化一个好友
+ *  @param friendName   好友名字
+ *  @param expiredTime  过期时间
+ *  @param channelId    通道id
+ *  @param session      是否在临时列表中
+ *  @param status       在线状态
+ *  @param friendIndex  好友索引
+ *
+ *  @return 无
+ */
 Friend::Friend(QString friendName, int expiredTime, QString channelId,
                int session, int status, int friendIndex)
 {
+    id = friendIndex;
+    messageCount = 0;
     name = friendName;
-    defaultExpiredTime = expiredTime;
-    friendChannelId = channelId;
     inSession = session;
     netStatus = status;
-    messageCount = 0;
     messageUnreadCount = 0;
-    id = friendIndex;
+    friendChannelId    = channelId;
+    defaultExpiredTime = expiredTime;
 
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -74,31 +94,48 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
 
     QVariantMap newElement;
     QDateTime currentTime = QDateTime::currentDateTime();
-    newElement.insert("friendName", friendName);
+    newElement.insert("friendName",  friendName);
     newElement.insert("friendIndex", friendIndex);
     newElement.insert("unReadCount", 0);
     newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
-    newElement.insert("netState", MessageMethodOffline);
+    newElement.insert("netState",    MessageMethodOffline);
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
-        QMetaObject::invokeMethod(rect, "addFriend", Q_ARG(QVariant, QVariant::fromValue(newElement)));
+        QMetaObject::invokeMethod(
+                    rect,
+                    "addFriend",
+                    Q_ARG(QVariant, QVariant::fromValue(newElement)));
+
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
-             "Friend", "add friend to widget success", friendIndex, friendName.toLatin1().data());
+             "Friend",
+             "add friend to widget success",
+             friendIndex,
+             friendName.toLatin1().data());
     } else {
+
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
-             "Friend", "add friend to widget fail", friendIndex, friendName.toLatin1().data());
+             "Friend",
+             "add friend to widget fail",
+             friendIndex,
+             friendName.toLatin1().data());
     }
 }
 
-
-
+/**
+ *  功能描述: 好友析构函数
+ *  @param  无
+ *
+ *  @return 无
+ */
 Friend::~Friend() {
 
 }
 
 /**
  *  功能描述: 将消息放入缓存列表
+ *  @param message 消息结构
+ *
  *  @return 无
  */
 void Friend::insertOneMessage(Message *message) {
@@ -110,6 +147,8 @@ void Friend::insertOneMessage(Message *message) {
 
 /**
  *  功能描述: 存储二维码到缓存
+ *  @param qrCode 二维码串
+ *
  *  @return 无
  */
 void Friend::setQrCode(QString qrCode) {
@@ -118,6 +157,7 @@ void Friend::setQrCode(QString qrCode) {
 
 /**
  *  功能描述: 存储名字到缓存
+ *  @param name 用户名设置
  *
  *  @return 无
  */
@@ -126,15 +166,22 @@ void Friend::setName(QString name) {
 }
 
 /**
- *  功能描述: SelectFriend构造函数
+ *  功能描述: 设置用户网络状态
+ *  @param state 网络状态值
+ *
  *  @return 无
  */
 void Friend::setNetState(int state) {
     this->netStatus = state;
 }
 
-
-
+/**
+ *  功能描述: 调用qml对象，设置好友界面未读消息数量
+ *  @param idx    好友索引
+ *  @param count  未读消息数量
+ *
+ *  @return 无
+ */
 void Friend::displayUnreadCount(int idx, int count) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -143,17 +190,25 @@ void Friend::displayUnreadCount(int idx, int count) {
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
-        QMetaObject::invokeMethod(rect, "modifyUnreadCount",
-                                  Q_ARG(QVariant, idx),
-                                  Q_ARG(QVariant, count));
+        QMetaObject::invokeMethod(
+            rect,
+            "modifyUnreadCount",
+            Q_ARG(QVariant, idx),
+            Q_ARG(QVariant, count)
+        );
         qDebug() << "set unread count ok";
     } else {
         qDebug() << "set unread count fail";
     }
 }
 
-
-
+/**
+ *  功能描述: 调用qml对象，设置好友界面未读消息数量
+ *  @param idx    好友索引
+ *  @param count  未读消息数量
+ *
+ *  @return 无
+ */
 void Friend::setTimeAndState(int idx, int state) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -164,17 +219,18 @@ void Friend::setTimeAndState(int idx, int state) {
     if (rect) {
 
         QDateTime currentTime = QDateTime::currentDateTime();
-        QMetaObject::invokeMethod(rect, "modifyFriendTime",
-                                  Q_ARG(QVariant, idx),
-                                  Q_ARG(QVariant, currentTime.toString("HH:mm:ss")),
-                                  Q_ARG(QVariant, state));
+        QMetaObject::invokeMethod(
+            rect,
+            "modifyFriendTime",
+            Q_ARG(QVariant, idx),
+            Q_ARG(QVariant, currentTime.toString("HH:mm:ss")),
+            Q_ARG(QVariant, state)
+        );
         qDebug() << "set time and state ok";
     } else {
         qDebug() << "set time and state fail";
     }
 }
-
-
 
 
 /**
@@ -213,14 +269,11 @@ void SelectFriend::changeMessageList(int index, QString name) {
     /* 找到好友缓存 */
     Friend *f = c->getOneFriend(index);
     if (!f) {
-        qDebug() << "can't find friend index - " << index;
         return;
     }
 
     /* 设置当前好友index */
     c->setCurrentFriendId(index);
-
-    qDebug() << "message list size - " << f->messageList.size();
 
     /* 添加消息 */
     for (int i = 0; i < f->messageList.size(); i++) {
@@ -242,13 +295,35 @@ void SelectFriend::changeMessageList(int index, QString name) {
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            addMessageToWidget(f->id, name, it->messageType, it->driect, QString::fromStdString(it->data), idx);
+            addMessageToWidget(
+                f->id,
+                name,
+                it->messageType,
+                it->driect,
+                QString::fromStdString(it->data),
+                idx
+            );
             break;
         case MessageTypeImage:
-            addImageToWidget(f->id, name, it->messageType, it->driect, QString::fromStdString(it->data), idx);
+            addImageToWidget(
+                f->id,
+                name,
+                it->messageType,
+                it->driect,
+                QString::fromStdString(it->data),
+                idx
+            );
             break;
         case MessageTypeVoice:
-            addVoiceToWidget(f->id, name, it->messageType, it->driect, QString::fromStdString(it->data), it->voiceSeconds, idx);
+            addVoiceToWidget(
+                f->id,
+                name,
+                it->messageType,
+                it->driect,
+                QString::fromStdString(it->data),
+                it->voiceSeconds,
+                idx
+            );
             break;
         default:
             break;

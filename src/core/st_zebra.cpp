@@ -22,15 +22,26 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
+/**
+ *  功能描述: 字符串转换为十六进制
+ *  @param s 字符串
+ *
+ *  @return 无
+ */
 std::string StringToHex(std::string s) {
     peersafe::im::Message_client *z = gCtx.zebra;
     return z->hex_decode(s);
 }
 
+/**
+ *  功能描述: HexToString
+ *  @param s 字符串
+ *
+ *  @return 无
+ */
 std::string HexToString(std::string s) {
     peersafe::im::Message_client *z = gCtx.zebra;
     if (!z) {
-        std::cout << "zebra is null" << std::endl;
         return "";
     }
     return z->hex_encode(s);
@@ -44,20 +55,44 @@ zebraDeleagates::~zebraDeleagates() {
 
 }
 
-/* 网络状态改变 */
+/**
+ *  功能描述: 网络状态
+ *  @param stat_code 状态、值
+ *
+ *  @return 无
+ */
 void zebraDeleagates::network_state(int stat_code) {
 std:cout << "network_state - " << std::endl;
 
 }
 
-/* 好友上线或者离线状态 */
+/**
+ *  功能描述: 好友上线或者离线状态
+ *  @param friend_channel_id 好友通道id
+ *  @param state_code 状态值
+ *
+ *  @return 无
+ */
 void zebraDeleagates::friend_state(
         const string &friend_channel_id,
         int state_code) {
     std::cout << "friend_state" << state_code << std::endl;
 }
 
-/* 接受离线消息 */
+
+/**
+ *  功能描述: 接受离线消息
+ *  @param friend_channel_id 好友通道id
+ *  @param type              消息类型
+ *  @param message           消息内容
+ *  @param message_id        消息id
+ *  @param expired           过期时间
+ *  @param entire_expired
+ *  @param length            消息长度
+ *  @param timestamp         时间戳
+ *
+ *  @return 无
+ */
 void zebraDeleagates::friend_offline_message(
         const string &friend_channel_id,
         const int type,
@@ -142,7 +177,20 @@ void zebraDeleagates::friend_offline_message(
     }
 }
 
-/* 接受在线消息 */
+
+/**
+ *  功能描述: 接受在线消息
+ *  @param friend_channel_id 好友通道id
+ *  @param type              消息类型
+ *  @param message           消息内容
+ *  @param message_id        消息id
+ *  @param expired           过期时间
+ *  @param entire_expired
+ *  @param length            消息长度
+ *  @param timestamp         时间戳
+ *
+ *  @return 无
+ */
 void zebraDeleagates::friend_online_message(
         const string &friend_channel_id,
         const int type,
@@ -224,34 +272,55 @@ void zebraDeleagates::friend_online_message(
     }
 }
 
-/* 接收添加好友请求 */
+
+/**
+ *  功能描述: 接收添加好友请求
+ *  @param qr_channel_id     二维码通道id
+ *  @param info              消息内容
+ *  @param friend_channel_id 好友通道id
+ *
+ *  @return 无
+ */
 void zebraDeleagates::friend_request_via_qr(
         const string &qr_channel_id,
         const string &info,
-        const string &friend_channel_id)
-{
+        const string &friend_channel_id) {
     std::cout << "friend_request_via_qr" << std::endl;
 }
 
 
-/* 好友请求是否被接受 */
+/**
+ *  功能描述: 好友请求是否被接受
+ *  @param friend_channel_id 好友通道id
+ *  @param accepted          对方是否接受添加
+ *
+ *  @return 无
+ */
 void zebraDeleagates::friend_request_reply(
         const string &friend_channel_id,
-        bool accepted)
-{
+        bool accepted) {
     std::cout << "friend_request_reply" << std::endl;
 }
 
-/* 已被对方通知删除好友 */
-void zebraDeleagates::friend_deleted(const string &friend_channel_id)
-{
+
+/**
+ *  功能描述: 已被对方通知删除好友
+ *  @param friend_channel_id 好友通道id
+ *
+ *  @return 无
+ */
+void zebraDeleagates::friend_deleted(const string &friend_channel_id) {
     std::cout << "friend_deleted" << std::endl;
 }
 
-
-/* 数据操作 */
-void zebraDeleagates::store_data(const string &key_id, const string &read_data)
-{
+/**
+ *  功能描述: 存储数据操作
+ *  @param key_id     key索引
+ *  @param read_data  key数值
+ *
+ *  @return 无
+ */
+void zebraDeleagates::store_data(const string &key_id, const string &read_data) {
     Cache *c = gCtx.cache;
     if (!c) {
         return;
@@ -260,17 +329,20 @@ void zebraDeleagates::store_data(const string &key_id, const string &read_data)
     it = c->keyValueList.find(key_id);
     if (it != c->keyValueList.end()) {
         it->second = read_data;
-        std::cout << "update store key ok" << std::endl;
         return;
     } else {
         c->keyValueList.insert(std::pair<std::string, std::string>(key_id, read_data));
-        std::cout << "insert key ok" << std::endl;
     }
 }
 
-
-void zebraDeleagates::read_data(const string &key_id, string &read_data)
-{
+/**
+ *  功能描述: 存储数据读取
+ *  @param key_id     key索引
+ *  @param read_data  key数值
+ *
+ *  @return 无
+ */
+void zebraDeleagates::read_data(const string &key_id, string &read_data) {
     Cache *c = gCtx.cache;
     if (!c) {
         return;
@@ -278,17 +350,21 @@ void zebraDeleagates::read_data(const string &key_id, string &read_data)
     std::map<std::string, std::string>::iterator it;
     it = c->keyValueList.find(key_id);
     if (it != c->keyValueList.end()) {
-        std::cout << "find key ok - " << std::endl;
         read_data = it->second;
         return;
     }
-    std::cout << "no find value" << std::endl;
     read_data.clear();
-    return ;
+    return;
 }
 
-void zebraDeleagates::delete_data(const string &key_id)
-{
+/**
+ *  功能描述: 存储数据读取
+ *  @param key_id     key索引
+ *  @param read_data  key数值
+ *
+ *  @return 无
+ */
+void zebraDeleagates::delete_data(const string &key_id) {
     int deleteFlag = 0;
     Cache *c = gCtx.cache;
     if (!c) {
@@ -303,9 +379,14 @@ void zebraDeleagates::delete_data(const string &key_id)
     return;
 }
 
-/* 去重函数 */
-bool zebraDeleagates::isExisted(const string &item, unsigned int expire)
-{
+/**
+ *  功能描述: 去重函数
+ *  @param item    去重数值
+ *  @param expire  超期时间
+ *
+ *  @return 无
+ */
+bool zebraDeleagates::isExisted(const string &item, unsigned int expire) {
     static std::string zebraIsExisted;
     if (item == zebraIsExisted) {
         return true;
@@ -316,21 +397,43 @@ bool zebraDeleagates::isExisted(const string &item, unsigned int expire)
     return false;
 }
 
-/* 数据是否发送成功 */
+/**
+ *  功能描述: 数据是否发送成功
+ *  @param channel_id  通道索引
+ *  @param message_id  消息索引
+ *  @param ret_code    处理结果
+ *
+ *  @return 无
+ */
 void zebraDeleagates::handler_write_message_reply(
         const std::string &channel_id,
-        unsigned long message_id, int ret_code)
-{
+        unsigned long message_id, int ret_code) {
     std::cout << "handler_write_message_reply" << std::endl;
 }
 
-/* ice 通道状态 非0为异常 */
-void zebraDeleagates::ice_session_state(const std::string &channel_id, int state)
-{
+
+/**
+ *  功能描述: ice 通道状态 非0为异常
+ *  @param channel_id  通道索引
+ *  @param state       ice状态
+ *  @param ret_code    处理结果
+ *
+ *  @return 无
+ */
+void zebraDeleagates::ice_session_state(const std::string &channel_id, int state) {
     std::cout << "ice_session_state" << std::endl;
 }
 
-/* 底层回调上层判断是否能通过无网通道发送，能则异步发送并返回1，否则返回-1 */
+
+/**
+ *  功能描述: 底层回调上层判断是否能通过无网通道发送，能则异步发送并返回1，否则返回 -1
+ *  @param connection_id       连接id
+ *  @param friend_channel_id   超有通道id
+ *  @param message_id          消息id
+ *  @param data                数据内容
+ *
+ *  @return 无
+ */
 int zebraDeleagates::send_message_via_direct_connection(
         const std::string &connection_id,
         const std::string &friend_channel_id,
@@ -341,7 +444,14 @@ int zebraDeleagates::send_message_via_direct_connection(
     return 0;
 }
 
-/* 底层通知上层绑定connection_id和friend_channel_id */
+
+/**
+ *  功能描述: 底层通知上层绑定connection_id和friend_channel_id
+ *  @param connection_id       连接id
+ *  @param friend_channel_id   超有通道id
+ *
+ *  @return 无
+ */
 void zebraDeleagates::bind_friend_channel(
         const std::string &connection_id,
         const std::string &friend_channel_id)

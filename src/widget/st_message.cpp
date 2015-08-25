@@ -27,15 +27,22 @@ extern struct ShadowTalkContext gCtx;
 
 /**
  *  功能描述: addMessageToWidget 添加消息到界面
- *  @param uid         用户索引
- *  @param name        用户名
- *  @param type        消息类型: 文字、声音、图片
- *  @param direct      消息的方向
- *  @param messageData 数据内容
+ *  @param uid          用户索引
+ *  @param name         用户名
+ *  @param type         消息类型: 文字、声音、图片
+ *  @param direct       消息的方向
+ *  @param messageData  数据内容
+ *  @param messageIndex 消息索引
  *
  *  @return 无
  */
-void addMessageToWidget(int uid, QString name, int type, int direct, QString messageData, int messageIndex)
+void addMessageToWidget(
+        int uid,
+        QString name,
+        int type,
+        int direct,
+        QString messageData,
+        int messageIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -53,23 +60,53 @@ void addMessageToWidget(int uid, QString name, int type, int direct, QString mes
 
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
-        QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
+        QMetaObject::invokeMethod(
+            rect,
+            "addMessage",
+            Q_ARG(QVariant, QVariant::fromValue(data))
+        );
         qDebug() << "insert one message ok";
     } else {
         qDebug() << "insert one message fail";
     }
 }
 
-
-void addImageToWidget(int uid, QString name, int type, int direct, QString messageData, int messageIndex)
+/**
+ *  功能描述: addImageToWidget 添加图片消息到界面
+ *  @param uid          用户索引
+ *  @param name         用户名
+ *  @param type         消息类型: 文字、声音、图片
+ *  @param direct       消息的方向
+ *  @param messageData  数据内容
+ *  @param messageIndex 消息索引
+ *
+ *  @return 无
+ */
+void addImageToWidget(
+        int uid,
+        QString name,
+        int type,
+        int direct,
+        QString messageData,
+        int messageIndex)
 {
     qDebug() << "receive one image";
 
 
-
 }
 
-
+/**
+ *  功能描述: 添加声音到qml界面
+ *  @param uid           用户id
+ *  @param name          名字
+ *  @param type          控件类型
+ *  @param direct        消息方向
+ *  @param voiceData     声音数据
+ *  @param voiceSeconds  声音秒数
+ *  @param messageIndex  消息索引
+ *
+ *  @return 无
+ */
 void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds, int messageIndex)
 {
     qDebug() << "receive one voice";

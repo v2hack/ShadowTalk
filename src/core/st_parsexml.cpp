@@ -70,11 +70,8 @@ void addCacheForKeyValue(QString key, QString value) {
         qDebug() << "insert cache fail";
         return;
     }
-
-//    std::cout << "key - " << HexToString(plainKey) << std::endl;
-//    std::cout << "value - " << HexToString(plainValue) << std::endl;
-
     c->insertKeyValue(plainKey,  plainValue);
+    return;
 }
 
 /**

@@ -57,6 +57,12 @@ void playMessageSound() {
     }
 }
 
+/**
+ *  功能描述: 访问qml对象，播放音频文件
+ *  @param voiceFilePath 音频文件路径
+ *
+ *  @return 无
+ */
 void playMessageVoice(QString voiceFilePath) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -69,16 +75,13 @@ void playMessageVoice(QString voiceFilePath) {
     }
 }
 
-
-
 /**
  *  功能描述: 设置界面上当前还有的名字
  *  @param  currentFriendName 当前好友名
  *
  *  @return 无
  */
-void displayCurrentFriendName(QString currentFriendName)
-{
+void displayCurrentFriendName(QString currentFriendName) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -89,7 +92,6 @@ void displayCurrentFriendName(QString currentFriendName)
         QMetaObject::invokeMethod(rect, "setCurrentFriendName",  Q_ARG(QVariant, currentFriendName));
     } else {
         qDebug() << "can't find object DispalyCurrentFriendName";
-
     }
+    return;
 }
-

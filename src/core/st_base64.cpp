@@ -22,20 +22,29 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
+/**
+ *  功能描述: encode 将二进制数据变成可见字符串
+ *  @param binaryData  二进制数据
+ *
+ *  @return 无
+ */
 std::string Base64::encode(const std::string &binaryData) {
     peersafe::im::Message_client *zebra = gCtx.zebra;
     if (!zebra) {
-        qDebug() << "base64 error";
         return "";
     }
 	return zebra->base64Encode(binaryData);
 }
 
-
+/**
+ *  功能描述: decode 将字符串变成二进制数据
+ *  @param base64String  可见字符串
+ *
+ *  @return 无
+ */
 std::string Base64::decode(const std::string &base64String) {
     peersafe::im::Message_client *zebra = gCtx.zebra;
     if (!zebra) {
-        qDebug() << "base64 error";
         return "";
     }
     return zebra->base64Decode(base64String);

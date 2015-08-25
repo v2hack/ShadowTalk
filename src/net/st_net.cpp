@@ -24,6 +24,12 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
+/**
+ *  功能描述: 获取本地ip列表
+ *  @param 无
+ *
+ *  @return 无
+ */
 void getLocalIp() {
     QString localHostName = QHostInfo::localHostName();
     QHostInfo info = QHostInfo::fromName(localHostName);
@@ -31,7 +37,15 @@ void getLocalIp() {
     return;
 }
 
-
+/**
+ *  功能描述: 发送离线消息适配接口
+ *  @param channelId    通道id
+ *  @param messageType  消息类型
+ *  @param message      消息内容
+ *  @param messageId    消息索引
+ *
+ *  @return 无
+ */
 void adaptSendMessage(QString channelId, int messageType,
                       QString message, int messageId) {
 
@@ -51,7 +65,12 @@ void adaptSendMessage(QString channelId, int messageType,
     return;
 }
 
-
+/**
+ *  功能描述: 坚挺好友通道适配接口
+ *  @param friendChannelId  好友通道id
+ *
+ *  @return 无
+ */
 void adaptListenFriends(std::string friendChannelId) {
     int ret = 0;
     peersafe::im::Message_client *z = gCtx.zebra;
@@ -65,7 +84,12 @@ void adaptListenFriends(std::string friendChannelId) {
     return;
 }
 
-
+/**
+ *  功能描述: 监听所有好友通道
+ *  @param  无
+ *
+ *  @return 无
+ */
 void adaptListenAllFriends() {
     int ret = 0;
 
@@ -88,7 +112,12 @@ void adaptListenAllFriends() {
     return;
 }
 
-
+/**
+ *  功能描述: 取消监听好友适配接口
+ *  @param friendChannelId  好友通道id
+ *
+ *  @return 无
+ */
 void adaptUnistenFriends(std::string friendChannelId) {
     int ret = 0;
     peersafe::im::Message_client *z = gCtx.zebra;
