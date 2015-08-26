@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{af589c49-686a-4615-ab8b-48cd6015defe}</UniqueIdentifier>
+      <UniqueIdentifier>{fcac7151-c3fb-4574-8cac-0308832f6e44}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{024b4dac-7dd4-4233-b3f7-c437b8fef937}</UniqueIdentifier>
+      <UniqueIdentifier>{e6f5325a-df61-443a-8601-c8259cca2858}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -119,6 +119,12 @@
     <ClCompile Include="Release\moc_st_message.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_st_picture.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_st_picture.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
     <ClCompile Include="Debug\moc_st_pixelsize.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -169,9 +175,9 @@
     <ClInclude Include="src\core\st_parsexml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\st_picture.h">
+    <CustomBuild Include="src\core\st_picture.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </CustomBuild>
     <CustomBuild Include="src\core\st_pixelsize.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -241,6 +247,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="sound\online.mp3">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="qml\picture.qml">
       <Filter>Resource Files</Filter>
     </None>
     <CustomBuild Include="qml.qrc">

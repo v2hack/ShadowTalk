@@ -15,8 +15,10 @@
 struct ShadowTalkContext
 {
     QGuiApplication *app;  /* application 指针*/
+
     QQuickView *viewer;    /* 主窗口viewer指针 */
     QQuickView *loginer;   /* 登陆窗口viewer指针 */
+    QQuickView *imager;    /* 图片浏览窗口指针 */
 
     Cache *cache;          /* 缓存指针 */
 

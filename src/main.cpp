@@ -38,6 +38,7 @@
 #include "st_parsexml.h"
 #include "st_log.h"
 #include "st_voice.h"
+#include "st_picture.h"
 
 peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
@@ -60,7 +61,7 @@ void setAppParameter() {
     QGuiApplication::addLibraryPath("./plugins");
 
     /* 创建工作目录 */
-	QDir workDir(dir + "/temp");
+    QDir workDir(dir + "/temp");
     if (!workDir.exists()) {
         workDir.mkdir(dir + "/temp");
     } else {
@@ -81,6 +82,7 @@ void registerQmlTye() {
     qmlRegisterType<MessageManager>("st.info.MessageManager", 1, 0, "MessageManager");
     qmlRegisterType<SelectFriend>("st.info.SelectFriend", 1, 0, "SelectFriend");
     qmlRegisterType<Voice>("st.info.Voice", 1, 0, "Voice");
+    qmlRegisterType<NormalPicture>("st.info.NormalPicture", 1, 0, "NormalPicture");
     return;
 }
 
@@ -193,7 +195,7 @@ int parseEncryptXml(QString fileName, QString passwd) {
         slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
              "parseEncryptXml", "decrypt xml file fail",
              fileName.toStdString().c_str(), passwd.toStdString().c_str());
-		return -1;
+        return -1;
     }
     slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
          "parseEncryptXml", "decrypt xml file success",
@@ -246,6 +248,7 @@ void initZebraEngine() {
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    memset(&gCtx, 0, sizeof(gCtx));
     gCtx.app = &app;
 
     /* 缓存 */

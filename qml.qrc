@@ -51,5 +51,11 @@
         <file>res/fonts/KhmerUI.ttf</file>
         <file>res/fonts/KhmerUIb.ttf</file>
         <file>res/fonts/方正兰亭刊黑_GBK.ttf</file>
+        <file>qml/picture.qml</file>
+        <file>img/brower/st_pic_close.png</file>
+        <file>img/brower/st_pic_last.png</file>
+        <file>img/brower/st_pic_next.png</file>
+        <file>img/brower/st_pic_roll.png</file>
+        <file>img/brower/st_pic_save.png</file>
     </qresource>
 </RCC>

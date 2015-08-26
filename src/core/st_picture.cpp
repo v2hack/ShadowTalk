@@ -7,12 +7,15 @@
 #include <QString>
 #include <QGuiApplication>
 #include <QString>
+#include <QQuickView>
 
 #include "st_utils.h"
 #include "st_cache.h"
 #include "st_context.h"
 #include "st_message.h"
 #include "st_picture.h"
+#include "st_context.h"
+#include "st_cache.h"
 
 /* 全局上下文结构 */
 extern struct ShadowTalkContext gCtx;
@@ -109,8 +112,70 @@ int shrinkPicture(QString filePath, int &height, int &width) {
 }
 
 
+NormalPicture::NormalPicture(QObject *parent) : QObject(parent) {
+
+}
+
+static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile) {
+    viewer.setResizeMode(QQuickView::SizeRootObjectToView);
+    viewer.setSource(QUrl(qmlFile));
+
+    /* 设置无边框及透明 */
+    viewer.setFlags(Qt::FramelessWindowHint | Qt::Window);
+    viewer.setColor(QColor(Qt::transparent));
+
+    /* viewer注册到qml */
+    QQmlContext *qmlContext = viewer.rootContext();
+    if (qmlContext) {
+        qmlContext->setContextProperty(qmlProperty, &viewer);
+    }
+    return;
+}
+
+void NormalPicture::displayNormalPicture(QString friendIndex, QString messageIndex) {
+    qDebug() << "display large picture";
+
+    if (gCtx.imager == NULL) {
+        gCtx.imager = new QQuickView;
+    }
+    setViewerParameter(*gCtx.imager, "pictureWindow", "qrc:/qml/picture.qml");
+
+    /* 持久化图片文件 */
+    QUrl picturePath = displayPicture(
+                friendIndex,
+                messageIndex,
+                findPictureCache(friendIndex, messageIndex));
+    if (picturePath.isEmpty()) {
+        return;
+    }
+
+    QImage image;
+    if (!image.load(picturePath.toLocalFile())) {
+        qDebug() << "open image fail";
+        return;
+    }
+    QPixmap pix = QPixmap::fromImage(image);
 
 
+    /* 添加qml对象属性 */
+    QQuickItem *rootObject = gCtx.imager->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("qmlNormalImage");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setPicture",
+                                  Q_ARG(QVariant, picturePath.toString()),
+                                  Q_ARG(QVariant, pix.height()),
+                                  Q_ARG(QVariant, pix.width())
+                                  );
+        qDebug() << "insert one picture ok";
+    } else {
+        qDebug() << "insert one picture fail";
+    }
+    gCtx.imager->show();
+}
 
 
 

@@ -22,6 +22,7 @@ import "common.js" as JsCommon
 /* 导入文字与像素计算类型 */
 import st.font.PointSizeToPixelSize 1.0
 import st.info.Voice 1.0
+import st.info.NormalPicture 1.0
 
 Rectangle {
     id: messageRectangle;
@@ -167,6 +168,9 @@ Rectangle {
             }
             Voice {
                 id: playVoice;
+            }
+            NormalPicture {
+                id: displayPicture
             }
 
             Rectangle {
@@ -420,19 +424,24 @@ Rectangle {
                         }
 
                         /*  图片显示 */
-                        BorderImage {
+                        Image {
                             id: friendMessagePicture
                             visible: dataType == imageType ? true : false
-
                             height: pictureHeight + 1
                             width: pictureWidth + 1
-
                             source: Qt.resolvedUrl(userPicture)
-//                            fillMode: Image.PreserveAspectFit
+                            fillMode: Image.PreserveAspectFit
 
                             anchors {
                                 horizontalCenter: parent.horizontalCenter
                                 verticalCenter: parent.verticalCenter
+                            }
+                            /* 鼠标双击弹出大图 */
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    displayPicture.displayNormalPicture(uid, messageIndex);
+                                }
                             }
                         }
                     }
