@@ -59,6 +59,8 @@ void addMessageToWidget(
     data.insert("voiceSeconds", 0);
     data.insert("messageIndex", messageIndex);
     data.insert("userPicture", "");
+    data.insert("pictureHeight", "");
+    data.insert("pictureWidth", "");
 
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
@@ -94,7 +96,9 @@ void addImageToWidget(
 {
     qDebug() << "receive one image";
 
-    QString picturePath = displayPicture(
+    int height = 0, width = 0;
+    /* 持久化图片文件 */
+    QUrl picturePath = displayPicture(
                 QString::number(uid),
                 QString::number(messageIndex),
                 messageData);
@@ -102,8 +106,12 @@ void addImageToWidget(
         return;
     }
 
-//    const QUrl pictureUrl = QUrl::fromLocalFile(picturePath);
+    /* 图片缩放 */
+    if (shrinkPicture(picturePath.toLocalFile(), height, width) < 0) {
+        return;
+    }
 
+    /* 添加qml对象属性 */
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -117,7 +125,12 @@ void addImageToWidget(
     data.insert("userMessage", 0);
     data.insert("voiceSeconds", 0);
     data.insert("messageIndex", messageIndex);
-	data.insert("userPicture", picturePath);
+    data.insert("userPicture", picturePath.toString());
+    data.insert("pictureHeight", height);
+    data.insert("pictureWidth", width);
+
+    qDebug() << "picture: height - " << height << "width - " << width;
+
 
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
@@ -157,6 +170,8 @@ void addVoiceToWidget(int uid, QString name, int type, int direct, QString voice
     data.insert("voiceSeconds", voiceSeconds);
     data.insert("messageIndex", messageIndex);
     data.insert("userPicture", "");
+    data.insert("pictureHeight", "");
+    data.insert("pictureWidth", "");
 
     qDebug() << "message type - " << type;
 

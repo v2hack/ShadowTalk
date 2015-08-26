@@ -53,7 +53,7 @@ std::string findPictureCache(QString fidx, QString midx) {
 }
 
 
-QString displayPicture(QString fidx, QString midx, std::string pictureData) {
+QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
 
     /* 组装文件路径及名字 */
     QString tempFilePath = QString("%0%1-%2%3").arg(
@@ -73,5 +73,44 @@ QString displayPicture(QString fidx, QString midx, std::string pictureData) {
                 midx,
                 SHADOWTALK_IMAGE_PREFIX);
     const QUrl pictureUrl = QUrl::fromLocalFile(tempPath);
-    return pictureUrl.toString();
+    return pictureUrl;
 }
+
+int shrinkPicture(QString filePath, int &height, int &width) {
+
+    int times = 0;
+	int remainder = 0;
+    QImage image;
+
+    /* 计算图片的高和宽 */
+    if (!image.load(filePath)) {
+        qDebug() << "open image fail";
+        return -1;
+    }
+    QPixmap pix = QPixmap::fromImage(image);
+
+    /* 高度缩放 */
+    if (pix.height() > 220) {
+        times  = pix.height() / 220;
+        remainder = pix.height() % 220;
+        if (remainder > 0) {
+            times++;
+        }
+        height = pix.height() / times;
+        width  = pix.width() / times;
+    }
+
+    if (width > 220) {
+        times  = width / 220;
+        height = height / times;
+        width  = width / times;
+    }
+    return 0;
+}
+
+
+
+
+
+
+

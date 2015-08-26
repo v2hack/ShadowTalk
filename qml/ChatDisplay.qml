@@ -95,9 +95,18 @@ Rectangle {
             model.append(data);
             var height =  JsCommon.getMessageFrameHeight(
                         getPixelSize.height(10),
-                        getPixelSize.width(10 , data.userMessage), 250);
+                        getPixelSize.width(10 , data.userMessage),
+                        250);
+
             console.log(height);
-            messageView.contentY += height + (100);
+
+            if (data.dataType == imageType) {
+                messageView.contentY += data.pictureHeight + (150);
+                console.log("type picture for roll - " + data.pictureHeight)
+            } else {
+                messageView.contentY += height + (100);
+                console.log("picture for roll - " + data.pictureHeight)
+            }
         }
         /* c++调用:清除消息 */
         function clearMessage() {
@@ -147,7 +156,7 @@ Rectangle {
                     return 90
                 }
                 if (dataType == imageType) {
-                    return 150;
+                    return pictureHeight + 100;
                 }
             }
             width: parent.width;
@@ -276,7 +285,7 @@ Rectangle {
                                 return 35
                             }
                             if (dataType == imageType) {
-                                return 160;
+                                return pictureHeight + 10;
                             }
                         }
                         width: {
@@ -295,7 +304,7 @@ Rectangle {
                                 }
                             }
                             if (dataType == imageType) {
-                                return 160;
+                                return pictureWidth + 10;
                             }
                         }
 
@@ -325,6 +334,7 @@ Rectangle {
                             id: friendMessageVoice
                             visible: dataType == voiceType ? true : false
                             color: "transparent"
+                            radius: 10
 
                             anchors {
                                 fill: friendMessageContent
@@ -410,16 +420,15 @@ Rectangle {
                         }
 
                         /*  图片显示 */
-                        Image {
+                        BorderImage {
                             id: friendMessagePicture
                             visible: dataType == imageType ? true : false
 
-                            height: 155
-                            width: 155
+                            height: pictureHeight + 1
+                            width: pictureWidth + 1
 
                             source: Qt.resolvedUrl(userPicture)
-//                            source: "file:///d:/code/ShadowTalk/release/temp/5-1.png"
-                            fillMode: Image.PreserveAspectFit
+//                            fillMode: Image.PreserveAspectFit
 
                             anchors {
                                 horizontalCenter: parent.horizontalCenter
