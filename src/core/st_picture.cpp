@@ -67,11 +67,11 @@ QString displayPicture(QString fidx, QString midx, std::string pictureData) {
 
     /* 拼装文件绝对路径，并设置qml播放的source属性 */
     QString tempPath = QString("%0%1%2-%3%4").arg(
-//                QGuiApplication::applicationDirPath(),
-                "file:///"
-                "temp/",
+                QGuiApplication::applicationDirPath(),
+                "/temp/",
                 fidx,
                 midx,
                 SHADOWTALK_IMAGE_PREFIX);
-    return tempPath;
+    const QUrl pictureUrl = QUrl::fromLocalFile(tempPath);
+    return pictureUrl.toString();
 }

@@ -417,7 +417,8 @@ Rectangle {
                             height: 155
                             width: 155
 
-                            source: userPicture
+                            source: Qt.resolvedUrl(userPicture)
+//                            source: "file:///d:/code/ShadowTalk/release/temp/5-1.png"
                             fillMode: Image.PreserveAspectFit
 
                             anchors {

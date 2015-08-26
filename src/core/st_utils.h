@@ -13,7 +13,7 @@
 #define SHADOWTALK_TEMP_DIR  "./temp/"  /* 临时文件目录 */
 #endif
 
-#define SHADOWTALK_IMAGE_PREFIX   ".png"  /* 图片文件扩展名 */
+#define SHADOWTALK_IMAGE_PREFIX   ".jpg"  /* 图片文件扩展名 */
 #define SHADOWTALK_SOUND_PREFIX   ".mp3"  /* 声音文件扩展名 */
 
 void ShadowTalkSleep(unsigned int msec);
