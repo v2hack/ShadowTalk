@@ -107,7 +107,7 @@ void addImageToWidget(
     }
 
     /* 图片缩放 */
-    if (shrinkPicture(picturePath.toLocalFile(), height, width) < 0) {
+    if (shrinkPicture(picturePath.toLocalFile(), height, width, 300) < 0) {
         return;
     }
 

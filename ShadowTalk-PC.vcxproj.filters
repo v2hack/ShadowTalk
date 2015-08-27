@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{fcac7151-c3fb-4574-8cac-0308832f6e44}</UniqueIdentifier>
+      <UniqueIdentifier>{013e9aa6-da18-4381-925a-d3b102e28ca2}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{e6f5325a-df61-443a-8601-c8259cca2858}</UniqueIdentifier>
+      <UniqueIdentifier>{cfb6aa4b-4147-40c6-a5cc-703a3b23f6f5}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -316,6 +316,21 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="img\head\st_message_point.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\brower\st_pic_close.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\brower\st_pic_last.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\brower\st_pic_next.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\brower\st_pic_roll.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\brower\st_pic_save.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="img\st_qr_code.png">

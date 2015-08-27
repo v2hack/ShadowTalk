@@ -9,8 +9,7 @@
 void writePictureFile(std::string fileName, std::string data);
 std::string findPictureCache(QString fidx, QString midx);
 QUrl displayPicture(QString friendIndex, QString messageIndex, std::string pictureData);
-int shrinkPicture(QString filePath, int &height, int &width);
-
+int shrinkPicture(QString filePath, int &height, int &width, int limit);
 
 
 class NormalPicture : public QObject

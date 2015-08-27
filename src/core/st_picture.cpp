@@ -34,6 +34,7 @@ std::string findPictureCache(QString fidx, QString midx) {
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
     if (!c) {
+        qDebug() << "gctx cache is empty";
         return std::string("");
     }
 
@@ -52,6 +53,8 @@ std::string findPictureCache(QString fidx, QString midx) {
             return m.data;
         }
     }
+
+    qDebug() << "can't find image message";
     return std::string("");
 }
 
@@ -60,11 +63,7 @@ QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
 
     /* 组装文件路径及名字 */
     QString tempFilePath = QString("%0%1-%2%3").arg(
-        SHADOWTALK_TEMP_DIR,
-        fidx,
-        midx,
-        SHADOWTALK_IMAGE_PREFIX);
-
+        SHADOWTALK_TEMP_DIR, fidx, midx, SHADOWTALK_IMAGE_PREFIX);
     std::string friendPictureFile = tempFilePath.toStdString();
     writePictureFile(friendPictureFile, pictureData);
 
@@ -79,10 +78,9 @@ QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
     return pictureUrl;
 }
 
-int shrinkPicture(QString filePath, int &height, int &width) {
+int shrinkPicture(QString filePath, int &height, int &width, int limit) {
 
-    int times = 0;
-	int remainder = 0;
+    double times = 0;
     QImage image;
 
     /* 计算图片的高和宽 */
@@ -93,20 +91,19 @@ int shrinkPicture(QString filePath, int &height, int &width) {
     QPixmap pix = QPixmap::fromImage(image);
 
     /* 高度缩放 */
-    if (pix.height() > 220) {
-        times  = pix.height() / 220;
-        remainder = pix.height() % 220;
-        if (remainder > 0) {
-            times++;
-        }
-        height = pix.height() / times;
-        width  = pix.width() / times;
+    if (pix.height() > limit) {
+        times  =  (double)limit / (double)pix.height();
+        height = (double)pix.height() * times;
+        width  = (double)pix.width() * times;
+    } else {
+        height = pix.height();
+        width = pix.width();
     }
 
-    if (width > 220) {
-        times  = width / 220;
-        height = height / times;
-        width  = width / times;
+    if (width > limit) {
+        times  = (double)limit / (double)pix.width();
+        height = (double)height * times;
+        width  = (double)width * times;
     }
     return 0;
 }
@@ -140,22 +137,25 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     }
     setViewerParameter(*gCtx.imager, "pictureWindow", "qrc:/qml/picture.qml");
 
+
+    qDebug() << "normal picture fidx - " << friendIndex << "midx - " << messageIndex;
+    std::string fileData = findPictureCache(friendIndex, messageIndex);
+    if (fileData.empty()) {
+        qDebug() << "normal picture is empty";
+        return;
+    }
     /* 持久化图片文件 */
-    QUrl picturePath = displayPicture(
-                friendIndex,
-                messageIndex,
-                findPictureCache(friendIndex, messageIndex));
+    QUrl picturePath = displayPicture(friendIndex, messageIndex, fileData);
     if (picturePath.isEmpty()) {
         return;
     }
 
-    QImage image;
-    if (!image.load(picturePath.toLocalFile())) {
-        qDebug() << "open image fail";
+    int height = 0, width = 0;
+    if (shrinkPicture(picturePath.toLocalFile(), height, width, 600) < 0) {
+        qDebug() << "shrink picture fail";
         return;
     }
-    QPixmap pix = QPixmap::fromImage(image);
-
+    qDebug() << "normal picture height - " << height << "width - " << width;
 
     /* 添加qml对象属性 */
     QQuickItem *rootObject = gCtx.imager->rootObject();
@@ -167,8 +167,8 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     if (rect) {
         QMetaObject::invokeMethod(rect, "setPicture",
                                   Q_ARG(QVariant, picturePath.toString()),
-                                  Q_ARG(QVariant, pix.height()),
-                                  Q_ARG(QVariant, pix.width())
+                                  Q_ARG(QVariant, height),
+                                  Q_ARG(QVariant, width)
                                   );
         qDebug() << "insert one picture ok";
     } else {

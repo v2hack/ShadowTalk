@@ -22,7 +22,7 @@ Rectangle {
     color: "black"
     opacity: 0.7
     z: 1000
-    radius: 6
+    radius: 0.3
     border.color: "white"
 
     /* 主窗口鼠标拖拽 */
@@ -92,6 +92,13 @@ Rectangle {
         height: 40
         width: 40
         source: "qrc:/img/brower/st_pic_close.png";
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                pictureWindow.close()
+            }
+        }
     }
 
     Image {
