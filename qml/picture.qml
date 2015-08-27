@@ -17,12 +17,12 @@ Rectangle {
     id: pictureWindowRectangle;
 
     width: 1200
-    height: 680
+    height: 700
 
     color: "black"
-    opacity: 0.7
+    opacity: 0.85
     z: 1000
-    radius: 0.3
+    radius: 0.7
     border.color: "white"
 
     /* 主窗口鼠标拖拽 */
