@@ -7,13 +7,9 @@ CONFIG += console
 #CONFIG -= app_bundle
 #CONFIG -= gui
 
-
-
-
 # This
 #QMAKE_CXXFLAGS += /MD
 
-# Or that
 
 QMAKE_LFLAGS += /NODEFAULTLIB:libcmtd.lib
 
@@ -40,7 +36,9 @@ HEADERS += \
     src/widget/st_trayicon.h \
     src/core/st_base64.h \
     src/core/st_voice.h \
-    src/core/st_picture.h
+    src/core/st_picture.h \
+    include/qrencode.h \
+    src/core/st_qrcode.h
 	
 SOURCES += \
     src/main.cpp \
@@ -58,7 +56,8 @@ SOURCES += \
     src/widget/st_trayicon.cpp \
     src/core/st_base64.cpp \
     src/core/st_voice.cpp \
-    src/core/st_picture.cpp
+    src/core/st_picture.cpp \
+    src/core/st_qrcode.cpp
    
 win32 {
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57
@@ -79,7 +78,6 @@ win32 {
 
     LIBS += -L$$PWD/lib/x32/peersafe/ -lcryptopp-msr
     LIBS += -L$$PWD/lib/x32/peersafe/ -lmaidsafe_common-msr
-#    LIBS += -L$$PWD/lib/x32/peersafe/ -lmaidsafe_network_viewer-msr
     LIBS += -L$$PWD/lib/x32/peersafe/ -lmaidsafe_passport-msr
     LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_channel-msr
     LIBS += -L$$PWD/lib/x32/peersafe/ -lpeersafe_imapi-msr
@@ -94,6 +92,9 @@ win32 {
     LIBS += -L$$PWD/lib/x32/ice/ -llibpj
     LIBS += -L$$PWD/lib/x32/ice/ -llibpjlib-util
     LIBS += -L$$PWD/lib/x32/ice/ -llibpjnath
+
+    LIBS += -L$$PWD/lib/x32/qrcode/ -llibqrcode
+
 } else {
     macx {
 

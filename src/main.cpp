@@ -39,6 +39,7 @@
 #include "st_log.h"
 #include "st_voice.h"
 #include "st_picture.h"
+#include "st_qrcode.h"
 
 peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
@@ -251,12 +252,28 @@ int main(int argc, char *argv[])
     memset(&gCtx, 0, sizeof(gCtx));
     gCtx.app = &app;
 
+    QrCode code;
+
+
     /* 缓存 */
     createCache();
 
     /* 设置启动参数 */
     setAppParameter();
     initZebraEngine();
+
+
+    code.setString("nanye1984");
+    if (code.getQRWidth() == 0) {
+        qDebug() << "create qrcode fail";
+        return 0;
+    }
+
+    if (code.saveImage("./nanye.jpg", code.getQRWidth()) == false) {
+        qDebug() << "save image fail";
+    }
+
+
 
     /* 注册QML */
     registerQmlTye();
