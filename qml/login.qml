@@ -130,21 +130,29 @@ Rectangle {
                 font.bold : true
                 color: "#00b9fe"
                 z: 513
+                font.family: chineseFont.name;
             }
         }
 
         /* 二维码图片 */
         Image {
             id: qrCodeImage
-            height: 250
-            width: 250
+            objectName: "objectLoginSetQrImage"
+
+            height: 220
+            width: 220
             source: "qrc:/img/st_qr_code.png";
             fillMode: Image.PreserveAspectFit
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
-                topMargin: 42
+                topMargin: 60
+            }
+
+            /* c++调用，设置二维码图片 */
+            function setQrImage(qrImage) {
+                qrCodeImage.source = Qt.resolvedUrl(qrImage);
             }
 
             /* 二维码动画区域 */
@@ -200,6 +208,10 @@ Rectangle {
                 to: 0
             }
         }
+        FontLoader {
+            id: chineseFont
+            source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+        }
 
         /* 二维码的文字显示 */
         Text {
@@ -211,9 +223,9 @@ Rectangle {
                 topMargin: 35;
             }
             color: "#4f4f4f"
-            font.pixelSize: 14
+            font.pixelSize: 16
             font.bold: true
-            font.family: "Cronyx"
+            font.family: chineseFont.name;
             font.letterSpacing: 2
         }
 
@@ -226,9 +238,9 @@ Rectangle {
                 topMargin: 25;
             }
             color: "#4f4f4f"
-            font.pixelSize: 14
+            font.pixelSize: 18
             font.bold: true
-            font.family: "Cronyx"
+            font.family: chineseFont.name;
             font.letterSpacing: 2
         }
 

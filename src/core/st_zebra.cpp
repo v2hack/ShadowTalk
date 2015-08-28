@@ -62,8 +62,7 @@ zebraDeleagates::~zebraDeleagates() {
  *  @return 无
  */
 void zebraDeleagates::network_state(int stat_code) {
-std:cout << "network_state - " << std::endl;
-
+    std:cout << "network_state - " << std::endl;
 }
 
 /**
@@ -285,7 +284,16 @@ void zebraDeleagates::friend_request_via_qr(
         const string &qr_channel_id,
         const string &info,
         const string &friend_channel_id) {
-    std::cout << "friend_request_via_qr" << std::endl;
+
+    if (gCtx.phoneQrChannel != qr_channel_id) {
+        std::cout << "is not sync channel id";
+        return;
+    }
+    gCtx.zebra->handle_friend_request(friend_channel_id, true);
+    gCtx.zebra->listen_friend(friend_channel_id);
+    gCtx.phoneSyncChannel = friend_channel_id;
+    std::cout << "accept sync channel request" << std::endl;
+    return;
 }
 
 

@@ -24,6 +24,9 @@ struct ShadowTalkContext
 
     peersafe::im::Message_client *zebra;
     zebraDeleagates *delegate;
+
+    std::string phoneQrChannel;   /* 与手机同步的qr channel id*/
+    std::string phoneSyncChannel; /* 与手机同步的normal channel id*/
 };
 
 #endif // CONTEXT_H

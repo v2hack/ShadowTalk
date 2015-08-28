@@ -14,9 +14,12 @@
 #include <QWidget>
 #include <QtQuick/QQuickView>
 
+#include <iostream>
+
 #include "st_login.h"
 #include "st_context.h"
 #include "st_utils.h"
+#include "st_qrcode.h"
 
 extern struct ShadowTalkContext gCtx;
 
@@ -38,44 +41,81 @@ void ShadowTalkSetSyncProcess(int processValue) {
 }
 
 
-/* 生成二维码 */
-QString ShadowTalkCreateQrCode(QString qrCodeSource) {
-
-	return "";
-
-}
-
 /* 将二维码图片设置到页面上 */
-void ShadowTalkQrImage(QString qrImagePath) {
+void ShadowTalkSetQrImage(QString qrImagePath) {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
 
-}
-
-
-/* 添加好友控件 */
-void ShadowTalkAddFriendWidget() {
-    // 添加控件
-
-    // 好友添加到cache
+    QObject *rect = rootObject->findChild<QObject*>("objectLoginSetQrImage");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setQrImage", Q_ARG(QVariant, qrImagePath));
+    } else {
+        qDebug() << "set login qr image fail";
+    }
     return;
 }
 
 
 /* 登陆 */
 int ShadowTalkLogin() {
-    QString qrCodeSource;
+
+    int ret = 0, count = 0;
+    int tryTimes = 5;
+
+    std::string qrCodeSource;
+    std::string qrChannelId;
+    std::string qrEnCode;
+
+    /* 检测 impai init 是否成功 */
+    ShadowTalkSleep(2000);
+    while (1) {
+        if (count > tryTimes) {
+            return -1;
+        }
+        ret = gCtx.zebra->get_network_state();
+        if (ret < 0) {
+            ShadowTalkSleep(1000);
+            count++;
+            continue;
+        } else {
+            break;
+        }
+    }
 
     /* 利用peersafe接口创建二维码 */
-    //qrCodeSource = XXX
+    qrCodeSource = gCtx.zebra->generate_qr_channel(600);
+    if (qrCodeSource.empty()) {
+        qDebug() << "generate qr channel fail";
+        return -1;
+    }
+    gCtx.phoneQrChannel = qrCodeSource;
+
+    /* listen 这个channel */
+    gCtx.zebra->listen_qr_channel(qrCodeSource);
+
+    /* 转换为特定的channel */
+    qrChannelId = gCtx.zebra->hex_encode(qrCodeSource);
+    qrEnCode = "c:" + qrChannelId;
+    std::cout << "sync qrcode - " << qrEnCode << std::endl;
 
     /* 创建二维码图片 */
-    QString qrImagePath = ShadowTalkCreateQrCode(qrCodeSource);
-    if (qrImagePath.isEmpty()) {
-        return ST_CREATE_QRCODE_FAIL;
+    QrCode code;
+    code.setString(QString::fromStdString(qrEnCode));
+    if (code.getQRWidth() == 0) {
+        qDebug() << "create qrcode fail";
+        return 0;
+    }
+    if (code.saveImage(SHADOW_QR_IMAGE_NAME, 250) == false) {
+        qDebug() << "save image fail";
     }
 
     /* 界面上设置二维码图片*/
-    ShadowTalkQrImage(qrImagePath);
-    return ST_SUCCESS;
+    QString tempPath = QString("%0%1").arg(QGuiApplication::applicationDirPath(), SHADOW_QR_IMAGE_NAME);
+    const QUrl pictureUrl = QUrl::fromLocalFile(tempPath);
+    ShadowTalkSetQrImage(pictureUrl.toString());
+    return 0;
 }
 
 
