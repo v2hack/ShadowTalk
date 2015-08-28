@@ -8,6 +8,9 @@
 
 #include "qrencode.h"
 
+#define  SHADOW_QR_IMAGE_NAME "./ShadowQrImage.jpg"
+
+
 class QrCode
 {
 public:
