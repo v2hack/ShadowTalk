@@ -75,7 +75,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>D:\code\ShadowTalk\lib\x32\boost\\libboost_chrono-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_chrono-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_date_time-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_date_time-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_filesystem-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_filesystem-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_program_options-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_program_options-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_regex-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_regex-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_system-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_system-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_thread-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_thread-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\peersafe\\cryptopp-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\maidsafe_common-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\maidsafe_passport-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_channel-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_imapi-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_network-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_oudp-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_visit-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\proto_compiler-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\protobuf_lite-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\protobuf-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\torrent-rasterbar.lib;D:\code\ShadowTalk\lib\x32\ice\\libpj.lib;D:\code\ShadowTalk\lib\x32\ice\\libpjlib-util.lib;D:\code\ShadowTalk\lib\x32\ice\\libpjnath.lib;D:\code\ShadowTalk\lib\x32\qrcode\\libqrcode.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Multimedia.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Xml.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\code\ShadowTalk\lib\x32\boost\;D:\code\ShadowTalk\lib\x32\peersafe\;D:\code\ShadowTalk\lib\x32\ice\;D:\code\ShadowTalk\lib\x32\qrcode\;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\code\ShadowTalk\lib\x32\boost\;D:\code\ShadowTalk\lib\x32\peersafe\;D:\code\ShadowTalk\lib\x32\ice\;D:\code\ShadowTalk\lib\x32\qrcode\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -333,26 +333,7 @@ endlocal
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
-    <CustomBuild Include="src\core\st_qrcode.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-if errorlevel 1 goto VCEnd
-
-if errorlevel 1 goto VCEnd
-endlocal</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-if errorlevel 1 goto VCEnd
-
-if errorlevel 1 goto VCEnd
-endlocal</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Outputs>
-    </CustomBuild>
+    <ClInclude Include="src\core\st_qrcode.h" />
     <ClInclude Include="src\widget\st_trayicon.h" />
     <ClInclude Include="src\core\st_utils.h" />
     <CustomBuild Include="src\core\st_voice.h">
