@@ -238,7 +238,7 @@ void initZebraEngine() {
     gCtx.zebra = zebraClient;
     gCtx.delegate = &zebarDele;
 
-    zebraClient->init("", &zebarDele);
+    zebraClient->init("", &zebarDele, "17monipdb.dat");
     qDebug() << "[imapi] << init zebra engine success";
     return;
 }
