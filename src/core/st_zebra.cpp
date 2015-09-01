@@ -18,6 +18,9 @@
 #include "st_zebra.h"
 #include "st_log.h"
 #include "st_utils.h"
+#include "st_parsexml.h"
+#include "st_net.h"
+#include "st_login.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -62,7 +65,7 @@ zebraDeleagates::~zebraDeleagates() {
  *  @return 无
  */
 void zebraDeleagates::network_state(int stat_code) {
-    std:cout << "network_state - " << std::endl;
+std:cout << "network_state - " << std::endl;
 }
 
 /**
@@ -78,6 +81,61 @@ void zebraDeleagates::friend_state(
     std::cout << "friend_state" << state_code << std::endl;
 }
 
+
+/**
+ *  功能描述: 处理手机端的特殊指令
+ *  @param type 指令类型
+ *  @param message 消息内容
+ *
+ *  @return 无
+ */
+int processPhoneCommand(int type, const string &message, const string &channel_id) {
+    switch (type) {
+	case MessagetypePCBackup:
+	{
+        /* 加载XML文件 */
+        string passwd = gCtx.zebra->hex_encode(channel_id);
+        writeXmlFile(SHADOW_SYNC_FILE, message);
+        if (parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
+            std::cout << "parse xml fail : passwd - " << passwd << std::endl;
+            return -1;
+        }
+        /* 切换二维码为进度条 */
+        ShadowTalkLoginStartSync();
+
+        /* 加载动画走起 */
+        for (int i = 0 ; i < 360; i++) {
+            ShadowTalkSleep(1);
+            ShadowTalkSetSyncProcess(i);
+        }
+
+        /* 切换到聊天界面 */
+        displayBaseView();
+        return 1;
+	}
+    case MessagetypePCOffLine:
+    {
+        // 取消监听所有好友
+
+        // 不再收消息
+
+        // 清理所有缓存
+
+        // 清理界面
+
+        displayLoginView();
+        return 1;
+    }
+    case MessagetypePingPC:
+    {
+        gCtx.zebra->send_online_message(channel_id, MessagetypeResponeFromPC, "",
+            60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 0, 0);
+        return 1;
+    }
+    default:
+        return 0;
+    }
+}
 
 /**
  *  功能描述: 接受离线消息
@@ -103,6 +161,13 @@ void zebraDeleagates::friend_offline_message(
         int timestamp)
 {
     std::cout << "friend_offline_message" << std::endl;
+
+    int ret = 0;
+    ret = processPhoneCommand(type, message, friend_channel_id);
+    if (ret < 0 || ret == 1) {
+        return;
+    }
+
     playMessageSound();
 
     Cache *c = gCtx.cache;
@@ -201,6 +266,12 @@ void zebraDeleagates::friend_online_message(
         int timestamp)
 {
     std::cout << "friend_online_message" << std::endl;
+    int ret = 0;
+    ret = processPhoneCommand(type, message, friend_channel_id);
+    if (ret < 0 || ret == 1) {
+        return;
+    }
+
     playMessageSound();
 
     Cache *c = gCtx.cache;

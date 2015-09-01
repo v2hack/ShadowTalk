@@ -22,6 +22,21 @@ Rectangle {
 
     Rectangle {
         id: loginQrWindow;
+        objectName: "loginQrWindow"
+
+        function loginQrStartSync() {
+            qrCodeImage.visible = false;
+            qrProcessRect.visible = true;
+            recommodWord.text = "正在同步手机数据";
+        }
+
+        function loginQrStartClean() {
+            qrCodeImage.visible = true;
+            qrProcessRect.visible = false;
+            recommodWord.text = "手机扫描二维码登陆";
+            loginProcessPaint.processPaint(0);
+        }
+
         width: Math.round(320)
         height: Math.round(450)
         radius: 5;
@@ -36,6 +51,15 @@ Rectangle {
         /* 同步进度条 */
         Rectangle {
             id: qrProcessRect
+            objectName: "objectQrProcess"
+
+            function setQrProcessVisible() {
+                qrProcessRect.visible = ture;
+            }
+            function setQrProcessUnvisible() {
+                qrProcessRect.visible = false;
+            }
+
             height: 300
             width: parent.width
             visible: false
@@ -154,6 +178,12 @@ Rectangle {
             function setQrImage(qrImage) {
                 qrCodeImage.source = Qt.resolvedUrl(qrImage);
             }
+            function setQrImageVisible() {
+                qrCodeImage.visible = ture;
+            }
+            function setQrImageUnvisible() {
+                qrCodeImage.visible = false;
+            }
 
             /* 二维码动画区域 */
             MouseArea {
@@ -166,11 +196,11 @@ Rectangle {
                 onExited: {
                     hintImageAnim2.start();
                 }
-                onClicked: {
-                    qrCodeImage.visible = false;
-                    qrProcessRect.visible = true;
-                    recommodWord.text = "正在同步手机数据";
-                }
+                //                onClicked: {
+                //                    qrCodeImage.visible = false;
+                //                    qrProcessRect.visible = true;
+                //                    recommodWord.text = "正在同步手机数据";
+                //                }
             }
         }
 
@@ -231,7 +261,17 @@ Rectangle {
 
         Text {
             id: recommodWord;
+            objectName: "objectLoginSetQrImage"
+
+            function setQrWordOne() {
+                text = "手机扫描二维码登陆";
+            }
+            function setQrWordSecond() {
+                text = "正在同步手机数据";
+            }
+
             text: "手机扫描二维码登陆";
+
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: companyName.bottom

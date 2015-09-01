@@ -57,6 +57,38 @@ void ShadowTalkSetQrImage(QString qrImagePath) {
     return;
 }
 
+/* 开始进入同步进度条 */
+void ShadowTalkLoginStartSync() {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("loginQrWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "loginQrStartSync");
+    } else {
+        qDebug() << "login qr start sync fail";
+    }
+    return;
+}
+
+/* 恢复登录界面设置 */
+void ShadowTalkLoginClean() {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("loginQrWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "loginQrStartClean");
+    } else {
+        qDebug() << "login qr clean fail";
+    }
+    return;
+}
+
 
 /* 登陆 */
 int ShadowTalkLogin() {

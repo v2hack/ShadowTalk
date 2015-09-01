@@ -2,8 +2,9 @@
 #define ST_LOGIN_H_
 
 void ShadowTalkSetSyncProcess(int processValue);
-int ShadowTalkLogin();
-
+int  ShadowTalkLogin();
+void ShadowTalkLoginStartSync();
+void ShadowTalkLoginClean();
 
 #endif //ST_LOGIN_H_
 

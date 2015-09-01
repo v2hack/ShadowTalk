@@ -22,6 +22,10 @@
 #include "st_context.h"
 #include "st_cache.h"
 #include "st_utils.h"
+#include "st_parsexml.h"
+#include "st_log.h"
+#include "st_utils.h"
+#include "st_net.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -95,3 +99,91 @@ void displayCurrentFriendName(QString currentFriendName) {
     }
     return;
 }
+
+
+void writeXmlFile(std::string fileName, std::string data) {
+    std::ofstream file;
+    file.open(fileName, std::ios::out | std::ios::binary);
+    file.write(data.c_str(), data.size());
+    file.close();
+    return;
+}
+
+/**
+ *  功能描述: 解析xml文件
+ *  @param fileName   文件名
+ *  @param passwd     解密密码
+ *
+ *  @return
+ */
+int parseEncryptXml(QString fileName, QString passwd) {
+    QString qPlainData;
+
+    std::string sPasswd = passwd.toStdString();
+    std::string sDecryptData;
+    std::string sPlainData;
+    std::string sEncryptData;
+    ParseXml xml;
+
+    /* 读入文件 */
+    std::ifstream file;
+    file.open(fileName.toStdString().c_str(), std::ios::in | std::ios::binary);
+    file.seekg(0, file.end);
+    int length = file.tellg();
+    file.seekg(0, file.beg);
+    char *buffer = new char[length];
+    if (!buffer) {
+        return -1;
+    }
+    file.read(buffer, length);
+    sEncryptData.assign(buffer, length);
+
+    /* 开始解密 */
+    sDecryptData = gCtx.zebra->decrypt(sEncryptData, sPasswd);
+    if (sDecryptData.empty()) {
+        slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
+             "parseEncryptXml", "decrypt xml file fail",
+             fileName.toStdString().c_str(), passwd.toStdString().c_str());
+        return -1;
+    }
+    slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
+         "parseEncryptXml", "decrypt xml file success",
+         fileName.toStdString().c_str(), passwd.toStdString().c_str());
+
+    /* 开始解压 */
+    sPlainData = gCtx.zebra->gzipUncompress(sDecryptData);
+    if (sPlainData.empty()) {
+        slog("func<%s> : msg<%s> para<file - %s>\n",
+             "parseEncryptXml", "uncompress xml file fail", fileName.toStdString().c_str());
+        return -1;
+    }
+    slog("func<%s> : msg<%s> para<file - %s>\n",
+         "parseEncryptXml", "uncompress xml file success", fileName.toStdString().c_str());
+
+    qPlainData = QString::fromStdString(sPlainData);
+    if (xml.parseDencryptXml(qPlainData) < 0){
+        return -1;
+    }
+
+    /* 监听好友 */
+    adaptListenAllFriends();
+    return 0;
+}
+
+void displayBaseView() {
+    gCtx.loginer->hide();
+    gCtx.viewer->show();
+}
+
+void displayLoginView() {
+    gCtx.viewer->hide();
+    gCtx.loginer->show();
+}
+
+
+
+
+
+
+
+

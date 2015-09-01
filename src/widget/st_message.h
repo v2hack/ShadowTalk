@@ -6,10 +6,15 @@
 /* 消息内容类型 */
 enum MessageContentType {
     MessageTypeNone = 0,
-    MessageTypeWord, /* 文字 */
-    MessageTypeImage,    /* 图片 */
-    MessageTypeVoice,    /* 语音 */
-    MessagetypeFile,     /* 文件 */
+    MessageTypeWord = 1, /* 文字 */
+    MessageTypeImage = 2,    /* 图片 */
+    MessageTypeVoice = 3,    /* 语音 */
+
+    MessagetypePCBackup = 7,
+    MessagetypePCOffLine = 8,
+    MessagetypeSyncMessage = 9,
+    MessagetypePingPC = 10,
+    MessagetypeResponeFromPC = 11,
 };
 
 /* 发送方向 */
