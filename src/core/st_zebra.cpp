@@ -91,8 +91,8 @@ void zebraDeleagates::friend_state(
  */
 int processPhoneCommand(int type, const string &message, const string &channel_id) {
     switch (type) {
-	case MessagetypePCBackup:
-	{
+    case MessagetypePCBackup:
+    {
         /* 加载XML文件 */
         string passwd = gCtx.zebra->hex_encode(channel_id);
         writeXmlFile(SHADOW_SYNC_FILE, message);
@@ -112,24 +112,30 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
         /* 切换到聊天界面 */
         displayBaseView();
         return 1;
-	}
+    }
     case MessagetypePCOffLine:
     {
         // 取消监听所有好友
+        adaptUnlistenAllFriends();
 
         // 不再收消息
-
-        // 清理所有缓存
+        setReceiveEnable(false);
 
         // 清理界面
+        clearMessageFromWidget();
+        clearFriendFromWidget();
 
+        // 清理所有缓存
+        gCtx.cache->CleanCache();
+
+        // 变为登录界面
         displayLoginView();
         return 1;
     }
     case MessagetypePingPC:
     {
         gCtx.zebra->send_online_message(channel_id, MessagetypeResponeFromPC, "",
-            60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 0, 0);
+                                        60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 0, 0);
         return 1;
     }
     default:
@@ -162,13 +168,19 @@ void zebraDeleagates::friend_offline_message(
 {
     std::cout << "friend_offline_message" << std::endl;
 
+    if (isReceiveEnable() == false) {
+        return;
+    }
+
     int ret = 0;
     ret = processPhoneCommand(type, message, friend_channel_id);
     if (ret < 0 || ret == 1) {
         return;
     }
 
-    playMessageSound();
+    if (isSoundEnable()) {
+        playMessageSound();
+    }
 
     Cache *c = gCtx.cache;
     if (!c) {
@@ -266,13 +278,20 @@ void zebraDeleagates::friend_online_message(
         int timestamp)
 {
     std::cout << "friend_online_message" << std::endl;
+
+    if (isReceiveEnable() == false) {
+        return;
+    }
+
     int ret = 0;
     ret = processPhoneCommand(type, message, friend_channel_id);
     if (ret < 0 || ret == 1) {
         return;
     }
 
-    playMessageSound();
+    if (isSoundEnable()) {
+        playMessageSound();
+    }
 
     Cache *c = gCtx.cache;
     if (!c) {

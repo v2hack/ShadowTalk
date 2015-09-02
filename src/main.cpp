@@ -172,8 +172,12 @@ void createCache() {
  *  @return
  */
 void initZebraEngine() {
-    gCtx.zebra = zebraClient;
+
+    gCtx.zebra    = zebraClient;
     gCtx.delegate = &zebarDele;
+
+    gCtx.conf.soundEnable  = true;
+    gCtx.conf.reciveEnable = true;
 
     zebraClient->init("", &zebarDele, "17monipdb.dat");
     qDebug() << "[imapi] << init zebra engine success";

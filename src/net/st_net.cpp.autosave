@@ -150,7 +150,7 @@ void adaptUnlistenAllFriends() {
            continue;
        }
     }
-    std::cout << "unlisten all friends ok" << std::endl;
+    std::cout << "unlisten all friends`` ok" << std::endl;
     return;
 }
 

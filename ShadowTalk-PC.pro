@@ -48,6 +48,7 @@ SOURCES += \
     src/core/st_pixelsize.cpp \
     src/core/st_utils.cpp \
     src/core/st_zebra.cpp \
+	src/core/st_context.cpp \
     src/net/st_net.cpp \
     src/widget/st_friend.cpp \
     src/widget/st_group.cpp \
@@ -57,7 +58,8 @@ SOURCES += \
     src/core/st_base64.cpp \
     src/core/st_voice.cpp \
     src/core/st_picture.cpp \
-    src/core/st_qrcode.cpp
+    src/core/st_qrcode.cpp \
+    src/core/st_context.cpp
    
 win32 {
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57

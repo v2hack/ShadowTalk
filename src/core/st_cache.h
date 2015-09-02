@@ -27,6 +27,8 @@ public:
     Cache();
     ~Cache();
 
+    void CleanCache();
+
     int currentUseFriendId;                    /* 界面上当前显示好友id */
     QMap<int, Friend> friendList;              /* 好友列表 */
     QMap<QString, struct LocalChannel *> channelList;  /* channel映射表 */
@@ -38,16 +40,20 @@ public:
     Friend *getOneFriend(int index);
     Q_INVOKABLE int getFriendCount();
     Q_INVOKABLE void setCurrentFriendId(int id);
+    void cleanFriend();
 
     /* channel操作函数 */
     struct LocalChannel *getChannel(QString channelId);
     void insertChannel(struct LocalChannel *channel);
     void deleteChannel(QString channeldId);
+    void cleanChannel();
 
     /* 密钥操作函数 */
     std::string getKeyValue(std::string key);
     void insertKeyValue(std::string key, std::string value);
     void deleteKeyValue(std::string key);
+    void cleanKeyValue();
+
 };
 
 #endif // CACHE_H

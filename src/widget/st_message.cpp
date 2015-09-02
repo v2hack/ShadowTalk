@@ -207,6 +207,29 @@ void clearMessageFromWidget() {
     return;
 }
 
+/**
+ *  功能描述: 清理界面上的所有好友
+ *  @param 无
+ *
+ *  @return 无
+ */
+void clearFriendFromWidget() {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "clearFriend");
+        qDebug() << "clear friend ok";
+    } else {
+        qDebug() << "clear friend fail";
+    }
+    return;
+}
+
+
 
 /**
  *  功能描述: removeMessageByIndex

@@ -9,5 +9,6 @@ void adaptSendMessage(QString channelId, int messageType, QString message, int m
 void adaptListenFriends(std::string friendChannelId);
 void adaptUnistenFriends(std::string friendChannelId);
 void adaptListenAllFriends();
+void adaptUnlistenAllFriends();
 
 #endif // ST_NET_H_

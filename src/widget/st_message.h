@@ -78,5 +78,6 @@ void addVoiceToWidget(
 
 void clearMessageFromWidget();
 void removeMessageByIndex(int index, int count);
+void clearFriendFromWidget();
 
 #endif // MESSAGE_H
