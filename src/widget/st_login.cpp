@@ -129,7 +129,7 @@ int ShadowTalkLogin() {
 
     /* 转换为特定的channel */
     qrChannelId = gCtx.zebra->hex_encode(qrCodeSource);
-    qrEnCode = "c:" + qrChannelId;
+    qrEnCode = "C:" + qrChannelId;
     std::cout << "sync qrcode - " << qrEnCode << std::endl;
 
     /* 创建二维码图片 */

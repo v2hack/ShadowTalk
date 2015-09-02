@@ -12,6 +12,9 @@
  ******************************************************************/
 #include <iostream>
 #include <map>
+#include <QThread>
+
+#include <QDebug>
 
 #include "st_cache.h"
 #include "st_context.h"
@@ -65,7 +68,7 @@ zebraDeleagates::~zebraDeleagates() {
  *  @return 无
  */
 void zebraDeleagates::network_state(int stat_code) {
-std:cout << "network_state - " << std::endl;
+    qDebug() << "network_state - " <<  stat_code;
 }
 
 /**
@@ -78,7 +81,7 @@ std:cout << "network_state - " << std::endl;
 void zebraDeleagates::friend_state(
         const string &friend_channel_id,
         int state_code) {
-    std::cout << "friend_state" << state_code << std::endl;
+    qDebug() << "friend_state - " << state_code;
 }
 
 
@@ -362,6 +365,21 @@ void zebraDeleagates::friend_online_message(
 }
 
 
+class MyThread : public QThread {
+
+    std::string channel_id;
+    struct ShadowTalkContext *ctx;
+
+public:
+
+    MyThread(std::string id, struct ShadowTalkContext *c) {
+        channel_id = id;
+    }
+    void run() {
+        ctx->zebra->handle_friend_request(channel_id, true);
+    }
+};
+
 /**
  *  功能描述: 接收添加好友请求
  *  @param qr_channel_id     二维码通道id
@@ -375,14 +393,21 @@ void zebraDeleagates::friend_request_via_qr(
         const string &info,
         const string &friend_channel_id) {
 
+    qDebug() << "##################1";
+
     if (gCtx.phoneQrChannel != qr_channel_id) {
-        std::cout << "is not sync channel id";
+        qDebug() << "is not sync channel id";
         return;
     }
-    gCtx.zebra->handle_friend_request(friend_channel_id, true);
     gCtx.zebra->listen_friend(friend_channel_id);
+    qDebug() << "##################2";
+
+    MyThread proc(friend_channel_id, &gCtx);
+    proc.run();
+
+    qDebug() << "##################3";
     gCtx.phoneSyncChannel = friend_channel_id;
-    std::cout << "accept sync channel request" << std::endl;
+    qDebug() << "accept sync channel request";
     return;
 }
 
@@ -397,7 +422,8 @@ void zebraDeleagates::friend_request_via_qr(
 void zebraDeleagates::friend_request_reply(
         const string &friend_channel_id,
         bool accepted) {
-    std::cout << "friend_request_reply" << std::endl;
+    qDebug() << "friend_request_reply";
+    return;
 }
 
 
