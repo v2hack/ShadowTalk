@@ -14,6 +14,15 @@ import QtGraphicalEffects 1.0
 
 Rectangle {
     id: baseWindows;
+    objectName: "RootBaseWindow";
+
+    function setBaseWindowVisible() {
+        baseWindows.visible = true;
+    }
+    function setBaseWindowUnvisible() {
+        baseWindows.visible = false;
+    }
+
     width: Math.round(890)
     height: Math.round(640)
     radius: 5;

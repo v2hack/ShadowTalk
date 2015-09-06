@@ -3,6 +3,7 @@
 
 #include <Qstring>
 #include <QObject>
+#include <QThread>
 
 #define ST_SUCCESS 0
 #define ST_CREATE_QRCODE_FAIL -1
@@ -21,6 +22,12 @@ int  parseEncryptXml(QString fileName, QString passwd);
 
 void displayLoginView();
 void displayBaseView();
+
+void setMainWindowVisible();
+void setMainWindowUnvisible();
+
+
+
 
 #endif // UTILS_H
 

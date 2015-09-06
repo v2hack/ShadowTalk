@@ -170,8 +170,57 @@ int parseEncryptXml(QString fileName, QString passwd) {
     return 0;
 }
 
+
+void setMainWindowVisible() {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+    QObject *rect = rootObject->findChild<QObject*>("RootBaseWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setBaseWindowVisible");
+    }
+}
+
+void setMainWindowUnvisible() {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+    QObject *rect = rootObject->findChild<QObject*>("RootBaseWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setBaseWindowUnvisible");
+    }
+}
+
+
+void setLoginWindowVisible() {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+    QObject *rect = rootObject->findChild<QObject*>("RootLoginWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setLoginWindowVisible");
+    }
+}
+
+void setLoginWindowUnvisible() {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+    QObject *rect = rootObject->findChild<QObject*>("RootLoginWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "setLoginWindowUnvisible");
+    }
+}
+
+
+
 void displayBaseView() {
     gCtx.loginer->hide();
+    gCtx.viewer->setResizeMode(QQuickView::SizeRootObjectToView);
     gCtx.viewer->show();
 }
 
@@ -179,8 +228,6 @@ void displayLoginView() {
     gCtx.viewer->hide();
     gCtx.loginer->show();
 }
-
-
 
 
 

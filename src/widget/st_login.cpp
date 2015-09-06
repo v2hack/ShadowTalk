@@ -117,7 +117,7 @@ int ShadowTalkLogin() {
     }
 
     /* 利用peersafe接口创建二维码 */
-    qrCodeSource = gCtx.zebra->generate_qr_channel(600);
+    qrCodeSource = gCtx.zebra->generate_qr_channel(1200);
     if (qrCodeSource.empty()) {
         qDebug() << "generate qr channel fail";
         return -1;

@@ -35,6 +35,9 @@ struct ShadowTalkContext
     std::string phoneSyncChannel; /* 与手机同步的normal channel id*/
 
     struct ShadowTalkConfig conf; /* 配置结构 */
+
+    int changeFlag;
+    int windowFlag;
 };
 
 bool isSoundEnable();

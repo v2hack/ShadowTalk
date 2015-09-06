@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{a43a6c5f-7f88-487a-a52a-f175b3002768}</UniqueIdentifier>
+      <UniqueIdentifier>{8e8b8ec8-45db-4fed-a00e-a4f8609913f2}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{4ab2fb6c-7e58-4617-b652-7298c7f33667}</UniqueIdentifier>
+      <UniqueIdentifier>{1321d137-d528-438b-848c-599a865ceeb2}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -87,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\st_qrcode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\st_thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\widget\st_trayicon.cpp">
@@ -137,6 +140,12 @@
     <ClCompile Include="Release\moc_st_pixelsize.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_st_thread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_st_thread.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
     <ClCompile Include="Debug\moc_st_voice.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -148,6 +157,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\maidsafe\common\asio_service.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\im.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -193,6 +205,9 @@
     <ClInclude Include="src\core\st_qrcode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <CustomBuild Include="src\core\st_thread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <ClInclude Include="src\widget\st_trayicon.h">
       <Filter>Header Files</Filter>
     </ClInclude>

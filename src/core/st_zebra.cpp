@@ -100,28 +100,44 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     switch (type) {
     case MessagetypePCBackup:
     {
+        qDebug() << "[message] : receive backup file";
         /* 加载XML文件 */
-        string passwd = gCtx.zebra->hex_encode(channel_id);
+        string channel_id_128 = gCtx.zebra->hex_encode(channel_id);
+        string passwd = channel_id_128.substr(0, 16);
+
+        qDebug() << "###############1";
+
         writeXmlFile(SHADOW_SYNC_FILE, message);
+        std::cout << "xml file size - " << message.size() << std::endl;
+        std::cout << "parse xml fail : passwd - " << passwd << std::endl;
+        qDebug() << "###############2";
         if (parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
-            std::cout << "parse xml fail : passwd - " << passwd << std::endl;
             return -1;
         }
+
+        qDebug() << "###############3";
         /* 切换二维码为进度条 */
         ShadowTalkLoginStartSync();
 
         /* 加载动画走起 */
         for (int i = 0 ; i < 360; i++) {
-            ShadowTalkSleep(1);
+            ShadowTalkSleep(10);
             ShadowTalkSetSyncProcess(i);
         }
 
+        qDebug() << "###############4";
+
+
         /* 切换到聊天界面 */
-        displayBaseView();
+
+        gCtx.changeFlag = 1;
+        gCtx.windowFlag = 2;
+//        displayBaseView();
         return 1;
     }
     case MessagetypePCOffLine:
     {
+        qDebug() << "[message] : set pc offline";
         // 取消监听所有好友
         adaptUnlistenAllFriends();
 
@@ -141,6 +157,7 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     }
     case MessagetypePingPC:
     {
+        qDebug() << "[message] : receive pc ping";
         gCtx.zebra->send_online_message(channel_id, MessagetypeResponeFromPC, "",
                                         60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 0, 0);
         return 1;
@@ -406,6 +423,7 @@ void zebraDeleagates::friend_request_via_qr(
     qDebug() << "friend channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
 
     g_io_service.service().dispatch([friend_channel_id](){
+        ShadowTalkSleep(500);
         int ret = gCtx.zebra->handle_friend_request(friend_channel_id, true);
         std::cout << "[Add] : add friend result: " << ret << std::endl;
     });

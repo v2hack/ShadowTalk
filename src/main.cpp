@@ -19,6 +19,7 @@
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQml>
+#include <QThread>
 
 #include <iostream>
 #include <fstream>
@@ -184,6 +185,7 @@ void initZebraEngine() {
     return;
 }
 
+#include "st_thread.h"
 
 /**
  *  功能描述: 主函数
@@ -197,6 +199,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     memset(&gCtx, 0, sizeof(gCtx));
     gCtx.app = &app;
+    gCtx.windowFlag = gCtx.changeFlag = 0;
 
     /* 缓存 */
     createCache();
@@ -215,6 +218,9 @@ int main(int argc, char *argv[])
     /* 登录主页面 */
     QQuickView loginer;
     createLoginViewer(loginer);
+
+    Sthread c(&gCtx);
+    c.run();
 
     return app.exec();
 }

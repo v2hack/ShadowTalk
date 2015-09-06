@@ -14,6 +14,17 @@ import QtGraphicalEffects 1.0
 
 Rectangle {
     id: loginWindow;
+
+    objectName: "RootLoginWindow"
+
+    function setLoginWindowVisible() {
+        loginWindow.visible = true;
+    }
+    function setLoginWindowUnvisible() {
+        loginWindow.visible = false;
+    }
+
+
     height: 600
     width: 1100
     color: "transparent"
