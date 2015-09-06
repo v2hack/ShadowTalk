@@ -10,6 +10,8 @@
  *  日期: 2015/08/11
  *  说明:
  ******************************************************************/
+#include "maidsafe/common/asio_service.h"
+
 #include <iostream>
 #include <map>
 #include <QThread>
@@ -27,6 +29,8 @@
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
+
+maidsafe::BoostAsioService g_io_service(1);
 
 /**
  *  功能描述: 字符串转换为十六进制
@@ -169,7 +173,7 @@ void zebraDeleagates::friend_offline_message(
         int length,
         int timestamp)
 {
-    std::cout << "friend_offline_message" << std::endl;
+    qDebug() << "friend_offline_message";
 
     if (isReceiveEnable() == false) {
         return;
@@ -280,7 +284,7 @@ void zebraDeleagates::friend_online_message(
         int length,
         int timestamp)
 {
-    std::cout << "friend_online_message" << std::endl;
+    qDebug() << "friend_online_message";
 
     if (isReceiveEnable() == false) {
         return;
@@ -374,11 +378,13 @@ public:
 
     MyThread(std::string id, struct ShadowTalkContext *c) {
         channel_id = id;
+        ctx = c;
     }
     void run() {
         ctx->zebra->handle_friend_request(channel_id, true);
     }
 };
+
 
 /**
  *  功能描述: 接收添加好友请求
@@ -393,19 +399,17 @@ void zebraDeleagates::friend_request_via_qr(
         const string &info,
         const string &friend_channel_id) {
 
-    qDebug() << "##################1";
-
     if (gCtx.phoneQrChannel != qr_channel_id) {
         qDebug() << "is not sync channel id";
         return;
     }
-    gCtx.zebra->listen_friend(friend_channel_id);
-    qDebug() << "##################2";
+    qDebug() << "friend channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
 
-    MyThread proc(friend_channel_id, &gCtx);
-    proc.run();
+    g_io_service.service().dispatch([friend_channel_id](){
+        int ret = gCtx.zebra->handle_friend_request(friend_channel_id, true);
+        std::cout << "[Add] : add friend result: " << ret << std::endl;
+    });
 
-    qDebug() << "##################3";
     gCtx.phoneSyncChannel = friend_channel_id;
     qDebug() << "accept sync channel request";
     return;
