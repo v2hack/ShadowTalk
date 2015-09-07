@@ -220,7 +220,6 @@ void setLoginWindowUnvisible() {
 
 void displayBaseView() {
     gCtx.loginer->hide();
-    gCtx.viewer->setResizeMode(QQuickView::SizeRootObjectToView);
     gCtx.viewer->show();
 }
 
