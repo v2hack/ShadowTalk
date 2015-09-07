@@ -180,6 +180,9 @@ void initZebraEngine() {
     gCtx.conf.soundEnable  = true;
     gCtx.conf.reciveEnable = true;
 
+    gCtx.windowFlag = gCtx.changeFlag = 0;
+    gCtx.phoneUpdateTime.start();
+
     zebraClient->init("", &zebarDele, "17monipdb.dat");
     qDebug() << "[imapi] << init zebra engine success";
     return;
@@ -199,7 +202,6 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     memset(&gCtx, 0, sizeof(gCtx));
     gCtx.app = &app;
-    gCtx.windowFlag = gCtx.changeFlag = 0;
 
     /* 缓存 */
     createCache();
@@ -219,8 +221,9 @@ int main(int argc, char *argv[])
     QQuickView loginer;
     createLoginViewer(loginer);
 
-    Sthread c(&gCtx);
-    c.run();
+    /* 界面切换线程 */
+    Sthread tid(&gCtx);
+    tid.run();
 
     return app.exec();
 }

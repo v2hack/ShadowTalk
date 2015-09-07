@@ -4,6 +4,7 @@
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQml>
+#include <QTime>
 
 #include "st_friend.h"
 #include "st_cache.h"
@@ -36,8 +37,11 @@ struct ShadowTalkContext
 
     struct ShadowTalkConfig conf; /* 配置结构 */
 
-    int changeFlag;
-    int windowFlag;
+    int changeFlag;   /* 窗口切换标记 */
+    int windowFlag;   /* 窗口编号 */
+
+    QTime phoneUpdateTime;  /* 手机刷新时间 */
+
 };
 
 bool isSoundEnable();

@@ -20,7 +20,6 @@ public:
     }
     void run() {
         while (1) {
-            qDebug() << "check to change windows";
             if (c->changeFlag == 1) {
                 if (c->windowFlag == 1) {
                     qDebug() << "show login";
