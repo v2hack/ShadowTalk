@@ -13,6 +13,8 @@ enum ImapiMessageType {
 	ImapiMessageType_SyncMessage = 9,
 	ImapiMessageType_PingPC = 10,
 	ImapiMessageType_ResponeFromPC = 11,
+
+    ImapiMessageType_ForwadOffset = 1000,
 };
 
 class im_api_impl;

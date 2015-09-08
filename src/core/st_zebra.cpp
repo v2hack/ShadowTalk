@@ -186,8 +186,13 @@ void forwardMessage(const string &friend_channel_id,
         qDebug() << "[sync]: phone sync channel size is not correct - " << gCtx.phoneSyncChannel.size();
         return;
     }
+
+
+    qDebug() << "sync channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(gCtx.phoneSyncChannel));
+    qDebug() << "frin channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+
     gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
-        type, message, 60, 10000, timestamp, length, message_id);
+        type, message, expired, entire_expired, timestamp, length, message_id);
     qDebug() << "[sync]: send sync message to phone ok";
     return;
 }
@@ -208,7 +213,7 @@ void forwardMessage(const string &friend_channel_id,
  */
 void zebraDeleagates::friend_offline_message(
         const string &friend_channel_id,
-        const int type,
+        const int baseType,
         const string &message,
         unsigned long message_id,
         int expired,
@@ -217,6 +222,8 @@ void zebraDeleagates::friend_offline_message(
         int timestamp)
 {
     qDebug() << "friend_offline_message";
+
+    int type = baseType;
 
     /* 接收消息开关检查 */
     if (isReceiveEnable() == false) {
@@ -232,8 +239,12 @@ void zebraDeleagates::friend_offline_message(
 
 
     /* 消息转发 */
-    forwardMessage(friend_channel_id, type, message,
-                   message_id, expired, entire_expired, length, timestamp);
+    if (type < ImapiMessageType_ForwadOffset) {
+        forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
+                       message_id, expired, entire_expired, length, timestamp);
+    } else {
+        type -= ImapiMessageType_ForwadOffset;
+    }
 
     /* 消息声音开关使能 */
     if (isSoundEnable()) {
@@ -327,7 +338,7 @@ void zebraDeleagates::friend_offline_message(
  */
 void zebraDeleagates::friend_online_message(
         const string &friend_channel_id,
-        const int type,
+        const int baseType,
         const string &message,
         unsigned long message_id,
         int expired,
@@ -335,6 +346,7 @@ void zebraDeleagates::friend_online_message(
         int length,
         int timestamp)
 {
+    int type = baseType;
     qDebug() << "friend_online_message";
 
     /* 接收消息开关检查 */
@@ -350,8 +362,13 @@ void zebraDeleagates::friend_online_message(
     }
 
     /* 消息转发 */
-    forwardMessage(friend_channel_id, type, message,
-                   message_id, expired, entire_expired, length, timestamp);
+    if (type < ImapiMessageType_ForwadOffset) {
+        forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
+                       message_id, expired, entire_expired, length, timestamp);
+    } else {
+        type -= ImapiMessageType_ForwadOffset;
+    }
+
 
     /* 消息声音开关使能 */
     if (isSoundEnable()) {
