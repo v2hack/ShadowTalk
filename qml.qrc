@@ -57,5 +57,6 @@
         <file>img/brower/st_pic_next.png</file>
         <file>img/brower/st_pic_roll.png</file>
         <file>img/brower/st_pic_save.png</file>
+        <file>img/st_icon.png</file>
     </qresource>
 </RCC>

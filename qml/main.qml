@@ -23,32 +23,17 @@ Rectangle {
         baseWindows.visible = false;
     }
 
-    width: Math.round(890)
-    height: Math.round(640)
-    radius: 5;
+    width: 890
+    height: 640
 
     Drag.active: true
+    border.color: "#2c2c2c"
+    border.width: 2
 
     /* 主窗口可见 */
     visible: true
     /* 透明度 */
     opacity: 0.97
-
-    /* 绘制阴影 */
-    /*
-    InnerShadow  {
-        id: baseShadow;
-        cached: true;
-        radius: 16;
-        samples: 14;
-        horizontalOffset: 0
-        verticalOffset: 0
-        spread: 0.2
-        color: "#111111";
-        smooth: true;
-        source: baseWindows;
-    }
-    */
 
     /* 主窗口鼠标拖拽 */
     MouseArea {
@@ -58,15 +43,10 @@ Rectangle {
 
         onPressed: {
             clickPos = Qt.point(mouse.x, mouse.y);
-            // Qt.msetcursor(baseWindows, "SizeAllCursor");
-        }
-        onReleased: {
-            // Qt.msetcursor(baseWindows, "ArrowCursor");
         }
         onPositionChanged: {
             /* 鼠标偏移量 */
             var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
-            //            /* 如果mainwindow继承自QWidget,用setPos */
             mainwindow.setX(mainwindow.x + delta.x);
             mainwindow.setY(mainwindow.y + delta.y);
         }
@@ -75,7 +55,7 @@ Rectangle {
     /* 主窗口按钮 */
     MainWindowButton {
         id: mainButton;
-        width: firstLayerWindows.width - secondLayerWindows.fix_width - 2
+        width: parent.width - 310
         height: 40;
         anchors.right: parent.right
         anchors.rightMargin: 3
@@ -88,128 +68,128 @@ Rectangle {
 
     /* 主窗口 */
     Rectangle {
-        id: firstLayerWindows
-        width: Math.round(baseWindows.width)
-        height: Math.round(baseWindows.height)
-        anchors.centerIn: parent
-        radius: 5
-        border.color: "#a0a0a4"
-        border.width: 0
+        id: secondLayerWindows
+        width: baseWindows.width
+        height: baseWindows.height
+        smooth: true
+        anchors.left: parent.left;
+        anchors.top: parent.top;
+        property int fix_width: 296
+        color: "#efefef"
 
-        Rectangle {
-            id: secondLayerWindows
-            width: Math.round(firstLayerWindows.width - 2)
-            height: Math.round(firstLayerWindows.height - 2)
-            smooth: true
-            radius: 5
-            anchors.left: parent.left;
-            anchors.leftMargin: 1
-            anchors.top: parent.top;
-            anchors.topMargin: 1
-            property int fix_width: 295
-            color: "#efefef"
-
-            /* 背景 */
-            Component {
-                id: backGroundComponent;
-                Rectangle {
-                    id: backGroundRectangle
-                    width: Math.round(secondLayerWindows.fix_width - 4);
-                    height: Math.round(secondLayerWindows.height - 4);
-                    color: "#111111"
-                    radius: 5
-                }
+        /* 背景 */
+        Component {
+            id: backGroundComponent;
+            Rectangle {
+                id: backGroundRectangle
+                width: secondLayerWindows.fix_width;
+                height: secondLayerWindows.height;
+                color: "#2c2c2c"
             }
+        }
 
-            /* 搜索组件 */
-            Component {
-                id: searchComponent;
-                Rectangle {
-                    id: searchRectangle
-                    width: Math.round(200)
-                    height: Math.round(20)
-                    radius: 5
-                    color: "#515050"
+        /* 软件图标 */
+        Image {
+            id: softwareIcon
+            height: 19
+            width: 19
+            anchors {
+                top: parent.top
+                topMargin: 3
+                left: parent.left;
+                leftMargin: 3;
+            }
+            source: "qrc:/img/st_icon.png";
+            fillMode: Image.PreserveAspectFit
+        }
 
-                    Image {
-                        id: searchButton;
-                        height: 16
-                        width: 15
-                        anchors {
-                            top: parent.top;
-                            topMargin: 2;
-                            left: parent.left;
-                            leftMargin: 5;
-                        }
-                        source: "qrc:/img/st_button_search.png";
-                        fillMode: Image.PreserveAspectFit
+        /* 搜索组件 */
+        Component {
+            id: searchComponent;
+            Rectangle {
+                id: searchRectangle
+                width: Math.round(250)
+                height: Math.round(26)
+                radius: 3
+                color: "#515050"
+
+                Image {
+                    id: searchButton;
+                    height: 16
+                    width: 26
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left;
+                        leftMargin: 5;
                     }
+                    source: "qrc:/img/st_button_search.png";
+                    fillMode: Image.PreserveAspectFit
                 }
             }
+        }
 
-            /* 导入背景 */
-            Loader {
-                id: backGroundLoader;
-                anchors.top: parent.top;
-                anchors.topMargin: 2
-                anchors.left: parent.left;
-                anchors.leftMargin: 2;
-                sourceComponent: backGroundComponent;
+        /* 导入背景 */
+        Loader {
+            id: backGroundLoader;
+            anchors.top: parent.top;
+            anchors.left: parent.left;
+            sourceComponent: backGroundComponent;
+        }
+
+        /* 搜索栏 */
+        Loader {
+            id: searchLoader;
+            anchors {
+                top: parent.top;
+                topMargin: 50
+                left: parent.left
+                leftMargin: (secondLayerWindows.fix_width - 250)/2
             }
+            sourceComponent: searchComponent;
+        }
 
-            /* 导入搜索栏 */
-            Loader {
-                id: searchLoader;
-                anchors.top: parent.top;
-                anchors.topMargin: 8
-                anchors.left: backGroundLoader.left
-                anchors.leftMargin: secondLayerWindows.fix_width/2 - 100;
-                sourceComponent: searchComponent;
+        /* 友好及联系人组件 */
+//        FriendAndContact {
+//            id: listLoader;
+//            height: parent.height - 75;
+//            anchors.top: searchLoader.bottom;
+//            anchors.topMargin: 6;
+//            anchors.left: backGroundLoader.left;
+//            second_layer_width: secondLayerWindows.fix_width;
+//            second_layer_height: parent.height;
+//            window_setting_height: 75;
+//        }
+
+        /* 主页设置按钮 */
+//        MainWindowSetting {
+//            id: bottomSettingLoader;
+//            anchors.top: listLoader.bottom;
+//            anchors.topMargin: 1
+//            anchors.left: backGroundLoader.left
+//            second_layer_width: secondLayerWindows.fix_width;
+//            second_layer_height: parent.height;
+//        }
+
+        /* 文字输入对话框 */
+        ChatTextInput {
+            id: chatTextInputWindow;
+            height: 200;
+            width: baseWindows.width - secondLayerWindows.fix_width - 2;
+
+            anchors {
+                left: backGroundLoader.right;
+                bottom: backGroundLoader.bottom;
             }
+        }
 
-            /* 友好及联系人组件 */
-            FriendAndContact {
-                id: listLoader;
-                height: parent.height - 75;
-                anchors.top: searchLoader.bottom;
-                anchors.topMargin: 6;
-                anchors.left: backGroundLoader.left;
-                second_layer_width: secondLayerWindows.fix_width;
-                second_layer_height: parent.height;
-                window_setting_height: 75;
-            }
-
-            /* 主页设置按钮 */
-            MainWindowSetting {
-                id: bottomSettingLoader;
-                anchors.top: listLoader.bottom;
-                anchors.topMargin: 1
-                anchors.left: backGroundLoader.left
-                second_layer_width: secondLayerWindows.fix_width;
-                second_layer_height: parent.height;
-            }
-
-            /* 文字输入对话框 */
-            ChatTextInput {
-                id: chatTextInputWindow;
-                height: 200;
-                width: firstLayerWindows.width - secondLayerWindows.fix_width - 2;
-
-                anchors {
-                    left: backGroundLoader.right;
-                    bottom: backGroundLoader.bottom;
-                }
-            }
-
-            /* 聊天内容 */
-            ChatDisplay {
-                id: chatContent;
-                height: firstLayerWindows.height - chatTextInputWindow.height - 45;
-                width: firstLayerWindows.width - secondLayerWindows.fix_width - 2;
-                anchors {
-                    left:backGroundLoader.right;
-                    bottom: chatTextInputWindow.top;
-                }
+        /* 聊天内容 */
+        ChatDisplay {
+            id: chatContent;
+            height: baseWindows.height - chatTextInputWindow.height - 45;
+            width: baseWindows.width - secondLayerWindows.fix_width - 2;
+            anchors {
+                left:backGroundLoader.right;
+                bottom: chatTextInputWindow.top;
             }
         }
     }
