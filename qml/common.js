@@ -61,10 +61,10 @@ function getColor(name) {
                              "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
                              "w", "x", "y", "z");
     if (JsCommon.isNum(name)) {
-//        console.log("是数字");
+        console.log("是数字");
         return colorArr[name%26];
     }  else if (JsCommon.isChinese(name)) {
-//        console.log("是汉字");
+        console.log("是汉字");
         var lowerName = PinYin.pinyin.getCamelChars(name);
         var lastAph1 = lowerName.substr(lowerName.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
@@ -73,7 +73,7 @@ function getColor(name) {
             }
         }
     } else if (JsCommon.isAlphabet(name)) {
-//        console.log("是字母");
+        console.log("是字母");
         var lastAph2 = name.substr(name.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
             if (lastAph2.toLowerCase() ===  nameByte[i]) {
@@ -81,11 +81,40 @@ function getColor(name) {
             }
         }
     } else {
-//        console.log("是其他字符");
+        console.log("是其他字符");
         return "#7c509d";
     }
 }
 
+function getFirstLetter(name) {
+
+    var nameByte = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+                             "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+                             "w", "x", "y", "z");
+
+    var upperLetter = new Array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+                             "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                             "W", "X", "Y", "Z");
+
+    if (JsCommon.isChinese(name)) {
+        var lowerName = PinYin.pinyin.getCamelChars(name);
+        var lastAph1 = lowerName.substr(lowerName.length - 1, 1);
+        for (var i = 0; i < nameByte.length; i++) {
+            if (lastAph1.toLowerCase() ===  nameByte[i]) {
+                return upperLetter[i];
+            }
+        }
+    } else if (JsCommon.isAlphabet(name)) {
+        var lastAph2 = name.substr(name.length - 1, 1);
+        for (var i = 0; i < nameByte.length; i++) {
+            if (lastAph2.toLowerCase() ===  nameByte[i]) {
+                return upperLetter[i];
+            }
+        }
+    } else {
+        return "#";
+    }
+}
 
 function getDateTime() {
 
@@ -150,7 +179,6 @@ function getMessageFrameHeight(height_size, user_data_width, max_row_width) {
 
     var total_bytes_width = user_data_width;
     var row_num = parseInt(total_bytes_width / max_row_width);
-
 
     if (row_num === 0) {
         row_num = 1;

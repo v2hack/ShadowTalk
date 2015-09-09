@@ -24,17 +24,17 @@ public:
                    int session, int status, int friendIndex);
     ~Friend();
 
-    int id;                  // 好友id,用于界面
-    QString qrCode;          // 二维码
-    int defaultExpiredTime;  // 默认的超时时间
-    QString friendChannelId; // 好友通道
-    int inSession;           // 联系人是否在聊天列表中
-    QString name;            // 用户名
-    int netStatus;            // 在线状态
+    int id;                          // 好友id,用于界面
+    QString qrCode;                  // 二维码
+    int defaultExpiredTime;          // 默认的超时时间
+    QString friendChannelId;         // 好友通道
+    int inSession;                   // 联系人是否在聊天列表中
+    QString name;                    // 用户名
+    int netStatus;                   // 在线状态
 
-    int messageCount;        // 消息数量
-    int messageUnreadCount;  // 消息未读数量
-    QMap<int, Message> messageList; // 消息列表
+    int messageCount;                // 消息数量
+    int messageUnreadCount;          // 消息未读数量
+    QMap<int, Message> messageList;  // 消息列表
 
     void insertOneMessage(Message *message);
     void setQrCode(QString qrCode);

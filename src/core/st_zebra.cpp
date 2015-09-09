@@ -10,17 +10,27 @@
  *  日期: 2015/08/11
  *  说明:
  ******************************************************************/
+#include "maidsafe/common/asio_service.h"
+
 #include <iostream>
 #include <map>
+#include <QThread>
+
+#include <QDebug>
 
 #include "st_cache.h"
 #include "st_context.h"
 #include "st_zebra.h"
 #include "st_log.h"
 #include "st_utils.h"
+#include "st_parsexml.h"
+#include "st_net.h"
+#include "st_login.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
+
+maidsafe::BoostAsioService g_io_service(1);
 
 /**
  *  功能描述: 字符串转换为十六进制
@@ -62,7 +72,7 @@ zebraDeleagates::~zebraDeleagates() {
  *  @return 无
  */
 void zebraDeleagates::network_state(int stat_code) {
-    std:cout << "network_state - " << std::endl;
+    qDebug() << "network_state - " <<  stat_code;
 }
 
 /**
@@ -75,7 +85,116 @@ void zebraDeleagates::network_state(int stat_code) {
 void zebraDeleagates::friend_state(
         const string &friend_channel_id,
         int state_code) {
-    std::cout << "friend_state" << state_code << std::endl;
+    qDebug() << "friend_state - " << state_code;
+}
+
+
+/**
+ *  功能描述: 处理手机端的特殊指令
+ *  @param type 指令类型
+ *  @param message 消息内容
+ *
+ *  @return 无
+ */
+int processPhoneCommand(int type, const string &message, const string &channel_id) {
+    switch (type) {
+    case MessagetypePCBackup:
+    {
+        qDebug() << "[message] : receive backup file";
+        /* 加载XML文件 */
+        string channel_id_128 = gCtx.zebra->hex_encode(channel_id);
+        string passwd = channel_id_128.substr(0, 16);
+
+        writeXmlFile(SHADOW_SYNC_FILE, message);
+        std::cout << "xml file size - " << message.size() << std::endl;
+        std::cout << "parse xml fail : passwd - " << passwd << std::endl;
+        if (parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
+            return -1;
+        }
+
+        /* 切换二维码为进度条 */
+        ShadowTalkLoginStartSync();
+
+        /* 加载动画走起 */
+        for (int i = 0 ; i < 360; i++) {
+            ShadowTalkSleep(10);
+            ShadowTalkSetSyncProcess(i);
+        }
+
+        /* 切换到聊天界面 */
+        gCtx.changeFlag = 1;
+        gCtx.windowFlag = 2;
+        return 1;
+    }
+    case MessagetypePCOffLine:
+    {
+        qDebug() << "[message] : set pc offline";
+        /* 取消监听所有好友 */
+        adaptUnlistenAllFriends();
+        /* 不再收消息 */
+        setReceiveEnable(false);
+        /* 清理界面 */
+        clearMessageFromWidget();
+        clearFriendFromWidget();
+        /* 清理所有缓存 */
+        gCtx.cache->CleanCache();
+        /* 变为登录界面 */
+        displayLoginView();
+        return 1;
+    }
+    case MessagetypePingPC:
+    {
+        qDebug() << "[message] : receive pc ping";
+        gCtx.zebra->send_online_message(gCtx.phoneSyncChannel, MessagetypeResponeFromPC, "respone",
+                                        60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
+        /* 更新计时 */
+        gCtx.phoneUpdateTime.restart();
+        return 1;
+    }
+    default:
+        return 0;
+    }
+}
+
+/**
+ *  功能描述: 根据手机在线状态进行消息的转发
+ *  @param friend_channel_id 好友通道id
+ *  @param type              消息类型
+ *  @param message           消息内容
+ *  @param message_id        消息id
+ *  @param expired           过期时间
+ *  @param entire_expired
+ *  @param length            消息长度
+ *  @param timestamp         时间戳
+ *
+ *  @return 无
+ */
+void forwardMessage(const string &friend_channel_id,
+    const int type, const string &message,
+    unsigned long message_id, int expired,
+    int entire_expired, int length, int timestamp)
+{
+    if (gCtx.phoneUpdateTime.elapsed()/1000 > 70) {
+        qDebug() << "[sync]: phone is not online - " << gCtx.phoneUpdateTime.elapsed();
+        return;
+    }
+    if (gCtx.phoneSyncChannel.empty()) {
+        qDebug() << "[sync]: phone sync channel is empty";
+        return;
+    }
+    if (gCtx.phoneSyncChannel.size() != 64) {
+        qDebug() << "[sync]: phone sync channel size is not correct - " << gCtx.phoneSyncChannel.size();
+        return;
+    }
+
+
+    qDebug() << "sync channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(gCtx.phoneSyncChannel));
+    qDebug() << "frin channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+
+    gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
+        type, message, expired, entire_expired, timestamp, length, message_id);
+    qDebug() << "[sync]: send sync message to phone ok";
+    return;
 }
 
 
@@ -94,7 +213,7 @@ void zebraDeleagates::friend_state(
  */
 void zebraDeleagates::friend_offline_message(
         const string &friend_channel_id,
-        const int type,
+        const int baseType,
         const string &message,
         unsigned long message_id,
         int expired,
@@ -102,8 +221,35 @@ void zebraDeleagates::friend_offline_message(
         int length,
         int timestamp)
 {
-    std::cout << "friend_offline_message" << std::endl;
-    playMessageSound();
+    qDebug() << "friend_offline_message";
+
+    int type = baseType;
+
+    /* 接收消息开关检查 */
+    if (isReceiveEnable() == false) {
+        return;
+    }
+
+    /* 特殊消息处理 */
+    int ret = 0;
+    ret = processPhoneCommand(type, message, friend_channel_id);
+    if (ret < 0 || ret == 1) {
+        return;
+    }
+
+
+    /* 消息转发 */
+    if (type < ImapiMessageType_ForwadOffset) {
+        forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
+                       message_id, expired, entire_expired, length, timestamp);
+    } else {
+        type -= ImapiMessageType_ForwadOffset;
+    }
+
+    /* 消息声音开关使能 */
+    if (isSoundEnable()) {
+        playMessageSound();
+    }
 
     Cache *c = gCtx.cache;
     if (!c) {
@@ -192,7 +338,7 @@ void zebraDeleagates::friend_offline_message(
  */
 void zebraDeleagates::friend_online_message(
         const string &friend_channel_id,
-        const int type,
+        const int baseType,
         const string &message,
         unsigned long message_id,
         int expired,
@@ -200,8 +346,34 @@ void zebraDeleagates::friend_online_message(
         int length,
         int timestamp)
 {
-    std::cout << "friend_online_message" << std::endl;
-    playMessageSound();
+    int type = baseType;
+    qDebug() << "friend_online_message";
+
+    /* 接收消息开关检查 */
+    if (isReceiveEnable() == false) {
+        return;
+    }
+
+    /* 特殊消息处理 */
+    int ret = 0;
+    ret = processPhoneCommand(type, message, friend_channel_id);
+    if (ret < 0 || ret == 1) {
+        return;
+    }
+
+    /* 消息转发 */
+    if (type < ImapiMessageType_ForwadOffset) {
+        forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
+                       message_id, expired, entire_expired, length, timestamp);
+    } else {
+        type -= ImapiMessageType_ForwadOffset;
+    }
+
+
+    /* 消息声音开关使能 */
+    if (isSoundEnable()) {
+        playMessageSound();
+    }
 
     Cache *c = gCtx.cache;
     if (!c) {
@@ -286,13 +458,19 @@ void zebraDeleagates::friend_request_via_qr(
         const string &friend_channel_id) {
 
     if (gCtx.phoneQrChannel != qr_channel_id) {
-        std::cout << "is not sync channel id";
+        qDebug() << "is not sync channel id";
         return;
     }
-    gCtx.zebra->handle_friend_request(friend_channel_id, true);
-    gCtx.zebra->listen_friend(friend_channel_id);
+    qDebug() << "friend channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+
+    g_io_service.service().dispatch([friend_channel_id](){
+        ShadowTalkSleep(500);
+        int ret = gCtx.zebra->handle_friend_request(friend_channel_id, true);
+        std::cout << "[Add] : add friend result: " << ret << std::endl;
+    });
+
     gCtx.phoneSyncChannel = friend_channel_id;
-    std::cout << "accept sync channel request" << std::endl;
+    qDebug() << "accept sync channel request";
     return;
 }
 
@@ -307,7 +485,8 @@ void zebraDeleagates::friend_request_via_qr(
 void zebraDeleagates::friend_request_reply(
         const string &friend_channel_id,
         bool accepted) {
-    std::cout << "friend_request_reply" << std::endl;
+    qDebug() << "friend_request_reply";
+    return;
 }
 
 
@@ -416,7 +595,7 @@ bool zebraDeleagates::isExisted(const string &item, unsigned int expire) {
 void zebraDeleagates::handler_write_message_reply(
         const std::string &channel_id,
         unsigned long message_id, int ret_code) {
-    std::cout << "handler_write_message_reply" << std::endl;
+    std::cout << "handler_write_message_reply - " << ret_code << " id - " << message_id << std::endl;
 }
 
 
@@ -449,7 +628,7 @@ int zebraDeleagates::send_message_via_direct_connection(
         const std::string &data)
 {
     std::cout << "send_message_via_direct_connection" << std::endl;
-    return 0;
+    return -1;
 }
 
 

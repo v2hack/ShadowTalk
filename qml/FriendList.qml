@@ -25,6 +25,30 @@ Rectangle {
     property int fiendOnline  : 1
     property int friendOutline: 2
 
+
+    Component {
+        id: sectionHeading
+        Rectangle {
+            width: 292
+            height: 24
+            color: "#343434"
+
+            Text {
+                text: section
+                font.bold: true
+                font.pixelSize: 15
+                color: "#adadad"
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: 21
+                }
+            }
+        }
+    }
+
+
     /* ListView */
     ListView {
         id: friendListView
@@ -41,25 +65,35 @@ Rectangle {
                 property: "opacity";
                 from: 0;
                 to: 1.0;
-                duration: 1000
+                duration: 400
             }
             NumberAnimation {
                 property: "scale";
                 from: 0;
                 to: 1.0;
-                duration: 1000
+                duration: 400
             }
         }
         displaced: Transition {
             NumberAnimation {
                 properties: "x,y";
-                duration: 1000;
+                duration: 400;
                 easing.type: Easing.OutBounce
             }
         }
 
+        section.property: "shortName"
+        section.criteria: ViewSection.FirstCharacter
+        section.delegate: sectionHeading
+
         /* 添加好友 */
         function addFriend(data) {
+            console.log("###" + data.friendName);
+            data.shortName = JsCommon.getFirstLetter(data.friendName);
+            if (data.shortName === undefined) {
+                data.shortName = "#"
+            }
+            console.log("###" + data.shortName);
             model.append(data)
         }
 
@@ -101,161 +135,153 @@ Rectangle {
     Component {
         id: friendListDelegate
         Item {
-            width:284
-            height:55;
+            width:parent.width
+            height:44;
 
             Rectangle {
                 id: cellRect
                 anchors.fill: parent
-                color: "transparent"
+                color: "#3a3a3a"
+                width:parent.width
+                height:parent.height
 
-                /* 好友item */
+                /* 好友头像底色 */
                 Rectangle {
-                    id: friendItem
-                    width: 300
-                    height: 55
-                    color: "transparent"
+                    id: friendItemIcon
+                    width: 34
+                    height: 34
+                    radius: width / 2
+                    color: {
+                        var ret = JsCommon.getColor(friendName);
+                        if (ret === undefined) {
+                            return "#7c509d"
+                        }
+                        return ret;
+                    }
+                    anchors {
+                        left: parent.left
+                        leftMargin: 16
+                        verticalCenter: parent.verticalCenter
+                    }
+                }
 
-                    /* 好友头像底色 */
+                /* 好友名字 */
+                Text {
+                    id: friendItemName
+                    anchors {
+                        left: friendItemIcon.right
+                        leftMargin: 12
+                        verticalCenter: parent.verticalCenter
+                    }
+                    color: "white"
+                    font.pixelSize: 15
+                    font.letterSpacing: 1
+                    text: friendName
+                    font.bold: true
+
+                    //字体先注释，编译太慢
+                    FontLoader {
+                        id: chineseFont
+                        source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                    }
+                    font.family: chineseFont.name;
+                }
+
+                Rectangle {
+                    id: friendNetState
+                    width: 13
+                    height: 13
+                    radius: width / 2
+                    color: netState == fiendOnline ? "green" : "white"
+
+                    anchors {
+                        right: cellRect.right
+                        rightMargin: 30
+                        verticalCenter: parent.verticalCenter
+                    }
+
                     Rectangle {
-                        id: friendItemIcon
-                        width: 34
-                        height: 34
+                        border.color: "#282828"
+                        border.width: 2
+
+                        color: netState == fiendOnline ? "green" : "white"
+                        width: 11
+                        height: 11
                         radius: width / 2
-                        color: JsCommon.getColor(friendName);
-
                         anchors {
-                            left: parent.left
-                            leftMargin: 14
-                            top: parent.top
-                            topMargin: 6
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
                         }
                     }
-                    /* 好友头像球体 */
-                    Image {
-                        width: 65
-                        height: 65
+                }
 
-                        anchors {
-                            top: parent.top
-                            topMargin: 1
-                            left: parent.left
-                            leftMargin: -7
-                        }
-                        opacity: 1
-                        source: "qrc:/img/head/st_ball_white.png";
-                        fillMode: Image.PreserveAspectFit
+                /* 未读消息数量 */
+                Rectangle {
+                    id: unReadCountRectangle;
+
+                    width : 16
+                    height: 16
+                    radius: width / 2
+                    color : "red";
+                    visible: unReadCount == 0 ? false : true
+
+                    anchors {
+                        left: friendItemIcon.right;
+                        leftMargin: -6;
+                        verticalCenter: parent.verticalCenter
+                        verticalCenterOffset: 10
                     }
 
-                    /* 好友名字 */
                     Text {
-                        id: friendItemName
+                        id: unReadText
                         anchors {
-                            left: friendItemIcon.right
-                            leftMargin: 6
-                            top: parent.top;
-                            topMargin: 15
+                            horizontalCenter:parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
                         }
                         color: "white"
-                        font.pixelSize: 15
-                        font.letterSpacing: 1
-                        text: friendName
+                        font.pixelSize: 10
                         font.bold: true
-
-                        //字体先注释，编译太慢
-                        FontLoader {
-                            id: chineseFont
-                            source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
-                        }
+                        text: unReadCount > 99 ? "99+" : unReadCount
                         font.family: chineseFont.name;
                     }
+                }
 
-                    /* 最后一天消息发送时间 */
-                    Text {
-                        id: friendOnlineTime;
-                        anchors {
-                            right: friendItem.right;
-                            rightMargin: 30;
-                            top: parent.top;
-                            topMargin: 10
-                        }
-                        color: netState == fiendOnline ? "green" : "white"
-                        font.pixelSize: 13
-                        //                        text: JsCommon.getDateTime();
-                        text: messageTime
-                        font.family: chineseFont.name;
+                /* cpp层类对象 */
+                SelectFriend {
+                    id: selectFriend
+                }
+
+                /* 鼠标滤过的阴影效果 */
+                MouseArea {
+                    id: firneItemArea
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+
+                    onClicked: {
+                        cellRect.color = "#515050";
+                        friendListScrollbar.visible = true;
+                        /* 选中好友，消息栏同步更新 */
+                        selectFriend.changeMessageList(friendIndex, friendName);
                     }
-
-                    /* 未读消息数量 */
-                    Rectangle {
-                        id: unReadCountRectangle;
-
-                        width : 18
-                        height: 18
-                        radius: width / 2
-                        color : "red";
-                        visible: unReadCount == 0 ? false : true
-
-                        anchors {
-                            right: friendItem.right;
-                            rightMargin: 30;
-                            top: friendOnlineTime.bottom;
-                            topMargin: 5
-                        }
-
-                        Text {
-                            id: unReadText
-                            anchors {
-                                horizontalCenter:parent.horizontalCenter
-                                verticalCenter: parent.verticalCenter
-                            }
-                            color: "white"
-                            font.pixelSize: 12
-                            font.bold: true
-                            text: unReadCount > 99 ? "99+" : unReadCount
-                            font.family: chineseFont.name;
-                        }
+                    //                        onEntered: {
+                    //                            cellRect.color = "#353535";
+                    //                            friendListScrollbar.visible = true;
+                    //                            cellRect.opacity = 0.9
+                    //                        }
+                    onExited: {
+                        cellRect.color = "#3a3a3a";
+                        friendListScrollbar.visible = false;
+                        cellRect.opacity = 1
                     }
-
-                    /* cpp层类对象 */
-                    SelectFriend {
-                        id: selectFriend
-                    }
-
-                    /* 鼠标滤过的阴影效果 */
-                    MouseArea {
-                        id: firneItemArea
-                        anchors.fill: parent;
-                        hoverEnabled: true;
-
-                        onClicked: {
-                            cellRect.color = "#444555";
-                            friendListScrollbar.visible = true;
-                            cellRect.opacity = 0.9;
-                            /* 选中好友，消息栏同步更新 */
-                            selectFriend.changeMessageList(friendIndex, friendName);
-                        }
-                        onEntered: {
-                            cellRect.color = "#353535";
-                            friendListScrollbar.visible = true;
-                            cellRect.opacity = 0.9
-                        }
-                        onExited: {
-                            cellRect.color = "transparent";
-                            friendListScrollbar.visible = false;
-                            cellRect.opacity = 1
-                        }
-                        onWheel: {
-                            if (wheel.angleDelta.y < 0) {
-                                if (friendListView.contentY <= friendListView.contentHeight -
-                                        friendListScrollbar.height) {
-                                    friendListView.contentY += 30;
-                                }
+                    onWheel: {
+                        if (wheel.angleDelta.y < 0) {
+                            if (friendListView.contentY <= friendListView.contentHeight -
+                                    friendListScrollbar.height) {
+                                friendListView.contentY += 30;
                             }
-
-                            if (wheel.angleDelta.y > 0 && friendListView.contentY > 0) {
-                                friendListView.contentY -= 30;
-                            }
+                        }
+                        if (wheel.angleDelta.y > 0 && friendListView.contentY > 0) {
+                            friendListView.contentY -= 30;
                         }
                     }
                 }
@@ -266,9 +292,9 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 280
+        x: 289
         y: 0
-        width: 8
+        width: 6
         height: parent.height
         color: "transparent"
         visible: false

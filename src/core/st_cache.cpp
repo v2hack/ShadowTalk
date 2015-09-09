@@ -157,3 +157,56 @@ void Cache::insertKeyValue(std::string key, std::string value){
 void Cache::deleteKeyValue(std::string key) {
     this->keyValueList.erase(key);
 }
+
+/**
+ *  功能描述: 清理缓存
+ *  @param  无
+ *
+ *  @return 无
+ */
+void Cache::CleanCache() {
+    friendCount = currentUseFriendId = 0;
+    cleanFriend();
+    cleanChannel();
+    cleanKeyValue();
+    return;
+}
+
+/**
+ *  功能描述: 清理好友缓存
+ *  @param  无
+ *
+ *  @return 无
+ */
+void Cache::cleanFriend() {
+    QMap<int, Friend>::iterator it;
+    for (it = this->friendList.begin(); it != this->friendList.end(); it++) {
+        Friend *f = &(it.value());
+        delete f;
+    }
+    this->friendList.clear();
+}
+
+/**
+ *  功能描述: 清理通道缓存
+ *  @param  无
+ *
+ *  @return 无
+ */
+void Cache::cleanChannel() {
+    QMap<QString, struct LocalChannel *>::iterator it;
+    for (it = this->channelList.begin(); it != this->channelList.end(); it++) {
+        delete it.value();
+    }
+    this->channelList.clear();
+}
+
+/**
+ *  功能描述: 清理key缓存
+ *  @param  无
+ *
+ *  @return 无
+ */
+void Cache::cleanKeyValue() {
+    this->keyValueList.clear();
+}

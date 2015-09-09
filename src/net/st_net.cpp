@@ -130,3 +130,28 @@ void adaptUnistenFriends(std::string friendChannelId) {
     }
     return;
 }
+
+
+void adaptUnlistenAllFriends() {
+    int ret = 0;
+
+    Cache *c = gCtx.cache;
+    peersafe::im::Message_client *z = gCtx.zebra;
+    if (!z || !c) {
+        return;
+    }
+
+    QMap<int, Friend>::iterator it;
+    for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
+       Friend &f = it.value();
+       ret = z->stop_listen_friend(StringToHex(f.friendChannelId.toStdString()));
+       if (ret < 0) {
+           std::cout << "unlisten all friend fail" << std::endl;
+           continue;
+       }
+    }
+    std::cout << "unlisten all friends ok" << std::endl;
+    return;
+}
+
+

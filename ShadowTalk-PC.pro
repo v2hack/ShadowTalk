@@ -19,6 +19,10 @@ INCLUDEPATH += src/core
 INCLUDEPATH += src/net
 INCLUDEPATH += src/widget
 
+INCLUDEPATH += include/boost
+INCLUDEPATH += include/maidsafe
+
+
 HEADERS += \
     include/im.h \
     src/core/st_cache.h \
@@ -38,7 +42,9 @@ HEADERS += \
     src/core/st_voice.h \
     src/core/st_picture.h \
     include/qrencode.h \
-    src/core/st_qrcode.h
+    src/core/st_qrcode.h \
+    include/maidsafe/common/asio_service.h \
+    src/core/st_thread.h
 	
 SOURCES += \
     src/main.cpp \
@@ -48,6 +54,7 @@ SOURCES += \
     src/core/st_pixelsize.cpp \
     src/core/st_utils.cpp \
     src/core/st_zebra.cpp \
+    src/core/st_context.cpp \
     src/net/st_net.cpp \
     src/widget/st_friend.cpp \
     src/widget/st_group.cpp \
@@ -57,7 +64,9 @@ SOURCES += \
     src/core/st_base64.cpp \
     src/core/st_voice.cpp \
     src/core/st_picture.cpp \
-    src/core/st_qrcode.cpp
+    src/core/st_qrcode.cpp \
+    src/core/st_context.cpp \
+    src/core/st_thread.cpp
    
 win32 {
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57

@@ -4,12 +4,19 @@
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQml>
+#include <QTime>
 
 #include "st_friend.h"
 #include "st_cache.h"
 #include "st_zebra.h"
 
 #include "im.h"
+
+/* 配置结构 */
+struct ShadowTalkConfig {
+    bool soundEnable;   /* 声音开关 */
+    bool reciveEnable;  /* 消息接收开关 */
+};
 
 /* 全局上下文索引 */
 struct ShadowTalkContext
@@ -27,6 +34,20 @@ struct ShadowTalkContext
 
     std::string phoneQrChannel;   /* 与手机同步的qr channel id*/
     std::string phoneSyncChannel; /* 与手机同步的normal channel id*/
+
+    struct ShadowTalkConfig conf; /* 配置结构 */
+
+    int changeFlag;   /* 窗口切换标记 */
+    int windowFlag;   /* 窗口编号 */
+
+    QTime phoneUpdateTime;  /* 手机刷新时间 */
+
 };
+
+bool isSoundEnable();
+bool isReceiveEnable();
+void setSoundEnable(bool set);
+void setReceiveEnable(bool set);
+
 
 #endif // CONTEXT_H

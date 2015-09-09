@@ -3,6 +3,9 @@
 #include <QString>
 #include <QDomDocument>
 
+
+#define SHADOW_SYNC_FILE "SyncPhone.list"
+
 class ParseXml
 {
 public:

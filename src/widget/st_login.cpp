@@ -57,6 +57,38 @@ void ShadowTalkSetQrImage(QString qrImagePath) {
     return;
 }
 
+/* 开始进入同步进度条 */
+void ShadowTalkLoginStartSync() {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("loginQrWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "loginQrStartSync");
+    } else {
+        qDebug() << "login qr start sync fail";
+    }
+    return;
+}
+
+/* 恢复登录界面设置 */
+void ShadowTalkLoginClean() {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("loginQrWindow");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "loginQrStartClean");
+    } else {
+        qDebug() << "login qr clean fail";
+    }
+    return;
+}
+
 
 /* 登陆 */
 int ShadowTalkLogin() {
@@ -85,7 +117,7 @@ int ShadowTalkLogin() {
     }
 
     /* 利用peersafe接口创建二维码 */
-    qrCodeSource = gCtx.zebra->generate_qr_channel(600);
+    qrCodeSource = gCtx.zebra->generate_qr_channel(1200);
     if (qrCodeSource.empty()) {
         qDebug() << "generate qr channel fail";
         return -1;
@@ -97,7 +129,7 @@ int ShadowTalkLogin() {
 
     /* 转换为特定的channel */
     qrChannelId = gCtx.zebra->hex_encode(qrCodeSource);
-    qrEnCode = "c:" + qrChannelId;
+    qrEnCode = "C:" + qrChannelId;
     std::cout << "sync qrcode - " << qrEnCode << std::endl;
 
     /* 创建二维码图片 */

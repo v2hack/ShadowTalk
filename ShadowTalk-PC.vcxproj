@@ -56,7 +56,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;include;src\core;src\net;src\widget;lib\x64\boost;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;include;src\core;src\net;src\widget;include\boost;include\maidsafe;lib\x64\boost;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtCore;release;$(QTDIR)\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:strictStrings -w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -75,7 +75,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>D:\code\ShadowTalk\lib\x32\boost\\libboost_chrono-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_chrono-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_date_time-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_date_time-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_filesystem-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_filesystem-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_program_options-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_program_options-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_regex-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_regex-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_system-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_system-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_thread-vc120-mt-1_57.lib;D:\code\ShadowTalk\lib\x32\boost\\libboost_thread-vc120-mt-gd-1_57.lib;D:\code\ShadowTalk\lib\x32\peersafe\\cryptopp-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\maidsafe_common-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\maidsafe_passport-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_channel-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_imapi-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_network-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_oudp-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\peersafe_visit-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\proto_compiler-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\protobuf_lite-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\protobuf-msr.lib;D:\code\ShadowTalk\lib\x32\peersafe\\torrent-rasterbar.lib;D:\code\ShadowTalk\lib\x32\ice\\libpj.lib;D:\code\ShadowTalk\lib\x32\ice\\libpjlib-util.lib;D:\code\ShadowTalk\lib\x32\ice\\libpjnath.lib;D:\code\ShadowTalk\lib\x32\qrcode\\libqrcode.lib;$(QTDIR)\lib\Qt5Quick.lib;$(QTDIR)\lib\Qt5Widgets.lib;$(QTDIR)\lib\Qt5Multimedia.lib;$(QTDIR)\lib\Qt5Gui.lib;$(QTDIR)\lib\Qt5Qml.lib;$(QTDIR)\lib\Qt5Network.lib;$(QTDIR)\lib\Qt5Xml.lib;$(QTDIR)\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\code\ShadowTalk\lib\x32\boost\;D:\code\ShadowTalk\lib\x32\peersafe\;D:\code\ShadowTalk\lib\x32\ice\;D:\code\ShadowTalk\lib\x32\qrcode\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;D:\code\ShadowTalk\lib\x32\boost\;D:\code\ShadowTalk\lib\x32\peersafe\;D:\code\ShadowTalk\lib\x32\ice\;D:\code\ShadowTalk\lib\x32\qrcode\;$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -98,7 +98,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;include;src\core;src\net;src\widget;lib\x64\boost;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;include;src\core;src\net;src\widget;include\boost;include\maidsafe;lib\x64\boost;$(QTDIR)\include;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtCore;debug;$(QTDIR)\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-w34100 -w34189 -w44996 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -156,6 +156,9 @@
     <ClCompile Include="Debug\moc_st_pixelsize.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Debug\moc_st_thread.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Debug\moc_st_voice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -183,12 +186,16 @@
     <ClCompile Include="Release\moc_st_pixelsize.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Release\moc_st_thread.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Release\moc_st_voice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\core\st_base64.cpp" />
     <ClCompile Include="src\core\st_cache.cpp" />
+    <ClCompile Include="src\core\st_context.cpp" />
     <ClCompile Include="src\widget\st_friend.cpp" />
     <ClCompile Include="src\widget\st_group.cpp" />
     <ClCompile Include="src\core\st_log.cpp" />
@@ -199,12 +206,14 @@
     <ClCompile Include="src\core\st_picture.cpp" />
     <ClCompile Include="src\core\st_pixelsize.cpp" />
     <ClCompile Include="src\core\st_qrcode.cpp" />
+    <ClCompile Include="src\core\st_thread.cpp" />
     <ClCompile Include="src\widget\st_trayicon.cpp" />
     <ClCompile Include="src\core\st_utils.cpp" />
     <ClCompile Include="src\core\st_voice.cpp" />
     <ClCompile Include="src\core\st_zebra.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\maidsafe\common\asio_service.h" />
     <ClInclude Include="include\im.h" />
     <ClInclude Include="include\qrencode.h" />
     <ClInclude Include="src\core\st_base64.h" />
@@ -214,14 +223,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_cache.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_cache.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -235,14 +244,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_friend.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_friend.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -255,14 +264,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_group.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_group.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -277,14 +286,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_message.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_message.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -299,14 +308,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_picture.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_picture.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -319,14 +328,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_pixelsize.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_pixelsize.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -334,6 +343,26 @@ endlocal
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <ClInclude Include="src\core\st_qrcode.h" />
+    <CustomBuild Include="src\core\st_thread.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+if errorlevel 1 goto VCEnd
+
+if errorlevel 1 goto VCEnd
+endlocal
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_thread.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+if errorlevel 1 goto VCEnd
+
+if errorlevel 1 goto VCEnd
+endlocal
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_thread.h...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
     <ClInclude Include="src\widget\st_trayicon.h" />
     <ClInclude Include="src\core\st_utils.h" />
     <CustomBuild Include="src\core\st_voice.h">
@@ -342,14 +371,14 @@ if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB -DNDEBUG "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\release" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing st_voice.h...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
 
 if errorlevel 1 goto VCEnd
 endlocal
-"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
+"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o "$(ConfigurationName)\moc_%(Filename).cpp"  -D_CONSOLE -DUNICODE -DWIN32 -DQT_QUICK_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_XML_LIB -DQT_CORE_LIB "-I." "-I.\include" "-I.\src\core" "-I.\src\net" "-I.\src\widget" "-I.\include\boost" "-I.\include\maidsafe" "-I.\lib\x64\boost" "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtQuick" "-I$(QTDIR)\include\QtWidgets" "-I$(QTDIR)\include\QtMultimedia" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtANGLE" "-I$(QTDIR)\include\QtQml" "-I$(QTDIR)\include\QtNetwork" "-I$(QTDIR)\include\QtXml" "-I$(QTDIR)\include\QtCore" "-I.\debug" "-I$(QTDIR)\mkspecs\win32-msvc2013"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing st_voice.h...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
@@ -437,11 +466,11 @@ endlocal
     </None>
     <CustomBuild Include="qml.qrc">
       <FileType>Document</FileType>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);.\qml\main.qml;.\img\st_button_close_1.png;.\img\st_button_max_1.png;.\img\st_button_min_1.png;.\img\st_button_normal_1.png;.\qml\MainWindowButton.qml;.\img\st_button_close_2.png;.\img\st_button_max_2.png;.\img\st_button_min_2.png;.\img\st_button_normal_2.png;.\qml\FriendAndContact.qml;.\qml\MainWindowSetting.qml;.\img\st_button_search.png;.\img\st_setting_exit_1.png;.\img\st_setting_exit_2.png;.\img\st_setting_lock_screen_1.png;.\img\st_setting_lock_screen_2.png;.\img\st_setting_no_sound_1.png;.\img\st_setting_no_sound_2.png;.\img\st_setting_sound_1.png;.\img\st_setting_sound_2.png;.\qml\ChatDisplay.qml;.\qml\ChatTextInput.qml;.\img\st_chat_delivery.png;.\img\st_chat_expression.png;.\img\st_chat_screenshot.png;.\qml\ChatList.qml;.\qml\FriendList.qml;.\qml\functions.js;.\qml\common.js;.\img\head\st_ball_white.png;.\img\head\st_message_frame.png;.\img\head\st_message_point.png;.\img\choice\st_chat_list.png;.\img\choice\st_choice_button.png;.\img\choice\st_contact_list.png;.\qml\login.qml;.\img\st_qr_code.png;.\img\st_qr_hint.png;.\img\st_qr_process.png;.\qml\LoginProcess.qml;.\img\st_qr_point.png;.\sound\event.wav;.\sound\message.wav;.\sound\online.mp3;.\img\sound\st_m_sound_1.png;.\img\sound\st_m_sound_2.png;.\img\sound\st_m_sound_3.png;.\res\fonts\KhmerUI.ttf;.\res\fonts\KhmerUIb.ttf;.\res\fonts\方正兰亭刊黑_GBK.ttf;.\qml\picture.qml;.\img\brower\st_pic_close.png;.\img\brower\st_pic_last.png;.\img\brower\st_pic_next.png;.\img\brower\st_pic_roll.png;.\img\brower\st_pic_save.png;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);.\qml\main.qml;.\img\st_button_close_1.png;.\img\st_button_max_1.png;.\img\st_button_min_1.png;.\img\st_button_normal_1.png;.\qml\MainWindowButton.qml;.\img\st_button_close_2.png;.\img\st_button_max_2.png;.\img\st_button_min_2.png;.\img\st_button_normal_2.png;.\qml\FriendAndContact.qml;.\qml\MainWindowSetting.qml;.\img\st_button_search.png;.\img\st_setting_exit_1.png;.\img\st_setting_exit_2.png;.\img\st_setting_lock_screen_1.png;.\img\st_setting_lock_screen_2.png;.\img\st_setting_no_sound_1.png;.\img\st_setting_no_sound_2.png;.\img\st_setting_sound_1.png;.\img\st_setting_sound_2.png;.\qml\ChatDisplay.qml;.\qml\ChatTextInput.qml;.\img\st_chat_delivery.png;.\img\st_chat_expression.png;.\img\st_chat_screenshot.png;.\qml\ChatList.qml;.\qml\FriendList.qml;.\qml\functions.js;.\qml\common.js;.\img\head\st_ball_white.png;.\img\head\st_message_frame.png;.\img\head\st_message_point.png;.\img\choice\st_chat_list.png;.\img\choice\st_choice_button.png;.\img\choice\st_contact_list.png;.\qml\login.qml;.\img\st_qr_code.png;.\img\st_qr_hint.png;.\img\st_qr_process.png;.\qml\LoginProcess.qml;.\img\st_qr_point.png;.\sound\event.wav;.\sound\message.wav;.\sound\online.mp3;.\img\sound\st_m_sound_1.png;.\img\sound\st_m_sound_2.png;.\img\sound\st_m_sound_3.png;.\res\fonts\KhmerUI.ttf;.\res\fonts\KhmerUIb.ttf;.\res\fonts\方正兰亭刊黑_GBK.ttf;.\qml\picture.qml;.\img\brower\st_pic_close.png;.\img\brower\st_pic_last.png;.\img\brower\st_pic_next.png;.\img\brower\st_pic_roll.png;.\img\brower\st_pic_save.png;.\img\st_icon.png;.\img\st_setting.png;.\img\st_select_chat.png;.\img\st_select_chat_t.png;.\img\st_select_users.png;.\img\st_select_users_t.png;.\img\st_green_point.png;.\img\st_white_point.png;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Rcc%27ing %(Identity)...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);.\qml\main.qml;.\img\st_button_close_1.png;.\img\st_button_max_1.png;.\img\st_button_min_1.png;.\img\st_button_normal_1.png;.\qml\MainWindowButton.qml;.\img\st_button_close_2.png;.\img\st_button_max_2.png;.\img\st_button_min_2.png;.\img\st_button_normal_2.png;.\qml\FriendAndContact.qml;.\qml\MainWindowSetting.qml;.\img\st_button_search.png;.\img\st_setting_exit_1.png;.\img\st_setting_exit_2.png;.\img\st_setting_lock_screen_1.png;.\img\st_setting_lock_screen_2.png;.\img\st_setting_no_sound_1.png;.\img\st_setting_no_sound_2.png;.\img\st_setting_sound_1.png;.\img\st_setting_sound_2.png;.\qml\ChatDisplay.qml;.\qml\ChatTextInput.qml;.\img\st_chat_delivery.png;.\img\st_chat_expression.png;.\img\st_chat_screenshot.png;.\qml\ChatList.qml;.\qml\FriendList.qml;.\qml\functions.js;.\qml\common.js;.\img\head\st_ball_white.png;.\img\head\st_message_frame.png;.\img\head\st_message_point.png;.\img\choice\st_chat_list.png;.\img\choice\st_choice_button.png;.\img\choice\st_contact_list.png;.\qml\login.qml;.\img\st_qr_code.png;.\img\st_qr_hint.png;.\img\st_qr_process.png;.\qml\LoginProcess.qml;.\img\st_qr_point.png;.\sound\event.wav;.\sound\message.wav;.\sound\online.mp3;.\img\sound\st_m_sound_1.png;.\img\sound\st_m_sound_2.png;.\img\sound\st_m_sound_3.png;.\res\fonts\KhmerUI.ttf;.\res\fonts\KhmerUIb.ttf;.\res\fonts\方正兰亭刊黑_GBK.ttf;.\qml\picture.qml;.\img\brower\st_pic_close.png;.\img\brower\st_pic_last.png;.\img\brower\st_pic_next.png;.\img\brower\st_pic_roll.png;.\img\brower\st_pic_save.png;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);.\qml\main.qml;.\img\st_button_close_1.png;.\img\st_button_max_1.png;.\img\st_button_min_1.png;.\img\st_button_normal_1.png;.\qml\MainWindowButton.qml;.\img\st_button_close_2.png;.\img\st_button_max_2.png;.\img\st_button_min_2.png;.\img\st_button_normal_2.png;.\qml\FriendAndContact.qml;.\qml\MainWindowSetting.qml;.\img\st_button_search.png;.\img\st_setting_exit_1.png;.\img\st_setting_exit_2.png;.\img\st_setting_lock_screen_1.png;.\img\st_setting_lock_screen_2.png;.\img\st_setting_no_sound_1.png;.\img\st_setting_no_sound_2.png;.\img\st_setting_sound_1.png;.\img\st_setting_sound_2.png;.\qml\ChatDisplay.qml;.\qml\ChatTextInput.qml;.\img\st_chat_delivery.png;.\img\st_chat_expression.png;.\img\st_chat_screenshot.png;.\qml\ChatList.qml;.\qml\FriendList.qml;.\qml\functions.js;.\qml\common.js;.\img\head\st_ball_white.png;.\img\head\st_message_frame.png;.\img\head\st_message_point.png;.\img\choice\st_chat_list.png;.\img\choice\st_choice_button.png;.\img\choice\st_contact_list.png;.\qml\login.qml;.\img\st_qr_code.png;.\img\st_qr_hint.png;.\img\st_qr_process.png;.\qml\LoginProcess.qml;.\img\st_qr_point.png;.\sound\event.wav;.\sound\message.wav;.\sound\online.mp3;.\img\sound\st_m_sound_1.png;.\img\sound\st_m_sound_2.png;.\img\sound\st_m_sound_3.png;.\res\fonts\KhmerUI.ttf;.\res\fonts\KhmerUIb.ttf;.\res\fonts\方正兰亭刊黑_GBK.ttf;.\qml\picture.qml;.\img\brower\st_pic_close.png;.\img\brower\st_pic_last.png;.\img\brower\st_pic_next.png;.\img\brower\st_pic_roll.png;.\img\brower\st_pic_save.png;.\img\st_icon.png;.\img\st_setting.png;.\img\st_select_chat.png;.\img\st_select_chat_t.png;.\img\st_select_users.png;.\img\st_select_users_t.png;.\img\st_green_point.png;.\img\st_white_point.png;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\rcc.exe" -name "%(Filename)" -no-compress "%(FullPath)" -o .\GeneratedFiles\qrc_%(Filename).cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rcc%27ing %(Identity)...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\qrc_%(Filename).cpp;%(Outputs)</Outputs>
@@ -510,6 +539,14 @@ endlocal
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
+    <None Include="img\st_green_point.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="img\st_icon.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="img\sound\st_m_sound_1.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -566,6 +603,26 @@ endlocal
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
+    <None Include="img\st_select_chat.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="img\st_select_chat_t.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="img\st_select_users.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="img\st_select_users_t.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="img\st_setting.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
     <None Include="img\st_setting_exit_1.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -595,6 +652,10 @@ endlocal
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
     <None Include="img\st_setting_sound_2.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="img\st_white_point.png">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
