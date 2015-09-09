@@ -194,24 +194,6 @@ Rectangle {
                         right: direct === 1 ? parent.right : undefined
                         rightMargin: direct === 1 ? 14 : undefined
                     }
-//                    /* 好友头像球体 */
-//                    Image {
-//                        id: firendItemImage
-//                        width: 68
-//                        height: 68
-
-//                        anchors {
-//                            top: parent.top
-//                            topMargin: -5
-//                            left: direct === 0 ? parent.left : undefined
-//                            leftMargin: direct === 0 ? -21 : undefined
-//                            right: direct === 1 ? parent.right : undefined
-//                            rightMargin: direct === 1 ? -11 : undefined
-//                        }
-//                        opacity: 1
-//                        source: "qrc:/img/head/st_ball_white.png";
-//                        fillMode: Image.PreserveAspectFit
-//                    }
 
                     /* 好友名字 */
                     Text {
@@ -252,7 +234,6 @@ Rectangle {
                             right: direct == 1 ? friendItemIcon.left : undefined
                             rightMargin: direct === 1 ? 15 : undefined
                         }
-//                        opacity: 0.6
                         source: {
                             if (direct === 0) {
                                 return "qrc:/img/st_white_point.png";
@@ -261,7 +242,6 @@ Rectangle {
                             }
                         }
                         fillMode: Image.PreserveAspectFit
-//                        mirror: direct === 0 ? false : true
                     }
 
                     /* 消息内容 */
@@ -326,7 +306,6 @@ Rectangle {
                         /* 透明颜色背景 */
                         Rectangle {
                             id: freindMessageContenColor;
-//                          color: JsCommon.getColor(name);
                             color: direct === 0 ?  "white" : "#b4eb7c"
                             radius: 3
                             width: friendMessageContent.width

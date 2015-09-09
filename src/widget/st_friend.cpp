@@ -99,6 +99,7 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     newElement.insert("unReadCount", 0);
     newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
     newElement.insert("netState",    MessageMethodOffline);
+    newElement.insert("shortName",   "");
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {

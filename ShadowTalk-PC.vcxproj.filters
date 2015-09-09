@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{9a08a84f-8d2d-4ab6-9157-6cd397edc3cb}</UniqueIdentifier>
+      <UniqueIdentifier>{3c9668ff-9926-451d-a745-2062a9b45673}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{72eef55d-a157-4730-96c2-499d069ccdad}</UniqueIdentifier>
+      <UniqueIdentifier>{39576211-57ef-468e-80d8-c5fe8c999d87}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -330,6 +330,9 @@
     <None Include="img\choice\st_contact_list.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="img\st_green_point.png">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="img\st_icon.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -375,6 +378,21 @@
     <None Include="img\st_qr_process.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="img\st_select_chat.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\st_select_chat_t.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\st_select_users.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\st_select_users_t.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\st_setting.png">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="img\st_setting_exit_1.png">
       <Filter>Resource Files</Filter>
     </None>
@@ -397,6 +415,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="img\st_setting_sound_2.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\st_white_point.png">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

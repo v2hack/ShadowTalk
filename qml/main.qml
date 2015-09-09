@@ -145,6 +145,8 @@ Rectangle {
                 onClicked: {
                     selectChat.source = "qrc:/img/st_select_chat_t.png"
                     selectUser.source = "qrc:/img/st_select_users.png"
+                    friendList.visible = false
+                    chatList.visible = true
                 }
             }
         }
@@ -174,7 +176,7 @@ Rectangle {
                 left: selectChat.left;
                 leftMargin: 160;
             }
-            source: "qrc:/img/st_select_users.png";
+            source: "qrc:/img/st_select_users_t.png";
             fillMode: Image.PreserveAspectFit
             z:200
 
@@ -186,6 +188,8 @@ Rectangle {
                 onClicked: {
                     selectUser.source = "qrc:/img/st_select_users_t.png"
                     selectChat.source = "qrc:/img/st_select_chat.png"
+                    friendList.visible = true
+                    chatList.visible = false
                 }
             }
         }
@@ -252,6 +256,8 @@ Rectangle {
         /* 好友列表  */
         Rectangle {
             id: friendList
+            visible: true
+
             anchors {
                 top: selectUser.bottom;
                 topMargin: 14
@@ -259,46 +265,48 @@ Rectangle {
             }
             width: secondLayerWindows.fix_width;
             height: parent.height - 140;
-
-//            color: "#3a3a3a"
             color: "transparent"
 
             /* 好友列表细节动态 */
             FriendList {
                 id: friendListDisplay;
                 height: parent.height - 2;
-                width: parent - 8
+                width: parent.width
                 anchors {
                     top: friendList.top
-                    topMargin: 4
                     left:friendList.left
-                    leftMargin: 4
                 }
             }
             z: 220
         }
 
-        /* 友好及联系人组件 */
-//        FriendAndContact {
-//            id: listLoader;
-//            height: parent.height - 75;
-//            anchors.top: searchLoader.bottom;
-//            anchors.topMargin: 6;
-//            anchors.left: backGroundLoader.left;
-//            second_layer_width: secondLayerWindows.fix_width;
-//            second_layer_height: parent.height;
-//            window_setting_height: 75;
-//        }
+        /* 聊天列表  */
+        Rectangle {
+            id: chatList
+            visible: false
 
-        /* 主页设置按钮 */
-//        MainWindowSetting {
-//            id: bottomSettingLoader;
-//            anchors.top: listLoader.bottom;
-//            anchors.topMargin: 1
-//            anchors.left: backGroundLoader.left
-//            second_layer_width: secondLayerWindows.fix_width;
-//            second_layer_height: parent.height;
-//        }
+            anchors {
+                top: selectUser.bottom;
+                topMargin: 14
+                left: parent.left
+            }
+            width: secondLayerWindows.fix_width;
+            height: parent.height - 140;
+            color: "transparent"
+
+            /* 聊天列表细节动态 */
+            ChatList {
+                id: chatListDisplay;
+                height: parent.height - 2;
+                width: parent.width
+                anchors {
+                    top: chatList.top
+                    left:chatList.left
+                }
+            }
+            z: 220
+        }
+
 
         /* 文字输入对话框 */
         ChatTextInput {
