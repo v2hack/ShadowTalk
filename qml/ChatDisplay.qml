@@ -99,9 +99,7 @@ Rectangle {
                         getPixelSize.width(10 , data.userMessage),
                         250);
 
-            console.log(height);
-
-            if (data.dataType == imageType) {
+            if (data.dataType === imageType) {
                 messageView.contentY += data.pictureHeight + (150);
                 console.log("type picture for roll - " + data.pictureHeight)
             } else {
@@ -196,24 +194,24 @@ Rectangle {
                         right: direct === 1 ? parent.right : undefined
                         rightMargin: direct === 1 ? 14 : undefined
                     }
-                    /* 好友头像球体 */
-                    Image {
-                        id: firendItemImage
-                        width: 68
-                        height: 68
+//                    /* 好友头像球体 */
+//                    Image {
+//                        id: firendItemImage
+//                        width: 68
+//                        height: 68
 
-                        anchors {
-                            top: parent.top
-                            topMargin: -5
-                            left: direct === 0 ? parent.left : undefined
-                            leftMargin: direct === 0 ? -21 : undefined
-                            right: direct === 1 ? parent.right : undefined
-                            rightMargin: direct === 1 ? -11 : undefined
-                        }
-                        opacity: 1
-                        source: "qrc:/img/head/st_ball_white.png";
-                        fillMode: Image.PreserveAspectFit
-                    }
+//                        anchors {
+//                            top: parent.top
+//                            topMargin: -5
+//                            left: direct === 0 ? parent.left : undefined
+//                            leftMargin: direct === 0 ? -21 : undefined
+//                            right: direct === 1 ? parent.right : undefined
+//                            rightMargin: direct === 1 ? -11 : undefined
+//                        }
+//                        opacity: 1
+//                        source: "qrc:/img/head/st_ball_white.png";
+//                        fillMode: Image.PreserveAspectFit
+//                    }
 
                     /* 好友名字 */
                     Text {
@@ -227,12 +225,10 @@ Rectangle {
                             leftMargin: 5
                         }
 
-                        color: "#cecece"
+                        color: "white"
                         font.pixelSize: 12
                         text: name
                         font.bold: true
-                        font.letterSpacing: 2
-                        style: Text.Raised
 
                         //字体先注释，编译太慢
                         FontLoader {
@@ -245,27 +241,33 @@ Rectangle {
                     /* 对话框小箭头 */
                     Image {
                         id: friendMessagePointImage
-                        width: 30
-                        height: 30
+                        width: 20
+                        height: 20
 
                         anchors {
                             top: parent.top
-                            topMargin: 10
-                            left: direct === 0 ? firendItemImage.right : undefined
-                            leftMargin: direct === 0 ? -10 : undefined
-                            right: direct == 1 ? firendItemImage.left : undefined
-                            rightMargin: direct === 1 ? -16 : undefined
+                            topMargin: 8
+                            left: direct === 0 ? friendItemIcon.right : undefined
+                            leftMargin: direct === 0 ? 2 : undefined
+                            right: direct == 1 ? friendItemIcon.left : undefined
+                            rightMargin: direct === 1 ? 15 : undefined
                         }
-                        opacity: 0.6
-                        source: "qrc:/img/head/st_message_point.png";
+//                        opacity: 0.6
+                        source: {
+                            if (direct === 0) {
+                                return "qrc:/img/st_white_point.png";
+                            } else {
+                                return "qrc:/img/st_green_point.png"
+                            }
+                        }
                         fillMode: Image.PreserveAspectFit
-                        mirror: direct === 0 ? false : true
+//                        mirror: direct === 0 ? false : true
                     }
 
                     /* 消息内容 */
                     Rectangle {
                         id: friendMessageContent
-                        radius: 10
+                        radius: 3
                         color: "transparent"
 
                         function getMessageHeight() {
@@ -314,31 +316,30 @@ Rectangle {
 
                         anchors {
                             top: parent.top
-                            topMargin: 20
+                            topMargin: 7
                             left: direct === 0 ? friendMessagePointImage.right : undefined
-                            leftMargin:  direct === 0 ? 3 : undefined
+                            leftMargin:  direct === 0 ? -3 : undefined
                             right: direct === 1 ? friendMessagePointImage.left : undefined
-                            rightMargin: direct === 1 ? 3 :undefined
+                            rightMargin: direct === 1 ? -5 :undefined
                         }
 
                         /* 透明颜色背景 */
                         Rectangle {
                             id: freindMessageContenColor;
-                            color: JsCommon.getColor(name);
-                            opacity: 0.4
-                            radius: 10
+//                          color: JsCommon.getColor(name);
+                            color: direct === 0 ?  "white" : "#b4eb7c"
+                            radius: 3
                             width: friendMessageContent.width
                             height: friendMessageContent.height;
                             anchors.fill: friendMessageContent
                         }
-
 
                         /* 语音显示 */
                         Rectangle {
                             id: friendMessageVoice
                             visible: dataType == voiceType ? true : false
                             color: "transparent"
-                            radius: 10
+                            radius: 3
 
                             anchors {
                                 fill: friendMessageContent

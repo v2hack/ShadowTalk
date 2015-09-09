@@ -55,7 +55,7 @@ Rectangle {
     /* 主窗口按钮 */
     MainWindowButton {
         id: mainButton;
-        width: parent.width - 310
+        width: parent.width - 300
         height: 40;
         anchors.right: parent.right
         anchors.rightMargin: 3
