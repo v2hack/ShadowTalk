@@ -58,5 +58,10 @@
         <file>img/brower/st_pic_roll.png</file>
         <file>img/brower/st_pic_save.png</file>
         <file>img/st_icon.png</file>
+        <file>img/st_setting.png</file>
+        <file>img/st_select_chat.png</file>
+        <file>img/st_select_chat_t.png</file>
+        <file>img/st_select_users.png</file>
+        <file>img/st_select_users_t.png</file>
     </qresource>
 </RCC>

@@ -113,7 +113,7 @@ Rectangle {
                 Rectangle {
                     id: friendItem
                     width: 300
-                    height: 55
+                    height: 50
                     color: "transparent"
 
                     /* 好友头像底色 */
@@ -122,29 +122,19 @@ Rectangle {
                         width: 34
                         height: 34
                         radius: width / 2
-                        color: JsCommon.getColor(friendName);
+                        color: {
+                            var ret = JsCommon.getColor(friendName);
+                            if (ret === undefined) {
+                                return "#7c509d"
+                            }
+                            return ret;
+                        }
 
                         anchors {
                             left: parent.left
-                            leftMargin: 14
-                            top: parent.top
-                            topMargin: 6
+                            leftMargin: 16
+                            verticalCenter: parent.verticalCenter
                         }
-                    }
-                    /* 好友头像球体 */
-                    Image {
-                        width: 65
-                        height: 65
-
-                        anchors {
-                            top: parent.top
-                            topMargin: 1
-                            left: parent.left
-                            leftMargin: -7
-                        }
-                        opacity: 1
-                        source: "qrc:/img/head/st_ball_white.png";
-                        fillMode: Image.PreserveAspectFit
                     }
 
                     /* 好友名字 */
@@ -152,9 +142,8 @@ Rectangle {
                         id: friendItemName
                         anchors {
                             left: friendItemIcon.right
-                            leftMargin: 6
-                            top: parent.top;
-                            topMargin: 15
+                            leftMargin: 12
+                            verticalCenter: parent.verticalCenter
                         }
                         color: "white"
                         font.pixelSize: 15
@@ -171,36 +160,64 @@ Rectangle {
                     }
 
                     /* 最后一天消息发送时间 */
-                    Text {
-                        id: friendOnlineTime;
-                        anchors {
-                            right: friendItem.right;
-                            rightMargin: 30;
-                            top: parent.top;
-                            topMargin: 10
-                        }
+//                    Text {
+//                        id: friendOnlineTime;
+//                        anchors {
+//                            right: friendItem.right;
+//                            rightMargin: 30;
+//                            top: parent.top;
+//                            topMargin: 10
+//                        }
+//                        color: netState == fiendOnline ? "green" : "white"
+//                        font.pixelSize: 13
+//                        text: messageTime
+//                        font.family: chineseFont.name;
+//                    }
+
+                    Rectangle {
+                        id: friendNetState
+                        width: 13
+                        height: 13
+                        radius: width / 2
                         color: netState == fiendOnline ? "green" : "white"
-                        font.pixelSize: 13
-                        //                        text: JsCommon.getDateTime();
-                        text: messageTime
-                        font.family: chineseFont.name;
+
+                        anchors {
+                            right: friendItem.right
+                            rightMargin: 30
+                            verticalCenter: parent.verticalCenter
+                        }
+
+                        Rectangle {
+                            border.color: "#282828"
+                            border.width: 2
+
+                            color: netState == fiendOnline ? "green" : "white"
+                            width: 11
+                            height: 11
+                            radius: width / 2
+                            anchors {
+                                horizontalCenter: parent.horizontalCenter
+                                verticalCenter: parent.verticalCenter
+                            }
+                        }
                     }
+
 
                     /* 未读消息数量 */
                     Rectangle {
                         id: unReadCountRectangle;
 
-                        width : 18
-                        height: 18
+                        width : 16
+                        height: 16
                         radius: width / 2
                         color : "red";
                         visible: unReadCount == 0 ? false : true
 
                         anchors {
-                            right: friendItem.right;
-                            rightMargin: 30;
-                            top: friendOnlineTime.bottom;
-                            topMargin: 5
+                            left: friendItemIcon.right;
+                            leftMargin: -6;
+                            verticalCenter: parent.verticalCenter
+                            verticalCenterOffset: 10
                         }
 
                         Text {
@@ -210,7 +227,7 @@ Rectangle {
                                 verticalCenter: parent.verticalCenter
                             }
                             color: "white"
-                            font.pixelSize: 12
+                            font.pixelSize: 10
                             font.bold: true
                             text: unReadCount > 99 ? "99+" : unReadCount
                             font.family: chineseFont.name;
@@ -252,7 +269,6 @@ Rectangle {
                                     friendListView.contentY += 30;
                                 }
                             }
-
                             if (wheel.angleDelta.y > 0 && friendListView.contentY > 0) {
                                 friendListView.contentY -= 30;
                             }
@@ -266,7 +282,7 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 280
+        x: 284
         y: 0
         width: 8
         height: parent.height

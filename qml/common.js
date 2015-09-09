@@ -61,10 +61,10 @@ function getColor(name) {
                              "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
                              "w", "x", "y", "z");
     if (JsCommon.isNum(name)) {
-//        console.log("是数字");
+        console.log("是数字");
         return colorArr[name%26];
     }  else if (JsCommon.isChinese(name)) {
-//        console.log("是汉字");
+        console.log("是汉字");
         var lowerName = PinYin.pinyin.getCamelChars(name);
         var lastAph1 = lowerName.substr(lowerName.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
@@ -73,7 +73,7 @@ function getColor(name) {
             }
         }
     } else if (JsCommon.isAlphabet(name)) {
-//        console.log("是字母");
+        console.log("是字母");
         var lastAph2 = name.substr(name.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
             if (lastAph2.toLowerCase() ===  nameByte[i]) {
@@ -81,7 +81,7 @@ function getColor(name) {
             }
         }
     } else {
-//        console.log("是其他字符");
+        console.log("是其他字符");
         return "#7c509d";
     }
 }

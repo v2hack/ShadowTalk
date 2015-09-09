@@ -91,17 +91,105 @@ Rectangle {
         /* 软件图标 */
         Image {
             id: softwareIcon
-            height: 19
-            width: 19
+            height: 25
+            width: 25
             anchors {
                 top: parent.top
-                topMargin: 3
+                topMargin: 12
                 left: parent.left;
-                leftMargin: 3;
+                leftMargin: 20;
             }
             source: "qrc:/img/st_icon.png";
             fillMode: Image.PreserveAspectFit
+            z:200
         }
+
+        /* 软件设置 */
+        Image {
+            id: softwareSetting
+            height: 25
+            width: 25
+            anchors {
+                top: parent.top
+                topMargin: 12
+                left: softwareIcon.left;
+                leftMargin: 230;
+            }
+            source: "qrc:/img/st_setting.png";
+            fillMode: Image.PreserveAspectFit
+            z:200
+        }
+
+
+        /* 选择聊天列表 */
+        Image {
+            id: selectChat;
+
+            height: 28
+            width: 28
+            anchors {
+                top: searchLoader.bottom
+                topMargin: 25
+                left: parent.left;
+                leftMargin: 50;
+            }
+            source: "qrc:/img/st_select_chat.png";
+            fillMode: Image.PreserveAspectFit
+            z:200
+
+            MouseArea {
+                id: selectChatArea
+                anchors.fill: parent;
+                hoverEnabled: true;
+
+                onClicked: {
+                    selectChat.source = "qrc:/img/st_select_chat_t.png"
+                    selectUser.source = "qrc:/img/st_select_users.png"
+                }
+            }
+        }
+
+        /* 水平分割线 */
+        Rectangle {
+            id: splintLine1
+            color: "#282828"
+            width: 2
+            height: 35
+            anchors {
+                top: searchLoader.bottom
+                topMargin: 25
+                left: selectChat.left;
+                leftMargin: 95;
+            }
+        }
+
+        /* 选择用户列表 */
+        Image {
+            id: selectUser;
+            height: 28
+            width: 28
+            anchors {
+                top: searchLoader.bottom
+                topMargin: 25
+                left: selectChat.left;
+                leftMargin: 160;
+            }
+            source: "qrc:/img/st_select_users.png";
+            fillMode: Image.PreserveAspectFit
+            z:200
+
+            MouseArea {
+                id: selectUserArea
+                anchors.fill: parent;
+                hoverEnabled: true;
+
+                onClicked: {
+                    selectUser.source = "qrc:/img/st_select_users_t.png"
+                    selectChat.source = "qrc:/img/st_select_chat.png"
+                }
+            }
+        }
+
 
         /* 搜索组件 */
         Component {
@@ -146,6 +234,48 @@ Rectangle {
                 leftMargin: (secondLayerWindows.fix_width - 250)/2
             }
             sourceComponent: searchComponent;
+        }
+
+
+        /* 垂直分割线 */
+        Rectangle {
+            id: splintLine2
+            color: "#282828"
+            width: secondLayerWindows.fix_width
+            height: 2
+            anchors {
+                bottom: friendList.top;
+                left: parent.left
+            }
+        }
+
+        /* 好友列表  */
+        Rectangle {
+            id: friendList
+            anchors {
+                top: selectUser.bottom;
+                topMargin: 14
+                left: parent.left
+            }
+            width: secondLayerWindows.fix_width;
+            height: parent.height - 140;
+
+//            color: "#3a3a3a"
+            color: "transparent"
+
+            /* 好友列表细节动态 */
+            FriendList {
+                id: friendListDisplay;
+                height: parent.height - 2;
+                width: parent - 8
+                anchors {
+                    top: friendList.top
+                    topMargin: 4
+                    left:friendList.left
+                    leftMargin: 4
+                }
+            }
+            z: 220
         }
 
         /* 友好及联系人组件 */
