@@ -86,33 +86,46 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
     messageUnreadCount = 0;
     friendChannelId    = channelId;
     defaultExpiredTime = expiredTime;
+    firstLetter = QString("");
+
+    QVariant tempLetter;
 
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
     }
 
-    QVariantMap newElement;
-    QDateTime currentTime = QDateTime::currentDateTime();
-    newElement.insert("friendName",  friendName);
-    newElement.insert("friendIndex", friendIndex);
-    newElement.insert("unReadCount", 0);
-    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
-    newElement.insert("netState",    MessageMethodOffline);
-    newElement.insert("shortName",   "");
+//    QVariantMap newElement;
+//    QDateTime currentTime = QDateTime::currentDateTime();
+//    newElement.insert("friendName",  friendName);
+//    newElement.insert("friendIndex", friendIndex);
+//    newElement.insert("unReadCount", 0);
+//    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
+//    newElement.insert("netState",    MessageMethodOffline);
+//    newElement.insert("shortName",   "");
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
-        QMetaObject::invokeMethod(
+        bool ret = QMetaObject::invokeMethod(
                     rect,
-                    "addFriend",
-                    Q_ARG(QVariant, QVariant::fromValue(newElement)));
+                    "firstLetter",
+                    Qt::DirectConnection,
+                    Q_RETURN_ARG(QVariant, tempLetter),
+                    Q_ARG(QVariant, friendName));
+        if (ret == false) {
+            qDebug() << "invokeMethod (firstLetter) fail";
+        }
+
+        firstLetter = tempLetter.toString();
+
+        qDebug() << "first letter - " << tempLetter;
 
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
              "Friend",
              "add friend to widget success",
              friendIndex,
              friendName.toLatin1().data());
+
     } else {
 
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",

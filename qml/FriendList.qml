@@ -48,6 +48,16 @@ Rectangle {
         }
     }
 
+    Component {
+        id: highlightBar
+        Rectangle {
+            width: 200; height: 50
+            color: "#FFFF88"
+            y: listView.currentItem.y;
+            Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+        }
+    }
+
 
     /* ListView */
     ListView {
@@ -57,43 +67,47 @@ Rectangle {
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
 
-        highlightRangeMode: ListView.ApplyRange
-        highlightFollowsCurrentItem: true
+        section.property: "shortName"
+        section.criteria: ViewSection.FullString
+        section.delegate: sectionHeading
+
         /* 好友出现的动态效果 */
         add: Transition {
             NumberAnimation {
                 property: "opacity";
                 from: 0;
                 to: 1.0;
-                duration: 400
+                duration: 200
             }
             NumberAnimation {
                 property: "scale";
                 from: 0;
                 to: 1.0;
-                duration: 400
+                duration: 200
             }
         }
         displaced: Transition {
             NumberAnimation {
                 properties: "x,y";
-                duration: 400;
+                duration: 200;
                 easing.type: Easing.OutBounce
             }
         }
 
-        section.property: "shortName"
-        section.criteria: ViewSection.FirstCharacter
-        section.delegate: sectionHeading
+        function firstLetter(friendName) {
+            var letter = JsCommon.getFirstLetter(friendName);
+            if (letter === undefined) {
+                letter = "#"
+            }
+            return letter;
+        }
 
         /* 添加好友 */
         function addFriend(data) {
-            console.log("###" + data.friendName);
             data.shortName = JsCommon.getFirstLetter(data.friendName);
             if (data.shortName === undefined) {
                 data.shortName = "#"
             }
-            console.log("###" + data.shortName);
             model.append(data)
         }
 

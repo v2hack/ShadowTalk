@@ -24,6 +24,7 @@
 #include "st_base64.h"
 #include "st_zebra.h"
 #include "st_net.h"
+#include "st_utils.h"
 
 #define ST_XML_TAG_DICT                 "dict"
 #define ST_XML_TAG_ARRAY                "array"
@@ -275,6 +276,7 @@ int ParseXml::parseContactXml(QDomElement &array) {
             }
         }
     }
+    walkCacheAddFriend();
 }
 
 /**

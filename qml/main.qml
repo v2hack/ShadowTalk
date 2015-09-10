@@ -11,6 +11,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
+import QtMultimedia 5.0
 
 Rectangle {
     id: baseWindows;
@@ -27,8 +28,8 @@ Rectangle {
     height: 640
 
     Drag.active: true
-    border.color: "#2c2c2c"
-    border.width: 2
+//    border.color: "#2c2c2c"
+//    border.width: 2
 
     /* 主窗口可见 */
     visible: true
@@ -77,6 +78,12 @@ Rectangle {
         property int fix_width: 296
         color: "#efefef"
 
+        MediaPlayer {
+            id: soundEvet
+            autoLoad: true;
+            source: "qrc:/sound/event.wav"
+        }
+
         /* 背景 */
         Component {
             id: backGroundComponent;
@@ -88,138 +95,6 @@ Rectangle {
             }
         }
 
-        /* 软件图标 */
-        Image {
-            id: softwareIcon
-            height: 25
-            width: 25
-            anchors {
-                top: parent.top
-                topMargin: 12
-                left: parent.left;
-                leftMargin: 20;
-            }
-            source: "qrc:/img/st_icon.png";
-            fillMode: Image.PreserveAspectFit
-            z:200
-        }
-
-        /* 软件设置 */
-        Image {
-            id: softwareSetting
-            height: 25
-            width: 25
-            anchors {
-                top: parent.top
-                topMargin: 12
-                left: softwareIcon.left;
-                leftMargin: 230;
-            }
-            source: "qrc:/img/st_setting.png";
-            fillMode: Image.PreserveAspectFit
-            z:200
-        }
-
-
-        /* 选择聊天列表 */
-        Image {
-            id: selectChat;
-
-            height: 28
-            width: 28
-            anchors {
-                top: searchLoader.bottom
-                topMargin: 25
-                left: parent.left;
-                leftMargin: 50;
-            }
-            source: "qrc:/img/st_select_chat.png";
-            fillMode: Image.PreserveAspectFit
-            z:200
-
-            MouseArea {
-                id: selectChatArea
-                anchors.fill: parent;
-                hoverEnabled: true;
-
-                onClicked: {
-                    selectChat.source = "qrc:/img/st_select_chat_t.png"
-                    selectUser.source = "qrc:/img/st_select_users.png"
-                    friendList.visible = false
-                    chatList.visible = true
-                }
-            }
-        }
-
-        /* 水平分割线 */
-        Rectangle {
-            id: splintLine1
-            color: "#282828"
-            width: 2
-            height: 35
-            anchors {
-                top: searchLoader.bottom
-                topMargin: 25
-                left: selectChat.left;
-                leftMargin: 95;
-            }
-        }
-
-        /* 选择用户列表 */
-        Image {
-            id: selectUser;
-            height: 28
-            width: 28
-            anchors {
-                top: searchLoader.bottom
-                topMargin: 25
-                left: selectChat.left;
-                leftMargin: 160;
-            }
-            source: "qrc:/img/st_select_users_t.png";
-            fillMode: Image.PreserveAspectFit
-            z:200
-
-            MouseArea {
-                id: selectUserArea
-                anchors.fill: parent;
-                hoverEnabled: true;
-
-                onClicked: {
-                    selectUser.source = "qrc:/img/st_select_users_t.png"
-                    selectChat.source = "qrc:/img/st_select_chat.png"
-                    friendList.visible = true
-                    chatList.visible = false
-                }
-            }
-        }
-
-
-        /* 搜索组件 */
-        Component {
-            id: searchComponent;
-            Rectangle {
-                id: searchRectangle
-                width: Math.round(250)
-                height: Math.round(26)
-                radius: 3
-                color: "#515050"
-
-                Image {
-                    id: searchButton;
-                    height: 16
-                    width: 26
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        left: parent.left;
-                        leftMargin: 5;
-                    }
-                    source: "qrc:/img/st_button_search.png";
-                    fillMode: Image.PreserveAspectFit
-                }
-            }
-        }
-
         /* 导入背景 */
         Loader {
             id: backGroundLoader;
@@ -228,28 +103,172 @@ Rectangle {
             sourceComponent: backGroundComponent;
         }
 
-        /* 搜索栏 */
-        Loader {
-            id: searchLoader;
-            anchors {
-                top: parent.top;
-                topMargin: 50
-                left: parent.left
-                leftMargin: (secondLayerWindows.fix_width - 250)/2
-            }
-            sourceComponent: searchComponent;
-        }
-
-
-        /* 垂直分割线 */
         Rectangle {
-            id: splintLine2
-            color: "#282828"
-            width: secondLayerWindows.fix_width
-            height: 2
+            id: thirdLayerWindow
+            width: secondLayerWindows.fix_width;
+            height: 144
+            color: "#343434"
+            z: 800
             anchors {
-                bottom: friendList.top;
+                top: parent.top
                 left: parent.left
+            }
+            /* 软件图标 */
+            Image {
+                id: softwareIcon
+                height: 25
+                width: 25
+                anchors {
+                    top: parent.top
+                    topMargin: 12
+                    left: parent.left;
+                    leftMargin: 20;
+                }
+                source: "qrc:/img/st_icon.png";
+                fillMode: Image.PreserveAspectFit
+                z:200
+            }
+
+            /* 软件设置 */
+            Image {
+                id: softwareSetting
+                height: 25
+                width: 25
+                anchors {
+                    top: parent.top
+                    topMargin: 12
+                    left: softwareIcon.left;
+                    leftMargin: 230;
+                }
+                source: "qrc:/img/st_setting.png";
+                fillMode: Image.PreserveAspectFit
+                z:200
+            }
+
+            /* 选择聊天列表 */
+            Image {
+                id: selectChat;
+
+                height: 28
+                width: 28
+                anchors {
+                    top: searchLoader.bottom
+                    topMargin: 25
+                    left: parent.left;
+                    leftMargin: 50;
+                }
+                source: "qrc:/img/st_select_chat.png";
+                fillMode: Image.PreserveAspectFit
+                z:200
+
+                MouseArea {
+                    id: selectChatArea
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+
+                    onClicked: {
+                        selectChat.source = "qrc:/img/st_select_chat_t.png";
+                        selectUser.source = "qrc:/img/st_select_users.png";
+                        thirdLayerWindow.friendList.visible = false;
+                        thirdLayerWindow.chatList.visible = true;
+                        soundEvet.play();
+                    }
+                }
+            }
+
+            /* 水平分割线 */
+            Rectangle {
+                id: splintLine1
+                color: "#282828"
+                width: 2
+                height: 35
+                anchors {
+                    top: searchLoader.bottom
+                    topMargin: 25
+                    left: selectChat.left;
+                    leftMargin: 95;
+                }
+            }
+
+            /* 选择用户列表 */
+            Image {
+                id: selectUser;
+                height: 28
+                width: 28
+                anchors {
+                    top: searchLoader.bottom
+                    topMargin: 25
+                    left: selectChat.left;
+                    leftMargin: 160;
+                }
+                source: "qrc:/img/st_select_users_t.png";
+                fillMode: Image.PreserveAspectFit
+                z:200
+
+                MouseArea {
+                    id: selectUserArea
+                    anchors.fill: parent;
+                    hoverEnabled: true;
+
+                    onClicked: {
+                        selectUser.source = "qrc:/img/st_select_users_t.png";
+                        selectChat.source = "qrc:/img/st_select_chat.png";
+                        thirdLayerWindow.friendList.visible = true;
+                        thirdLayerWindow.chatList.visible = false;
+                        soundEvet.play();
+                    }
+                }
+            }
+
+
+            /* 搜索组件 */
+            Component {
+                id: searchComponent;
+                Rectangle {
+                    id: searchRectangle
+                    width: Math.round(250)
+                    height: Math.round(26)
+                    radius: 3
+                    color: "#515050"
+
+                    Image {
+                        id: searchButton;
+                        height: 16
+                        width: 26
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            left: parent.left;
+                            leftMargin: 5;
+                        }
+                        source: "qrc:/img/st_button_search.png";
+                        fillMode: Image.PreserveAspectFit
+                    }
+                }
+            }
+
+            /* 搜索栏 */
+            Loader {
+                id: searchLoader;
+                anchors {
+                    top: parent.top;
+                    topMargin: 50
+                    left: parent.left
+                    leftMargin: (secondLayerWindows.fix_width - 250)/2
+                }
+                sourceComponent: searchComponent;
+            }
+
+
+            /* 垂直分割线 */
+            Rectangle {
+                id: splintLine2
+                color: "#282828"
+                width: secondLayerWindows.fix_width
+                height: 2
+                anchors {
+                    bottom: thirdLayerWindow.bottom;
+                    left: parent.left
+                }
             }
         }
 
@@ -259,8 +278,8 @@ Rectangle {
             visible: true
 
             anchors {
-                top: selectUser.bottom;
-                topMargin: 14
+                top: thirdLayerWindow.bottom;
+                topMargin: 1
                 left: parent.left
             }
             width: secondLayerWindows.fix_width;
@@ -286,8 +305,8 @@ Rectangle {
             visible: false
 
             anchors {
-                top: selectUser.bottom;
-                topMargin: 14
+                top: thirdLayerWindow.bottom;
+                topMargin: 1
                 left: parent.left
             }
             width: secondLayerWindows.fix_width;

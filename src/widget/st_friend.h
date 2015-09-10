@@ -30,6 +30,7 @@ public:
     QString friendChannelId;         // 好友通道
     int inSession;                   // 联系人是否在聊天列表中
     QString name;                    // 用户名
+    QString firstLetter;
     int netStatus;                   // 在线状态
 
     int messageCount;                // 消息数量

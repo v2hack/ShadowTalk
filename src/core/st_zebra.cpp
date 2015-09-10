@@ -117,7 +117,7 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
 
         /* 加载动画走起 */
         for (int i = 0 ; i < 360; i++) {
-            ShadowTalkSleep(10);
+            ShadowTalkSleep(4);
             ShadowTalkSetSyncProcess(i);
         }
 

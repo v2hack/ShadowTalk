@@ -229,7 +229,67 @@ void displayLoginView() {
 }
 
 
+void walkCacheAddFriend() {
+    char firstLetter[27] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                            'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+                            'W', 'X', 'Y', 'Z', '#'};
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+
+    for (int i = 0; i < 27; i++) {
+        QMap<int, Friend>::iterator it;
+        for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
+            Friend &f = it.value();
+            if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
+                qDebug() << "add friend - " << f.name;
+                addFriendIntoWidget(f.name, f.id);
+            } else {
+                continue;
+            }
+        }
+    }
+}
 
 
+void addFriendIntoWidget(QString friendName, int friendIndex)
+{
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QVariantMap newElement;
+    QDateTime currentTime = QDateTime::currentDateTime();
+    newElement.insert("friendName",  friendName);
+    newElement.insert("friendIndex", friendIndex);
+    newElement.insert("unReadCount", 0);
+    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
+    newElement.insert("netState",    MessageMethodOffline);
+    newElement.insert("shortName",   "");
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(
+                    rect,
+                    "addFriend",
+                    Q_ARG(QVariant, QVariant::fromValue(newElement)));
+
+        slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
+             "Friend",
+             "add friend to widget success",
+             friendIndex,
+             friendName.toLatin1().data());
+    } else {
+
+        slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
+             "Friend",
+             "add friend to widget fail",
+             friendIndex,
+             friendName.toLatin1().data());
+    }
+    return;
+}
 
 

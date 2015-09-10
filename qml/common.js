@@ -98,14 +98,14 @@ function getFirstLetter(name) {
 
     if (JsCommon.isChinese(name)) {
         var lowerName = PinYin.pinyin.getCamelChars(name);
-        var lastAph1 = lowerName.substr(lowerName.length - 1, 1);
+        var lastAph1 = lowerName.substr(0, 1);
         for (var i = 0; i < nameByte.length; i++) {
             if (lastAph1.toLowerCase() ===  nameByte[i]) {
                 return upperLetter[i];
             }
         }
     } else if (JsCommon.isAlphabet(name)) {
-        var lastAph2 = name.substr(name.length - 1, 1);
+        var lastAph2 = name.substr(0, 1);
         for (var i = 0; i < nameByte.length; i++) {
             if (lastAph2.toLowerCase() ===  nameByte[i]) {
                 return upperLetter[i];

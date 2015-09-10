@@ -26,8 +26,8 @@ void displayBaseView();
 void setMainWindowVisible();
 void setMainWindowUnvisible();
 
-
-
+void addFriendIntoWidget(QString friendName, int friendIndex);
+void walkCacheAddFriend();
 
 #endif // UTILS_H
 
