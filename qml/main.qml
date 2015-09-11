@@ -23,13 +23,9 @@ Rectangle {
     function setBaseWindowUnvisible() {
         baseWindows.visible = false;
     }
-
     width: 890
     height: 640
-
     Drag.active: true
-//    border.color: "#2c2c2c"
-//    border.width: 2
 
     /* 主窗口可见 */
     visible: true
@@ -77,6 +73,25 @@ Rectangle {
         anchors.top: parent.top;
         property int fix_width: 296
         color: "#efefef"
+
+        signal send();
+
+        property int changeFlat: 0
+
+        Component.onCompleted: {
+            selectChatArea.clicked.connect(send);
+            selectUserArea.clicked.connect(send);
+        }
+
+        onSend: {
+            if (changeFlat === 0) {
+                friendList.visible = true;
+                chatList.visible = false;
+            } else {
+                friendList.visible = false;
+                chatList.visible = true;
+            }
+        }
 
         MediaPlayer {
             id: soundEvet
@@ -169,8 +184,7 @@ Rectangle {
                     onClicked: {
                         selectChat.source = "qrc:/img/st_select_chat_t.png";
                         selectUser.source = "qrc:/img/st_select_users.png";
-                        thirdLayerWindow.friendList.visible = false;
-                        thirdLayerWindow.chatList.visible = true;
+                        secondLayerWindows.changeFlat = 1;
                         soundEvet.play();
                     }
                 }
@@ -209,17 +223,14 @@ Rectangle {
                     id: selectUserArea
                     anchors.fill: parent;
                     hoverEnabled: true;
-
                     onClicked: {
                         selectUser.source = "qrc:/img/st_select_users_t.png";
                         selectChat.source = "qrc:/img/st_select_chat.png";
-                        thirdLayerWindow.friendList.visible = true;
-                        thirdLayerWindow.chatList.visible = false;
+                        secondLayerWindows.changeFlat = 0;
                         soundEvet.play();
                     }
                 }
             }
-
 
             /* 搜索组件 */
             Component {
