@@ -58,12 +58,6 @@ void Cache::setCurrentFriendId(int id) {
  *  @return 无
  */
 Friend *Cache::getOneFriend(int index) {
-//    QMap<int, Friend>::iterator it = friendList.find(index);
-//    if (it == friendList.end()) {
-//        return nullptr;
-//    }
-//    return &(*it);
-
     QMap<int, Friend>::iterator it;
     for(it = friendList.begin(); it != friendList.end(); it++) {
         Friend &f = it.value();
@@ -195,6 +189,39 @@ void Cache::cleanFriend() {
     }
     this->friendList.clear();
 }
+
+#include "st_chat.h"
+
+void Cache::insertOneChat(int friendListId, QString friendName) {
+    chatList.insert(chatList.constBegin(), chatList.size(), friendListId);
+    addFrientToChat(friendName, chatList.size());
+    return;
+}
+
+void Cache::removeOneChat(int friendListId) {
+    chatList.remove(friendListId);
+    return;
+}
+
+int Cache::getOneFriendId(int chatId) {
+    if (chatId > chatList.size()) {
+        return -1;
+    }
+    return chatList[chatId];
+}
+
+int Cache::atFirstPosition(int friendListId) {
+    QMap<int, int>::iterator it = chatList.find(friendListId);
+    if (it == chatList.end()) {
+        return -1;
+    }
+    if (it.key() != 0) {
+        return -2;
+    }
+    return 0;
+}
+
+
 
 /**
  *  功能描述: 清理通道缓存

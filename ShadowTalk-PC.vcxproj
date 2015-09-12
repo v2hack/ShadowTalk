@@ -195,6 +195,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\core\st_base64.cpp" />
     <ClCompile Include="src\core\st_cache.cpp" />
+    <ClCompile Include="src\widget\st_chat.cpp" />
     <ClCompile Include="src\core\st_context.cpp" />
     <ClCompile Include="src\widget\st_friend.cpp" />
     <ClCompile Include="src\widget\st_group.cpp" />
@@ -237,6 +238,7 @@ endlocal
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="src\widget\st_chat.h" />
     <ClInclude Include="src\core\st_context.h" />
     <CustomBuild Include="src\widget\st_friend.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal

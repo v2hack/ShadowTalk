@@ -6,15 +6,15 @@
 /* 消息内容类型 */
 enum MessageContentType {
     MessageTypeNone = 0,
-    MessageTypeWord = 1, /* 文字 */
+    MessageTypeWord = 1,     /* 文字 */
     MessageTypeImage = 2,    /* 图片 */
     MessageTypeVoice = 3,    /* 语音 */
 
-    MessagetypePCBackup = 7,
-    MessagetypePCOffLine = 8,
-    MessagetypeSyncMessage = 9,
-    MessagetypePingPC = 10,
-    MessagetypeResponeFromPC = 11,
+    MessagetypePCBackup = 7,       /* 同步好友列表 */
+    MessagetypePCOffLine = 8,      /* 让pc下线 */
+    MessagetypeSyncMessage = 9,    /* 同步好友消息 */
+    MessagetypePingPC = 10,        /* ping */
+    MessagetypeResponeFromPC = 11, /* respone to ping */
 };
 
 /* 发送方向 */

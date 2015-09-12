@@ -35,7 +35,7 @@ Rectangle {
     /* ListView */
     ListView {
         id: chatListView
-        objectName: "chatListModel"
+        objectName: "ChatListModel"
         anchors.fill: parent;
         delegate: chatListDelegate
         model: chatListModel.createObject(chatListView)
@@ -87,7 +87,6 @@ Rectangle {
 
         /* 修改还有最后一条信息的时间 */
         function modifyFriendTime(index, time, state) {
-            model.setProperty(index, "messageTime", time);
             model.setProperty(index, "netState", state);
         }
     }
@@ -236,7 +235,7 @@ Rectangle {
                         friendListScrollbar.visible = true;
                         cellRect.opacity = 0.9;
                         /* 选中好友，消息栏同步更新 */
-                        selectFriend.changeMessageList(friendIndex, friendName);
+                        selectFriend.changeMessageList(friendIndex, friendName, 0);
                     }
                     onEntered: {
                         cellRect.color = "#353535";

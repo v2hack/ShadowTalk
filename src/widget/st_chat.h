@@ -1,17 +1,9 @@
 #ifndef CHATLIST_H
 #define CHATLIST_H
 
-#include <QObject>
 
-class Chat : public QObject
-{
-    Q_OBJECT
-public:
-    explicit Chat(QObject *parent = 0);
+#include <QString>
 
-signals:
-
-public slots:
-};
+void addFrientToChat(QString friendName, int friendIndex);
 
 #endif // CHATLIST_H

@@ -49,7 +49,7 @@ Friend::Friend(QString friendName, int friendIndex):
                     rect,
                     "addFriend",
                     Q_ARG(QVariant, QVariant::fromValue(newElement))
-        );
+                    );
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
              "Friend",
              "add friend to widget success",
@@ -95,14 +95,14 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
         return;
     }
 
-//    QVariantMap newElement;
-//    QDateTime currentTime = QDateTime::currentDateTime();
-//    newElement.insert("friendName",  friendName);
-//    newElement.insert("friendIndex", friendIndex);
-//    newElement.insert("unReadCount", 0);
-//    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
-//    newElement.insert("netState",    MessageMethodOffline);
-//    newElement.insert("shortName",   "");
+    //    QVariantMap newElement;
+    //    QDateTime currentTime = QDateTime::currentDateTime();
+    //    newElement.insert("friendName",  friendName);
+    //    newElement.insert("friendIndex", friendIndex);
+    //    newElement.insert("unReadCount", 0);
+    //    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
+    //    newElement.insert("netState",    MessageMethodOffline);
+    //    newElement.insert("shortName",   "");
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
@@ -205,11 +205,11 @@ void Friend::displayUnreadCount(int idx, int count) {
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
         QMetaObject::invokeMethod(
-            rect,
-            "modifyUnreadCount",
-            Q_ARG(QVariant, idx),
-            Q_ARG(QVariant, count)
-        );
+                    rect,
+                    "modifyUnreadCount",
+                    Q_ARG(QVariant, idx),
+                    Q_ARG(QVariant, count)
+                    );
         qDebug() << "set unread count ok";
     } else {
         qDebug() << "set unread count fail";
@@ -234,12 +234,12 @@ void Friend::setTimeAndState(int idx, int state) {
 
         QDateTime currentTime = QDateTime::currentDateTime();
         QMetaObject::invokeMethod(
-            rect,
-            "modifyFriendTime",
-            Q_ARG(QVariant, idx),
-            Q_ARG(QVariant, currentTime.toString("HH:mm:ss")),
-            Q_ARG(QVariant, state)
-        );
+                    rect,
+                    "modifyFriendTime",
+                    Q_ARG(QVariant, idx),
+                    Q_ARG(QVariant, currentTime.toString("HH:mm:ss")),
+                    Q_ARG(QVariant, state)
+                    );
         qDebug() << "set time and state ok";
     } else {
         qDebug() << "set time and state fail";
@@ -270,7 +270,7 @@ SelectFriend::~SelectFriend() {
  *  @param name 好友名称
  *  @return 无
  */
-void SelectFriend::changeMessageList(int index, QString name) {
+void SelectFriend::changeMessageList(int index, QString name, int flag) {
     /* 清理界面消息 */
     clearMessageFromWidget();
 
@@ -310,34 +310,34 @@ void SelectFriend::changeMessageList(int index, QString name) {
         switch (it->messageType) {
         case MessageTypeWord:
             addMessageToWidget(
-                f->id,
-                name,
-                it->messageType,
-                it->driect,
-                QString::fromStdString(it->data),
-                idx
-            );
+                        f->id,
+                        name,
+                        it->messageType,
+                        it->driect,
+                        QString::fromStdString(it->data),
+                        idx
+                        );
             break;
         case MessageTypeImage:
             addImageToWidget(
-                f->id,
-                name,
-                it->messageType,
-                it->driect,
-                it->data,
-                idx
-            );
+                        f->id,
+                        name,
+                        it->messageType,
+                        it->driect,
+                        it->data,
+                        idx
+                        );
             break;
         case MessageTypeVoice:
             addVoiceToWidget(
-                f->id,
-                name,
-                it->messageType,
-                it->driect,
-                QString::fromStdString(it->data),
-                it->voiceSeconds,
-                idx
-            );
+                        f->id,
+                        name,
+                        it->messageType,
+                        it->driect,
+                        QString::fromStdString(it->data),
+                        it->voiceSeconds,
+                        idx
+                        );
             break;
         default:
             break;
@@ -349,6 +349,19 @@ void SelectFriend::changeMessageList(int index, QString name) {
     f->displayUnreadCount(f->id, 0);
     /* 未读消息计数清零 */
     f->messageUnreadCount = 0;
+
+    if (flag == 1) {
+        /* 以下操作检查是否需要在chat页面显示还有 */
+        int ret = c->atFirstPosition(index);
+        if (ret == -1) {
+            qDebug() << "chat : add new one to chatlist";
+            c->insertOneChat(index, f->name);
+        } else if (ret == -2) {
+            qDebug() << "chat: move one to first position";
+            c->removeOneChat(index);
+            c->insertOneChat(index, f->name);
+        }
+    }
     return;
 }
 
