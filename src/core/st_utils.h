@@ -13,13 +13,14 @@
 #define SHADOWTALK_SOUND_PREFIX   ".mp3"     /* 声音文件扩展名 */
 
 void ShadowTalkSleep(unsigned int msec);
+
 void playMessageSound();
 void playMessageVoice(QString voiceFilePath);
-void displayCurrentFriendName(QString currentFriendName);
 
 void writeXmlFile(std::string fileName, std::string data);
 int  parseEncryptXml(QString fileName, QString passwd);
 
+void displayCurrentFriendName(QString currentFriendName);
 void displayLoginView();
 void displayBaseView();
 

@@ -150,4 +150,3 @@ int ShadowTalkLogin() {
     return 0;
 }
 
-

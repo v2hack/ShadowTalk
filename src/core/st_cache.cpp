@@ -58,11 +58,20 @@ void Cache::setCurrentFriendId(int id) {
  *  @return 无
  */
 Friend *Cache::getOneFriend(int index) {
-    QMap<int, Friend>::iterator it = friendList.find(index);
-    if (it == friendList.end()) {
-        return nullptr;
+//    QMap<int, Friend>::iterator it = friendList.find(index);
+//    if (it == friendList.end()) {
+//        return nullptr;
+//    }
+//    return &(*it);
+
+    QMap<int, Friend>::iterator it;
+    for(it = friendList.begin(); it != friendList.end(); it++) {
+        Friend &f = it.value();
+        if (f.id == index) {
+            return &(it.value());
+        }
     }
-    return &(*it);
+    return nullptr;
 }
 
 /**

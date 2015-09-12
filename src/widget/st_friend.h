@@ -11,8 +11,6 @@
 
 #include "st_message.h"
 
-
-
 /*
 *  类名: Friend
 *  用途: 好友信息维护类

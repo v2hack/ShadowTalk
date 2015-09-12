@@ -346,7 +346,7 @@ void SelectFriend::changeMessageList(int index, QString name) {
 
     displayCurrentFriendName(f->name);
     /* 界面显示清零 */
-    f->displayUnreadCount(f->id - 1, 0);
+    f->displayUnreadCount(f->id, 0);
     /* 未读消息计数清零 */
     f->messageUnreadCount = 0;
     return;
