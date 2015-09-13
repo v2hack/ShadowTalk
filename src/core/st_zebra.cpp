@@ -26,6 +26,7 @@
 #include "st_parsexml.h"
 #include "st_net.h"
 #include "st_login.h"
+#include "st_chat.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -190,6 +191,7 @@ void forwardMessage(const string &friend_channel_id,
 
     qDebug() << "sync channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(gCtx.phoneSyncChannel));
     qDebug() << "frin channelid - " << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+    qDebug() << "sync message size - " << message.size() << " message id - " << message_id;
 
     gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
         type, message, expired, entire_expired, timestamp, length, message_id);
@@ -298,6 +300,7 @@ void zebraDeleagates::friend_offline_message(
             } else {
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id, f.messageUnreadCount);
+
                 /* 判断类型 */
                 switch (type) {
                 case MessageTypeWord:
@@ -418,6 +421,7 @@ void zebraDeleagates::friend_online_message(
             } else {
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id, f.messageUnreadCount);
+
                 /* 判断类型 */
                 switch (type) {
                 case MessageTypeWord:
@@ -436,6 +440,7 @@ void zebraDeleagates::friend_online_message(
             }
 
             f.setTimeAndState(f.id, MessageMethodOnline);
+            displayChatNetState(f.id, MessageMethodOnline);
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_online_message", "receive one online message", f.id, message.c_str());

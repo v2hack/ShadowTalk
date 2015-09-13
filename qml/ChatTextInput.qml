@@ -124,7 +124,7 @@ Rectangle {
     }
 
 
-    /* C++ 计算像素的类 */
+    /* C++ 发送接口 */
     MessageManager {
         id: cppSendMessage;
     }

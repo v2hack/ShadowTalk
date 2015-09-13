@@ -12,9 +12,13 @@
  ******************************************************************/
 #include <QMap>
 
+#include <map>
+#include <string>
+
 #include "st_cache.h"
 #include "st_friend.h"
 #include "st_context.h"
+#include "st_chat.h"
 
 Cache::Cache(): friendCount(0), currentUseFriendId(-1) {
 }
@@ -75,8 +79,8 @@ Friend *Cache::getOneFriend(int index) {
  *  @return 无
  */
 void Cache::insertOneFriend(Friend *newFriend) {
-    this->friendCount++;
     friendList.insert(this->friendCount, *newFriend);
+    this->friendCount++;
     return;
 }
 
@@ -125,11 +129,6 @@ void Cache::deleteChannel(QString channeldId) {
  *
  *  @return 成功 返回键值对指针   失败 返回nullptr
  */
-
-
-#include <map>
-#include <string>
-
 std::string Cache::getKeyValue(std::string key) {
     std::map<std::string, std::string>::iterator it;
     it = this->keyValueList.find(key);
@@ -190,37 +189,53 @@ void Cache::cleanFriend() {
     this->friendList.clear();
 }
 
-#include "st_chat.h"
 
 void Cache::insertOneChat(int friendListId, QString friendName) {
-    chatList.insert(chatList.constBegin(), chatList.size(), friendListId);
-    addFrientToChat(friendName, chatList.size());
+    chatList.insert(chatList.begin(), friendListId);
+    addFrientToChat(friendName, friendListId);
     return;
 }
 
 void Cache::removeOneChat(int friendListId) {
-    chatList.remove(friendListId);
+    int chatIdx = 0;
+
+    QList<int>::iterator it;
+    for(it = chatList.begin(); it != chatList.end(); it++) {
+        if (*it == friendListId) {
+            break;
+        }
+        chatIdx++;
+    }
+    if (chatIdx != -1) {
+        chatList.erase(it);
+        removeFrientFromChat(chatIdx);
+    }
     return;
 }
 
-int Cache::getOneFriendId(int chatId) {
-    if (chatId > chatList.size()) {
-        return -1;
-    }
-    return chatList[chatId];
-}
-
 int Cache::atFirstPosition(int friendListId) {
-    QMap<int, int>::iterator it = chatList.find(friendListId);
-    if (it == chatList.end()) {
-        return -1;
+    int result = 0;
+    int idx = 0;
+
+    QList<int>::iterator it;
+    for(it = chatList.begin(); it != chatList.end();it++) {
+        if (*it == friendListId) {
+            result = 1;
+            break;
+        }
+        idx++;
     }
-    if (it.key() != 0) {
+    /* 有结果，并且已经在第一个位置上 */
+    if (result == 1 && idx == 0) {
+        return 0;
+    }
+    /* 有结果，但是不在第一个位置上 */
+    if (result == 1 && idx != 0) {
         return -2;
     }
-    return 0;
+    /* 没有找到 */
+    return -1;
 }
-
 
 
 /**

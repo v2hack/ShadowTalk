@@ -277,9 +277,12 @@ void MessageManager::sendMessage(int index, QString message) {
 
     /* 找到缓存 */
     Cache *c = gCtx.cache;
+
+    qDebug() << "sendMessage index - " << c->currentUseFriendId;
+
     QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseFriendId);
     if (it == c->friendList.end()) {
-        qDebug() << "can't friend firned - " << c->currentUseFriendId;
+        qDebug() << "can't current friend idx - " << c->currentUseFriendId;
         return;
     }
     Friend *f = &(*it);

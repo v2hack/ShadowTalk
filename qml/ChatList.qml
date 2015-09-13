@@ -48,26 +48,35 @@ Rectangle {
                 property: "opacity";
                 from: 0;
                 to: 1.0;
-                duration: 1000
+                duration: 200
             }
             NumberAnimation {
                 property: "scale";
                 from: 0;
                 to: 1.0;
-                duration: 1000
+                duration: 200
             }
         }
         displaced: Transition {
             NumberAnimation {
                 properties: "x,y";
-                duration: 1000;
+                duration: 200;
                 easing.type: Easing.OutBounce
             }
         }
 
         /* 添加好友 */
         function addFriend(data) {
-            model.append(data)
+            model.append(data);
+        }
+
+        /* 顶部插入 */
+        function insertFriend(data) {
+            model.insert(0, data);
+        }
+
+        function removeFriend(chatIndex) {
+            model.remove(chatIndex);
         }
 
         /* 清理所有好友 */

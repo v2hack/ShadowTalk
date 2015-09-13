@@ -23,6 +23,7 @@
 #include "st_log.h"
 #include "st_message.h"
 #include "st_utils.h"
+#include "st_chat.h"
 
 extern struct ShadowTalkContext gCtx;
 
@@ -271,6 +272,10 @@ SelectFriend::~SelectFriend() {
  *  @return 无
  */
 void SelectFriend::changeMessageList(int index, QString name, int flag) {
+
+
+    qDebug() << "changeMessageList index - " << index;
+
     /* 清理界面消息 */
     clearMessageFromWidget();
 
@@ -347,8 +352,10 @@ void SelectFriend::changeMessageList(int index, QString name, int flag) {
     displayCurrentFriendName(f->name);
     /* 界面显示清零 */
     f->displayUnreadCount(f->id, 0);
+
     /* 未读消息计数清零 */
     f->messageUnreadCount = 0;
+
 
     if (flag == 1) {
         /* 以下操作检查是否需要在chat页面显示还有 */

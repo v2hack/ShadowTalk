@@ -31,7 +31,7 @@ public:
 
     int currentUseFriendId;                    /* 界面上当前显示好友id */
     QMap<int, Friend> friendList;              /* 联系人列表 */
-    QMap<int, int> chatList;                   /* 聊天列表 */
+    QList<int> chatList;                       /* 聊天列表 */
     QMap<QString, struct LocalChannel *> channelList;  /* channel映射表 */
     std::map<std::string, std::string> keyValueList;   /* 密钥映射表 */
 
@@ -45,7 +45,6 @@ public:
 
     /* 聊天列表操作 */
     void insertOneChat(int friendListId, QString friendName);
-    int getOneFriendId(int chatId);
     int atFirstPosition(int friendListId);
     void removeOneChat(int friendListId);
 
