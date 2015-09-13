@@ -189,13 +189,26 @@ void Cache::cleanFriend() {
     this->friendList.clear();
 }
 
-
+/**
+ *  功能描述: 插入chatlist列表
+ *  @param friendListId  friendList中的序号
+ *  @param friendName    好友名字
+ *
+ *  @return 无
+ */
 void Cache::insertOneChat(int friendListId, QString friendName) {
     chatList.insert(chatList.begin(), friendListId);
     addFrientToChat(friendName, friendListId);
     return;
 }
 
+
+/**
+ *  功能描述: 从chatlist列表中删除元素
+ *  @param friendListId  friendList中的序号
+ *
+ *  @return 无
+ */
 void Cache::removeOneChat(int friendListId) {
     int chatIdx = 0;
 
@@ -213,6 +226,12 @@ void Cache::removeOneChat(int friendListId) {
     return;
 }
 
+/**
+ *  功能描述: 检查chatlist成员的位置，检查是否存在此成员
+ *  @param friendListId  friendList中的序号
+ *
+ *  @return 无
+ */
 int Cache::atFirstPosition(int friendListId) {
     int result = 0;
     int idx = 0;

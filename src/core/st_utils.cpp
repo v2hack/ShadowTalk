@@ -170,7 +170,12 @@ int parseEncryptXml(QString fileName, QString passwd) {
     return 0;
 }
 
-
+/**
+ *  功能描述: 设置主页面可见
+ *  @param  无
+ *
+ *  @return
+ */
 void setMainWindowVisible() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -182,6 +187,13 @@ void setMainWindowVisible() {
     }
 }
 
+
+/**
+ *  功能描述: 设置主页面不可见
+ *  @param  无
+ *
+ *  @return
+ */
 void setMainWindowUnvisible() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -194,6 +206,12 @@ void setMainWindowUnvisible() {
 }
 
 
+/**
+ *  功能描述: 设置登录界面可见
+ *  @param  无
+ *
+ *  @return
+ */
 void setLoginWindowVisible() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -205,6 +223,12 @@ void setLoginWindowVisible() {
     }
 }
 
+/**
+ *  功能描述: 设置登录界面不可见
+ *  @param  无
+ *
+ *  @return
+ */
 void setLoginWindowUnvisible() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -216,19 +240,34 @@ void setLoginWindowUnvisible() {
     }
 }
 
-
-
+/**
+ *  功能描述: 界面切换，设置base页面隐藏
+ *  @param  无
+ *
+ *  @return
+ */
 void displayBaseView() {
     gCtx.loginer->hide();
     gCtx.viewer->show();
 }
 
+/**
+ *  功能描述: 界面切换，设置登录页面隐藏
+ *  @param  无
+ *
+ *  @return
+ */
 void displayLoginView() {
     gCtx.viewer->hide();
     gCtx.loginer->show();
 }
 
-
+/**
+ *  功能描述: 联系人页面，按照首字符显示好友
+ *  @param  无
+ *
+ *  @return
+ */
 void walkCacheAddFriend() {
     char firstLetter[27] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                             'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -255,7 +294,13 @@ void walkCacheAddFriend() {
     }
 }
 
-
+/**
+ *  功能描述: 将缓存中的好友添加到界面
+ *  @param  friendName   好友名字
+ *  @param  friendIndex  好友索引
+ *
+ *  @return
+ */
 void addFriendIntoWidget(QString friendName, int friendIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -294,5 +339,3 @@ void addFriendIntoWidget(QString friendName, int friendIndex)
     }
     return;
 }
-
-

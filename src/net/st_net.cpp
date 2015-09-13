@@ -131,7 +131,12 @@ void adaptUnistenFriends(std::string friendChannelId) {
     return;
 }
 
-
+/**
+ *  功能描述: 取消监听所有好友
+ *  @param  无
+ *
+ *  @return
+ */
 void adaptUnlistenAllFriends() {
     int ret = 0;
 
@@ -153,5 +158,3 @@ void adaptUnlistenAllFriends() {
     std::cout << "unlisten all friends ok" << std::endl;
     return;
 }
-
-

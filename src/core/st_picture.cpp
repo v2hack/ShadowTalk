@@ -20,7 +20,13 @@
 /* 全局上下文结构 */
 extern struct ShadowTalkContext gCtx;
 
-
+/**
+ *  功能描述: 将图片生成为文件
+ *  @param  fileName 文件名
+ *  @param  data     图片数据
+ *
+ *  @return 无
+ */
 void writePictureFile(std::string fileName, std::string data) {
     std::ofstream file;
     file.open(fileName, std::ios::out | std::ios::binary);
@@ -29,6 +35,13 @@ void writePictureFile(std::string fileName, std::string data) {
     return;
 }
 
+/**
+ *  功能描述: 查找图片缓存
+ *  @param  fidx  好友id
+ *  @param  midx  消息id
+ *
+ *  @return 返回图片数据内容
+ */
 std::string findPictureCache(QString fidx, QString midx) {
 
     /* 寻找index的消息 */
@@ -58,7 +71,14 @@ std::string findPictureCache(QString fidx, QString midx) {
     return std::string("");
 }
 
-
+/**
+ *  功能描述: 将文件持久化，并返回文件的存放路径
+ *  @param  fidx  好友id
+ *  @param  midx  消息id
+ *  @param  pictureData 图片数据
+ *
+ *  @return 返回图片数据内容
+ */
 QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
 
     /* 组装文件路径及名字 */
@@ -78,6 +98,16 @@ QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
     return pictureUrl;
 }
 
+
+/**
+ *  功能描述: 缩放图片计算
+ *  @param  filePath  文件路径
+ *  @param  height    返回的文件高度
+ *  @param  width     返回的文件宽度
+ *  @param  limit     文件高和管的上限
+ *
+ *  @return 返回0 -1
+ */
 int shrinkPicture(QString filePath, int &height, int &width, int limit) {
 
     double times = 0;
@@ -108,11 +138,24 @@ int shrinkPicture(QString filePath, int &height, int &width, int limit) {
     return 0;
 }
 
-
+/**
+ *  功能描述: 显示文件的构造函数
+ *  @param  parent 父类
+ *
+ *  @return 返回0 -1
+ */
 NormalPicture::NormalPicture(QObject *parent) : QObject(parent) {
 
 }
 
+/**
+ *  功能描述: 设置显示大图的显示框
+ *  @param  viewer 显示大区的viewer
+ *  @param  viewer qml属性
+ *  @param  viewer qml文件路径
+ *
+ *  @return 返回0 -1
+ */
 static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile) {
     viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.setSource(QUrl(qmlFile));
@@ -129,6 +172,14 @@ static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString 
     return;
 }
 
+
+/**
+ *  功能描述: 设置显示大图
+ *  @param  friendIndex  好友索引
+ *  @param  messageIndex 消息索引
+ *
+ *  @return 无
+ */
 void NormalPicture::displayNormalPicture(QString friendIndex, QString messageIndex) {
     qDebug() << "display large picture";
 
@@ -137,8 +188,6 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     }
     setViewerParameter(*gCtx.imager, "pictureWindow", "qrc:/qml/picture.qml");
 
-
-    qDebug() << "normal picture fidx - " << friendIndex << "midx - " << messageIndex;
     std::string fileData = findPictureCache(friendIndex, messageIndex);
     if (fileData.empty()) {
         qDebug() << "normal picture is empty";
@@ -155,7 +204,6 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
         qDebug() << "shrink picture fail";
         return;
     }
-    qDebug() << "normal picture height - " << height << "width - " << width;
 
     /* 添加qml对象属性 */
     QQuickItem *rootObject = gCtx.imager->rootObject();
@@ -176,6 +224,4 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     }
     gCtx.imager->show();
 }
-
-
 

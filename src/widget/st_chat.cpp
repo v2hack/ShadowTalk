@@ -15,6 +15,13 @@
 
 extern struct ShadowTalkContext gCtx;
 
+/**
+ *  功能描述: 加好友到chatList页面
+ *  @param friendName   好友名字
+ *  @param friendIndex  好友索引
+ *
+ *  @return 无
+ */
 void addFrientToChat(QString friendName, int friendIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -54,7 +61,13 @@ void addFrientToChat(QString friendName, int friendIndex)
     }
 }
 
-
+/**
+ *  功能描述: 从chatlist界面删除好友
+ *  @param friendName   好友名字
+ *  @param friendIndex  好友索引
+ *
+ *  @return 无
+ */
 void removeFrientFromChat(int chatIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -74,6 +87,14 @@ void removeFrientFromChat(int chatIndex)
     }
 }
 
+
+/**
+ *  功能描述: 从chatlist界面删除好友
+ *  @param friendName   好友名字
+ *  @param friendIndex  好友索引
+ *
+ *  @return 无
+ */
 void displayChatNetState(int idx, int state) {
     Cache *c = gCtx.cache;
     if (!c) {
@@ -114,17 +135,3 @@ void displayChatNetState(int idx, int state) {
         qDebug() << "set time and state fail";
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

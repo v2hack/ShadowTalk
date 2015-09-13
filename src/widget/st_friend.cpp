@@ -96,15 +96,6 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
         return;
     }
 
-    //    QVariantMap newElement;
-    //    QDateTime currentTime = QDateTime::currentDateTime();
-    //    newElement.insert("friendName",  friendName);
-    //    newElement.insert("friendIndex", friendIndex);
-    //    newElement.insert("unReadCount", 0);
-    //    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
-    //    newElement.insert("netState",    MessageMethodOffline);
-    //    newElement.insert("shortName",   "");
-
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
         bool ret = QMetaObject::invokeMethod(
@@ -118,9 +109,6 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
         }
 
         firstLetter = tempLetter.toString();
-
-        qDebug() << "first letter - " << tempLetter;
-
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
              "Friend",
              "add friend to widget success",
