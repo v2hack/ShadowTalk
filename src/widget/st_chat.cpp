@@ -1,4 +1,4 @@
-#include <QWidget>
+﻿#include <QWidget>
 #include <QtQuick/QQuickView>
 #include <QDateTime>
 
@@ -135,3 +135,4 @@ void displayChatNetState(int idx, int state) {
         qDebug() << "set time and state fail";
     }
 }
+

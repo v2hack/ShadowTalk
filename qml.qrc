@@ -65,5 +65,6 @@
         <file>img/st_select_users_t.png</file>
         <file>img/st_green_point.png</file>
         <file>img/st_white_point.png</file>
+        <file>qml/SearchList.qml</file>
     </qresource>
 </RCC>

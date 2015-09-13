@@ -123,7 +123,7 @@ Rectangle {
             width: secondLayerWindows.fix_width;
             height: 144
             color: "#343434"
-            z: 800
+            z: 700
             anchors {
                 top: parent.top
                 left: parent.left
@@ -254,6 +254,70 @@ Rectangle {
                         source: "qrc:/img/st_button_search.png";
                         fillMode: Image.PreserveAspectFit
                     }
+
+                    FontLoader {
+                        id: chineseFont
+                        source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                    }
+
+                    /* 搜索内容输入 */
+                    TextArea {
+                        id: searchTextEdit;
+                        objectName: "SearchTextEdit"
+
+                        function searchTextIsEmpty() {
+                            if (searchTextEdit.text == "") {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        }
+
+                        function setSearchUnvisible() {
+                            searchDisplay.visible = false;
+                        }
+
+                        function setSearchVisible() {
+                            searchDisplay.visible = true;
+                        }
+
+                        function searchTextContent() {
+                            return searchTextEdit.text;
+                        }
+
+                        function searchClearContent() {
+                            searchTextEdit.cursorPosition = 0;
+                            searchTextEdit.text = "";
+                        }
+
+
+                        height: 26
+                        width: 220
+                        anchors {
+                            top: parent.top
+                            left: parent.left
+                            leftMargin: 30
+                        }
+                        anchors.fill: searchRectangle;
+                        wrapMode: Text.WrapAnywhere
+                        selectByMouse: true
+                        backgroundVisible: false
+                        frameVisible: false
+                        font.family: chineseFont.name;
+                        focus: true
+                        textColor: "white"
+
+                        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+                        verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+                        Keys.onReturnPressed: {
+                            if (searchTextEdit.text != "") {
+                                searchDisplay.visible = true
+                            } else {
+                                searchDisplay.visible = false
+                            }
+                        }
+                    }
                 }
             }
 
@@ -268,7 +332,6 @@ Rectangle {
                 }
                 sourceComponent: searchComponent;
             }
-
 
             /* 垂直分割线 */
             Rectangle {
@@ -314,7 +377,6 @@ Rectangle {
         Rectangle {
             id: chatList
             visible: false
-
             anchors {
                 top: thirdLayerWindow.bottom;
                 topMargin: 1
@@ -337,7 +399,6 @@ Rectangle {
             z: 220
         }
 
-
         /* 文字输入对话框 */
         ChatTextInput {
             id: chatTextInputWindow;
@@ -359,6 +420,34 @@ Rectangle {
                 left:backGroundLoader.right;
                 bottom: chatTextInputWindow.top;
             }
+        }
+
+        /* 搜索结果显示框 */
+        Rectangle {
+            id: searchDisplay
+            visible: false
+
+            anchors {
+                top: secondLayerWindows.top;
+                topMargin: 78
+                left: parent.left
+            }
+            width: secondLayerWindows.fix_width;
+            height: 400;
+            color: "#464646"
+            opacity: 0.8
+
+            /* 聊天列表细节动态 */
+            SearchList {
+                id: searchListDisplay;
+                height: parent.height;
+                width: parent.width
+                anchors {
+                    top: searchDisplay.top
+                    left:searchDisplay.left
+                }
+            }
+            z: 1000
         }
     }
 }

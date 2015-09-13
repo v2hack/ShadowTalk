@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{0cb74f25-ec0d-4d27-903e-25924342936f}</UniqueIdentifier>
+      <UniqueIdentifier>{840526d3-1d99-4188-908f-0d8e8a2fc35a}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{2e10cd08-f90b-46d2-a34c-9bf3ea6d48b2}</UniqueIdentifier>
+      <UniqueIdentifier>{14b7886a-d613-4fd4-a184-b8043da2ddbb}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -90,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\st_qrcode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\st_search.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\st_thread.cpp">
@@ -211,6 +214,9 @@
     <ClInclude Include="src\core\st_qrcode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\st_search.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <CustomBuild Include="src\core\st_thread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -259,6 +265,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="qml\MainWindowSetting.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="qml\SearchList.qml">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="qml\common.js">

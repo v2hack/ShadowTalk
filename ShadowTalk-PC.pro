@@ -45,7 +45,8 @@ HEADERS += \
     src/core/st_qrcode.h \
     include/maidsafe/common/asio_service.h \
     src/core/st_thread.h \
-    src/widget/st_chat.h
+    src/widget/st_chat.h \
+    src/core/st_search.h
 	
 SOURCES += \
     src/main.cpp \
@@ -68,7 +69,8 @@ SOURCES += \
     src/core/st_qrcode.cpp \
     src/core/st_context.cpp \
     src/core/st_thread.cpp \
-    src/widget/st_chat.cpp
+    src/widget/st_chat.cpp \
+    src/core/st_search.cpp
    
 win32 {
     LIBS += -L$$PWD/lib/x32/boost/ -llibboost_chrono-vc120-mt-1_57

@@ -1,6 +1,5 @@
-#ifndef STHREAD_H
+﻿#ifndef STHREAD_H
 #define STHREAD_H
-
 
 #include <QThread>
 #include <QDebug>
@@ -8,6 +7,8 @@
 #include "st_context.h"
 #include "st_cache.h"
 #include "st_utils.h"
+#include "st_search.h"
+
 
 class Sthread : public QThread
 {
@@ -20,6 +21,15 @@ public:
     }
     void run() {
         while (1) {
+            /* 搜索框检查 */
+            if (checkSearchText() == 1) {
+                setSearchTextUnvisible();
+                clearSearchWidget();
+            } else {
+                matchAndShowSearchResult();
+            }
+
+            /* 登录界面切换检查 */
             if (c->changeFlag == 1) {
                 if (c->windowFlag == 1) {
                     qDebug() << "show login";

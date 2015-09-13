@@ -339,3 +339,10 @@ void addFriendIntoWidget(QString friendName, int friendIndex)
     }
     return;
 }
+
+
+
+
+
+
+
