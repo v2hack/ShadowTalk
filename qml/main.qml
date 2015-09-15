@@ -23,14 +23,15 @@ Rectangle {
     function setBaseWindowUnvisible() {
         baseWindows.visible = false;
     }
-    width: 890
-    height: 640
+    width: 900
+    height: 650
     Drag.active: true
+    color: "transparent"
 
     /* 主窗口可见 */
     visible: true
     /* 透明度 */
-    opacity: 0.97
+    //    opacity: 0.97
 
     /* 主窗口鼠标拖拽 */
     MouseArea {
@@ -49,14 +50,35 @@ Rectangle {
         }
     }
 
+    Rectangle {
+        id: shadowWindow
+        width: baseWindows.width - 10
+        height: baseWindows.height - 10
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+        border.color: "white"
+        color: "#444"
+
+        layer.enabled: true
+        layer.effect: DropShadow {
+            radius: 4
+            samples: radius * 2
+            source: shadowWindow
+            color: Qt.rgba(0, 0, 0, 0.8)
+            transparentBorder: true
+        }
+    }
+
     /* 主窗口按钮 */
     MainWindowButton {
         id: mainButton;
-        width: parent.width - 300
+        width: shadowWindow.width - 300
         height: 40;
-        anchors.right: parent.right
+        anchors.right: shadowWindow.right
         anchors.rightMargin: 3
-        anchors.top: parent.top
+        anchors.top: shadowWindow.top
         anchors.topMargin: 0
         color: "#efefef"
         opacity: 1
@@ -66,11 +88,11 @@ Rectangle {
     /* 主窗口 */
     Rectangle {
         id: secondLayerWindows
-        width: baseWindows.width
-        height: baseWindows.height
+        width: shadowWindow.width
+        height: shadowWindow.height
         smooth: true
-        anchors.left: parent.left;
-        anchors.top: parent.top;
+        anchors.left: shadowWindow.left;
+        anchors.top: shadowWindow.top;
         property int fix_width: 296
         color: "#efefef"
 
@@ -401,9 +423,10 @@ Rectangle {
 
         /* 文字输入对话框 */
         ChatTextInput {
+            layer.enabled: false
             id: chatTextInputWindow;
             height: 200;
-            width: baseWindows.width - secondLayerWindows.fix_width - 2;
+            width: shadowWindow.width - secondLayerWindows.fix_width - 2;
 
             anchors {
                 left: backGroundLoader.right;
@@ -413,9 +436,10 @@ Rectangle {
 
         /* 聊天内容 */
         ChatDisplay {
+
             id: chatContent;
-            height: baseWindows.height - chatTextInputWindow.height - 45;
-            width: baseWindows.width - secondLayerWindows.fix_width - 2;
+            height: shadowWindow.height - chatTextInputWindow.height - 45;
+            width: shadowWindow.width - secondLayerWindows.fix_width - 2;
             anchors {
                 left:backGroundLoader.right;
                 bottom: chatTextInputWindow.top;
@@ -450,4 +474,5 @@ Rectangle {
             z: 1000
         }
     }
+
 }
