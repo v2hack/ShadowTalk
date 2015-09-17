@@ -209,9 +209,9 @@ Rectangle {
 
                     anchors {
                         left: friendItemIcon.right;
-                        leftMargin: -6;
+                        leftMargin: -8;
                         verticalCenter: parent.verticalCenter
-                        verticalCenterOffset: 10
+                        verticalCenterOffset: -10
                     }
 
                     Text {

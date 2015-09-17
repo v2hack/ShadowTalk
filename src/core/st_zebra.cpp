@@ -275,6 +275,17 @@ void zebraDeleagates::friend_offline_message(
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_offline_message", "receive one online message", f.id, message.c_str());
 
+            /* 以下操作检查是否需要在chat页面显示好友 */
+            int ret = c->atFirstPosition(f.id);
+            if (ret == -1) {
+                qDebug() << "chat : add new one to chatlist";
+                c->insertOneChat(f.id, f.name);
+            } else if (ret == -2) {
+                qDebug() << "chat: move one to first position";
+                c->removeOneChat(f.id);
+                c->insertOneChat(f.id, f.name);
+            }
+
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseFriendId == f.id) {
                 f.messageUnreadCount = 0;
@@ -299,7 +310,6 @@ void zebraDeleagates::friend_offline_message(
                 }
             } else {
                 f.messageUnreadCount++;
-                f.displayUnreadCount(f.id, f.messageUnreadCount);
                 displayChatUnreadCount(f.id, f.messageUnreadCount);
 
                 /* 判断类型 */
@@ -397,6 +407,17 @@ void zebraDeleagates::friend_online_message(
             m->MessageMethord = MessageMethodOnline;
             m->voiceSeconds   = 0;
 
+            /* 以下操作检查是否需要在chat页面显示好友 */
+            int ret = c->atFirstPosition(f.id);
+            if (ret == -1) {
+                qDebug() << "chat : add new one to chatlist";
+                c->insertOneChat(f.id, f.name);
+            } else if (ret == -2) {
+                qDebug() << "chat: move one to first position";
+                c->removeOneChat(f.id);
+                c->insertOneChat(f.id, f.name);
+            }
+
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseFriendId == f.id) {
                 f.messageUnreadCount = 0;
@@ -421,7 +442,6 @@ void zebraDeleagates::friend_online_message(
                 }
             } else {
                 f.messageUnreadCount++;
-                f.displayUnreadCount(f.id, f.messageUnreadCount);
                 displayChatUnreadCount(f.id, f.messageUnreadCount);
 
                 /* 判断类型 */

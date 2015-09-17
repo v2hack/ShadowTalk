@@ -47,6 +47,7 @@ public:
     void insertOneChat(int friendListId, QString friendName);
     int atFirstPosition(int friendListId);
     void removeOneChat(int friendListId);
+    int getFriendIdOfChat(int chatId);
 
     /* channel操作函数 */
     struct LocalChannel *getChannel(QString channelId);

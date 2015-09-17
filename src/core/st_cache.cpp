@@ -256,6 +256,17 @@ int Cache::atFirstPosition(int friendListId) {
     return -1;
 }
 
+int Cache::getFriendIdOfChat(int chatId) {
+    int idx = 0;
+	QList<int>::iterator it;
+    for(it = chatList.begin(); it != chatList.end();it++) {
+        if (idx == chatId) {
+            return *it;
+        }
+        idx++;
+    }
+}
+
 
 /**
  *  功能描述: 清理通道缓存
