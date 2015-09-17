@@ -91,7 +91,7 @@ Rectangle {
     Rectangle {
         id: chatTextSendRectangle
         width: parent.width;
-        height: 37;
+        height: 35;
         color: "#efefef"
 
         anchors {

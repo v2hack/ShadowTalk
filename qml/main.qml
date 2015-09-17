@@ -425,7 +425,7 @@ Rectangle {
         ChatTextInput {
             layer.enabled: false
             id: chatTextInputWindow;
-            height: 200;
+            height: 200 - 4;
             width: shadowWindow.width - secondLayerWindows.fix_width - 2;
 
             anchors {

@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{c8840043-c467-4669-9c32-cfc3c68dd114}</UniqueIdentifier>
+      <UniqueIdentifier>{c2fcc4d4-2eec-43ad-8ba0-e46437df248c}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{df9f6c93-987a-4c5d-abb0-631c23381e10}</UniqueIdentifier>
+      <UniqueIdentifier>{338950b9-4fa5-4b04-a49a-bed7ab197c98}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -358,9 +358,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="img\sound\st_m_sound_3.png">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="img\st_main_shadow.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="img\head\st_message_frame.png">
