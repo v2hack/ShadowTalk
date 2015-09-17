@@ -33,14 +33,14 @@ Rectangle {
 
     Rectangle {
         id: shadowWindow
-        width: loginQrWindow.width + 1
-        height: loginQrWindow.height + 1
+        width: loginQrWindow.width + 2
+        height: loginQrWindow.height + 2
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
         }
         border.color: "white"
-        color: "#444"
+        color: "#999"
 
         layer.enabled: true
         layer.effect: DropShadow {
@@ -98,7 +98,7 @@ Rectangle {
             color : "#efefef"
             anchors {
                 top: parent.top
-                topMargin: 20
+                topMargin: 30
             }
 
             /* 底色 */
@@ -117,7 +117,7 @@ Rectangle {
                 height: qrProcessImage.height
                 anchors {
                     top: parent.top
-                    topMargin: -30
+                    topMargin: -20
                 }
                 z:510
             }
@@ -228,11 +228,6 @@ Rectangle {
                 onExited: {
                     hintImageAnim2.start();
                 }
-                //                onClicked: {
-                //                    qrCodeImage.visible = false;
-                //                    qrProcessRect.visible = true;
-                //                    recommodWord.text = "正在同步手机数据";
-                //                }
             }
         }
 

@@ -6,5 +6,6 @@
 void addFrientToChat(QString friendName, int friendIndex);
 void removeFrientFromChat(int chatIndex);
 void displayChatNetState(int idx, int state);
+void displayChatUnreadCount(int idx, int count);
 
 #endif // CHATLIST_H

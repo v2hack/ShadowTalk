@@ -148,7 +148,7 @@ bool matchSearchContent(QString text) {
     Cache *c = gCtx.cache;
     if (!c) {
         return ret;
-    }
+    } 
 
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {

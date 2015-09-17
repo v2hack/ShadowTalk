@@ -9,6 +9,7 @@
 #include "st_friend.h"
 #include "st_cache.h"
 #include "st_zebra.h"
+#include "st_trayicon.h"
 
 #include "im.h"
 
@@ -26,6 +27,7 @@ struct ShadowTalkContext
     QQuickView *viewer;    /* 主窗口viewer指针 */
     QQuickView *loginer;   /* 登陆窗口viewer指针 */
     QQuickView *imager;    /* 图片浏览窗口指针 */
+    TrayIcon   *tray;      /* 系统托图 */
 
     Cache *cache;          /* 缓存指针 */
 

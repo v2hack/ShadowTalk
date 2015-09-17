@@ -136,3 +136,46 @@ void displayChatNetState(int idx, int state) {
     }
 }
 
+
+void displayChatUnreadCount(int idx, int count) {
+
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+
+    int chatIdx = 0, flag = 0;
+    QList<int>::iterator it;
+    for (it = c->chatList.begin(); it != c->chatList.end(); it++) {
+        if (*it == idx) {
+            flag = 1;
+            break;
+        }
+        chatIdx++;
+    }
+    if (flag == 0) {
+        return;
+    }
+
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(
+                    rect,
+                    "modifyUnreadCount",
+                    Q_ARG(QVariant, chatIdx),
+                    Q_ARG(QVariant, count)
+                    );
+        qDebug() << "set unread count ok";
+    } else {
+        qDebug() << "set unread count fail";
+    }
+}
+
+
+
+

@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{c2fcc4d4-2eec-43ad-8ba0-e46437df248c}</UniqueIdentifier>
+      <UniqueIdentifier>{01a9f8b8-afa4-46ff-b727-648903f9ba7e}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{338950b9-4fa5-4b04-a49a-bed7ab197c98}</UniqueIdentifier>
+      <UniqueIdentifier>{eb801fc3-51f5-4bf5-92a9-8edc9b86e793}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -152,6 +152,12 @@
     <ClCompile Include="Release\moc_st_thread.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Debug\moc_st_trayicon.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Release\moc_st_trayicon.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
     <ClCompile Include="Debug\moc_st_voice.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -220,9 +226,9 @@
     <CustomBuild Include="src\core\st_thread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <ClInclude Include="src\widget\st_trayicon.h">
+    <CustomBuild Include="src\widget\st_trayicon.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </CustomBuild>
     <ClInclude Include="src\core\st_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>

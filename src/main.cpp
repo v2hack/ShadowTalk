@@ -10,13 +10,12 @@
  *  日期: 2015/07/20
  *  说明:
  ******************************************************************/
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQuickView>
 #include <QQmlContext>
 #include <QString>
 #include <QDir>
 #include <QDebug>
-#include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QtQml>
 #include <QThread>
@@ -189,6 +188,7 @@ void initZebraEngine() {
 }
 
 #include "st_thread.h"
+#include "st_trayicon.h"
 
 /**
  *  功能描述: 主函数
@@ -199,7 +199,7 @@ void initZebraEngine() {
  */
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     memset(&gCtx, 0, sizeof(gCtx));
     gCtx.app = &app;
 
@@ -216,6 +216,8 @@ int main(int argc, char *argv[])
     /* 聊天主界面 */
     QQuickView viewer;
     createBaseViewer(viewer);
+    gCtx.tray = new TrayIcon(&viewer);
+    gCtx.tray->onRemind("hello world");
 
     /* 登录主页面 */
     QQuickView loginer;

@@ -300,6 +300,7 @@ void zebraDeleagates::friend_offline_message(
             } else {
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id, f.messageUnreadCount);
+                displayChatUnreadCount(f.id, f.messageUnreadCount);
 
                 /* 判断类型 */
                 switch (type) {
@@ -421,6 +422,7 @@ void zebraDeleagates::friend_online_message(
             } else {
                 f.messageUnreadCount++;
                 f.displayUnreadCount(f.id, f.messageUnreadCount);
+                displayChatUnreadCount(f.id, f.messageUnreadCount);
 
                 /* 判断类型 */
                 switch (type) {
