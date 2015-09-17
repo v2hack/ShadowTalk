@@ -32,6 +32,27 @@ Rectangle {
     property int loginProcessLoaderFlag: 0
 
     Rectangle {
+        id: shadowWindow
+        width: loginQrWindow.width + 1
+        height: loginQrWindow.height + 1
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+        border.color: "white"
+        color: "#444"
+
+        layer.enabled: true
+        layer.effect: DropShadow {
+            radius: 4
+            samples: radius * 2
+            source: shadowWindow
+            color: Qt.rgba(0, 0, 0, 0.8)
+            transparentBorder: true
+        }
+    }
+
+    Rectangle {
         id: loginQrWindow;
         objectName: "loginQrWindow"
 
@@ -48,8 +69,8 @@ Rectangle {
             loginProcessPaint.processPaint(0);
         }
 
-        width: Math.round(320)
-        height: Math.round(450)
+        width:320
+        height: 450
         radius: 5;
         color: "#efefef"
         z:500

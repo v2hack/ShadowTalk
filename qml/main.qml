@@ -52,8 +52,8 @@ Rectangle {
 
     Rectangle {
         id: shadowWindow
-        width: baseWindows.width - 10
-        height: baseWindows.height - 10
+        width: baseWindows.width - 4
+        height: baseWindows.height - 4
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
