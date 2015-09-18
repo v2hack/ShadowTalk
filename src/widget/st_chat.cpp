@@ -174,7 +174,3 @@ void displayChatUnreadCount(int idx, int count) {
         qDebug() << "set unread count fail";
     }
 }
-
-
-
-

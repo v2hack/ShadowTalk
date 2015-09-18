@@ -123,8 +123,9 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
         }
 
         /* 切换到聊天界面 */
-        gCtx.changeFlag = 1;
-        gCtx.windowFlag = 2;
+        gCtx.changeFlag = 1; /* 通知线程切换窗口 */
+        gCtx.windowFlag = 2; /* 当前应该显示主窗口 */
+        gCtx.shadowFlag = ST_NO_LOGIN; /* 状态为已经登录 */
         return 1;
     }
     case MessagetypePCOffLine:
