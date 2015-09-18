@@ -29,11 +29,12 @@ public:
 
     void CleanCache();
 
-    int currentUseFriendId;                    /* 界面上当前显示好友id */
-    QMap<int, Friend> friendList;              /* 联系人列表 */
-    QList<int> chatList;                       /* 聊天列表 */
+    int currentUseFriendId;                            /* 界面上当前显示好友id */
+    QMap<int, Friend> friendList;                      /* 联系人列表 */
+    QList<int> chatList;                               /* 聊天列表 */
     QMap<QString, struct LocalChannel *> channelList;  /* channel映射表 */
     std::map<std::string, std::string> keyValueList;   /* 密钥映射表 */
+
 
     /* 联系人操作函数 */
     void insertOneFriend(Friend *newFriend);

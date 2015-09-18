@@ -600,15 +600,19 @@ void zebraDeleagates::delete_data(const string &key_id) {
  *
  *  @return 无
  */
+
+std::set<std::string> existSet;
+
 bool zebraDeleagates::isExisted(const string &item, unsigned int expire) {
-    static std::string zebraIsExisted;
-    if (item == zebraIsExisted) {
+    qDebug() << "isExisted - " << QString::fromStdString(gCtx.zebra->hex_encode(item));
+    std::set<std::string>::iterator it;
+    it = existSet.find(item);
+    if (it != existSet.end()) {
         return true;
     } else {
-        zebraIsExisted = item;
+        existSet.insert(item);
         return false;
     }
-    return false;
 }
 
 /**
