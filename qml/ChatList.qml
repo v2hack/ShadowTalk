@@ -244,7 +244,7 @@ Rectangle {
                         friendListScrollbar.visible = true;
                         cellRect.opacity = 0.9;
                         /* 选中好友，消息栏同步更新 */
-                        selectFriend.changeMessageList(friendIndex, friendName, 0);
+                        selectFriend.changeMessageListForClist(friendIndex, friendName);
                     }
                     onEntered: {
                         cellRect.color = "#353535";

@@ -259,11 +259,8 @@ SelectFriend::~SelectFriend() {
  *  @param name 好友名称
  *  @return 无
  */
-void SelectFriend::changeMessageList(int index, QString name, int flag) {
-
-
-    qDebug() << "changeMessageList index - " << index;
-
+void SelectFriend::changeMessageListForFlist(int index, QString name) {
+    qDebug() << "changeMessageListForFlist index - " << index;
     /* 清理界面消息 */
     clearMessageFromWidget();
 
@@ -278,20 +275,10 @@ void SelectFriend::changeMessageList(int index, QString name, int flag) {
     if (!f) {
         return;
     }
-
-    /* 设置当前好友index */
-    if (flag == 1) {
-        qDebug() << "## friend list - " << index;
-        c->setCurrentFriendId(index);
-    }else {
-        int fid = c->getFriendIdOfChat(index);
-        qDebug() << "## chat list : chat id - " << index << "friend id - " << fid;
-        c->setCurrentFriendId(fid);
-    }
+    c->setCurrentFriendId(index);
 
     /* 添加消息 */
     for (int i = 0; i < f->messageList.size(); i++) {
-
         int idx = i;
         QMap<int, Message>::iterator it = f->messageList.find(i);
         if (it == f->messageList.end()) {
@@ -309,64 +296,124 @@ void SelectFriend::changeMessageList(int index, QString name, int flag) {
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            addMessageToWidget(
-                        f->id,
-                        name,
-                        it->messageType,
-                        it->driect,
-                        QString::fromStdString(it->data),
-                        idx
-                        );
+            addMessageToWidget(f->id, name, it->messageType,
+                               it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeImage:
-            addImageToWidget(
-                        f->id,
-                        name,
-                        it->messageType,
-                        it->driect,
-                        it->data,
-                        idx
-                        );
+            addImageToWidget(f->id, name, it->messageType,
+                             it->driect, it->data, idx);
             break;
         case MessageTypeVoice:
-            addVoiceToWidget(
-                        f->id,
-                        name,
-                        it->messageType,
-                        it->driect,
-                        QString::fromStdString(it->data),
-                        it->voiceSeconds,
-                        idx
-                        );
+            addVoiceToWidget(f->id, name, it->messageType, it->driect,
+                             QString::fromStdString(it->data), it->voiceSeconds, idx);
             break;
         default:
             break;
         }
     }
 
-    displayCurrentFriendName(f->name);
-    displayChatUnreadCount(f->id, 0);
     /* 界面显示清零 */
-//    f->displayUnreadCount(f->id, 0);
-
+    displayCurrentFriendName(f->name);
     /* 未读消息计数清零 */
+    displayChatUnreadCount(f->id, 0);
     f->messageUnreadCount = 0;
 
-
-    if (flag == 0) {
-        /* 以下操作检查是否需要在chat页面显示好友 */
-        int ret = c->atFirstPosition(index);
-        if (ret == -1) {
-            qDebug() << "chat : add new one to chatlist";
-            c->insertOneChat(index, f->name);
-        } else if (ret == -2) {
-            qDebug() << "chat: move one to first position";
-            c->removeOneChat(index);
-            c->insertOneChat(index, f->name);
-        }
+    /* 以下操作检查是否需要在chat页面显示好友 */
+    int ret = c->atFirstPosition(index);
+    if (ret == -1) {
+        c->insertOneChat(index, f->name);
+    } else if (ret == -2) {
+        c->removeOneChat(index);
+        c->insertOneChat(index, f->name);
     }
+
     return;
 }
 
+/**
+ *  功能描述: 改变界面上的消息列表
+ *  @param index 好友索引
+ *  @param name 好友名称
+ *  @return 无
+ */
+void SelectFriend::changeMessageListForClist(int index, QString name) {
+    qDebug() << "changeMessageListForClist index - " << index;
+    /* 清理界面消息 */
+    clearMessageFromWidget();
 
+    /* 寻找index的消息 */
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+
+    /* 从chat list找到好友结构，如果找不到*/
+//    int fid = c->getFriendIdOfChat(index);
+//    if (fid == -1) {
+//        qDebug() << "can't find friend index from chat list";
+//        return;
+//    }
+//    qDebug() << "get friend index for chat list - " << fid;
+    c->setCurrentFriendId(index);
+
+    /* 找到好友缓存 */
+    Friend *f = c->getOneFriend(index);
+    if (!f) {
+        qDebug() << "can't find friend from cache";
+        return;
+    }
+
+    /* 添加消息 */
+    for (int i = 0; i < f->messageList.size(); i++) {
+        int idx = i;
+        QMap<int, Message>::iterator it = f->messageList.find(i);
+        if (it == f->messageList.end()) {
+            return;
+        }
+
+        /* 设置显示名字 */
+        QString name;
+        if (it->driect == MessageDriectMe) {
+            name = "Me";
+        } else {
+            name = f->name;
+        }
+
+        /* 添加消息到界面 */
+        switch (it->messageType) {
+        case MessageTypeWord:
+            addMessageToWidget(f->id, name, it->messageType,
+                               it->driect, QString::fromStdString(it->data), idx);
+            break;
+        case MessageTypeImage:
+            addImageToWidget(f->id, name, it->messageType,
+                             it->driect, it->data, idx);
+            break;
+        case MessageTypeVoice:
+            addVoiceToWidget(f->id, name, it->messageType, it->driect,
+                             QString::fromStdString(it->data), it->voiceSeconds, idx);
+            break;
+        default:
+            break;
+        }
+    }
+
+    /* 界面显示清零 */
+    displayCurrentFriendName(f->name);
+    /* 未读消息计数清零 */
+    displayChatUnreadCount(f->id, 0);
+    f->messageUnreadCount = 0;
+
+    /* 以下操作检查是否需要在chat页面显示好友 */
+    int ret = c->atFirstPosition(index);
+    if (ret == -1) {
+        qDebug() << "chat : add new one to chatlist";
+        c->insertOneChat(index, f->name);
+    } else if (ret == -2) {
+        qDebug() << "chat: move one to first position";
+        c->removeOneChat(index);
+        c->insertOneChat(index, f->name);
+    }
+    return;
+}
 

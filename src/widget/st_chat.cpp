@@ -170,7 +170,6 @@ void displayChatUnreadCount(int idx, int count) {
                     Q_ARG(QVariant, chatIdx),
                     Q_ARG(QVariant, count)
                     );
-        qDebug() << "set unread count ok";
     } else {
         qDebug() << "set unread count fail";
     }

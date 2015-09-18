@@ -257,14 +257,21 @@ int Cache::atFirstPosition(int friendListId) {
 }
 
 int Cache::getFriendIdOfChat(int chatId) {
-    int idx = 0;
-	QList<int>::iterator it;
-    for(it = chatList.begin(); it != chatList.end();it++) {
-        if (idx == chatId) {
-            return *it;
-        }
-        idx++;
+//    int idx = 0;
+
+    if (chatId > chatList.size()) {
+        return -1;
     }
+    return chatList.at(chatId);
+
+//    QList<int>::iterator it;
+//    for(it = chatList.begin(); it != chatList.end();it++) {
+//        if (idx == chatId) {
+//            return *it;
+//        }
+//        idx++;
+//    }
+//    return -1;
 }
 
 

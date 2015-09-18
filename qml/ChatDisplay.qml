@@ -51,7 +51,7 @@ Rectangle {
         source: ""
 
         function playMessageVoice(voiceFile) {
-            console.log("qml voice file - " + voiceFile);
+//            console.log("qml voice file - " + voiceFile);
             voiceMessage.source = voiceFile
             voiceMessage.play();
         }
@@ -101,10 +101,10 @@ Rectangle {
 
             if (data.dataType === imageType) {
                 messageView.contentY += data.pictureHeight + (150);
-                console.log("type picture for roll - " + data.pictureHeight)
+//                console.log("type picture for roll - " + data.pictureHeight)
             } else {
                 messageView.contentY += height + (100);
-                console.log("picture for roll - " + data.pictureHeight)
+//                console.log("picture for roll - " + data.pictureHeight)
             }
         }
         /* c++调用:清除消息 */

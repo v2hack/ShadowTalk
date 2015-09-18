@@ -54,7 +54,8 @@ class SelectFriend : public QObject {
 public:
     SelectFriend(QObject *parent = 0);
     ~SelectFriend();
-    Q_INVOKABLE void changeMessageList(int index, QString name, int flag = 0);
+    Q_INVOKABLE void changeMessageListForFlist(int index, QString name);
+    Q_INVOKABLE void changeMessageListForClist(int index, QString name);
 };
 
 #endif //ST_FRIEND_H_

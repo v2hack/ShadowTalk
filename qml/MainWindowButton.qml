@@ -21,7 +21,7 @@ Rectangle {
 
         function setCurrentFriendName(name) {
             currentFriendName.text = name;
-            console.log("current friend name - " + name);
+//            console.log("current friend name - " + name);
         }
         anchors {
             horizontalCenter: parent.horizontalCenter
