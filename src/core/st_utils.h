@@ -16,6 +16,7 @@ void ShadowTalkSleep(unsigned int msec);
 
 void playMessageSound();
 void playMessageVoice(QString voiceFilePath);
+void stopMessageVoice();
 
 void writeXmlFile(std::string fileName, std::string data);
 int  parseEncryptXml(QString fileName, QString passwd);

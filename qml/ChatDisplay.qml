@@ -54,6 +54,9 @@ Rectangle {
             voiceMessage.source = voiceFile
             voiceMessage.play();
         }
+        function stopMessageVoice() {
+            voiceMessage.stop();
+        }
     }
 
     ListView {
@@ -100,16 +103,12 @@ Rectangle {
 
             if (data.dataType === imageType) {
                 messageView.contentY += data.pictureHeight + (150);
-//                console.log("type picture for roll - " + data.pictureHeight)
             } else {
                 messageView.contentY += height + (100);
-//                console.log("picture for roll - " + data.pictureHeight)
             }
         }
         /* c++调用:清除消息 */
-        function clearMessage() {
-            model.clear();
-        }
+        function clearMessage() { model.clear(); }
         /* c++调用:删除一个消息
          * 这里item是QVariant类型：包含 index、count成员
          */
@@ -147,28 +146,16 @@ Rectangle {
             }
 
             height: {
-                if (dataType == wordsType) {
-                    return getItemHeight();
-                }
-                if (dataType == voiceType) {
-                    return 90
-                }
-                if (dataType == imageType) {
-                    return pictureHeight + 100;
-                }
+                if (dataType == wordsType) { return getItemHeight();     }
+                if (dataType == voiceType) { return 90;                  }
+                if (dataType == imageType) { return pictureHeight + 100; }
             }
             width: parent.width;
 
             /* C++ 计算像素的类 */
-            PointSizeToPixelSize {
-                id: getPixelSize;
-            }
-            Voice {
-                id: playVoice;
-            }
-            NormalPicture {
-                id: displayPicture
-            }
+            PointSizeToPixelSize {id: getPixelSize;}
+            Voice {id: playVoice;}
+            NormalPicture {id: displayPicture}
 
             Rectangle {
                 id: messageItem;
@@ -263,34 +250,24 @@ Rectangle {
                         }
 
                         height: {
-                            if (dataType == wordsType) {
-                                return getMessageHeight();
-                            }
-                            if (dataType == voiceType) {
-                                return 35
-                            }
-                            if (dataType == imageType) {
-                                return pictureHeight + 10;
-                            }
+                            if (dataType == wordsType) { return getMessageHeight(); }
+                            if (dataType == voiceType) { return 35                  }
+                            if (dataType == imageType) { return pictureHeight + 10; }
                         }
                         width: {
-                            if (dataType == wordsType) {
-                                return getMessageWidth();
-                            }
+                            if (dataType == wordsType) { return getMessageWidth();  }
                             if (dataType == voiceType) {
                                 if (voiceSeconds < 10) {
                                     return 70;
                                 } else {
-                                    if ((70 + voiceSeconds) > 150){
+                                    if ((70 + voiceSeconds) > 150) {
                                         return 150
                                     } else {
                                         return 70 + voiceSeconds
                                     }
                                 }
                             }
-                            if (dataType == imageType) {
-                                return pictureWidth + 10;
-                            }
+                            if (dataType == imageType) { return pictureWidth + 10;  }
                         }
 
                         anchors {
@@ -376,10 +353,17 @@ Rectangle {
 
                             /* 点击播放语音 */
                             MouseArea{
+                                property int playSwitch: 0
                                 anchors.centerIn: parent
                                 anchors.fill: parent
                                 onClicked: {
-                                    playVoice.playVoice(uid, messageIndex);
+                                    if (playSwitch === 0) {
+                                        playVoice.playVoice(uid, messageIndex);
+                                        playSwitch = 1;
+                                    } else {
+                                        playVoice.stopVoice();
+                                        playSwitch = 0;
+                                    }
                                 }
                             }
                         }

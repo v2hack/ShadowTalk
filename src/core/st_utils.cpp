@@ -79,6 +79,19 @@ void playMessageVoice(QString voiceFilePath) {
     }
 }
 
+
+void stopMessageVoice() {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("MessageVoice");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "stopMessageVoice");
+    }
+}
+
 /**
  *  功能描述: 设置界面上当前还有的名字
  *  @param  currentFriendName 当前好友名

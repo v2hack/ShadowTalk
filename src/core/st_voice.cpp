@@ -125,5 +125,5 @@ void Voice::playVoice(QString fidx, QString midx) {
  *  @return 无
  */
 void Voice::stopVoice() {
-
+    stopMessageVoice();
 }
