@@ -346,14 +346,6 @@ void SelectFriend::changeMessageListForClist(int index, QString name) {
     if (!c) {
         return;
     }
-
-    /* 从chat list找到好友结构，如果找不到*/
-//    int fid = c->getFriendIdOfChat(index);
-//    if (fid == -1) {
-//        qDebug() << "can't find friend index from chat list";
-//        return;
-//    }
-//    qDebug() << "get friend index for chat list - " << fid;
     c->setCurrentFriendId(index);
 
     /* 找到好友缓存 */
