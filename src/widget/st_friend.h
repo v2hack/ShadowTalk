@@ -30,6 +30,7 @@ public:
     QString name;                    // 用户名
     QString firstLetter;
     int netStatus;                   // 在线状态
+    int loadStatus;                  // 是否已经加载到界面
 
     int messageCount;                // 消息数量
     int messageUnreadCount;          // 消息未读数量

@@ -282,9 +282,13 @@ void walkCacheAddFriend() {
         QMap<int, Friend>::iterator it;
         for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
             Friend &f = it.value();
+            if (f.loadStatus == 1) {
+                continue;
+            }
             if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
                 qDebug() << "add friend - " << f.name;
                 addFriendIntoWidget(f.name, idx);
+                f.loadStatus = 1;
                 f.id = idx;
                 idx++;
             } else {

@@ -22,7 +22,7 @@ struct LocalChannel {
 class Cache: public QObject {
     Q_OBJECT
 private:
-    int friendCount;                          /* 缓存中好友数量 */
+    int friendCount;                                  /* 缓存中好友数量 */
 public:
     Cache();
     ~Cache();
@@ -42,6 +42,7 @@ public:
     Friend *getOneFriend(int index);
     Q_INVOKABLE int getFriendCount();
     Q_INVOKABLE void setCurrentFriendId(int id);
+    bool isExistFriend(QString friendChannelId);
     void cleanFriend();
 
     /* 聊天列表操作 */
@@ -54,12 +55,14 @@ public:
     struct LocalChannel *getChannel(QString channelId);
     void insertChannel(struct LocalChannel *channel);
     void deleteChannel(QString channeldId);
+    bool isExistChannel(QString channelId);
     void cleanChannel();
 
     /* 密钥操作函数 */
     std::string getKeyValue(std::string key);
     void insertKeyValue(std::string key, std::string value);
     void deleteKeyValue(std::string key);
+    bool isExistChannel(std::string key);
     void cleanKeyValue();
 
 };

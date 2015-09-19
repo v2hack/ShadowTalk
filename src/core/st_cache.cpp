@@ -73,6 +73,23 @@ Friend *Cache::getOneFriend(int index) {
 }
 
 /**
+ *  功能描述: 检查好友是否已经存在于缓存
+ *  @param friendChannelId 好友channelid
+ *
+ *  @return 无
+ */
+bool Cache::isExistFriend(QString friendChannelId) {
+    QMap<int, Friend>::iterator it;
+    for(it = friendList.begin(); it != friendList.end(); it++) {
+        Friend &f = it.value();
+        if (f.friendChannelId.compare(friendChannelId) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  *  功能描述: 将一个好友结构加入缓存
  *  @param newFriend   好友信息结构指针
  *
@@ -123,6 +140,17 @@ void Cache::deleteChannel(QString channeldId) {
     delete c;
 }
 
+
+bool Cache::isExistChannel(QString channelId) {
+    struct LocalChannel *c = nullptr;
+    c = getChannel(channelId);
+    if (c == NULL) {
+        return false;
+    }
+    return true;
+}
+
+
 /**
  *  功能描述: 获取key,value对
  *  @param key    密钥索引
@@ -158,6 +186,14 @@ void Cache::insertKeyValue(std::string key, std::string value){
  */
 void Cache::deleteKeyValue(std::string key) {
     this->keyValueList.erase(key);
+}
+
+bool Cache::isExistChannel(std::string key) {
+    std::string retStr = getKeyValue(key);
+    if (retStr.empty()) {
+        return false;
+    }
+    return true;
 }
 
 /**
@@ -256,24 +292,13 @@ int Cache::atFirstPosition(int friendListId) {
     return -1;
 }
 
-int Cache::getFriendIdOfChat(int chatId) {
-//    int idx = 0;
 
+int Cache::getFriendIdOfChat(int chatId) {
     if (chatId > chatList.size()) {
         return -1;
     }
     return chatList.at(chatId);
-
-//    QList<int>::iterator it;
-//    for(it = chatList.begin(); it != chatList.end();it++) {
-//        if (idx == chatId) {
-//            return *it;
-//        }
-//        idx++;
-//    }
-//    return -1;
 }
-
 
 /**
  *  功能描述: 清理通道缓存
@@ -298,3 +323,4 @@ void Cache::cleanChannel() {
 void Cache::cleanKeyValue() {
     this->keyValueList.clear();
 }
+

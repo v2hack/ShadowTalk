@@ -71,6 +71,11 @@ void addCacheForKeyValue(QString key, QString value) {
         qDebug() << "insert cache fail";
         return;
     }
+
+    if (c->isExistChannel(cKey)){
+        return;
+    }
+
     c->insertKeyValue(plainKey,  plainValue);
     return;
 }
@@ -95,6 +100,10 @@ void addCacheForChannel(
         return;
     }
 
+    if (c->isExistChannel(channelId)) {
+        return;
+    }
+
     struct LocalChannel *newOne = new LocalChannel;
     if (!newOne) {
         return;
@@ -102,10 +111,8 @@ void addCacheForChannel(
 
     newOne->channelId   = channelId;
     newOne->shortCode   = shortCode;
-    newOne->createdTime = QDateTime::fromString(
-                createdTime, "yyyy-MM-ddTHH-mm-ssZ");
-    newOne->expiredTime = QDateTime::fromString(
-                expiredTime, "yyyy-MM-ddTHH-mm-ssZ");
+    newOne->createdTime = QDateTime::fromString(createdTime, "yyyy-MM-ddTHH-mm-ssZ");
+    newOne->expiredTime = QDateTime::fromString(expiredTime, "yyyy-MM-ddTHH-mm-ssZ");
     c->insertChannel(newOne);
     return;
 }
@@ -132,6 +139,16 @@ void addCacheForContact(
 {
     updateTime = updateTime;
 
+    /* 名字为空的直接过滤掉 */
+    if (friendName.isEmpty()) {
+        return;
+    }
+
+    /* 检查好友是否已经存在 */
+    if (gCtx.cache->isExistFriend(friendChannelId)){
+        return;
+    }
+
     Friend *newOne = new Friend(
                 friendName,
                 defaultExpiredTime.toInt(),
@@ -142,6 +159,8 @@ void addCacheForContact(
     if (!newOne) {
         return;
     }
+
+
     /* 加入缓存 */
     gCtx.cache->insertOneFriend(newOne);
     return;
