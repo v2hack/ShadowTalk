@@ -355,26 +355,58 @@ Rectangle {
                             /* 顺序播放 */
                             SequentialAnimation {
                                 id: voiceAnim
+
+                                function stopVoiceAnim() {
+                                    voiceAnim.stop();
+                                    voiceImage1.opacity = 1;
+                                    voiceImage2.opacity = 1;
+                                    voiceImage3.opacity = 1;
+                                }
+
+                                NumberAnimation {
+                                    target: voiceImage1
+                                    property: "opacity"
+                                    from: 1
+                                    to: 0
+                                    duration: 1
+                                }
+                                NumberAnimation {
+                                    target: voiceImage2
+                                    property: "opacity"
+                                    from: 1
+                                    to: 0
+                                    duration: 1
+                                }
+                                NumberAnimation {
+                                    target: voiceImage3
+                                    property: "opacity"
+                                    from: 1
+                                    to: 0
+                                    duration: 1
+                                }
                                 NumberAnimation {
                                     target: voiceImage1
                                     property: "opacity"
                                     from: 0
                                     to: 1.0
-                                    duration: 80
+                                    duration: 120
                                 }
                                 NumberAnimation {
                                     target: voiceImage2
                                     property: "opacity"
                                     from: 0
                                     to: 1.0
-                                    duration: 400
+                                    duration: 240
                                 }
                                 NumberAnimation {
                                     target: voiceImage3
                                     property: "opacity"
                                     from: 0
                                     to: 1.0
-                                    duration: 400
+                                    duration: 360
+                                }
+                                PauseAnimation {
+                                    duration: 200
                                 }
                                 loops: Animation.Infinite
                             }
@@ -392,7 +424,7 @@ Rectangle {
                                     } else {
                                         playVoice.stopVoice();
                                         playSwitch = 0;
-                                        voiceAnim.stop();
+                                        voiceAnim.stopVoiceAnim();
                                     }
                                 }
                             }
