@@ -292,6 +292,7 @@ Rectangle {
                         /* 语音显示 */
                         Rectangle {
                             id: friendMessageVoice
+
                             visible: dataType == voiceType ? true : false
                             color: "transparent"
                             radius: 3
@@ -351,8 +352,35 @@ Rectangle {
                                 font.family: chineseFont.name;
                             }
 
+                            /* 顺序播放 */
+                            SequentialAnimation {
+                                id: voiceAnim
+                                NumberAnimation {
+                                    target: voiceImage1
+                                    property: "opacity"
+                                    from: 0
+                                    to: 1.0
+                                    duration: 80
+                                }
+                                NumberAnimation {
+                                    target: voiceImage2
+                                    property: "opacity"
+                                    from: 0
+                                    to: 1.0
+                                    duration: 400
+                                }
+                                NumberAnimation {
+                                    target: voiceImage3
+                                    property: "opacity"
+                                    from: 0
+                                    to: 1.0
+                                    duration: 400
+                                }
+                                loops: Animation.Infinite
+                            }
+
                             /* 点击播放语音 */
-                            MouseArea{
+                            MouseArea {
                                 property int playSwitch: 0
                                 anchors.centerIn: parent
                                 anchors.fill: parent
@@ -360,9 +388,11 @@ Rectangle {
                                     if (playSwitch === 0) {
                                         playVoice.playVoice(uid, messageIndex);
                                         playSwitch = 1;
+                                        voiceAnim.start();
                                     } else {
                                         playVoice.stopVoice();
                                         playSwitch = 0;
+                                        voiceAnim.stop();
                                     }
                                 }
                             }
