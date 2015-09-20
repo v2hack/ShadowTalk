@@ -118,6 +118,8 @@ void Voice::playVoice(QString fidx, QString midx) {
     return;
 }
 
+
+
 /**
  *  功能描述: 休眠函数
  *  @param msec 毫秒

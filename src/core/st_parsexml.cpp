@@ -296,6 +296,7 @@ int ParseXml::parseContactXml(QDomElement &array) {
         }
     }
     walkCacheAddFriend();
+    return 0;
 }
 
 /**

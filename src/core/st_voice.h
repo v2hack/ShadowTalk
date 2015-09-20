@@ -16,6 +16,7 @@ public:
     Q_INVOKABLE void playVoice(QString friendIndex, QString messageIndex);
     Q_INVOKABLE void stopVoice();
 
+
 signals:
 
 public slots:

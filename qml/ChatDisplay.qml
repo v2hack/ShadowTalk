@@ -355,7 +355,6 @@ Rectangle {
                             /* 顺序播放 */
                             SequentialAnimation {
                                 id: voiceAnim
-
                                 function stopVoiceAnim() {
                                     voiceAnim.stop();
                                     voiceImage1.opacity = 1;
@@ -408,7 +407,9 @@ Rectangle {
                                 PauseAnimation {
                                     duration: 200
                                 }
-                                loops: Animation.Infinite
+//                                loops: Animation.Infinite
+                                loops: voiceSeconds + 1
+
                             }
 
                             /* 点击播放语音 */
