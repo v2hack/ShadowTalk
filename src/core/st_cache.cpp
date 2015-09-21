@@ -32,7 +32,7 @@ Cache::~Cache() {
  *  @return 无
  */
 int Cache::getNextIndex() {
-    return this->getFriendCount() + 1;
+    return this->getFriendCount();
 }
 
 /**
@@ -52,6 +52,7 @@ int Cache::getFriendCount() {
  *  @return 无
  */
 void Cache::setCurrentFriendId(int id) {
+    qDebug() << "### set friend id - " << id;
     this->currentUseFriendId = id;
 }
 

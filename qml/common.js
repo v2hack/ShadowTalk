@@ -28,7 +28,7 @@ function isString(s) {
     return ret
 }
 
-// 判断是否是含义
+// 判断是否是汉语
 function isChinese(s) {
     var reg = /^[\u4e00-\u9fa5]+$/i;
     return reg.test(s);
@@ -61,10 +61,10 @@ function getColor(name) {
                              "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
                              "w", "x", "y", "z");
     if (JsCommon.isNum(name)) {
-//        console.log("是数字");
+        //        console.log("是数字");
         return colorArr[name%26];
     }  else if (JsCommon.isChinese(name)) {
-//        console.log("是汉字");
+        //        console.log("是汉字");
         var lowerName = PinYin.pinyin.getCamelChars(name);
         var lastAph1 = lowerName.substr(lowerName.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
@@ -73,7 +73,7 @@ function getColor(name) {
             }
         }
     } else if (JsCommon.isAlphabet(name)) {
-//        console.log("是字母");
+        //        console.log("是字母");
         var lastAph2 = name.substr(name.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
             if (lastAph2.toLowerCase() ===  nameByte[i]) {
@@ -81,11 +81,12 @@ function getColor(name) {
             }
         }
     } else {
-//        console.log("是其他字符");
+        //        console.log("是其他字符");
         return "#7c509d";
     }
 }
 
+/* 获取首字母 */
 function getFirstLetter(name) {
 
     var nameByte = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
@@ -93,10 +94,12 @@ function getFirstLetter(name) {
                              "w", "x", "y", "z");
 
     var upperLetter = new Array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
-                             "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-                             "W", "X", "Y", "Z");
+                                "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                                "W", "X", "Y", "Z");
 
-    if (JsCommon.isChinese(name)) {
+    var firstLetter = name.substr(0, 1);
+
+    if (JsCommon.isChinese(firstLetter)) {
         var lowerName = PinYin.pinyin.getCamelChars(name);
         var lastAph1 = lowerName.substr(0, 1);
         for (var i = 0; i < nameByte.length; i++) {
@@ -104,10 +107,9 @@ function getFirstLetter(name) {
                 return upperLetter[i];
             }
         }
-    } else if (JsCommon.isAlphabet(name)) {
-        var lastAph2 = name.substr(0, 1);
+    } else if (JsCommon.isAlphabet(firstLetter)) {
         for (var i = 0; i < nameByte.length; i++) {
-            if (lastAph2.toLowerCase() ===  nameByte[i]) {
+            if (firstLetter.toLowerCase() ===  nameByte[i]) {
                 return upperLetter[i];
             }
         }
@@ -116,6 +118,22 @@ function getFirstLetter(name) {
     }
 }
 
+/* 名字截取 */
+function getShortName(name) {
+    var firstLetter = name.substr(0, 1);
+    if (JsCommon.isChinese(firstLetter)) {
+        return name.substring(name.length - 2, name.length);
+    }
+    if (JsCommon.isAlphabet(firstLetter)) {
+        return name.substr(0, 2);
+    }
+    if (JsCommon.isNum(name)) {
+        return name.substr(0, 2);
+    }
+    return name.substr(0, 2);
+}
+
+/* 时间日期 */
 function getDateTime() {
 
     var date = new Date();
@@ -158,7 +176,7 @@ function strlen(str) {
     return s;
 }
 
-
+/* 获取字符串长度 */
 function getByteLen(val) {
     var len = 0;
     for (var i = 0; i < val.length; i++) {
@@ -172,7 +190,6 @@ function getByteLen(val) {
     console.log("bytes - " + len);
     return len;
 }
-
 
 /* 计算聊天框的高度 */
 function getMessageFrameHeight(height_size, user_data_width, max_row_width) {
@@ -195,13 +212,4 @@ function getMessageFrameWidth(total_width) {
     var width = total_width > 250 ? 250 : total_width;
     return width;
 }
-
-
-
-
-
-
-
-
-
 

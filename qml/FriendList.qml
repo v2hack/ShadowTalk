@@ -116,11 +116,6 @@ Rectangle {
             model.clear()
         }
 
-        /* 修改好友名字 */
-        function modifyFriendName() {
-
-        }
-
         /* 修改未读消息数量 */
         function modifyUnreadCount(index, count) {
             model.setProperty(index, "unReadCount", count);
@@ -152,6 +147,12 @@ Rectangle {
             width:parent.width
             height:44;
 
+            //字体先注释，编译太慢
+            FontLoader {
+                id: chineseFont
+                source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+            }
+
             Rectangle {
                 id: cellRect
                 anchors.fill: parent
@@ -177,6 +178,20 @@ Rectangle {
                         leftMargin: 16
                         verticalCenter: parent.verticalCenter
                     }
+
+                    Text {
+                        id: shortName
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        color: "white"
+                        font.pixelSize: 12
+                        font.letterSpacing: 1
+                        font.bold: true
+                        text: JsCommon.getShortName(friendName);
+                        font.family: chineseFont.name;
+                    }
                 }
 
                 /* 好友名字 */
@@ -192,17 +207,13 @@ Rectangle {
                     font.letterSpacing: 1
                     text: friendName
                     font.bold: true
-
-                    //字体先注释，编译太慢
-                    FontLoader {
-                        id: chineseFont
-                        source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
-                    }
                     font.family: chineseFont.name;
                 }
 
+                /* 网络状态 */
                 Rectangle {
                     id: friendNetState
+                    visible: false
                     width: 13
                     height: 13
                     radius: width / 2
@@ -277,11 +288,6 @@ Rectangle {
                         /* 选中好友，消息栏同步更新 */
                         selectFriend.changeMessageListForFlist(friendIndex, friendName);
                     }
-                    //                        onEntered: {
-                    //                            cellRect.color = "#353535";
-                    //                            friendListScrollbar.visible = true;
-                    //                            cellRect.opacity = 0.9
-                    //                        }
                     onExited: {
                         cellRect.color = "#3a3a3a";
                         friendListScrollbar.visible = false;

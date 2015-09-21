@@ -141,39 +141,40 @@ Rectangle {
             model.setProperty(index, "userPicture", picturePath);
         }
 
-        MouseArea {
-            id: showChatLineArea
-            anchors.fill: parent
-            onReleased: {
-                chatLine.state = "hideLine";
-            }
-            onPressAndHold: {
-                chatLine.state = "showLine"
-            }
-        }
-
-        states: [
-            State {
-                name: "showLine"
-                when: messageView.draggingVertically
-                changes: [
-                    PropertyChanges {
-                        target: chatLine;
-                        opacity: 0.3
-                    }
-                ]
-            },
-            State {
-                name: "hideLine"
-                changes: [
-                    PropertyChanges {
-                        target: chatLine;
-                        opacity: 0
-                    }
-                ]
-            }
-        ]
-        state: "hideLine"
+        /* 消息列表头上头的线，实现动态效果 */
+        //        MouseArea {
+        //            id: showChatLineArea
+        //            anchors.fill: parent
+        //            onReleased: {
+        //                chatLine.state = "hideLine";
+        //            }
+        //            onWheel: {
+        //                chatLine.state = "showLine"
+        //            }
+        //            z:900
+        //        }
+        //        states: [
+        //            State {
+        //                name: "showLine"
+        //                when: messageView.draggingVertically
+        //                changes: [
+        //                    PropertyChanges {
+        //                        target: chatLine;
+        //                        opacity: 0.3
+        //                    }
+        //                ]
+        //            },
+        //            State {
+        //                name: "hideLine"
+        //                changes: [
+        //                    PropertyChanges {
+        //                        target: chatLine;
+        //                        opacity: 0
+        //                    }
+        //                ]
+        //            }
+        //        ]
+        //        state: "hideLine"
     }
 
     Component {
@@ -211,7 +212,41 @@ Rectangle {
             Voice {id: playVoice;}
             NormalPicture {id: displayPicture}
 
+            /* 消息框上边缘的动态效果 */
+            MouseArea {
+                id: showChatLineArea
+                anchors.fill: parent
+                onReleased: {
+                    chatLine.state = "hideLine";
+                }
+                z:900
+            }
+            states: [
+                State {
+                    name: "showLine"
+                    when: messageView.draggingVertically
+                    changes: [
+                        PropertyChanges {
+                            target: chatLine;
+                            opacity: 0.3
+                        }
+                    ]
+                },
+                State {
+                    name: "hideLine"
+                    changes: [
+                        PropertyChanges {
+                            target: chatLine;
+                            opacity: 0
+                        }
+                    ]
+                }
+            ]
+            state: "hideLine"
+
+
             Rectangle {
+                z: 1000
                 id: messageItem;
                 width: 68
                 height: messageDelegateItem.height
@@ -224,7 +259,7 @@ Rectangle {
                     width: 36
                     height: 36
                     radius: width / 2
-                    color: JsCommon.getColor(name);
+                    color: direct === 0 ? JsCommon.getColor(name) : "#508cc0";
 
                     anchors {
                         top: parent.top
@@ -240,17 +275,16 @@ Rectangle {
                         id: friendItemName
 
                         anchors {
-                            fill: parent
-                            top: parent.top
-                            topMargin: 12
-                            left:parent.left
-                            leftMargin: 5
+                            verticalCenter: parent.verticalCenter
+                            horizontalCenter: parent.horizontalCenter
                         }
 
                         color: "white"
-                        font.pixelSize: 12
-                        text: name
+                        font.pixelSize: 15
+//                        text: JsCommon.getShortName(name)
+                        text: direct === 0 ? JsCommon.getShortName(name) : "我"
                         font.bold: true
+                        font.letterSpacing: 1
 
                         //字体先注释，编译太慢
                         FontLoader {
@@ -272,7 +306,7 @@ Rectangle {
                             left: direct === 0 ? friendItemIcon.right : undefined
                             leftMargin: direct === 0 ? 2 : undefined
                             right: direct == 1 ? friendItemIcon.left : undefined
-                            rightMargin: direct === 1 ? 15 : undefined
+                            rightMargin: direct === 1 ? 5 : undefined
                         }
                         source: {
                             if (direct === 0) {
@@ -481,6 +515,7 @@ Rectangle {
                                     }
                                 }
                             }
+                            z:1000
                         }
 
                         /* 文字显示 */

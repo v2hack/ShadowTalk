@@ -275,7 +275,6 @@ void SelectFriend::changeMessageListForFlist(int index, QString name) {
     if (!f) {
         return;
     }
-    c->setCurrentFriendId(index);
 
     /* 添加消息 */
     for (int i = 0; i < f->messageList.size(); i++) {
@@ -318,15 +317,16 @@ void SelectFriend::changeMessageListForFlist(int index, QString name) {
     displayChatUnreadCount(f->id, 0);
     f->messageUnreadCount = 0;
 
+    c->setCurrentFriendId(index);
+
     /* 以下操作检查是否需要在chat页面显示好友 */
     int ret = c->atFirstPosition(index);
     if (ret == -1) {
         c->insertOneChat(index, f->name);
-    } else if (ret == -2) {
+    }/* else if (ret == -2) {
         c->removeOneChat(index);
         c->insertOneChat(index, f->name);
-    }
-
+    }*/
     return;
 }
 
@@ -401,11 +401,11 @@ void SelectFriend::changeMessageListForClist(int index, QString name) {
     if (ret == -1) {
         qDebug() << "chat : add new one to chatlist";
         c->insertOneChat(index, f->name);
-    } else if (ret == -2) {
+    }/* else if (ret == -2) {
         qDebug() << "chat: move one to first position";
         c->removeOneChat(index);
         c->insertOneChat(index, f->name);
-    }
+    }*/
     return;
 }
 

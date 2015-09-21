@@ -277,7 +277,7 @@ Rectangle {
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 top: qrCodeImage.bottom
-                topMargin: 35;
+                topMargin: 39;
             }
             color: "#4f4f4f"
             font.pixelSize: 16

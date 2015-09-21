@@ -290,7 +290,7 @@ void walkCacheAddFriend() {
         return;
     }
 
-    int idx = 0;
+//    int idx = 0;
     for (int i = 0; i < 27; i++) {
         QMap<int, Friend>::iterator it;
         for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
@@ -300,10 +300,10 @@ void walkCacheAddFriend() {
             }
             if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
                 qDebug() << "add friend - " << f.name;
-                addFriendIntoWidget(f.name, idx);
+                addFriendIntoWidget(f.name, it.key());
                 f.loadStatus = 1;
-                f.id = idx;
-                idx++;
+//                f.id = it.key();
+//                idx++;
             } else {
                 continue;
             }

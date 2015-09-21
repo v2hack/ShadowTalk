@@ -278,7 +278,7 @@ void MessageManager::sendMessage(int index, QString message) {
     /* 找到缓存 */
     Cache *c = gCtx.cache;
 
-    qDebug() << "sendMessage index - " << c->currentUseFriendId;
+    qDebug() << "### current friend id - " << c->currentUseFriendId;
 
     QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseFriendId);
     if (it == c->friendList.end()) {
@@ -294,7 +294,6 @@ void MessageManager::sendMessage(int index, QString message) {
     addMessageToWidget(0, "Me", 1, 1, message, idx);
 
     /* 组装缓存 */
-    qDebug() << "name - " << f->name;
     Message *m = new Message;
     m->data        = message.toStdString();
     m->driect      = MessageDriectMe;
@@ -308,7 +307,6 @@ void MessageManager::sendMessage(int index, QString message) {
          "sendMessage", "send one message", c->currentUseFriendId, message.toLatin1().data());
 
     /* impai 发送消息 */
-    qDebug() << "message id - " << f->messageCount;
     adaptSendMessage(f->friendChannelId, 1, message, f->messageCount);
     return;
 }

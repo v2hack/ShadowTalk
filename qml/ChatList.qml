@@ -84,11 +84,6 @@ Rectangle {
             model.clear()
         }
 
-        /* 修改好友名字 */
-        function modifyFriendName() {
-
-        }
-
         /* 修改未读消息数量 */
         function modifyUnreadCount(index, count) {
             model.setProperty(index, "unReadCount", count);
@@ -119,6 +114,12 @@ Rectangle {
             width:292
             height:44;
 
+            /* 加载字帖 */
+            FontLoader {
+                id: chineseFont
+                source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+            }
+
             Rectangle {
                 id: cellRect
                 anchors.fill: parent
@@ -145,6 +146,19 @@ Rectangle {
                         leftMargin: 16
                         verticalCenter: parent.verticalCenter
                     }
+                    Text {
+                        id: shortName
+                        anchors {
+                            verticalCenter: parent.verticalCenter
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        color: "white"
+                        font.pixelSize: 12
+                        font.letterSpacing: 1
+                        font.bold: true
+                        text: JsCommon.getShortName(friendName);
+                        font.family: chineseFont.name;
+                    }
                 }
 
                 /* 好友名字 */
@@ -160,15 +174,10 @@ Rectangle {
                     font.letterSpacing: 1
                     text: friendName
                     font.bold: true
-
-                    /* 加载字帖 */
-                    FontLoader {
-                        id: chineseFont
-                        source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
-                    }
                     font.family: chineseFont.name;
                 }
 
+                /* 好友网络状态 */
                 Rectangle {
                     id: friendNetState
                     width: 13
