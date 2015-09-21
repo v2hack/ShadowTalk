@@ -59,6 +59,26 @@ Rectangle {
         }
     }
 
+    Rectangle {
+        id: chatLine
+        anchors {
+            top: parent.top
+            topMargin: -5
+            left: parent.left;
+            leftMargin: 1
+        }
+        width: parent.width;
+        height: 1;
+        opacity: 0
+        color: "#979797"
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 600
+            }
+        }
+    }
+
     ListView {
         id: messageView;
         objectName: "MessageListModel"
@@ -85,7 +105,7 @@ Rectangle {
         displaced: Transition {
             NumberAnimation {
                 properties: "x,y";
-                duration: 80;
+                duration: 150;
                 easing.type: Easing.OutBounce
             }
         }
@@ -120,6 +140,40 @@ Rectangle {
         function setFriendImage(index, picturePath) {
             model.setProperty(index, "userPicture", picturePath);
         }
+
+        MouseArea {
+            id: showChatLineArea
+            anchors.fill: parent
+            onReleased: {
+                chatLine.state = "hideLine";
+            }
+            onPressAndHold: {
+                chatLine.state = "showLine"
+            }
+        }
+
+        states: [
+            State {
+                name: "showLine"
+                when: messageView.draggingVertically
+                changes: [
+                    PropertyChanges {
+                        target: chatLine;
+                        opacity: 0.3
+                    }
+                ]
+            },
+            State {
+                name: "hideLine"
+                changes: [
+                    PropertyChanges {
+                        target: chatLine;
+                        opacity: 0
+                    }
+                ]
+            }
+        ]
+        state: "hideLine"
     }
 
     Component {
@@ -407,9 +461,7 @@ Rectangle {
                                 PauseAnimation {
                                     duration: 200
                                 }
-//                                loops: Animation.Infinite
                                 loops: voiceSeconds + 1
-
                             }
 
                             /* 点击播放语音 */

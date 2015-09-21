@@ -27,7 +27,9 @@ Rectangle {
     Rectangle {
         id: chatTool
         width: parent.width;
-        height: 3;
+        height: 1;
+        opacity: 0.3
+        color: "#979797"
     }
 
 

@@ -436,7 +436,6 @@ Rectangle {
 
         /* 聊天内容 */
         ChatDisplay {
-
             id: chatContent;
             height: shadowWindow.height - chatTextInputWindow.height - 45;
             width: shadowWindow.width - secondLayerWindows.fix_width - 2;
