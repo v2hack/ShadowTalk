@@ -117,7 +117,7 @@ Rectangle {
                 height: qrProcessImage.height
                 anchors {
                     top: parent.top
-                    topMargin: -20
+                    topMargin: -24
                 }
                 z:510
             }
@@ -129,6 +129,14 @@ Rectangle {
 
                 /* c++调用，画进度原型 */
                 function processPaint(value) {
+                    loginProcessLoader1.colorFlag = 0;
+                    loginProcessLoader1.gValue = value;
+                    loginProcessLoader1.rePaint();
+                    loginProcessLoader1.visible = true;
+                    loginProcessPercent.text = parseInt(value * 100 /359)  + "%";
+                }
+                function processPaintClean(value) {
+                    loginProcessLoader1.colorFlag = 1;
                     loginProcessLoader1.gValue = value;
                     loginProcessLoader1.rePaint();
                     loginProcessLoader1.visible = true;

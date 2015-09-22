@@ -118,7 +118,7 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
 
         /* 加载动画走起 */
         for (int i = 0 ; i < 360; i++) {
-            ShadowTalkSleep(4);
+            ShadowTalkSleep(3);
             ShadowTalkSetSyncProcess(i);
         }
 
@@ -131,17 +131,21 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     case MessagetypePCOffLine:
     {
         qDebug() << "[message] : set pc offline";
-        /* 取消监听所有好友 */
-        adaptUnlistenAllFriends();
         /* 不再收消息 */
         setReceiveEnable(false);
+        /* 取消监听所有好友 */
+        adaptUnlistenAllFriends();
+        /* 恢复登录界面 */
+        ShadowTalkLoginClean();
+        /* 变为登录界面 */
+        displayLoginView();
+
         /* 清理界面 */
+        ShadowTalkSleep(500);
         clearMessageFromWidget();
         clearFriendFromWidget();
         /* 清理所有缓存 */
         gCtx.cache->CleanCache();
-        /* 变为登录界面 */
-        displayLoginView();
         return 1;
     }
     case MessagetypePingPC:

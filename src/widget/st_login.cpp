@@ -40,6 +40,23 @@ void ShadowTalkSetSyncProcess(int processValue) {
     return;
 }
 
+void ShadowTalkSetSyncProcessClean(int processValue) {
+    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QVariant newProcessValue = processValue;
+    QObject *rect = rootObject->findChild<QObject*>("objectLoginProcessPaint");
+    if (rect) {
+        QMetaObject::invokeMethod(rect, "processPaintClean", Q_ARG(QVariant, newProcessValue));
+    } else {
+        qDebug() << "paint login process fail";
+    }
+    return;
+}
+
+
 
 /* 将二维码图片设置到页面上 */
 void ShadowTalkSetQrImage(QString qrImagePath) {
@@ -92,7 +109,6 @@ void ShadowTalkLoginClean() {
 
 /* 登陆 */
 int ShadowTalkLogin() {
-
     int ret = 0, count = 0;
     int tryTimes = 5;
 
@@ -101,7 +117,6 @@ int ShadowTalkLogin() {
     std::string qrEnCode;
 
     /* 检测 impai init 是否成功 */
-    ShadowTalkSleep(2000);
     while (1) {
         if (count > tryTimes) {
             return -1;
@@ -149,4 +164,6 @@ int ShadowTalkLogin() {
     ShadowTalkSetQrImage(pictureUrl.toString());
     return 0;
 }
+
+
 

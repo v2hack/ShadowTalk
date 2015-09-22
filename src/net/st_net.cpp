@@ -20,6 +20,7 @@
 #include "st_cache.h"
 #include "st_net.h"
 #include "st_zebra.h"
+#include "st_utils.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -102,6 +103,7 @@ void adaptListenAllFriends() {
            std::cout << "listen friend fail" << std::endl;
            continue;
        }
+       ShadowTalkSleep(30);
     }
     std::cout << "listen all friends ok" << std::endl;
     return;

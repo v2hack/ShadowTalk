@@ -99,6 +99,7 @@ bool Cache::isExistFriend(QString friendChannelId) {
 void Cache::insertOneFriend(Friend *newFriend) {
     friendList.insert(this->friendCount, *newFriend);
     this->friendCount++;
+    delete newFriend;
     return;
 }
 
@@ -205,8 +206,11 @@ bool Cache::isExistChannel(std::string key) {
  */
 void Cache::CleanCache() {
     friendCount = currentUseFriendId = 0;
+    qDebug() << "clean friends";
     cleanFriend();
+    qDebug() << "clean channels";
     cleanChannel();
+    qDebug() << "clean key-value";
     cleanKeyValue();
     return;
 }
@@ -218,11 +222,13 @@ void Cache::CleanCache() {
  *  @return 无
  */
 void Cache::cleanFriend() {
-    QMap<int, Friend>::iterator it;
-    for (it = this->friendList.begin(); it != this->friendList.end(); it++) {
-        Friend *f = &(it.value());
-        delete f;
-    }
+//    QMap<int, Friend>::iterator it;
+//    for (it = this->friendList.begin(); it != this->friendList.end(); it++) {
+//        Friend *f = &(it.value());
+//        if (f) {
+//            delete f;
+//        }
+//    }
     this->friendList.clear();
 }
 

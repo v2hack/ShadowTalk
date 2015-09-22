@@ -26,6 +26,7 @@
 #include "st_log.h"
 #include "st_utils.h"
 #include "st_net.h"
+#include "st_login.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -271,8 +272,12 @@ void displayBaseView() {
  *  @return
  */
 void displayLoginView() {
-    gCtx.viewer->hide();
-    gCtx.loginer->show();
+    for(int i = 0; i < 360; i++) {
+        ShadowTalkSetSyncProcessClean(i);
+    }
+    gCtx.changeFlag = 1; /* 通知线程切换窗口 */
+    gCtx.windowFlag = 1; /* 当前应该显示主窗口 */
+    setReceiveEnable(true);
 }
 
 /**
@@ -290,7 +295,6 @@ void walkCacheAddFriend() {
         return;
     }
 
-//    int idx = 0;
     for (int i = 0; i < 27; i++) {
         QMap<int, Friend>::iterator it;
         for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
@@ -302,8 +306,6 @@ void walkCacheAddFriend() {
                 qDebug() << "add friend - " << f.name;
                 addFriendIntoWidget(f.name, it.key());
                 f.loadStatus = 1;
-//                f.id = it.key();
-//                idx++;
             } else {
                 continue;
             }
@@ -356,10 +358,3 @@ void addFriendIntoWidget(QString friendName, int friendIndex)
     }
     return;
 }
-
-
-
-
-
-
-

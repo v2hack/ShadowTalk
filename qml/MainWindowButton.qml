@@ -52,7 +52,7 @@ Rectangle {
         anchors.right: parent.right
         anchors.rightMargin: 2
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 13
         color: parent.color
 
         Image {
@@ -88,7 +88,7 @@ Rectangle {
         anchors.right: windowCloseButton.left
         anchors.rightMargin: 15
         anchors.top: parent.top
-        anchors.topMargin: 10
+        anchors.topMargin: 13
         color: parent.color
 
         property bool window_max_flag: false;
@@ -152,7 +152,7 @@ Rectangle {
         anchors.right: windowMaxButton.left
         anchors.rightMargin: 15
         anchors.top: parent.top
-        anchors.topMargin: 14
+        anchors.topMargin: 17
         color: parent.color
 
         Image {

@@ -19,6 +19,7 @@ import QtQuick.Window 2.2
 Rectangle {
     id: loginProcess
     property int gValue: 0
+    property int colorFlag: 0
     color: "#efefef"
 
     function rePaint() {
@@ -38,9 +39,9 @@ Rectangle {
 
         onPaint: {
             /* 描边 */
-            context.strokeStyle = "#00b9fe";
+            context.strokeStyle = (colorFlag == 0 ? "#00b9fe" : "#ccc6bf");
             /* 图形内部色彩 */
-            context.fillStyle = "#00b9fe"
+            context.fillStyle = (colorFlag == 0 ? "#00b9fe" : "#ccc6bf");
             /* 描边线粗度 */
             context.lineWidth = 1;
             context.beginPath();
