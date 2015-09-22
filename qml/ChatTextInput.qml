@@ -41,7 +41,6 @@ Rectangle {
     /* 发送消息链接 */
     Connections {
         target: chatMouseArea
-
         onClicked: {
             /* TODO: 这里要修改为具体发送消息 */
             if (chatTextEdit.text != "") {
@@ -53,16 +52,60 @@ Rectangle {
         }
     }
 
+    /* 发送图片和发送表情 */
+    Rectangle {
+        id: chatPictureButton;
+        width: parent.width;
+        height: 28;
+        color: "#efefef"
+        anchors {
+            top: chatTool.bottom;
+        }
+
+        Image {
+            id: sendPictureImage;
+            height : 22
+            width: 22
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                leftMargin: 10
+            }
+            source: "qrc:/img/st_chat_expression.png";
+            fillMode: Image.PreserveAspectFit
+        }
+        MouseArea {
+
+        }
+        Image {
+            id: sendPictureFile;
+            height : 22
+            width: 22
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: sendPictureImage.right
+                leftMargin: 10
+            }
+            source: "qrc:/img/st_chat_delivery.png";
+            fillMode: Image.PreserveAspectFit
+
+        }
+        MouseArea {
+
+        }
+    }
+
+
 
     /* 聊天内容发送框 */
     Rectangle {
         id: chatTextEditRectangle;
         width: parent.width;
-        height: parent.height - chatTool.height - 35;
+        height: parent.height - chatTool.height - 35 - 28;
         color: "#efefef"
 
         anchors {
-            top: chatTool.bottom;
+            top: chatPictureButton.bottom;
         }
 
         /* 输入编辑栏 */
@@ -74,6 +117,7 @@ Rectangle {
             backgroundVisible: false
             frameVisible: false
             font.family: chineseFont.name;
+//            textFormat: TextEdit.RichText
 
             focus: true
             Keys.onReturnPressed: {

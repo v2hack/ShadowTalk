@@ -140,41 +140,6 @@ Rectangle {
         function setFriendImage(index, picturePath) {
             model.setProperty(index, "userPicture", picturePath);
         }
-
-        /* 消息列表头上头的线，实现动态效果 */
-        //        MouseArea {
-        //            id: showChatLineArea
-        //            anchors.fill: parent
-        //            onReleased: {
-        //                chatLine.state = "hideLine";
-        //            }
-        //            onWheel: {
-        //                chatLine.state = "showLine"
-        //            }
-        //            z:900
-        //        }
-        //        states: [
-        //            State {
-        //                name: "showLine"
-        //                when: messageView.draggingVertically
-        //                changes: [
-        //                    PropertyChanges {
-        //                        target: chatLine;
-        //                        opacity: 0.3
-        //                    }
-        //                ]
-        //            },
-        //            State {
-        //                name: "hideLine"
-        //                changes: [
-        //                    PropertyChanges {
-        //                        target: chatLine;
-        //                        opacity: 0
-        //                    }
-        //                ]
-        //            }
-        //        ]
-        //        state: "hideLine"
     }
 
     Component {
@@ -273,15 +238,12 @@ Rectangle {
                     /* 好友名字 */
                     Text {
                         id: friendItemName
-
                         anchors {
                             verticalCenter: parent.verticalCenter
                             horizontalCenter: parent.horizontalCenter
                         }
-
                         color: "white"
                         font.pixelSize: 15
-//                        text: JsCommon.getShortName(name)
                         text: direct === 0 ? JsCommon.getShortName(name) : "我"
                         font.bold: true
                         font.letterSpacing: 1
