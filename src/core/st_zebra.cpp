@@ -681,3 +681,70 @@ void zebraDeleagates::bind_friend_channel(
 {
     std::cout << "bind_friend_channel" << std::endl;
 }
+
+
+//group chat
+//group chat invite from friend
+void zebraDeleagates::group_chat_invite_received(
+        const std::string &friend_channel_id,
+        const std::string &group_channel_id,
+        const std::string &my_name)
+ {
+    std::cout << "group_chat_invite_received" << std::endl;
+ }
+
+//group chat invite accepted by friend. friend_member_id will be empty if accepted = false
+void zebraDeleagates::group_chat_invite_reply_received(
+        const std::string &friend_channel_id,
+        const std::string &group_channel_id,
+        bool accepted,
+        const std::string &friend_member_id)
+ {
+    std::cout << "group_chat_invite_reply_received" << std::endl;
+ }
+
+//new group member
+void zebraDeleagates::group_chat_member(
+        const string &group_channel_id,
+        const string &member_id,
+        const std::string &name,
+        unsigned long join_time)
+{
+    std::cout << "group_chat_member" << std::endl;
+}
+
+//group member removed
+void zebraDeleagates::group_chat_member_removed(
+        const string &group_channel_id,
+        const std::string &remover,
+        const string &member_id,
+        unsigned long removed_time)
+{
+    std::cout << "group_chat_member_removed" << std::endl;
+}
+
+//group message
+void zebraDeleagates::group_chat_message_received(
+        const string &group_channel_id,
+        const string &author,
+        const int type,
+        const string &message,
+        unsigned long message_id,
+        int expired,
+        int entire_expired,
+        int length,
+        int timestamp,
+        const std::string &author_name)
+{
+    std::cout << "group_chat_message_received" << std::endl;
+}
+
+//group channel name
+void zebraDeleagates::group_channel_name_changed(
+        const string &group_channel_id,
+        const string &channel_name,
+        unsigned long changed_time)
+{
+    std::cout << "group_channel_name_changed" << std::endl;
+}
+
