@@ -108,8 +108,9 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
 
         writeXmlFile(SHADOW_SYNC_FILE, message);
         std::cout << "xml file size - " << message.size() << std::endl;
-        std::cout << "parse xml fail : passwd - " << passwd << std::endl;
+        std::cout << "parse xml : passwd - " << passwd << std::endl;
         if (parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
+            std::cout << "parse xml file fail" << std::endl;
             return -1;
         }
 

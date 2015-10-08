@@ -527,8 +527,13 @@ int ParseXml::parseDencryptXml(const QString plainData) {
     QDomElement rootArray = plist.firstChildElement(ST_XML_TAG_ARRAY);
     QDomElement elt = rootArray.firstChildElement(ST_XML_TAG_ARRAY);
 
-    QDomElement array[3];
+    QDomElement array[4];
     for (int i = 0; !elt.isNull(); elt = elt.nextSiblingElement(ST_XML_TAG_ARRAY), i++) {
+
+        if (i >= 4) {
+            break;
+        }
+
         if (elt.isNull()) {
             qDebug() << "can't find the array child";
             return -1;
