@@ -70,29 +70,43 @@ public:
     virtual void ice_session_state(const std::string &channel_id, int state) = 0;
 
     /* 底层回调上层判断是否能通过无网通道发送，能则异步发送并返回1，否则返回-1 */
-	virtual int send_message_via_direct_connection(const std::string &connection_id, const std::string &friend_channel_id, unsigned long message_id, const std::string &data) = 0;
+    virtual int send_message_via_direct_connection(const std::string &connection_id,
+              const std::string &friend_channel_id, unsigned long message_id, const std::string &data) = 0;
     /* 底层通知上层绑定connection_id和friend_channel_id */
 	virtual void bind_friend_channel(const std::string &connection_id, const std::string &friend_channel_id) = 0;
 
-
-
 	//group chat
-	virtual void group_chat_invite_received(const std::string &friend_channel_id, const std::string &group_channel_id, const std::string &my_name) = 0; //group chat invite from friend
+    //group chat invite from friend
+    virtual void group_chat_invite_received(const std::string &friend_channel_id,
+                                            const std::string &group_channel_id,
+                                            const std::string &my_name) = 0;
 
-	virtual void group_chat_invite_reply_received(const std::string &friend_channel_id, const std::string &group_channel_id, bool accepted, const std::string &friend_member_id) = 0; //group chat invite accepted by friend. friend_member_id will be empty if accepted = false
+    //group chat invite accepted by friend. friend_member_id will be empty if accepted = false
+    virtual void group_chat_invite_reply_received(const std::string &friend_channel_id,
+                                                  const std::string &group_channel_id,
+                                                  bool accepted,
+                                                  const std::string &friend_member_id) = 0;
+    //new group member
+    virtual void group_chat_member(const string &group_channel_id,
+                                   const string &member_id,
+                                   const std::string &name,
+                                   unsigned long join_time) = 0;
 
-	virtual void group_chat_member(const string &group_channel_id, const string &member_id, const std::string &name, unsigned long join_time) = 0; //new group member
-
+    //group member removed
 	virtual void group_chat_member_removed(const string &group_channel_id, const std::string &remover
-		, const string &member_id, unsigned long removed_time) = 0; //group member removed
+        , const string &member_id, unsigned long removed_time) = 0;
 
-	virtual void group_chat_message_received(const string &group_channel_id, const string &author, const int type,
-		const string &message, unsigned long message_id,
-		int expired, int entire_expired, int length, int timestamp, const std::string &author_name) = 0; //group message
+    //group message
+    virtual void group_chat_message_received(const string &group_channel_id,
+                                             const string &author, const int type,
+                                             const string &message, unsigned long message_id,
+                                             int expired, int entire_expired,
+                                             int length, int timestamp, const std::string &author_name) = 0;
 
-	virtual void group_channel_name_changed(const string &group_channel_id, const string &channel_name, unsigned long changed_time) = 0; //group channel name
-
-//	virtual void group_channel_deleted(const string &group_channel_id, const string &info, unsigned long delete_time) = 0; //group channel deleted
+    //group channel name
+    virtual void group_channel_name_changed(const string &group_channel_id,
+                                            const string &channel_name,
+                                            unsigned long changed_time) = 0;
 };
 
 class Message_client {
@@ -207,7 +221,6 @@ public:
 	std::string get_group_channel_name(const std::string &group_channel_id);					//get groupName by groupChannelId
 
 	void listen_group_channel(const string &group_channel_id);									//connect to a group chat so we can send/receive messages in this group chat
-
 
 private:
 	class im_api_impl *impl_;

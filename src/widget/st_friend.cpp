@@ -237,6 +237,29 @@ void Friend::setTimeAndState(int idx, int state) {
 
 
 /**
+ *  功能描述: 设置listView中的item背景色为透明
+ *
+ *  @return 无
+ */
+void Friend::setBackGroundColor(int colorFlag) {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(
+                    rect,
+                    "modifyBackColor",
+                    Q_ARG(QVariant, listViewIndex),
+                    Q_ARG(QVariant, colorFlag));
+    }
+    return;
+}
+
+
+/**
  *  功能描述: SelectFriend构造函数
  *  @return 无
  */
@@ -317,6 +340,20 @@ void SelectFriend::changeMessageListForFlist(int index, QString name) {
     displayChatUnreadCount(f->id, 0);
     f->messageUnreadCount = 0;
 
+    /* 上次选中的取消高亮 */
+    Friend *old_friend = c->getOneFriend(c->currentUseFriendId);
+    if (old_friend) {
+        qDebug() << "[c++] : find one old_friend, and set back color - " << old_friend->listViewIndex;
+        old_friend->setBackGroundColor(0);
+    } else {
+        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseFriendId;
+    }
+
+    /* 当前选中的高亮 */
+    f->setBackGroundColor(1);
+
+
+    /* 设置新的当前好友item */
     c->setCurrentFriendId(index);
 
     /* 以下操作检查是否需要在chat页面显示好友 */
