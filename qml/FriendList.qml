@@ -333,9 +333,9 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 289
+        x: 291
         y: 0
-        width: 6
+        width: 4
         height: parent.height
         color: "transparent"
         visible: false

@@ -307,9 +307,9 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 289
+        x: 291
         y: 0
-        width: 6
+        width: 4
         height: parent.height
         color: "transparent"
         visible: false
@@ -319,7 +319,7 @@ Rectangle {
             id: button
             x: 0
             y: chatListView.visibleArea.yPosition * friendListScrollbar.height
-            width: 6
+            width: 4
             height: chatListView.visibleArea.heightRatio * friendListScrollbar.height;
             color: "#959595"
             radius: 100
