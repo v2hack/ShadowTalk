@@ -22,7 +22,7 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void addFrientToChat(QString friendName, int friendIndex)
+void addFrientToChat(QString friendName, int friendIndex, int listViewIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -34,6 +34,8 @@ void addFrientToChat(QString friendName, int friendIndex)
     newElement.insert("friendIndex", friendIndex);
     newElement.insert("unReadCount", 0);
     newElement.insert("netState",    MessageMethodOffline);
+    newElement.insert("listViewIndex", listViewIndex);
+    newElement.insert("backGroundColor", 0);
 
     QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
     if (rect) {
@@ -86,6 +88,27 @@ void removeFrientFromChat(int chatIndex)
         }
     }
 }
+
+
+void updateListIndexForChat(int index, int listViewIndex) {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
+    if (rect) {
+        bool ret = QMetaObject::invokeMethod(
+                    rect,
+                    "updateListIndex",
+                    Q_ARG(QVariant, index),
+                    Q_ARG(QVariant, listViewIndex));
+        if (ret == false) {
+            qDebug() << "invokeMethod (updateListIndex) fail";
+        }
+    }
+}
+
 
 
 /**

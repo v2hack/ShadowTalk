@@ -157,6 +157,7 @@ Rectangle {
             id: deleRect
             width:parent.width
             height:44;
+
             color: {
                 if (backGroundColor == 0) {
                     return "transparent";
@@ -301,7 +302,6 @@ Rectangle {
                     hoverEnabled: true;
 
                     onClicked: {
-//                        deleRect.color = "#515050";
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
                         selectFriend.changeMessageListForFlist(friendIndex, friendName);

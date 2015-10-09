@@ -43,7 +43,8 @@ public:
     void setNetState(int state);
     void displayUnreadCount(int index, int count);
     void setTimeAndState(int idx, int state);
-    void setBackGroundColor(int colorFlag);
+    void setFriendlistBackGroundColor(int colorFlag);
+    void setChatlistBackGroundColor(int colorFlag, int chatListIndex);
 };
 
 

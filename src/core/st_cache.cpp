@@ -240,8 +240,16 @@ void Cache::cleanFriend() {
  *  @return 无
  */
 void Cache::insertOneChat(int friendListId, QString friendName) {
+
+    int idx = 0;
+    QList<int>::iterator it;
+    for(it = chatList.begin(); it != chatList.end(); it++) {
+        updateListIndexForChat(idx, idx + 1);
+        idx++;
+    }
+
     chatList.insert(chatList.begin(), friendListId);
-    addFrientToChat(friendName, friendListId);
+    addFrientToChat(friendName, friendListId, 0);
     return;
 }
 
@@ -305,6 +313,25 @@ int Cache::getFriendIdOfChat(int chatId) {
         return -1;
     }
     return chatList.at(chatId);
+}
+
+
+int Cache::getPositionNum(int friendListId) {
+    int idx = 0;
+    int result = 0;
+    QList<int>::iterator it;
+    for(it = chatList.begin(); it != chatList.end();it++) {
+        if (*it == friendListId) {
+            result = 1;
+            break;
+        }
+        idx++;
+    }
+    if (result == 1) {
+        return idx;
+    } else {
+        return -1;
+    }
 }
 
 /**

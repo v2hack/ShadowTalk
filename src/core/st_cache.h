@@ -50,6 +50,7 @@ public:
     int atFirstPosition(int friendListId);
     void removeOneChat(int friendListId);
     int getFriendIdOfChat(int chatId);
+    int getPositionNum(int friendListId);
 
     /* channel操作函数 */
     struct LocalChannel *getChannel(QString channelId);
