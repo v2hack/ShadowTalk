@@ -32,6 +32,16 @@ Rectangle {
     property int fiendOnline  : 1
     property int friendOutline: 2
 
+    Component {
+        id: highlight
+        Rectangle {
+            width: 292
+            height:44;
+            color: "#3a3a3a";
+            radius: 5
+        }
+    }
+
     /* ListView */
     ListView {
         id: chatListView
@@ -40,8 +50,9 @@ Rectangle {
         delegate: chatListDelegate
         model: chatListModel.createObject(chatListView)
 
-        highlightRangeMode: ListView.ApplyRange
+        highlight: highlight
         highlightFollowsCurrentItem: true
+
         /* 好友出现的动态效果 */
         add: Transition {
             NumberAnimation {
@@ -93,6 +104,14 @@ Rectangle {
         function modifyFriendTime(index, time, state) {
             model.setProperty(index, "netState", state);
         }
+        /* 用于设置被选中的item的背景颜色 */
+        function modifyBackColor(index, colorFlag) {
+            model.setProperty(index, "backGroundColor", colorFlag);
+        }
+
+        function updateListIndex(index, newIndex) {
+            model.setProperty(index, "listViewIndex", newIndex);
+        }
     }
 
 
@@ -123,7 +142,13 @@ Rectangle {
             Rectangle {
                 id: cellRect
                 anchors.fill: parent
-                color: "transparent"
+                color: {
+                    if (backGroundColor == 0) {
+                        return "transparent";
+                    } else if (backGroundColor == 1) {
+                        return "#515050";
+                    }
+                }
                 width: parent.width
                 height: parent.height
 
@@ -248,23 +273,21 @@ Rectangle {
                     anchors.fill: parent;
                     hoverEnabled: true;
 
+
                     onClicked: {
-                        cellRect.color = "#444555";
                         friendListScrollbar.visible = true;
-                        cellRect.opacity = 0.9;
                         /* 选中好友，消息栏同步更新 */
                         selectFriend.changeMessageListForClist(friendIndex, friendName);
                     }
                     onEntered: {
-                        cellRect.color = "#353535";
                         friendListScrollbar.visible = true;
-                        cellRect.opacity = 0.9
+                        chatListView.currentIndex = listViewIndex;
                     }
                     onExited: {
-                        cellRect.color = "transparent";
                         friendListScrollbar.visible = false;
-                        cellRect.opacity = 1
+                        chatListView.currentIndex = -1;
                     }
+
                     onWheel: {
                         if (wheel.angleDelta.y < 0) {
                             if (chatListView.contentY <= chatListView.contentHeight -
@@ -284,9 +307,9 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 289
+        x: 291
         y: 0
-        width: 6
+        width: 4
         height: parent.height
         color: "transparent"
         visible: false
@@ -296,7 +319,7 @@ Rectangle {
             id: button
             x: 0
             y: chatListView.visibleArea.yPosition * friendListScrollbar.height
-            width: 6
+            width: 4
             height: chatListView.visibleArea.heightRatio * friendListScrollbar.height;
             color: "#959595"
             radius: 100

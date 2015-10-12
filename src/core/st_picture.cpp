@@ -67,7 +67,7 @@ std::string findPictureCache(QString fidx, QString midx) {
         }
     }
 
-    qDebug() << "can't find image message";
+    qDebug() << "[c++] : findPictureCache - can't find image message - fid:" << fidx << " mid:" << midx;
     return std::string("");
 }
 

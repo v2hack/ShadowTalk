@@ -66,5 +66,8 @@
         <file>img/st_green_point.png</file>
         <file>img/st_white_point.png</file>
         <file>qml/SearchList.qml</file>
+        <file>img/sound/st_m_sound_11.png</file>
+        <file>img/sound/st_m_sound_22.png</file>
+        <file>img/sound/st_m_sound_33.png</file>
     </qresource>
 </RCC>

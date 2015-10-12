@@ -31,6 +31,7 @@ public:
     QString firstLetter;
     int netStatus;                   // 在线状态
     int loadStatus;                  // 是否已经加载到界面
+    int listViewIndex;               // 在listView中排序
 
     int messageCount;                // 消息数量
     int messageUnreadCount;          // 消息未读数量
@@ -42,6 +43,8 @@ public:
     void setNetState(int state);
     void displayUnreadCount(int index, int count);
     void setTimeAndState(int idx, int state);
+    void setFriendlistBackGroundColor(int colorFlag);
+    void setChatlistBackGroundColor(int colorFlag, int chatListIndex);
 };
 
 

@@ -101,6 +101,7 @@ win32 {
     LIBS += -L$$PWD/lib/x32/peersafe/ -lprotobuf_lite-msr
     LIBS += -L$$PWD/lib/x32/peersafe/ -lprotobuf-msr
     LIBS += -L$$PWD/lib/x32/peersafe/ -ltorrent-rasterbar
+    LIBS += -L$$PWD/lib/x32/peersafe/ -ludt-msr
 
     LIBS += -L$$PWD/lib/x32/ice/ -llibpj
     LIBS += -L$$PWD/lib/x32/ice/ -llibpjlib-util

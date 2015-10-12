@@ -25,6 +25,7 @@ Rectangle {
     property int fiendOnline  : 1
     property int friendOutline: 2
 
+    property int colorTransparent  : 0
 
     Component {
         id: sectionHeading
@@ -49,15 +50,14 @@ Rectangle {
     }
 
     Component {
-        id: highlightBar
+        id: highlight
         Rectangle {
-            width: 200; height: 50
-            color: "#FFFF88"
-            y: listView.currentItem.y;
-            Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+            width: 292
+            height:44;
+            color: "#3a3a3a";
+            radius: 5
         }
     }
-
 
     /* ListView */
     ListView {
@@ -66,6 +66,10 @@ Rectangle {
         anchors.fill: parent;
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
+
+        highlight: highlight
+        highlightFollowsCurrentItem: true
+        currentIndex: 4
 
         section.property: "shortName"
         section.criteria: ViewSection.FullString
@@ -126,6 +130,11 @@ Rectangle {
             model.setProperty(index, "messageTime", time);
             model.setProperty(index, "netState", state);
         }
+        /* 用于设置被选中的item的背景颜色 */
+        function modifyBackColor(index, colorFlag) {
+            console.log("[qml] : backGroundColor : index " + index + " color " + colorFlag);
+            model.setProperty(index, "backGroundColor", colorFlag);
+        }
     }
 
 
@@ -143,22 +152,32 @@ Rectangle {
     /* Delegate */
     Component {
         id: friendListDelegate
-        Item {
+
+        Rectangle {
+            id: deleRect
             width:parent.width
             height:44;
 
-            //字体先注释，编译太慢
-            FontLoader {
-                id: chineseFont
-                source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+            color: {
+                if (backGroundColor == 0) {
+                    return "transparent";
+                } else if (backGroundColor == 1) {
+                    return "#515050";
+                }
             }
 
             Rectangle {
                 id: cellRect
                 anchors.fill: parent
-                color: "#3a3a3a"
+                color: "transparent"
                 width:parent.width
                 height:parent.height
+
+                //字体先注释，编译太慢
+                FontLoader {
+                    id: chineseFont
+                    source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                }
 
                 /* 好友头像底色 */
                 Rectangle {
@@ -283,15 +302,17 @@ Rectangle {
                     hoverEnabled: true;
 
                     onClicked: {
-                        cellRect.color = "#515050";
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
                         selectFriend.changeMessageListForFlist(friendIndex, friendName);
                     }
+                    onEntered: {
+                        friendListScrollbar.visible = true;
+                        friendListView.currentIndex = listViewIndex;
+                    }
                     onExited: {
-                        cellRect.color = "#3a3a3a";
                         friendListScrollbar.visible = false;
-                        cellRect.opacity = 1
+                        friendListView.currentIndex = -1;
                     }
                     onWheel: {
                         if (wheel.angleDelta.y < 0) {
@@ -312,9 +333,9 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 289
+        x: 291
         y: 0
-        width: 6
+        width: 4
         height: parent.height
         color: "transparent"
         visible: false
@@ -324,10 +345,13 @@ Rectangle {
             id: button
             x: 0
             y: friendListView.visibleArea.yPosition * friendListScrollbar.height
-            width: 6
+            width: 4
             height: friendListView.visibleArea.heightRatio * friendListScrollbar.height;
             color: "#959595"
             radius: 100
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
 
             // 鼠标区域
             MouseArea {

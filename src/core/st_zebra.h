@@ -84,9 +84,54 @@ public:
     virtual void bind_friend_channel(
             const std::string &connection_id,
             const std::string &friend_channel_id);
+
+    //group chat
+    //group chat invite from friend
+    virtual void group_chat_invite_received(
+            const std::string &friend_channel_id,
+            const std::string &group_channel_id,
+            const std::string &my_name);
+
+    //group chat invite accepted by friend. friend_member_id will be empty if accepted = false
+    virtual void group_chat_invite_reply_received(
+            const std::string &friend_channel_id,
+            const std::string &group_channel_id,
+            bool accepted,
+            const std::string &friend_member_id);
+
+    //new group member
+    virtual void group_chat_member(
+            const string &group_channel_id,
+            const string &member_id,
+            const std::string &name,
+            unsigned long join_time);
+
+    //group member removed
+    virtual void group_chat_member_removed(
+            const string &group_channel_id,
+            const std::string &remover,
+            const string &member_id,
+            unsigned long removed_time);
+
+    //group message
+    virtual void group_chat_message_received(
+            const string &group_channel_id,
+            const string &author,
+            const int type,
+            const string &message,
+            unsigned long message_id,
+            int expired,
+            int entire_expired,
+            int length,
+            int timestamp,
+            const std::string &author_name);
+
+    //group channel name
+    virtual void group_channel_name_changed(
+            const string &group_channel_id,
+            const string &channel_name,
+            unsigned long changed_time);
 };
-
-
 
 
 #endif // ZEBRA_H

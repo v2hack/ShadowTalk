@@ -361,7 +361,7 @@ Rectangle {
                                     verticalCenter: parent.verticalCenter
                                     left: parent.left
                                 }
-                                source: "qrc:/img/sound/st_m_sound_1.png";
+                                source: direct === 0 ? "qrc:/img/sound/st_m_sound_1.png" : "qrc:/img/sound/st_m_sound_11.png"
                                 fillMode: Image.PreserveAspectFit
                                 mirror: direct === 0 ? false : true
                             }
@@ -373,7 +373,7 @@ Rectangle {
                                     verticalCenter: parent.verticalCenter
                                     left: parent.left
                                 }
-                                source: "qrc:/img/sound/st_m_sound_2.png";
+                                source: direct === 0 ? "qrc:/img/sound/st_m_sound_2.png" : "qrc:/img/sound/st_m_sound_22.png"
                                 fillMode: Image.PreserveAspectFit
                                 mirror: direct === 0 ? false : true
                             }
@@ -385,7 +385,7 @@ Rectangle {
                                     verticalCenter: parent.verticalCenter
                                     left: parent.left
                                 }
-                                source: "qrc:/img/sound/st_m_sound_3.png";
+                                source: direct === 0 ? "qrc:/img/sound/st_m_sound_3.png"  : "qrc:/img/sound/st_m_sound_33.png"
                                 fillMode: Image.PreserveAspectFit
                                 mirror: direct === 0 ? false : true
                             }

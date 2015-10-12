@@ -237,6 +237,52 @@ void Friend::setTimeAndState(int idx, int state) {
 
 
 /**
+ *  功能描述: 设置friendlistView中的item背景色为透明
+ *
+ *  @return 无
+ */
+void Friend::setFriendlistBackGroundColor(int colorFlag) {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(
+                    rect,
+                    "modifyBackColor",
+                    Q_ARG(QVariant, listViewIndex),
+                    Q_ARG(QVariant, colorFlag));
+    }
+    return;
+}
+
+/**
+ *  功能描述: 设置chatlistView中的item背景色为透明
+ *
+ *  @return 无
+ */
+void Friend::setChatlistBackGroundColor(int colorFlag, int chatListIndex) {
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(
+                    rect,
+                    "modifyBackColor",
+                    Q_ARG(QVariant, chatListIndex),
+                    Q_ARG(QVariant, colorFlag));
+    }
+    return;
+}
+
+
+
+/**
  *  功能描述: SelectFriend构造函数
  *  @return 无
  */
@@ -317,6 +363,29 @@ void SelectFriend::changeMessageListForFlist(int index, QString name) {
     displayChatUnreadCount(f->id, 0);
     f->messageUnreadCount = 0;
 
+    /* 上次选中的取消高亮 */
+    Friend *old_friend = c->getOneFriend(c->currentUseFriendId);
+    if (old_friend) {
+        qDebug() << "[c++] : find one old_friend, and set back color - " << old_friend->listViewIndex;
+        old_friend->setFriendlistBackGroundColor(0);
+        int chatListSeq_old = c->getPositionNum(c->currentUseFriendId);
+        if (chatListSeq_old >= 0) {
+            old_friend->setChatlistBackGroundColor(0, chatListSeq_old);
+        }
+    } else {
+        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseFriendId;
+    }
+    /* 当前选中的高亮 */
+    int chatListSeq_new = c->getPositionNum(index);
+    if (chatListSeq_new >= 0) {
+        f->setChatlistBackGroundColor(1, chatListSeq_new);
+    }
+
+    /* 当前选中的高亮 */
+    f->setFriendlistBackGroundColor(1);
+
+
+    /* 设置新的当前好友item */
     c->setCurrentFriendId(index);
 
     /* 以下操作检查是否需要在chat页面显示好友 */
@@ -346,7 +415,7 @@ void SelectFriend::changeMessageListForClist(int index, QString name) {
     if (!c) {
         return;
     }
-    c->setCurrentFriendId(index);
+    //c->setCurrentFriendId(index);
 
     /* 找到好友缓存 */
     Friend *f = c->getOneFriend(index);
@@ -395,6 +464,29 @@ void SelectFriend::changeMessageListForClist(int index, QString name) {
     /* 未读消息计数清零 */
     displayChatUnreadCount(f->id, 0);
     f->messageUnreadCount = 0;
+
+    /* 上次选中的取消高亮 */
+    Friend *old_friend = c->getOneFriend(c->currentUseFriendId);
+    if (old_friend) {
+        old_friend->setFriendlistBackGroundColor(0);
+        qDebug() << "[c++] : find one old_friend, and set back color - " << old_friend->listViewIndex;
+        int chatListSeq_old = c->getPositionNum(c->currentUseFriendId);
+        if (chatListSeq_old >= 0) {
+            old_friend->setChatlistBackGroundColor(0, chatListSeq_old);
+        }
+    } else {
+        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseFriendId;
+    }
+
+    /* 当前选中的高亮 */
+    int chatListSeq_new = c->getPositionNum(index);
+    if (chatListSeq_new >= 0) {
+        f->setChatlistBackGroundColor(1, chatListSeq_new);
+    }
+    f->setFriendlistBackGroundColor(1);
+
+    /* 设置新的当前好友item */
+    c->setCurrentFriendId(index);
 
     /* 以下操作检查是否需要在chat页面显示好友 */
     int ret = c->atFirstPosition(index);

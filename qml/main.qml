@@ -312,7 +312,6 @@ Rectangle {
                             searchTextEdit.text = "";
                         }
 
-
                         height: 26
                         width: 220
                         anchors {
@@ -458,7 +457,7 @@ Rectangle {
             width: secondLayerWindows.fix_width;
             height: 400;
             color: "#464646"
-            opacity: 0.8
+            opacity: 0.9
 
             /* 聊天列表细节动态 */
             SearchList {
