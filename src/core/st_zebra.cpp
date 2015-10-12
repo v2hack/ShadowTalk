@@ -245,19 +245,25 @@ void zebraDeleagates::friend_offline_message(
         return;
     }
 
-
-    /* 消息转发 */
-    if (type < ImapiMessageType_ForwadOffset) {
-        forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
-                       message_id, expired, entire_expired, length, timestamp);
-    } else {
-        type -= ImapiMessageType_ForwadOffset;
-    }
-
     /* 消息声音开关使能 */
     if (isSoundEnable()) {
         playMessageSound();
     }
+
+    /* 消息转发 */
+    int messageDirection = 0;
+    if (type > ImapiMessageType_ForwadSelfOffset) {
+        qDebug() << "[message] : sync self messaage";
+        type -= ImapiMessageType_ForwadSelfOffset;
+        messageDirection = 1;
+    } else if (type > ImapiMessageType_ForwadOffset && type < ImapiMessageType_ForwadSelfOffset) {
+        type -= ImapiMessageType_ForwadOffset;
+        qDebug() << "[message] : sync opppsite messaage";
+    } else {
+        forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
+                       message_id, expired, entire_expired, length, timestamp);
+    }
+
 
     Cache *c = gCtx.cache;
     if (!c) {
@@ -267,12 +273,12 @@ void zebraDeleagates::friend_offline_message(
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
-        int idx = f.messageList.size();
+        int idx = f.messageList.size() + 1;
 
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
             Message *m        = new Message;
             m->data           = message;
-            m->driect         = 0;
+            m->driect         = messageDirection;
             m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOffline;
             m->voiceSeconds   = 0;
@@ -300,16 +306,16 @@ void zebraDeleagates::friend_offline_message(
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    addMessageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
+                    addMessageToWidget(f.id, f.name, type, messageDirection, QString::fromStdString(m->data), idx);
                     break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    addImageToWidget(f.id, f.name, type, 0, m->data, idx);
+                    addImageToWidget(f.id, f.name, type, messageDirection, m->data, idx);
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    addVoiceToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), length, idx);
+                    addVoiceToWidget(f.id, f.name, type, messageDirection, QString::fromStdString(m->data), length, idx);
                     break;
                 default:
                     break;
@@ -382,11 +388,18 @@ void zebraDeleagates::friend_online_message(
     }
 
     /* 消息转发 */
-    if (type < ImapiMessageType_ForwadOffset) {
+    /* 消息转发 */
+    int messageDirection = 0;
+    if (type > ImapiMessageType_ForwadSelfOffset) {
+        qDebug() << "[message] : sync self messaage";
+        type -= ImapiMessageType_ForwadSelfOffset;
+        messageDirection = 1;
+    } else if (type > ImapiMessageType_ForwadOffset && type < ImapiMessageType_ForwadSelfOffset) {
+        type -= ImapiMessageType_ForwadOffset;
+        qDebug() << "[message] : sync opppsite messaage";
+    } else {
         forwardMessage(friend_channel_id, type + ImapiMessageType_ForwadOffset, message,
                        message_id, expired, entire_expired, length, timestamp);
-    } else {
-        type -= ImapiMessageType_ForwadOffset;
     }
 
 
@@ -403,12 +416,12 @@ void zebraDeleagates::friend_online_message(
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
         Friend &f = it.value();
-        int idx = f.messageList.size();
+        int idx = f.messageList.size() + 1;
         if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
 
             Message *m        = new Message;
             m->data           = message;
-            m->driect         = 0;
+            m->driect         = messageDirection;
             m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOnline;
             m->voiceSeconds   = 0;
@@ -432,16 +445,16 @@ void zebraDeleagates::friend_online_message(
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    addMessageToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), idx);
+                    addMessageToWidget(f.id, f.name, type, messageDirection, QString::fromStdString(m->data), idx);
                     break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    addImageToWidget(f.id, f.name, type, 0, m->data, idx);
+                    addImageToWidget(f.id, f.name, type, messageDirection, m->data, idx);
                     break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    addVoiceToWidget(f.id, f.name, type, 0, QString::fromStdString(m->data), length, idx);
+                    addVoiceToWidget(f.id, f.name, type, messageDirection, QString::fromStdString(m->data), length, idx);
                     break;
                 default:
                     break;
@@ -571,8 +584,10 @@ void zebraDeleagates::read_data(const string &key_id, string &read_data) {
     it = c->keyValueList.find(key_id);
     if (it != c->keyValueList.end()) {
         read_data = it->second;
+		std::cout << "[read data] : ok" << std::endl;
         return;
     }
+	std::cout << "[read data] : fail" << std::endl;
     read_data.clear();
     return;
 }

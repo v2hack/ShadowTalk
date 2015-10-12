@@ -100,10 +100,10 @@ void adaptListenAllFriends() {
        Friend &f = it.value();
        ret = z->listen_friend(StringToHex(f.friendChannelId.toStdString()));
        if (ret < 0) {
-           std::cout << "listen friend fail" << std::endl;
+           std::cout << "listen friend fail - " << f.friendChannelId.toStdString() << std::endl;
            continue;
        }
-       ShadowTalkSleep(30);
+       ShadowTalkSleep(200);
     }
     std::cout << "listen all friends ok" << std::endl;
     return;

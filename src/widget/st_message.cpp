@@ -73,6 +73,8 @@ void addMessageToWidget(
     } else {
         qDebug() << "insert one message fail";
     }
+
+    qDebug() << "[widget] - addMessageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 /**
@@ -129,9 +131,6 @@ void addImageToWidget(
     data.insert("pictureHeight", height);
     data.insert("pictureWidth", width);
 
-    qDebug() << "picture: height - " << height << "width - " << width;
-
-
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
@@ -139,6 +138,7 @@ void addImageToWidget(
     } else {
         qDebug() << "insert one voice fail";
     }
+    qDebug() << "[widget] - addImageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 /**
@@ -173,8 +173,6 @@ void addVoiceToWidget(int uid, QString name, int type, int direct, QString voice
     data.insert("pictureHeight", "");
     data.insert("pictureWidth", "");
 
-    qDebug() << "message type - " << type;
-
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
@@ -182,6 +180,7 @@ void addVoiceToWidget(int uid, QString name, int type, int direct, QString voice
     } else {
         qDebug() << "insert one voice fail";
     }
+    qDebug() << "[widget] - addVoiceToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 
@@ -228,7 +227,6 @@ void clearFriendFromWidget() {
     }
     return;
 }
-
 
 
 /**
@@ -279,7 +277,6 @@ void MessageManager::sendMessage(int index, QString message) {
     Cache *c = gCtx.cache;
 
     qDebug() << "### current friend id - " << c->currentUseFriendId;
-
     QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseFriendId);
     if (it == c->friendList.end()) {
         qDebug() << "can't current friend idx - " << c->currentUseFriendId;

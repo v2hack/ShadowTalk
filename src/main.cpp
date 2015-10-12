@@ -183,6 +183,7 @@ void initZebraEngine() {
     gCtx.phoneUpdateTime.start();
 
     zebraClient->init("127.0.0.1:6000 120.27.42.174:27053", &zebarDele, "17monipdb.dat");
+    zebraClient->enableLog();
     qDebug() << "[imapi] << init zebra engine success";
     return;
 }

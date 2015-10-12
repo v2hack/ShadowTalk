@@ -499,6 +499,29 @@ void ParseXml::writeXmlFile(QString plainData) {
 }
 
 
+QString filterWords(const QString oldData) {
+    std::string newData;
+    std::string cppData = oldData.toStdString();
+    unsigned long dataSize = cppData.size();
+
+    char *cPtr = new char[dataSize];
+    memcpy(cPtr, cppData.c_str(), dataSize);
+
+    for (unsigned long i = 0; i < dataSize; i++) {
+        if (cPtr[i] == '\t') {
+            continue;
+        } else if (cPtr[i] == '\n' && cPtr[i + 1] == '\r') {
+            i++;
+            continue;
+        } else {
+            newData.insert(newData.end(), cPtr[i]);
+        }
+    }
+    delete [] cPtr;
+    return QString::fromStdString(newData);
+}
+
+
 /**
 *  功能描述: 解析xml文件入口函数
 *  @param  plainData  xml文件明文
@@ -508,6 +531,7 @@ void ParseXml::writeXmlFile(QString plainData) {
 int ParseXml::parseDencryptXml(const QString plainData) {
 
     writeXmlFile(plainData);
+    //QString filterString = filterWords(plainData);
 
     QDomDocument document;
     QString strError;
@@ -528,6 +552,7 @@ int ParseXml::parseDencryptXml(const QString plainData) {
     QDomElement elt = rootArray.firstChildElement(ST_XML_TAG_ARRAY);
 
     QDomElement array[4];
+    int arrayCount = 0;
     for (int i = 0; !elt.isNull(); elt = elt.nextSiblingElement(ST_XML_TAG_ARRAY), i++) {
         if (i >= 4) {
             break;
@@ -537,17 +562,29 @@ int ParseXml::parseDencryptXml(const QString plainData) {
             return -1;
         } else {
             array[i] = elt;
+            arrayCount++;
         }
+    }
+
+    if (arrayCount < 3) {
+        qDebug() << "xml parse fail, array count is " << arrayCount;
+        return -1;
     }
 
     if (parseContactXml(array[0])  < 0) {
         return -1;
     }
+    qDebug() << "parse contact success";
+
     if (parseQrChannelXml(array[1]) < 0) {
         return -1;
     }
+    qDebug() << "parse qrchannel success";
+
     if (parseKeyValueXml(array[2]) < 0) {
         return -1;
     }
+    qDebug() << "parse keyvalue success";
+
     return 0;
 }

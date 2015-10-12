@@ -13,6 +13,7 @@
 #include <QDataStream>
 #include <QString>
 #include <iostream>
+#include <regex>
 
 #include "st_base64.h"
 #include "st_cache.h"
@@ -33,8 +34,28 @@ std::string Base64::encode(const std::string &binaryData) {
     if (!zebra) {
         return "";
     }
-	return zebra->base64Encode(binaryData);
+    return zebra->base64Encode(binaryData);;
 }
+
+static std::string filterWords(const std::string oldData) {
+    std::string newData;
+    unsigned long dataSize = oldData.size();
+
+    char *cPtr = new char[dataSize];
+    memcpy(cPtr, oldData.c_str(), dataSize);
+
+    for (unsigned long i = 0; i < dataSize; i++) {
+        if (cPtr[i] == '\t' || cPtr[i] == '\n') {
+            continue;
+        } else {
+            newData.insert(newData.end(), cPtr[i]);
+        }
+    }
+    delete [] cPtr;
+    return newData;
+}
+
+
 
 /**
  *  功能描述: decode 将字符串变成二进制数据
@@ -47,5 +68,6 @@ std::string Base64::decode(const std::string &base64String) {
     if (!zebra) {
         return "";
     }
-    return zebra->base64Decode(base64String);
+    std::string new_s = zebra->base64Decode(filterWords(base64String));
+    return new_s;
 }

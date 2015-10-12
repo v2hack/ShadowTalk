@@ -16,6 +16,7 @@ enum ImapiMessageType {
 	ImapiMessageType_ResponeFromPC = 11,
 
 	ImapiMessageType_ForwadOffset = 1000,
+    ImapiMessageType_ForwadSelfOffset = 2000,
 };
 
 

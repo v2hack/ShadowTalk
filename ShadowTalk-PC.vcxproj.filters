@@ -36,12 +36,12 @@
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{4703092b-e04f-4cf9-98ff-2c882db445c7}</UniqueIdentifier>
+      <UniqueIdentifier>{2c7d4be5-4220-4627-af44-4ce4c535457b}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
     <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{4ff6d87b-6281-422d-8f6d-86e1fbae5865}</UniqueIdentifier>
+      <UniqueIdentifier>{d4e11237-2633-445a-89ad-45c084664405}</UniqueIdentifier>
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
@@ -360,10 +360,19 @@
     <None Include="img\sound\st_m_sound_1.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="img\sound\st_m_sound_11.png">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="img\sound\st_m_sound_2.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="img\sound\st_m_sound_22.png">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="img\sound\st_m_sound_3.png">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="img\sound\st_m_sound_33.png">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="img\head\st_message_frame.png">
