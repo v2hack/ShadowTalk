@@ -83,6 +83,7 @@ void registerQmlTye() {
     qmlRegisterType<SelectFriend>("st.info.SelectFriend", 1, 0, "SelectFriend");
     qmlRegisterType<Voice>("st.info.Voice", 1, 0, "Voice");
     qmlRegisterType<NormalPicture>("st.info.NormalPicture", 1, 0, "NormalPicture");
+    qmlRegisterType<WindowClose>("st.info.WindowClose", 1, 0, "WindowClose");
     return;
 }
 
@@ -180,6 +181,7 @@ void initZebraEngine() {
     gCtx.conf.reciveEnable = true;
 
     gCtx.windowFlag = gCtx.changeFlag = 0;
+    gCtx.threadStop = 0;
     gCtx.phoneUpdateTime.start();
 
     zebraClient->init("127.0.0.1:6000 120.27.42.174:27053", &zebarDele, "17monipdb.dat");

@@ -29,6 +29,7 @@ struct ShadowTalkConfig {
 /* 全局上下文索引 */
 struct ShadowTalkContext
 {
+    int threadStop;
     QGuiApplication *app;             /* application 指针*/
 
     QQuickView *viewer;               /* 主窗口viewer指针 */

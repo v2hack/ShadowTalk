@@ -8,8 +8,14 @@ import QtQuick 2.4
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 
+import st.info.WindowClose 1.0
+
 Rectangle {
     id:mainWindowButton
+
+    WindowClose {
+        id: closeWindow
+    }
 
     /* 当前用户名显示 */
     Rectangle {
@@ -69,7 +75,7 @@ Rectangle {
             hoverEnabled: true;
 
             onClicked: {
-                mainwindow.close()
+                closeWindow.closeWindowProcess();
             }
             onEntered: {
                 closeButtonImage.source = "qrc:/img/st_button_close_2.png"

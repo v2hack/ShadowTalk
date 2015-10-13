@@ -8,8 +8,6 @@
 #include "st_cache.h"
 #include "st_utils.h"
 #include "st_search.h"
-
-
 class Sthread : public QThread
 {
     Q_OBJECT
@@ -21,6 +19,9 @@ public:
     }
     void run() {
         while (1) {
+            if (c->threadStop == 1) {
+                break;
+            }
             /* 搜索框检查 */
             if (checkSearchText() == 1) {
                 setSearchTextUnvisible();
@@ -47,5 +48,4 @@ public:
         }
     }
 };
-
 #endif // STHREAD_H

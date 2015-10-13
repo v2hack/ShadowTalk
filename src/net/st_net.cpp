@@ -57,6 +57,11 @@ void adaptSendMessage(QString channelId, int messageType,
                                 message.toStdString(),
                                 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                                 message.toStdString().size(), 0);
+        z->send_sync_message(gCtx.phoneSyncChannel, StringToHex(channelId.toStdString()),
+                                messageType + 2000,
+                                message.toStdString(),
+                                60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                                message.toStdString().size(), 0);
     }
     return;
 }

@@ -15,6 +15,7 @@
 #include <QWidget>
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
+#include <QString>
 
 #include <iostream>
 #include <fstream>
@@ -363,3 +364,48 @@ void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex)
     }
     return;
 }
+
+
+/**
+ *  功能描述: SelectFriend构造函数
+ *  @return 无
+ */
+WindowClose::WindowClose(QObject *parent) { }
+
+/**
+ *  功能描述: SelectFriend的析构函数
+ *  @return 无
+ */
+WindowClose::~WindowClose() {}
+
+/**
+ *  功能描述: 发送给手机端下线消息，并退出程序
+ *  @return 无
+ */
+void WindowClose::closeWindowProcess() {
+
+    QQuickView *v = gCtx.viewer;
+    QQuickView *l = gCtx.viewer;
+
+    if (v) {
+        v->close();
+        l->close();
+    }
+
+    peersafe::im::Message_client *z = gCtx.zebra;
+    if (z) {
+        z->send_offline_message(gCtx.phoneSyncChannel, ImapiMessageType_PCOffLine,
+                                "PC exit", 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
+    }
+    gCtx.threadStop = 1;
+    ShadowTalkSleep(3000);
+    exit(0);
+}
+
+
+
+
+
+
+
+

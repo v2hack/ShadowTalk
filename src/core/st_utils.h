@@ -31,6 +31,17 @@ void setMainWindowUnvisible();
 void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex);
 void walkCacheAddFriend();
 
+
+class WindowClose : public QObject {
+    Q_OBJECT
+
+public:
+    WindowClose(QObject *parent = 0);
+    ~WindowClose();
+    Q_INVOKABLE void closeWindowProcess();
+};
+
+
 #endif // UTILS_H
 
 
