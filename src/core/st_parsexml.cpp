@@ -47,10 +47,21 @@
 #define ST_XML_TAG_STATUS               "status"
 #define ST_XML_TAG_UPDATER_TIME         "updateTime"
 
+#define ST_XML_TAG_GROUP_CHANNEL_ID     "groupChannelId"
+#define ST_XML_TAG_GROUP_MY_ID          "localMemberId"
+#define ST_XML_TAG_GROUP_NAME           "name"
+#define ST_XML_TAG_GROUP_MY_NAME        "nickNameInGroup"
+#define ST_XML_TAG_GROUP_OWNER_ID       "ownerID"
+#define ST_XML_TAG_SHOW_NOTIFY          "showNotification"
+#define ST_XML_TAG_GROUP_STATUS         "status"
+
+#define ST_XML_TAG_MEMBER_ID            "memberID"
+#define ST_XML_TAG_MEMBER_NAME          "name"
+#define ST_XML_TAG_MEMBER_STATUS        "status"
+#define ST_XML_TAG_MEMBER_GROUP_ID      "groupChannelId"
+
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
-
-
 
 /**
 *  功能描述: 解析xml keyvalue并加入到cache中
@@ -59,7 +70,7 @@ extern struct ShadowTalkContext gCtx;
 *
 *  @return 0 成功  -1 失败
 */
-void addCacheForKeyValue(QString key, QString value) {
+static void addCacheForKeyValue(const QString key, const QString value) {
     std::string cKey = key.toStdString();
     std::string cValue = value.toStdString();
 
@@ -68,7 +79,7 @@ void addCacheForKeyValue(QString key, QString value) {
 
     Cache *c = gCtx.cache;
     if (!c) {
-        qDebug() << "insert cache fail";
+        qDebug() << "[c++] : insert cache fail";
         return;
     }
 
@@ -89,11 +100,11 @@ void addCacheForKeyValue(QString key, QString value) {
 *
 *  @return 0 成功  -1 失败
 */
-void addCacheForChannel(
-        QString &channelId,
-        QString &createdTime,
-        QString &expiredTime,
-        QString &shortCode)
+static void addCacheForChannel(
+         QString &channelId,
+         QString &createdTime,
+         QString &expiredTime,
+         QString &shortCode)
 {
     Cache *c = gCtx.cache;
     if (!c) {
@@ -129,13 +140,13 @@ void addCacheForChannel(
 *
 *  @return 0 成功  -1 失败
 */
-void addCacheForContact(
-        QString defaultExpiredTime,
-        QString friendChannelId,
-        QString inSession,
-        QString friendName,
-        QString netStatus,
-        QString updateTime)
+static void addCacheForContact(
+         QString &defaultExpiredTime,
+         QString &friendChannelId,
+         QString &inSession,
+         QString &friendName,
+         QString &netStatus,
+         QString &updateTime)
 {
     updateTime = updateTime;
 
@@ -163,6 +174,85 @@ void addCacheForContact(
 
     /* 加入缓存 */
     gCtx.cache->insertOneFriend(newOne);
+    return;
+}
+
+static void addCacheForGroup(
+        QString groupChannelId,
+        QString localMemberId,
+        QString gourpName,
+        QString myNameInGroup,
+        QString ownerID,
+        QString showNotification,
+        QString status)
+{
+    int status_ = status.toInt();
+    if (status_ < 0) {
+        return;
+    }
+
+    qDebug() << "[c++] : addCacheForGroup"
+             << " groupChannelId - " << groupChannelId
+             << " localMemberId - " << localMemberId
+             << " gourpName - " << gourpName
+             << " myNameInGroup - " << myNameInGroup
+             << " ownerID - " << ownerID
+             << " showNotification - " << showNotification
+             << " status - " << status;
+
+    /* 名字为空的直接过滤掉 */
+    if (gourpName.isEmpty()) {
+        return;
+    }
+
+    /* 检查好友是否已经存在 */
+    if (gCtx.cache->isExistGroup(groupChannelId)){
+        return;
+    }
+
+    Group *newOne = new Group(groupChannelId, localMemberId, gourpName,
+                myNameInGroup, ownerID, showNotification, gCtx.cache->getNextGroupIndex());
+    if (!newOne) {
+        return;
+    }
+
+    /* 加入缓存 */
+    gCtx.cache->insertOneGroup(newOne);
+    return;
+}
+
+
+static void addCacheForGroupMember(
+         QString &memberId,
+         QString &name,
+         QString &status,
+         QString &groupChannelId)
+{
+    int status_ = status.toInt();
+    if (status_ < 0) {
+        return;
+    }
+
+    qDebug() << "[c++] : addCacheForGroupMember"
+             << " memberID - " << memberId
+             << " name - " << name
+             << " status - " << status
+             << " groupChannelId - " << groupChannelId;
+
+    /* 检查好友是否已经存在 */
+    if (gCtx.cache->isExistGroup(groupChannelId)){
+        return;
+    }
+
+    /* 找到组 */
+	Group *group = gCtx.cache->getOneGroup(groupChannelId);
+    if (!group) {
+        return;
+    }
+    /* 检查成员是否已经存在*/
+    if (!group->isExistMember(memberId)) {
+        group->insertOneMember(memberId, name);
+    }
     return;
 }
 
@@ -287,7 +377,7 @@ int ParseXml::parseContactXml(QDomElement &array) {
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
     for (int i = 0; !dict.isNull(); dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++) {
         if (dict.isNull()) {
-            qDebug() << "can't find the dict child";
+            qDebug() << "[c++] : can't find the dict child";
             return -1;
         } else {
             if (parseContactDict(dict) < 0) {
@@ -295,7 +385,7 @@ int ParseXml::parseContactXml(QDomElement &array) {
             }
         }
     }
-    walkCacheAddFriend();
+//    walkCacheAddFriend();
     return 0;
 }
 
@@ -393,7 +483,7 @@ int ParseXml::parseQrChannelXml(QDomElement &array) {
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "can't find the dict child";
+            qDebug() << "[c++] : can't find the dict child";
             return -1;
         } else {
             if (parseQrChannelDict(dict) < 0) {
@@ -469,7 +559,7 @@ int ParseXml::parseKeyValueXml(QDomElement &array) {
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "can't find the dict child";
+            qDebug() << "[c++] : can't find the dict child";
             return -1;
         } else {
             if (parseKeyValueDict(dict) < 0) {
@@ -479,6 +569,243 @@ int ParseXml::parseKeyValueXml(QDomElement &array) {
     }
     return 0;
 }
+
+/**
+*  功能描述: 解析xml中的组的标签
+*  @param  array   group中的array标签元素结构
+*
+*  @return 0 成功  -1 失败
+*/
+int ParseXml::parseGroupDict(QDomElement dict) {
+
+    QString groupChannelId;
+    QString localMemberId;
+    QString gourpName;
+    QString myNameInGroup;
+    QString ownerID;
+    QString showNotification;
+    QString status;
+
+    QDomNode n = dict.firstChild();
+    while (!n.isNull()) {
+        if (n.isElement())
+        {
+            QDomElement e = n.toElement();
+            if (e.text() == QString(ST_XML_TAG_GROUP_CHANNEL_ID))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            groupChannelId = en.text();
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_GROUP_MY_ID))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            localMemberId = en.text();
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_GROUP_NAME))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            gourpName = en.text();
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_GROUP_MY_NAME))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            myNameInGroup = en.text();
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_GROUP_OWNER_ID))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            ownerID = en.text();
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_SHOW_NOTIFY))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_INTEGER)) {
+                            showNotification = en.text();
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_GROUP_STATUS))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_INTEGER)) {
+                            status = en.text();
+                        }
+                    }
+                }
+            }
+        }
+        n = n.nextSibling();
+    }
+
+    /* 加入缓存 */
+    addCacheForGroup(groupChannelId, localMemberId, gourpName, myNameInGroup, ownerID,
+                     showNotification, status);
+    return 0;
+}
+
+
+/**
+*  功能描述: 解析xml中的组成员标签
+*  @param  array   group中的array标签元素结构
+*
+*  @return 0 成功  -1 失败
+*/
+int ParseXml::parseGroupXml(QDomElement &array) {
+    QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
+    for (int i = 0; !dict.isNull();
+         dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
+    {
+        if (dict.isNull()) {
+            qDebug() << "[c++] : can't find the dict child";
+            return -1;
+        } else {
+            if (parseGroupDict(dict) < 0) {
+                return -1;
+            }
+        }
+    }
+}
+
+
+int ParseXml::parseGroupMemberDict(QDomElement dict) {
+    QString memberID;
+    QString name;
+    QString status;
+    QString groupChannelId;
+
+    QDomNode n = dict.firstChild();
+    while (!n.isNull()) {
+        if (n.isElement())
+        {
+            QDomElement e = n.toElement();
+            if (e.text() == QString(ST_XML_TAG_MEMBER_ID))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            memberID = en.text();
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_MEMBER_NAME))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            name = en.text();
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_MEMBER_STATUS))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_INTEGER)) {
+                            status = en.text();
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            }
+            else if (e.text() == QString(ST_XML_TAG_MEMBER_GROUP_ID))
+            {
+                n = n.nextSibling();
+                if (!n.isNull()) {
+                    if (n.isElement()) {
+                        QDomElement en = n.toElement();
+                        if (en.tagName() == QString(ST_XML_TAG_STRING)) {
+                            groupChannelId = en.text();
+                        }
+                    }
+                }
+            }
+        }
+        n = n.nextSibling();
+    }
+
+    /* 加入缓存 */
+    addCacheForGroupMember(memberID, name, status, groupChannelId);
+    return 0;
+
+}
+
+int ParseXml::parseGroupMemberXml(QDomElement &array) {
+    QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
+    for (int i = 0; !dict.isNull();
+         dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
+    {
+        if (dict.isNull()) {
+            qDebug() << "[c++] : can't find the dict child";
+            return -1;
+        } else {
+            if (parseGroupMemberDict(dict) < 0) {
+                return -1;
+            }
+        }
+    }
+}
+
 
 
 /**
@@ -530,20 +857,19 @@ QString filterWords(const QString oldData) {
 */
 int ParseXml::parseDencryptXml(const QString plainData) {
 
-    writeXmlFile(plainData);
-    //QString filterString = filterWords(plainData);
-
     QDomDocument document;
     QString strError;
     int errLin = 0, errCol = 0;
 
+    writeXmlFile(plainData);
+
     if (!document.setContent(plainData, false, &strError, &errLin, &errCol)) {
-        qDebug() << "parse file failed at line " << errLin << " column " << errCol << " " << strError;
+        qDebug() << "[c++] : parse file failed at line " << errLin << " column " << errCol << " " << strError;
         return -1;
     }
 
     if (document.isNull()) {
-        qDebug() << "document is null";
+        qDebug() << "[c++] : document is null";
         return -1;
     }
 
@@ -551,14 +877,14 @@ int ParseXml::parseDencryptXml(const QString plainData) {
     QDomElement rootArray = plist.firstChildElement(ST_XML_TAG_ARRAY);
     QDomElement elt = rootArray.firstChildElement(ST_XML_TAG_ARRAY);
 
-    QDomElement array[4];
+    QDomElement array[5];
     int arrayCount = 0;
     for (int i = 0; !elt.isNull(); elt = elt.nextSiblingElement(ST_XML_TAG_ARRAY), i++) {
-        if (i >= 4) {
+        if (i >= 5) {
             break;
         }
         if (elt.isNull()) {
-            qDebug() << "can't find the array child";
+            qDebug() << "[c++] : can't find the array child";
             return -1;
         } else {
             array[i] = elt;
@@ -567,24 +893,38 @@ int ParseXml::parseDencryptXml(const QString plainData) {
     }
 
     if (arrayCount < 3) {
-        qDebug() << "xml parse fail, array count is " << arrayCount;
+        qDebug() << "[c++] : xml parse fail, array count is " << arrayCount;
         return -1;
+    }
+
+    /* 先解析组 */
+    if (arrayCount >= 5) {
+        if (parseGroupXml(array[3]) < 0) {
+            return -1;
+        }
+        qDebug() << "[c++] : parse gourp success";
+
+        if (parseGroupMemberXml(array[4]) < 0) {
+            return -1;
+        }
+        qDebug() << "[c++] : parse group member success";
     }
 
     if (parseContactXml(array[0])  < 0) {
         return -1;
     }
-    qDebug() << "parse contact success";
+    qDebug() << "[c++] : parse contact success";
 
     if (parseQrChannelXml(array[1]) < 0) {
         return -1;
     }
-    qDebug() << "parse qrchannel success";
+    qDebug() << "[c++] : parse qrchannel success";
 
     if (parseKeyValueXml(array[2]) < 0) {
         return -1;
     }
-    qDebug() << "parse keyvalue success";
+    qDebug() << "[c++] : parse keyvalue success";
 
+    walkCacheAddFriendAndGroup();
     return 0;
 }

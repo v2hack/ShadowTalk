@@ -287,7 +287,7 @@ void displayLoginView() {
  *
  *  @return
  */
-void walkCacheAddFriend() {
+void walkCacheAddFriendAndGroup() {
     char firstLetter[27] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                             'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
                             'W', 'X', 'Y', 'Z', '#'};
@@ -297,6 +297,16 @@ void walkCacheAddFriend() {
     }
 
     int listViewIndex = 0;
+
+    QMap<int, Group>::iterator it;
+    for(it = c->groupList.begin(); it != c->groupList.end(); it++) {
+        Group &g = it.value();
+        qDebug() << "[c++] : add group - " << g.gourpName_;
+        addGroupIntoWidget(g.gourpName_, it.key(), listViewIndex);
+        g.listViewIndex = listViewIndex;
+        listViewIndex++;
+    }
+
     for (int i = 0; i < 27; i++) {
         QMap<int, Friend>::iterator it;
         for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
@@ -305,7 +315,7 @@ void walkCacheAddFriend() {
                 continue;
             }
             if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
-                qDebug() << "add friend - " << f.name;
+                qDebug() << "[c++] : add friend - " << f.name;
                 addFriendIntoWidget(f.name, it.key(), listViewIndex);
                 f.listViewIndex = listViewIndex;
                 listViewIndex++;
@@ -365,6 +375,54 @@ void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex)
     return;
 }
 
+/**
+ *  功能描述: 将缓存中的组添加到界面
+ *  @param  groupName   组名字
+ *  @param  groupIndex  组索引
+ *
+ *  @return
+ */
+void addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex)
+{
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QVariantMap newElement;
+    QDateTime currentTime = QDateTime::currentDateTime();
+    newElement.insert("friendName",  groupName);
+    newElement.insert("friendIndex", groupIndex);
+    newElement.insert("unReadCount", 0);
+    newElement.insert("messageTime", currentTime.toString("HH:mm:ss"));
+    newElement.insert("netState",    MessageMethodOffline);
+    newElement.insert("shortName",   "Group");
+    newElement.insert("listViewIndex", listViewIndex);
+    newElement.insert("backGroundColor", 0);
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        QMetaObject::invokeMethod(
+                    rect,
+                    "addGroup",
+                    Q_ARG(QVariant, QVariant::fromValue(newElement)));
+
+        slog("func<%s> : msg<%s> para<groupName - %d, groupIndex - %s>\n",
+             "Group",
+             "add group to widget success",
+             groupIndex,
+             groupName.toLatin1().data());
+    } else {
+
+        slog("func<%s> : msg<%s> para<groupName - %d, groupIndex - %s>\n",
+             "Group",
+             "add group to widget fail",
+             groupIndex,
+             groupName.toLatin1().data());
+    }
+    return;
+}
+
 
 /**
  *  功能描述: SelectFriend构造函数
@@ -401,11 +459,4 @@ void WindowClose::closeWindowProcess() {
     ShadowTalkSleep(3000);
     exit(0);
 }
-
-
-
-
-
-
-
 

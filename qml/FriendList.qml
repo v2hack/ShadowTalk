@@ -14,6 +14,7 @@ import "common.js" as JsCommon
 
 /* 选择好友，动态改变消息栏内容 */
 import st.info.SelectFriend 1.0
+import st.info.SelectGroup 1.0
 
 
 Rectangle {
@@ -112,6 +113,10 @@ Rectangle {
             if (data.shortName === undefined) {
                 data.shortName = "#"
             }
+            model.append(data)
+        }
+
+        function addGroup(data) {
             model.append(data)
         }
 
@@ -294,6 +299,9 @@ Rectangle {
                 SelectFriend {
                     id: selectFriend
                 }
+                SelectGroup {
+                    id: selectGroup
+                }
 
                 /* 鼠标滤过的阴影效果 */
                 MouseArea {
@@ -304,7 +312,13 @@ Rectangle {
                     onClicked: {
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
-                        selectFriend.changeMessageListForFlist(friendIndex, friendName);
+                        if (shortName === "Group") {
+                            console.log("[qml] : select group item - " + friendIndex);
+                            selectGroup.changeMessageListForGroup(friendIndex, friendName);
+                        } else {
+                            console.log("[qml] : select friend item - " + friendIndex);
+                            selectFriend.changeMessageListForFlist(friendIndex, friendName);
+                        }
                     }
                     onEntered: {
                         friendListScrollbar.visible = true;

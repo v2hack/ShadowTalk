@@ -364,16 +364,16 @@ void SelectFriend::changeMessageListForFlist(int index, QString name) {
     f->messageUnreadCount = 0;
 
     /* 上次选中的取消高亮 */
-    Friend *old_friend = c->getOneFriend(c->currentUseFriendId);
+    Friend *old_friend = c->getOneFriend(c->currentUseId);
     if (old_friend) {
         qDebug() << "[c++] : find one old_friend, and set back color - " << old_friend->listViewIndex;
         old_friend->setFriendlistBackGroundColor(0);
-        int chatListSeq_old = c->getPositionNum(c->currentUseFriendId);
+        int chatListSeq_old = c->getPositionNum(c->currentUseId);
         if (chatListSeq_old >= 0) {
             old_friend->setChatlistBackGroundColor(0, chatListSeq_old);
         }
     } else {
-        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseFriendId;
+        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseId;
     }
     /* 当前选中的高亮 */
     int chatListSeq_new = c->getPositionNum(index);
@@ -386,7 +386,7 @@ void SelectFriend::changeMessageListForFlist(int index, QString name) {
 
 
     /* 设置新的当前好友item */
-    c->setCurrentFriendId(index);
+    c->setCurrentId(index, 0);
 
     /* 以下操作检查是否需要在chat页面显示好友 */
     int ret = c->atFirstPosition(index);
@@ -466,16 +466,16 @@ void SelectFriend::changeMessageListForClist(int index, QString name) {
     f->messageUnreadCount = 0;
 
     /* 上次选中的取消高亮 */
-    Friend *old_friend = c->getOneFriend(c->currentUseFriendId);
+    Friend *old_friend = c->getOneFriend(c->currentUseId);
     if (old_friend) {
         old_friend->setFriendlistBackGroundColor(0);
         qDebug() << "[c++] : find one old_friend, and set back color - " << old_friend->listViewIndex;
-        int chatListSeq_old = c->getPositionNum(c->currentUseFriendId);
+        int chatListSeq_old = c->getPositionNum(c->currentUseId);
         if (chatListSeq_old >= 0) {
             old_friend->setChatlistBackGroundColor(0, chatListSeq_old);
         }
     } else {
-        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseFriendId;
+        qDebug() << "[c++] : can't friend old_friend - " << c->currentUseId;
     }
 
     /* 当前选中的高亮 */
@@ -486,7 +486,7 @@ void SelectFriend::changeMessageListForClist(int index, QString name) {
     f->setFriendlistBackGroundColor(1);
 
     /* 设置新的当前好友item */
-    c->setCurrentFriendId(index);
+    c->setCurrentId(index, 0);
 
     /* 以下操作检查是否需要在chat页面显示好友 */
     int ret = c->atFirstPosition(index);

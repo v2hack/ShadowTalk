@@ -6,6 +6,7 @@
 #include <QPointer>
 #include <QString>
 
+#include "st_group.h"
 #include "st_friend.h"
 
 
@@ -23,17 +24,21 @@ class Cache: public QObject {
     Q_OBJECT
 private:
     int friendCount;                                  /* 缓存中好友数量 */
+    int groupCount;                                   /* 缓存中组数量 */
 public:
     Cache();
     ~Cache();
 
-    void CleanCache();
+    void CleanCache();                                 /* 清理缓存 */
 
-    int currentUseFriendId;                            /* 界面上当前显示好友id */
+    int currentUseId;                                  /* 界面上当前显示好友id */
+    int currentUseType;                                /* 界面上当前类型 */
+
     QMap<int, Friend> friendList;                      /* 联系人列表 */
     QList<int> chatList;                               /* 聊天列表 */
     QMap<QString, struct LocalChannel *> channelList;  /* channel映射表 */
     std::map<std::string, std::string> keyValueList;   /* 密钥映射表 */
+    QMap<int, Group> groupList;                        /* 组列表 */
 
 
     /* 联系人操作函数 */
@@ -41,7 +46,7 @@ public:
     int getNextIndex();
     Friend *getOneFriend(int index);
     Q_INVOKABLE int getFriendCount();
-    Q_INVOKABLE void setCurrentFriendId(int id);
+    Q_INVOKABLE void setCurrentId(int id, int type);
     bool isExistFriend(QString friendChannelId);
     void cleanFriend();
 
@@ -65,6 +70,15 @@ public:
     void deleteKeyValue(std::string key);
     bool isExistChannel(std::string key);
     void cleanKeyValue();
+
+    /* 组操作函数 */
+    void insertOneGroup(Group *newGroup);
+    int getNextGroupIndex();
+    Q_INVOKABLE int getGroupCount();
+    Group *getOneGroup(int index);
+    Group *getOneGroup(QString groupChannelId);
+    bool isExistGroup(QString groupChannelId);
+    void cleanGroup();
 
 };
 

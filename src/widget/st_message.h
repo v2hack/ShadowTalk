@@ -30,16 +30,29 @@ enum MessageMethod {
 };
 
 
-/* 聊天信息内容结构 */
+/* 聊天消息结构 */
 struct Message
 {
-    int driect;         /* 是我的？还是对方的？*/
-    int friendIndex;    /* 好友map索引 */
-    int messageType;    /* 聊天信息类型 */
-    int MessageMethord; /* 离线或者在线 */
-    int voiceSeconds;   /* 如果是语音数据表示秒数 */
-    std::string data;       /* 消息内容 */
+    int driect;          /* 是我的？还是对方的？*/
+    int friendIndex;     /* 好友map索引 */
+    int messageType;     /* 聊天信息类型 */
+    int MessageMethord;  /* 离线或者在线 */
+    int voiceSeconds;    /* 如果是语音数据表示秒数 */
+    std::string data;    /* 消息内容 */
 };
+
+/* 组消消息结构 */
+struct GroupMessage
+{
+    int driect;          /* 是我的？还是对方的？*/
+    int friendIndex;     /* 好友map索引 */
+    int messageType;     /* 聊天信息类型 */
+    int MessageMethord;  /* 离线或者在线 */
+    int voiceSeconds;    /* 如果是语音数据表示秒数 */
+    std::string senderName;
+    std::string data;    /* 消息内容 */
+};
+
 
 /* 聊天消息管理结构 */
 class MessageManager : public QObject {

@@ -276,10 +276,10 @@ void MessageManager::sendMessage(int index, QString message) {
     /* 找到缓存 */
     Cache *c = gCtx.cache;
 
-    qDebug() << "### current friend id - " << c->currentUseFriendId;
-    QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseFriendId);
+    qDebug() << "### current friend id - " << c->currentUseId;
+    QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseId);
     if (it == c->friendList.end()) {
-        qDebug() << "can't current friend idx - " << c->currentUseFriendId;
+        qDebug() << "can't current friend idx - " << c->currentUseId;
         return;
     }
     Friend *f = &(*it);
@@ -301,7 +301,7 @@ void MessageManager::sendMessage(int index, QString message) {
     /* 添加到缓存 */
     f->insertOneMessage(m);
     slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
-         "sendMessage", "send one message", c->currentUseFriendId, message.toLatin1().data());
+         "sendMessage", "send one message", c->currentUseId, message.toLatin1().data());
 
     /* impai 发送消息 */
     adaptSendMessage(f->friendChannelId, 1, message, f->messageCount);

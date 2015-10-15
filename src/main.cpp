@@ -28,6 +28,7 @@
 
 #include "st_pixelsize.h"
 #include "st_friend.h"
+#include "st_group.h"
 #include "st_cache.h"
 #include "st_context.h"
 #include "st_utils.h"
@@ -81,6 +82,7 @@ void registerQmlTye() {
     qmlRegisterType<PointSizeToPixelSize>("st.font.PointSizeToPixelSize", 1, 0, "PointSizeToPixelSize");
     qmlRegisterType<MessageManager>("st.info.MessageManager", 1, 0, "MessageManager");
     qmlRegisterType<SelectFriend>("st.info.SelectFriend", 1, 0, "SelectFriend");
+    qmlRegisterType<SelectGroup>("st.info.SelectGroup", 1, 0, "SelectGroup");
     qmlRegisterType<Voice>("st.info.Voice", 1, 0, "Voice");
     qmlRegisterType<NormalPicture>("st.info.NormalPicture", 1, 0, "NormalPicture");
     qmlRegisterType<WindowClose>("st.info.WindowClose", 1, 0, "WindowClose");

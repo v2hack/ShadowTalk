@@ -29,7 +29,8 @@ void setMainWindowVisible();
 void setMainWindowUnvisible();
 
 void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex);
-void walkCacheAddFriend();
+void addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex);
+void walkCacheAddFriendAndGroup();
 
 
 class WindowClose : public QObject {

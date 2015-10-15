@@ -299,7 +299,7 @@ void zebraDeleagates::friend_offline_message(
             }
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
-            if (c->currentUseFriendId == f.id) {
+            if (c->currentUseId == f.id) {
                 f.messageUnreadCount = 0;
 
                 /* 判断类型 */
@@ -438,7 +438,7 @@ void zebraDeleagates::friend_online_message(
             }
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
-            if (c->currentUseFriendId == f.id) {
+            if (c->currentUseId == f.id) {
                 f.messageUnreadCount = 0;
 
                 /* 判断类型 */

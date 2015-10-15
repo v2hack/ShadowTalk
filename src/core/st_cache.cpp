@@ -20,7 +20,7 @@
 #include "st_context.h"
 #include "st_chat.h"
 
-Cache::Cache(): friendCount(0), currentUseFriendId(-1) {
+Cache::Cache(): friendCount(0), groupCount(0), currentUseId(-1) {
 }
 Cache::~Cache() {
 }
@@ -32,7 +32,7 @@ Cache::~Cache() {
  *  @return 无
  */
 int Cache::getNextIndex() {
-    return this->getFriendCount();
+    return this->getFriendCount() + this->getGroupCount();
 }
 
 /**
@@ -51,9 +51,9 @@ int Cache::getFriendCount() {
  *
  *  @return 无
  */
-void Cache::setCurrentFriendId(int id) {
-    qDebug() << "### set friend id - " << id;
-    this->currentUseFriendId = id;
+void Cache::setCurrentId(int id, int type) {
+    this->currentUseId = id;
+    this->currentUseType = type;
 }
 
 /**
@@ -205,7 +205,7 @@ bool Cache::isExistChannel(std::string key) {
  *  @return 无
  */
 void Cache::CleanCache() {
-    friendCount = currentUseFriendId = 0;
+    friendCount = currentUseId = 0;
     qDebug() << "clean friends";
     cleanFriend();
     qDebug() << "clean channels";
@@ -358,3 +358,82 @@ void Cache::cleanKeyValue() {
     this->keyValueList.clear();
 }
 
+
+/*********************************  组操作接口  *****************************************/
+
+/**
+ *  功能描述: 将一个组结构加入缓存
+ *  @param newGroup   组信息结构指针
+ *
+ *  @return 无
+ */
+void Cache::insertOneGroup(Group *newGroup) {
+    groupList.insert(this->groupCount, *newGroup);
+    this->groupCount++;
+    delete newGroup;
+    return;
+}
+
+/**
+ *  功能描述: 获取组结构数量
+ *  @param  无
+ *
+ *  @return 无
+ */
+int Cache::getGroupCount() {
+    return groupList.size();
+}
+
+/**
+ *  功能描述: 获取下一个加入缓存的结构id
+ *  @param 无
+ *
+ *  @return 无
+ */
+int Cache::getNextGroupIndex() {
+    return this->getGroupCount();
+}
+
+Group *Cache::getOneGroup(int index) {
+    QMap<int, Group>::iterator it;
+    for(it = groupList.begin(); it != groupList.end(); it++) {
+        Group &g = it.value();
+        if (g.gid_ == index) {
+            return &(it.value());
+        }
+    }
+    return nullptr;
+}
+
+Group *Cache::getOneGroup(QString groupChannelId) {
+    QMap<int, Group>::iterator it;
+    for(it = groupList.begin(); it != groupList.end(); it++) {
+        Group &g = it.value();
+        if (g.groupChannelId_ == groupChannelId) {
+            return &(it.value());
+        }
+    }
+    return nullptr;
+}
+
+
+/**
+ *  功能描述: 检查好友是否已经存在于缓存
+ *  @param friendChannelId 好友channelid
+ *
+ *  @return 无
+ */
+bool Cache::isExistGroup(QString groupChannelId) {
+    QMap<int, Group>::iterator it;
+    for(it = groupList.begin(); it != groupList.end(); it++) {
+        Group &g = it.value();
+        if (g.groupChannelId_.compare(groupChannelId) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Cache::cleanGroup(){
+    this->groupList.clear();
+}
