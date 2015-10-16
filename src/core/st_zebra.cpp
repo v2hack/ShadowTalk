@@ -283,7 +283,6 @@ void zebraDeleagates::friend_offline_message(
             m->MessageMethord = MessageMethodOffline;
             m->voiceSeconds   = 0;
 
-            f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_offline_message", "receive one online message", f.cacheIndex, message.c_str());
 

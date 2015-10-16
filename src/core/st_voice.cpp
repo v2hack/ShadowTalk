@@ -87,7 +87,7 @@ void Voice::playVoice(QString fidx, QString midx) {
     /* 找到缓存并生成声音文件 */
     std::string friendVoice = findVoiceCache(fidx, midx);
     if (friendVoice.empty()) {
-        qDebug() << "voice is empty";
+        qDebug() << "[c++] : voice is empty : fidx - " << fidx << " midx - " << midx;
         return;
     }
 
