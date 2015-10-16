@@ -35,19 +35,32 @@ Rectangle {
             height: 24
             color: "#343434"
 
+            FontLoader {
+                id: chineseFont
+                source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+            }
+
             Text {
                 text: section
                 font.bold: true
                 font.pixelSize: 15
                 color: "#adadad"
-
+                font.family: chineseFont.name;
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
                     leftMargin: 21
                 }
             }
-
+            MouseArea {
+                anchors.fill: parent;
+                onEntered: {
+                    friendListScrollbar.visible = true;
+                }
+                onExited: {
+                    friendListScrollbar.visible = false;
+                }
+            }
         }
     }
 
