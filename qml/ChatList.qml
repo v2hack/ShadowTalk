@@ -21,7 +21,7 @@ import "common.js" as JsCommon
 
 /* 选择好友，动态改变消息栏内容 */
 import st.info.SelectFriend 1.0
-
+import st.info.SelectGroup 1.0
 
 Rectangle {
     id: chatList
@@ -172,7 +172,7 @@ Rectangle {
                         verticalCenter: parent.verticalCenter
                     }
                     Text {
-                        id: shortName
+                        id: shortNameText
                         anchors {
                             verticalCenter: parent.verticalCenter
                             horizontalCenter: parent.horizontalCenter
@@ -266,6 +266,9 @@ Rectangle {
                 SelectFriend {
                     id: selectFriend
                 }
+                SelectFriend {
+                    id: selectGroup
+                }
 
                 /* 鼠标滤过的阴影效果 */
                 MouseArea {
@@ -278,6 +281,16 @@ Rectangle {
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
                         selectFriend.changeMessageListForClist(friendIndex, friendName);
+
+                        if (shortName === "Group") {
+                            console.log("[qml] : select group item - " + friendIndex);
+                            selectGroup.changeMessageListForFlist(friendIndex, friendName);
+                        } else {
+                            console.log("[qml] : select friend item - " + friendIndex);
+                            selectFriend.changeMessageListForFlist(friendIndex, friendName);
+                        }
+
+
                     }
                     onEntered: {
                         friendListScrollbar.visible = true;

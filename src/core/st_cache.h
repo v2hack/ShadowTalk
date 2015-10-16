@@ -1,4 +1,4 @@
-#ifndef CACHE_H
+﻿#ifndef CACHE_H
 #define CACHE_H
 
 #include <QList>
@@ -8,6 +8,7 @@
 
 #include "st_group.h"
 #include "st_friend.h"
+#include "st_chat.h"
 
 
 /* 本地创建的二维码和短码 */
@@ -33,9 +34,10 @@ public:
 
     int currentUseId;                                  /* 界面上当前显示好友id */
     int currentUseType;                                /* 界面上当前类型 */
+    QString currentUseName;
 
     QMap<int, Friend> friendList;                      /* 联系人列表 */
-    QList<int> chatList;                               /* 聊天列表 */
+    QList<ChatItem *> chatList;                               /* 聊天列表 */
     QMap<QString, struct LocalChannel *> channelList;  /* channel映射表 */
     std::map<std::string, std::string> keyValueList;   /* 密钥映射表 */
     QMap<int, Group> groupList;                        /* 组列表 */
@@ -46,16 +48,15 @@ public:
     int getNextIndex();
     Friend *getOneFriend(int index);
     Q_INVOKABLE int getFriendCount();
-    Q_INVOKABLE void setCurrentId(int id, int type);
+    Q_INVOKABLE void setCurrentId(int id, int type, QString name);
     bool isExistFriend(QString friendChannelId);
     void cleanFriend();
 
     /* 聊天列表操作 */
-    void insertOneChat(int friendListId, QString friendName);
-    int atFirstPosition(int friendListId);
-    void removeOneChat(int friendListId);
-    int getFriendIdOfChat(int chatId);
-    int getPositionNum(int friendListId);
+    void insertOneChat(int cacheIndex, int type, QString friendName);
+    int atFirstPosition(int cacheIndex, int type);
+    void removeOneChat(int cacheIndex, int type);
+    int getPositionNum(int cacheIndex, int type);
 
     /* channel操作函数 */
     struct LocalChannel *getChannel(QString channelId);

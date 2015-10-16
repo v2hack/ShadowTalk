@@ -47,6 +47,7 @@ Rectangle {
                     leftMargin: 21
                 }
             }
+
         }
     }
 
@@ -204,7 +205,7 @@ Rectangle {
                     }
 
                     Text {
-                        id: shortName
+                        id: shortNameText
                         anchors {
                             verticalCenter: parent.verticalCenter
                             horizontalCenter: parent.horizontalCenter
@@ -314,7 +315,7 @@ Rectangle {
                         /* 选中好友，消息栏同步更新 */
                         if (shortName === "Group") {
                             console.log("[qml] : select group item - " + friendIndex);
-                            selectGroup.changeMessageListForGroup(friendIndex, friendName);
+                            selectGroup.changeMessageListForFlist(friendIndex, friendName);
                         } else {
                             console.log("[qml] : select friend item - " + friendIndex);
                             selectFriend.changeMessageListForFlist(friendIndex, friendName);

@@ -1,4 +1,4 @@
-#ifndef QRCODE_H
+﻿#ifndef QRCODE_H
 #define QRCODE_H
 
 #include <QString>

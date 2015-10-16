@@ -22,7 +22,7 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void addFrientToChat(QString friendName, int friendIndex, int listViewIndex)
+void addFrientToChat(QString friendName, QString shortName, int friendIndex, int listViewIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -31,6 +31,8 @@ void addFrientToChat(QString friendName, int friendIndex, int listViewIndex)
 
     QVariantMap newElement;
     newElement.insert("friendName",  friendName);
+    newElement.insert("friendIndex", friendIndex);
+    newElement.insert("shortName",   shortName);
     newElement.insert("friendIndex", friendIndex);
     newElement.insert("unReadCount", 0);
     newElement.insert("netState",    MessageMethodOffline);
@@ -125,13 +127,16 @@ void displayChatNetState(int idx, int state) {
     }
 
     int chatIdx = 0, flag = 0;
-    QList<int>::iterator it;
+    QList<ChatItem *>::iterator it;
     for (it = c->chatList.begin(); it != c->chatList.end(); it++) {
-        if (*it == idx) {
-            flag = 1;
-            break;
+        ChatItem *item = *it;
+        if (item) {
+            if (item->cacheIndex == idx) {
+                flag = 1;
+                break;
+            }
+            chatIdx++;
         }
-        chatIdx++;
     }
     if (flag == 0) {
         return;
@@ -168,13 +173,16 @@ void displayChatUnreadCount(int idx, int count) {
     }
 
     int chatIdx = 0, flag = 0;
-    QList<int>::iterator it;
+    QList<ChatItem *>::iterator it;
     for (it = c->chatList.begin(); it != c->chatList.end(); it++) {
-        if (*it == idx) {
-            flag = 1;
-            break;
+        ChatItem *item = *it;
+        if (item) {
+            if (item->cacheIndex == idx) {
+                flag = 1;
+                break;
+            }
+            chatIdx++;
         }
-        chatIdx++;
     }
     if (flag == 0) {
         return;
@@ -197,3 +205,54 @@ void displayChatUnreadCount(int idx, int count) {
         qDebug() << "set unread count fail";
     }
 }
+
+
+void refreshChatListPosition(int cacheIndex, int itemType) {
+    QString name;
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return;
+    }
+
+    switch (itemType) {
+    case CHATITEM_TYPE_FRIEND:
+    {
+        Friend *f = c->getOneFriend(cacheIndex);
+        if (f) {
+            name = f->name;
+        }
+        break;
+    }
+    case CHATITEM_TYPE_GROUP:
+    {
+        Group *g = c->getOneGroup(cacheIndex);
+        if (g) {
+            name = g->gourpName_;
+        }
+        break;
+    }
+    default:
+        return;
+    }
+
+    if (name.isEmpty()) {
+        qDebug() << "[c++] : refresh chat list position - get name fail";
+        return;
+    }
+
+    int ret = c->atFirstPosition(cacheIndex, itemType);
+    /* 需要交换位置 */
+    if (ret == -2) {
+        qDebug() << "[c++] : chatlist - change position";
+        c->removeOneChat(cacheIndex, itemType);
+        c->insertOneChat(cacheIndex, itemType, name);
+    }
+    /* 需要插入新成员 */
+    if (ret == -1) {
+        qDebug() << "[c++] : chatlist - insert new one";
+        c->insertOneChat(cacheIndex, itemType, name);
+    }
+    return;
+}
+
+

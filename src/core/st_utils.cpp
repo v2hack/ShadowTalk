@@ -1,4 +1,4 @@
-/*******************************************************************
+﻿/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -17,9 +17,6 @@
 #include <QtQuick/QQuickView>
 #include <QString>
 
-#include <iostream>
-#include <fstream>
-
 #include "st_context.h"
 #include "st_cache.h"
 #include "st_utils.h"
@@ -28,6 +25,7 @@
 #include "st_utils.h"
 #include "st_net.h"
 #include "st_login.h"
+#include "st_chat.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -115,75 +113,6 @@ void displayCurrentFriendName(QString currentFriendName) {
     return;
 }
 
-
-void writeXmlFile(std::string fileName, std::string data) {
-    std::ofstream file;
-    file.open(fileName, std::ios::out | std::ios::binary);
-    file.write(data.c_str(), data.size());
-    file.close();
-    return;
-}
-
-/**
- *  功能描述: 解析xml文件
- *  @param fileName   文件名
- *  @param passwd     解密密码
- *
- *  @return
- */
-int parseEncryptXml(QString fileName, QString passwd) {
-    QString qPlainData;
-
-    std::string sPasswd = passwd.toStdString();
-    std::string sDecryptData;
-    std::string sPlainData;
-    std::string sEncryptData;
-    ParseXml xml;
-
-    /* 读入文件 */
-    std::ifstream file;
-    file.open(fileName.toStdString().c_str(), std::ios::in | std::ios::binary);
-    file.seekg(0, file.end);
-    int length = file.tellg();
-    file.seekg(0, file.beg);
-    char *buffer = new char[length];
-    if (!buffer) {
-        return -1;
-    }
-    file.read(buffer, length);
-    sEncryptData.assign(buffer, length);
-
-    /* 开始解密 */
-    sDecryptData = gCtx.zebra->decrypt(sEncryptData, sPasswd);
-    if (sDecryptData.empty()) {
-        slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
-             "parseEncryptXml", "decrypt xml file fail",
-             fileName.toStdString().c_str(), passwd.toStdString().c_str());
-        return -1;
-    }
-    slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
-         "parseEncryptXml", "decrypt xml file success",
-         fileName.toStdString().c_str(), passwd.toStdString().c_str());
-
-    /* 开始解压 */
-    sPlainData = gCtx.zebra->gzipUncompress(sDecryptData);
-    if (sPlainData.empty()) {
-        slog("func<%s> : msg<%s> para<file - %s>\n",
-             "parseEncryptXml", "uncompress xml file fail", fileName.toStdString().c_str());
-        return -1;
-    }
-    slog("func<%s> : msg<%s> para<file - %s>\n",
-         "parseEncryptXml", "uncompress xml file success", fileName.toStdString().c_str());
-
-    qPlainData = QString::fromStdString(sPlainData);
-    if (xml.parseDencryptXml(qPlainData) < 0){
-        return -1;
-    }
-
-    /* 监听好友 */
-    adaptListenAllFriends();
-    return 0;
-}
 
 /**
  *  功能描述: 设置主页面可见
@@ -424,11 +353,74 @@ void addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex)
 }
 
 
+
+void clearCurrentItemHighLight(Cache *cache) {
+
+    int chatListSeq = 0;
+    /* 取消当前好友的背景高亮 */
+    if (cache->currentUseType == CHATITEM_TYPE_FRIEND) {
+		Friend *friend_ = cache->getOneFriend(cache->currentUseId);
+        if (friend_) {
+            friend_->setFriendlistBackGroundColor(0);
+            chatListSeq = cache->getPositionNum(cache->currentUseId, CHATITEM_TYPE_FRIEND);
+            if (chatListSeq >= 0) {
+                friend_->setChatlistBackGroundColor(0, chatListSeq);
+            }
+        } else {
+            qDebug() << "[c++] : can't friend - " << cache->currentUseId;
+        }
+
+    /* 取消当前组的背景高亮 */
+    } else {
+        Group *group = cache->getOneGroup(cache->currentUseId);
+        if (group) {
+            group->setFriendlistBackGroundColor(0);
+            chatListSeq = cache->getPositionNum(cache->currentUseId, CHATITEM_TYPE_GROUP);
+            if (chatListSeq >= 0) {
+                group->setChatlistBackGroundColor(0, chatListSeq);
+            }
+        } else {
+            qDebug() << "[c++] : can't group - " << cache->currentUseId;
+        }
+    }
+}
+
+
+void setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheindex) {
+
+    /* 在chat listView中高亮 */
+    int chatListSeq = cache->getPositionNum(groupCacheindex, CHATITEM_TYPE_GROUP);
+    if (chatListSeq >= 0) {
+        group->setChatlistBackGroundColor(1, chatListSeq);
+    }
+    /* 在friend listView中高亮 */
+    group->setFriendlistBackGroundColor(1);
+
+    /* 设置新的当前好友item */
+    cache->setCurrentId(groupCacheindex, CHATITEM_TYPE_GROUP, group->gourpName_);
+    return;
+}
+
+void setFriendItemHighLight(Cache *cache,  Friend *friend_, int friendCacheIndex) {
+    /* 在chat listView中高亮 */
+    int chatListSeq = cache->getPositionNum(friendCacheIndex, CHATITEM_TYPE_FRIEND);
+    if (chatListSeq >= 0) {
+        friend_->setChatlistBackGroundColor(1, chatListSeq);
+    }
+    /* 在friend listView中高亮 */
+    friend_->setFriendlistBackGroundColor(1);
+
+    /* 设置新的当前好友item */
+    cache->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, friend_->name);
+    return;
+}
+
+
 /**
  *  功能描述: SelectFriend构造函数
  *  @return 无
  */
-WindowClose::WindowClose(QObject *parent) { }
+WindowClose::WindowClose(QObject *parent) { parent = parent; }
 
 /**
  *  功能描述: SelectFriend的析构函数

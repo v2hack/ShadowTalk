@@ -1,4 +1,4 @@
-#ifndef ST_FRIEND_H_
+﻿#ifndef ST_FRIEND_H_
 #define ST_FRIEND_H_
 
 #include <QObject>
@@ -22,7 +22,7 @@ public:
                    int session, int status, int friendIndex);
     ~Friend();
 
-    int id;                          // 好友id,用于界面
+    int cacheIndex;                          // 好友id,用于界面
     QString qrCode;                  // 二维码
     int defaultExpiredTime;          // 默认的超时时间
     QString friendChannelId;         // 好友通道
@@ -60,6 +60,8 @@ public:
     ~SelectFriend();
     Q_INVOKABLE void changeMessageListForFlist(int index, QString name);
     Q_INVOKABLE void changeMessageListForClist(int index, QString name);
+    void refreshFriendMessage(Friend *f);
+    void refreshFriendStatistics(Friend *f);
 };
 
 #endif //ST_FRIEND_H_

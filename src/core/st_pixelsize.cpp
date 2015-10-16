@@ -1,4 +1,4 @@
-/*******************************************************************
+﻿/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -29,6 +29,7 @@ extern struct ShadowTalkContext gCtx;
  *  @return 无
  */
 PointSizeToPixelSize::PointSizeToPixelSize(QObject *parent) {
+	parent = parent;
     return;
 }
 

@@ -1,4 +1,4 @@
-#ifndef MESSAGE_H
+﻿#ifndef MESSAGE_H
 #define MESSAGE_H
 
 #include <QObject>
@@ -55,13 +55,16 @@ struct GroupMessage
 
 
 /* 聊天消息管理结构 */
-class MessageManager : public QObject {
+class MessageManager : public QObject
+{
     Q_OBJECT
-
 public:
     MessageManager(QObject *parent = 0);
     ~MessageManager();
-    Q_INVOKABLE void sendMessage(int index, QString message);
+    Q_INVOKABLE void sendMessage(QString message);
+    void sendGroupMessage(QString &message);
+    void sendFriendMessage(QString &message);
+
 };
 
 void addMessageToWidget(

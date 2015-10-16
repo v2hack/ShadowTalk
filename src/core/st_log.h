@@ -1,4 +1,4 @@
-#ifndef DEBUG_H
+﻿#ifndef DEBUG_H
 #define DEBUG_H
 
 void slog(const char *format, ...);

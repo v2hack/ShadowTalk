@@ -1,4 +1,4 @@
-#ifndef ST_SEARCH_H
+﻿#ifndef ST_SEARCH_H
 #define ST_SEARCH_H
 
 void matchAndShowSearchResult();

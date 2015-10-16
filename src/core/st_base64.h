@@ -1,9 +1,7 @@
-#ifndef BASE64_H
+﻿#ifndef BASE64_H
 #define BASE64_H
 
 #include <QString>
-
-
 
 class Base64
 {

@@ -1,4 +1,4 @@
-#ifndef ST_TRAY_ICON_H_
+﻿#ifndef ST_TRAY_ICON_H_
 #define ST_TRAY_ICON_H_
 
 #include <QSystemTrayIcon>

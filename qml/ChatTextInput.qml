@@ -44,7 +44,7 @@ Rectangle {
         onClicked: {
             /* TODO: 这里要修改为具体发送消息 */
             if (chatTextEdit.text != "") {
-                cppSendMessage.sendMessage(friendIndex, chatTextEdit.text);
+                cppSendMessage.sendMessage(chatTextEdit.text);
                 /* 清理数据需要恢复光标的位置 */
                 chatTextEdit.cursorPosition = 0;
                 chatTextEdit.text = "";
@@ -123,7 +123,7 @@ Rectangle {
             Keys.onReturnPressed: {
                 if (chatTextEdit.text != "") {
                     /* TODO: 这里要修改为具体发送消息 */
-                    cppSendMessage.sendMessage(friendIndex, chatTextEdit.text);
+                    cppSendMessage.sendMessage(chatTextEdit.text);
                     /* 恢复提示符位置 */
                     chatTextEdit.cursorPosition = 0;
                     /* 清理内容 */

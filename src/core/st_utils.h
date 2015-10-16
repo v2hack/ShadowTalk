@@ -1,9 +1,14 @@
-#ifndef UTILS_H
+﻿#ifndef UTILS_H
 #define UTILS_H
 
 #include <Qstring>
 #include <QObject>
 #include <QThread>
+
+#include "st_context.h"
+#include "st_cache.h"
+#include "st_friend.h"
+#include "st_group.h"
 
 #define ST_SUCCESS 0
 #define ST_CREATE_QRCODE_FAIL -1
@@ -18,9 +23,6 @@ void playMessageSound();
 void playMessageVoice(QString voiceFilePath);
 void stopMessageVoice();
 
-void writeXmlFile(std::string fileName, std::string data);
-int  parseEncryptXml(QString fileName, QString passwd);
-
 void displayCurrentFriendName(QString currentFriendName);
 void displayLoginView();
 void displayBaseView();
@@ -31,6 +33,10 @@ void setMainWindowUnvisible();
 void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex);
 void addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex);
 void walkCacheAddFriendAndGroup();
+
+void clearCurrentItemHighLight(Cache *cache);
+void setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheindex);
+void setFriendItemHighLight(Cache *cache,  Friend *friend_, int friendCacheIndex);
 
 
 class WindowClose : public QObject {

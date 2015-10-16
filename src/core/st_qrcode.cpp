@@ -1,4 +1,4 @@
-#include "st_qrcode.h"
+﻿#include "st_qrcode.h"
 
 #include <QPainter>
 #include <QImage>

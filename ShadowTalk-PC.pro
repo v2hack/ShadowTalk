@@ -89,6 +89,7 @@ win32 {
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lmaidsafe_passport
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_channel
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_imapi
+        LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_nat
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_network
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_visit
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_oudp
@@ -115,6 +116,7 @@ win32 {
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_channel-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_imapi-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_oudp-msr
+        LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_nat-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_network-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_visit-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lproto_compiler-msr

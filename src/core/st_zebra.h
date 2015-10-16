@@ -1,10 +1,9 @@
-#ifndef ZEBRA_H
+﻿#ifndef ZEBRA_H
 #define ZEBRA_H
-
 
 #include "im.h"
 
-#pragma comment(lib, "peersafe_imapi-msr.lib")
+//#pragma comment(lib, "peersafe_imapi-msr.lib")
 
 using namespace peersafe::im;
 using namespace std;

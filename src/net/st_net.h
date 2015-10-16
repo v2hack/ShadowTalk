@@ -1,4 +1,4 @@
-#ifndef ST_NET_H_
+﻿#ifndef ST_NET_H_
 #define ST_NET_H_
 
 #include <QString>

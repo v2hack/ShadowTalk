@@ -1,4 +1,4 @@
-#ifndef PICTURE_H
+﻿#ifndef PICTURE_H
 #define PICTURE_H
 
 #include <string>

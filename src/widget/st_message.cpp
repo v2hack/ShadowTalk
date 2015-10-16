@@ -1,4 +1,4 @@
-/*******************************************************************
+﻿/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -65,10 +65,10 @@ void addMessageToWidget(
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(
-            rect,
-            "addMessage",
-            Q_ARG(QVariant, QVariant::fromValue(data))
-        );
+                    rect,
+                    "addMessage",
+                    Q_ARG(QVariant, QVariant::fromValue(data))
+                    );
         qDebug() << "insert one message ok";
     } else {
         qDebug() << "insert one message fail";
@@ -258,44 +258,51 @@ void removeMessageByIndex(int index, int count) {
 
 
 MessageManager::MessageManager(QObject *parent) {
-
+    parent = parent;
 }
 MessageManager::~MessageManager() {
 
 }
 
-/**
- *  功能描述: sendMessage
- *  @param index     用户索引，这里就是0
- *  @param message   发送的消息内容，已经在QML层过滤
- *
- *  @return 无
- */
-void MessageManager::sendMessage(int index, QString message) {
 
-    /* 找到缓存 */
+void MessageManager::sendGroupMessage(QString &message) {
     Cache *c = gCtx.cache;
 
-    qDebug() << "### current friend id - " << c->currentUseId;
-    QMap<int, Friend>::iterator it = c->friendList.find(c->currentUseId);
-    if (it == c->friendList.end()) {
-        qDebug() << "can't current friend idx - " << c->currentUseId;
+    Group *g = c->getOneGroup(c->currentUseId);
+    if (!g) {
+        qDebug() << "[c++] : can't current group idx - " << c->currentUseId;
         return;
     }
-    Friend *f = &(*it);
+
+    qDebug() << "[c++] : message - " << message;
+
+    // TODO 将消息加入缓存
+
+    // TODO 转发给手机端
+
+    refreshChatListPosition(g->gid_, CHATITEM_TYPE_GROUP);
+
+}
+
+void MessageManager::sendFriendMessage(QString &message) {
+    Cache *c = gCtx.cache;
+
+    Friend *f = c->getOneFriend(c->currentUseId);
     if (!f) {
+        qDebug() << "[c++] : can't current friend idx - " << c->currentUseId;
         return;
     }
+    qDebug() << "[c++] : message - " << message;
+
     int idx = f->messageList.size() + 1;
 
     addMessageToWidget(0, "Me", 1, 1, message, idx);
 
     /* 组装缓存 */
-    Message *m = new Message;
+    Message *m     = new Message;
     m->data        = message.toStdString();
     m->driect      = MessageDriectMe;
     m->messageType = MessageTypeWord;
-    //m->friendIndex = c->currentUseFriendId;
     m->MessageMethord = MessageMethodOffline;
 
     /* 添加到缓存 */
@@ -305,6 +312,31 @@ void MessageManager::sendMessage(int index, QString message) {
 
     /* impai 发送消息 */
     adaptSendMessage(f->friendChannelId, 1, message, f->messageCount);
+
+    refreshChatListPosition(f->cacheIndex, CHATITEM_TYPE_FRIEND);
+    return;
+}
+
+
+
+/**
+ *  功能描述: sendMessage
+ *  @param index     用户索引，这里就是0
+ *  @param message   发送的消息内容，已经在QML层过滤
+ *
+ *  @return 无
+ */
+void MessageManager::sendMessage(QString message) {
+
+    /* 找到缓存 */
+    Cache *c = gCtx.cache;
+    if (c->currentUseType == CHATITEM_TYPE_FRIEND) {
+        qDebug() << "[c++] : send one friend message - " << c->currentUseId;
+        this->sendFriendMessage(message);
+    } else {
+        qDebug() << "[c++] : send one group message - " << c->currentUseId;
+        this->sendGroupMessage(message);
+    }
     return;
 }
 

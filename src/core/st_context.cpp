@@ -1,4 +1,4 @@
-
+﻿
 #include <QString>
 
 #include "st_context.h"

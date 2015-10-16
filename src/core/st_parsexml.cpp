@@ -1,14 +1,14 @@
-/*******************************************************************
+ï»¿/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
- *  ÎÄ¼şÃû³Æ: st_parsexml.cpp
- *  ¼òÒªÃèÊö:
+ *  æ–‡ä»¶åç§°: st_parsexml.cpp
+ *  ç®€è¦æè¿°:
  *
- *  µ±Ç°°æ±¾:1.0
- *  ×÷Õß: ÄÏÒ°
- *  ÈÕÆÚ: 2015/08/11
- *  ËµÃ÷:
+ *  å½“å‰ç‰ˆæœ¬:1.0
+ *  ä½œè€…: å—é‡
+ *  æ—¥æœŸ: 2015/08/11
+ *  è¯´æ˜:
  ******************************************************************/
 #include <QString>
 #include <QFile>
@@ -17,6 +17,7 @@
 #include <QDebug>
 
 #include <iostream>
+#include <fstream>
 
 #include "st_parsexml.h"
 #include "st_cache.h"
@@ -25,6 +26,7 @@
 #include "st_zebra.h"
 #include "st_net.h"
 #include "st_utils.h"
+#include "st_log.h"
 
 #define ST_XML_TAG_DICT                 "dict"
 #define ST_XML_TAG_ARRAY                "array"
@@ -60,15 +62,15 @@
 #define ST_XML_TAG_MEMBER_STATUS        "status"
 #define ST_XML_TAG_MEMBER_GROUP_ID      "groupChannelId"
 
-/* È«¾ÖÉÏÏÂÎÄ */
+/* å…¨å±€ä¸Šä¸‹æ–‡ */
 extern struct ShadowTalkContext gCtx;
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxml keyvalue²¢¼ÓÈëµ½cacheÖĞ
-*  @param  key keyÖµ
-*  @param  value valueÖµ
+*  åŠŸèƒ½æè¿°: è§£æxml keyvalueå¹¶åŠ å…¥åˆ°cacheä¸­
+*  @param  key keyå€¼
+*  @param  value valueå€¼
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 static void addCacheForKeyValue(const QString key, const QString value) {
     std::string cKey = key.toStdString();
@@ -92,13 +94,13 @@ static void addCacheForKeyValue(const QString key, const QString value) {
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxml channel²¢¼ÓÈëµ½cacheÖĞ
-*  @param  channelId      channelË÷Òı
-*  @param  createdTime    ´´½¨Ê±¼ä
-*  @param  expiredTime    ¹ıÆÚÊ±¼ä
-*  @param  shortCode      ¶ÌÂë
+*  åŠŸèƒ½æè¿°: è§£æxml channelå¹¶åŠ å…¥åˆ°cacheä¸­
+*  @param  channelId      channelç´¢å¼•
+*  @param  createdTime    åˆ›å»ºæ—¶é—´
+*  @param  expiredTime    è¿‡æœŸæ—¶é—´
+*  @param  shortCode      çŸ­ç 
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 static void addCacheForChannel(
          QString &channelId,
@@ -130,15 +132,15 @@ static void addCacheForChannel(
 
 
 /**
-*  ¹¦ÄÜÃèÊö: ½«ÁªÏµÈËĞÅÏ¢¼ÓÈëµ½»º´æ
-*  @param  defaultExpiredTime  Ä¬ÈÏ³¬Ê±Ê±¼ä
-*  @param  friendChannelId     ºÃÓÑchannelË÷Òı
-*  @param  inSession           ÊÇ·ñÔÚÁÄÌìÁĞ±íÖĞ
-*  @param  friendName          ºÃÓÑÃû×Ö
-*  @param  netStatus           ÍøÂç×´Ì¬
-*  @param  updateTime          ¸üĞÂÊ±¼ä
+*  åŠŸèƒ½æè¿°: å°†è”ç³»äººä¿¡æ¯åŠ å…¥åˆ°ç¼“å­˜
+*  @param  defaultExpiredTime  é»˜è®¤è¶…æ—¶æ—¶é—´
+*  @param  friendChannelId     å¥½å‹channelç´¢å¼•
+*  @param  inSession           æ˜¯å¦åœ¨èŠå¤©åˆ—è¡¨ä¸­
+*  @param  friendName          å¥½å‹åå­—
+*  @param  netStatus           ç½‘ç»œçŠ¶æ€
+*  @param  updateTime          æ›´æ–°æ—¶é—´
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 static void addCacheForContact(
          QString &defaultExpiredTime,
@@ -150,12 +152,12 @@ static void addCacheForContact(
 {
     updateTime = updateTime;
 
-    /* Ãû×ÖÎª¿ÕµÄÖ±½Ó¹ıÂËµô */
+    /* åå­—ä¸ºç©ºçš„ç›´æ¥è¿‡æ»¤æ‰ */
     if (friendName.isEmpty()) {
         return;
     }
 
-    /* ¼ì²éºÃÓÑÊÇ·ñÒÑ¾­´æÔÚ */
+    /* æ£€æŸ¥å¥½å‹æ˜¯å¦å·²ç»å­˜åœ¨ */
     if (gCtx.cache->isExistFriend(friendChannelId)){
         return;
     }
@@ -172,7 +174,7 @@ static void addCacheForContact(
     }
 
 
-    /* ¼ÓÈë»º´æ */
+    /* åŠ å…¥ç¼“å­˜ */
     gCtx.cache->insertOneFriend(newOne);
     return;
 }
@@ -200,12 +202,12 @@ static void addCacheForGroup(
              << " showNotification - " << showNotification
              << " status - " << status;
 
-    /* Ãû×ÖÎª¿ÕµÄÖ±½Ó¹ıÂËµô */
+    /* åå­—ä¸ºç©ºçš„ç›´æ¥è¿‡æ»¤æ‰ */
     if (gourpName.isEmpty()) {
         return;
     }
 
-    /* ¼ì²éºÃÓÑÊÇ·ñÒÑ¾­´æÔÚ */
+    /* æ£€æŸ¥å¥½å‹æ˜¯å¦å·²ç»å­˜åœ¨ */
     if (gCtx.cache->isExistGroup(groupChannelId)){
         return;
     }
@@ -216,7 +218,7 @@ static void addCacheForGroup(
         return;
     }
 
-    /* ¼ÓÈë»º´æ */
+    /* åŠ å…¥ç¼“å­˜ */
     gCtx.cache->insertOneGroup(newOne);
     return;
 }
@@ -239,17 +241,17 @@ static void addCacheForGroupMember(
              << " status - " << status
              << " groupChannelId - " << groupChannelId;
 
-    /* ¼ì²éºÃÓÑÊÇ·ñÒÑ¾­´æÔÚ */
+    /* æ£€æŸ¥å¥½å‹æ˜¯å¦å·²ç»å­˜åœ¨ */
     if (gCtx.cache->isExistGroup(groupChannelId)){
         return;
     }
 
-    /* ÕÒµ½×é */
+    /* æ‰¾åˆ°ç»„ */
 	Group *group = gCtx.cache->getOneGroup(groupChannelId);
     if (!group) {
         return;
     }
-    /* ¼ì²é³ÉÔ±ÊÇ·ñÒÑ¾­´æÔÚ*/
+    /* æ£€æŸ¥æˆå‘˜æ˜¯å¦å·²ç»å­˜åœ¨*/
     if (!group->isExistMember(memberId)) {
         group->insertOneMember(memberId, name);
     }
@@ -263,10 +265,10 @@ ParseXml::~ParseXml() {
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞÁªÏµÈËËùÓĞÔªËØ
-*  @param  array   ÁªÏµÈËÖĞµÄarray±êÇ©ÔªËØ½á¹¹
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­è”ç³»äººæ‰€æœ‰å…ƒç´ 
+*  @param  array   è”ç³»äººä¸­çš„arrayæ ‡ç­¾å…ƒç´ ç»“æ„
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseContactDict(QDomElement dict) {
 
@@ -360,7 +362,7 @@ int ParseXml::parseContactDict(QDomElement dict) {
         n = n.nextSibling();
     }
 
-    /* ¼ÓÈë»º´æ */
+    /* åŠ å…¥ç¼“å­˜ */
     addCacheForContact(defaultExpiredTime, friendChannelId,
             inSession, friendName, netStatus, updateTime);
 
@@ -368,10 +370,10 @@ int ParseXml::parseContactDict(QDomElement dict) {
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞÁªÏµÈË±êÇ©ÔªËØ
-*  @param  dict  dict±êÇ©ÔªËØ
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­è”ç³»äººæ ‡ç­¾å…ƒç´ 
+*  @param  dict  dictæ ‡ç­¾å…ƒç´ 
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseContactXml(QDomElement &array) {
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
@@ -390,10 +392,10 @@ int ParseXml::parseContactXml(QDomElement &array) {
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞ QrChannelÖĞµÄdict±êÇ©
-*  @param  dict   dict±êÇ©ÔªËØ
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­ QrChannelä¸­çš„dictæ ‡ç­¾
+*  @param  dict   dictæ ‡ç­¾å…ƒç´ 
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseQrChannelDict(QDomElement dict) {
 
@@ -465,17 +467,17 @@ int ParseXml::parseQrChannelDict(QDomElement dict) {
         n = n.nextSibling();
     }
 
-    /* ¼ÓÈë»º´æ */
+    /* åŠ å…¥ç¼“å­˜ */
     addCacheForChannel(channelId, createdTime, expiredTime, shortCode);
     return 0;
 }
 
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞ¶şÎ¬Âëchannel±êÇ©
-*  @param  array   ¶şÎ¬ÂëchannelÖĞµÄarray±êÇ©ÔªËØ½á¹¹
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­äºŒç»´ç channelæ ‡ç­¾
+*  @param  array   äºŒç»´ç channelä¸­çš„arrayæ ‡ç­¾å…ƒç´ ç»“æ„
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseQrChannelXml(QDomElement &array) {
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
@@ -495,10 +497,10 @@ int ParseXml::parseQrChannelXml(QDomElement &array) {
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞ keyValueÖĞµÄdict±êÇ©
-*  @param  dict   dict±êÇ©ÔªËØ
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­ keyValueä¸­çš„dictæ ‡ç­¾
+*  @param  dict   dictæ ‡ç­¾å…ƒç´ 
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseKeyValueDict(QDomElement dict) {
 
@@ -542,16 +544,16 @@ int ParseXml::parseKeyValueDict(QDomElement dict) {
         n = n.nextSibling();
     }
 
-    /* ¼ÓÈëµ½»º´æ */
+    /* åŠ å…¥åˆ°ç¼“å­˜ */
     addCacheForKeyValue(key, value);
     return 0;
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞµÄarrayÏÂµÄËùÓĞÄÚÈİ
-*  @param  array   keyvalueÖĞµÄarray±êÇ©ÔªËØ½á¹¹
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­çš„arrayä¸‹çš„æ‰€æœ‰å†…å®¹
+*  @param  array   keyvalueä¸­çš„arrayæ ‡ç­¾å…ƒç´ ç»“æ„
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseKeyValueXml(QDomElement &array) {
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
@@ -571,10 +573,10 @@ int ParseXml::parseKeyValueXml(QDomElement &array) {
 }
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞµÄ×éµÄ±êÇ©
-*  @param  array   groupÖĞµÄarray±êÇ©ÔªËØ½á¹¹
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­çš„ç»„çš„æ ‡ç­¾
+*  @param  array   groupä¸­çš„arrayæ ‡ç­¾å…ƒç´ ç»“æ„
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseGroupDict(QDomElement dict) {
 
@@ -685,7 +687,7 @@ int ParseXml::parseGroupDict(QDomElement dict) {
         n = n.nextSibling();
     }
 
-    /* ¼ÓÈë»º´æ */
+    /* åŠ å…¥ç¼“å­˜ */
     addCacheForGroup(groupChannelId, localMemberId, gourpName, myNameInGroup, ownerID,
                      showNotification, status);
     return 0;
@@ -693,10 +695,10 @@ int ParseXml::parseGroupDict(QDomElement dict) {
 
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÖĞµÄ×é³ÉÔ±±êÇ©
-*  @param  array   groupÖĞµÄarray±êÇ©ÔªËØ½á¹¹
+*  åŠŸèƒ½æè¿°: è§£æxmlä¸­çš„ç»„æˆå‘˜æ ‡ç­¾
+*  @param  array   groupä¸­çš„arrayæ ‡ç­¾å…ƒç´ ç»“æ„
 *
-*  @return 0 ³É¹¦  -1 Ê§°Ü
+*  @return 0 æˆåŠŸ  -1 å¤±è´¥
 */
 int ParseXml::parseGroupXml(QDomElement &array) {
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
@@ -712,6 +714,7 @@ int ParseXml::parseGroupXml(QDomElement &array) {
             }
         }
     }
+	return 0;
 }
 
 
@@ -784,7 +787,7 @@ int ParseXml::parseGroupMemberDict(QDomElement dict) {
         n = n.nextSibling();
     }
 
-    /* ¼ÓÈë»º´æ */
+    /* åŠ å…¥ç¼“å­˜ */
     addCacheForGroupMember(memberID, name, status, groupChannelId);
     return 0;
 
@@ -804,15 +807,16 @@ int ParseXml::parseGroupMemberXml(QDomElement &array) {
             }
         }
     }
+	return 0;
 }
 
 
 
 /**
-*  ¹¦ÄÜÃèÊö: Ğ´xmlÃ÷ÎÄÎÄ¼ş
-*  @param  plainData  xmlÎÄ¼şÃ÷ÎÄ
+*  åŠŸèƒ½æè¿°: å†™xmlæ˜æ–‡æ–‡ä»¶
+*  @param  plainData  xmlæ–‡ä»¶æ˜æ–‡
 *
-*  @return ÎŞ
+*  @return æ— 
 */
 void ParseXml::writeXmlFile(QString plainData) {
     QFile f("ShadTalk.xml");
@@ -850,10 +854,10 @@ QString filterWords(const QString oldData) {
 
 
 /**
-*  ¹¦ÄÜÃèÊö: ½âÎöxmlÎÄ¼şÈë¿Úº¯Êı
-*  @param  plainData  xmlÎÄ¼şÃ÷ÎÄ
+*  åŠŸèƒ½æè¿°: è§£æxmlæ–‡ä»¶å…¥å£å‡½æ•°
+*  @param  plainData  xmlæ–‡ä»¶æ˜æ–‡
 *
-*  @return 0³É¹¦  -1Ê§°Ü
+*  @return 0æˆåŠŸ  -1å¤±è´¥
 */
 int ParseXml::parseDencryptXml(const QString plainData) {
 
@@ -897,7 +901,7 @@ int ParseXml::parseDencryptXml(const QString plainData) {
         return -1;
     }
 
-    /* ÏÈ½âÎö×é */
+    /* å…ˆè§£æç»„ */
     if (arrayCount >= 5) {
         if (parseGroupXml(array[3]) < 0) {
             return -1;
@@ -928,3 +932,75 @@ int ParseXml::parseDencryptXml(const QString plainData) {
     walkCacheAddFriendAndGroup();
     return 0;
 }
+
+
+
+void writeXmlFile(std::string fileName, std::string data) {
+    std::ofstream file;
+    file.open(fileName, std::ios::out | std::ios::binary);
+    file.write(data.c_str(), data.size());
+    file.close();
+    return;
+}
+
+/**
+ *  åŠŸèƒ½æè¿°: è§£æxmlæ–‡ä»¶
+ *  @param fileName   æ–‡ä»¶å
+ *  @param passwd     è§£å¯†å¯†ç 
+ *
+ *  @return
+ */
+int parseEncryptXml(QString fileName, QString passwd) {
+    QString qPlainData;
+
+    std::string sPasswd = passwd.toStdString();
+    std::string sDecryptData;
+    std::string sPlainData;
+    std::string sEncryptData;
+    ParseXml xml;
+
+    /* è¯»å…¥æ–‡ä»¶ */
+    std::ifstream file;
+    file.open(fileName.toStdString().c_str(), std::ios::in | std::ios::binary);
+    file.seekg(0, file.end);
+    int length = file.tellg();
+    file.seekg(0, file.beg);
+    char *buffer = new char[length];
+    if (!buffer) {
+        return -1;
+    }
+    file.read(buffer, length);
+    sEncryptData.assign(buffer, length);
+
+    /* å¼€å§‹è§£å¯† */
+    sDecryptData = gCtx.zebra->decrypt(sEncryptData, sPasswd);
+    if (sDecryptData.empty()) {
+        slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
+             "parseEncryptXml", "decrypt xml file fail",
+             fileName.toStdString().c_str(), passwd.toStdString().c_str());
+        return -1;
+    }
+    slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
+         "parseEncryptXml", "decrypt xml file success",
+         fileName.toStdString().c_str(), passwd.toStdString().c_str());
+
+    /* å¼€å§‹è§£å‹ */
+    sPlainData = gCtx.zebra->gzipUncompress(sDecryptData);
+    if (sPlainData.empty()) {
+        slog("func<%s> : msg<%s> para<file - %s>\n",
+             "parseEncryptXml", "uncompress xml file fail", fileName.toStdString().c_str());
+        return -1;
+    }
+    slog("func<%s> : msg<%s> para<file - %s>\n",
+         "parseEncryptXml", "uncompress xml file success", fileName.toStdString().c_str());
+
+    qPlainData = QString::fromStdString(sPlainData);
+    if (xml.parseDencryptXml(qPlainData) < 0){
+        return -1;
+    }
+
+    /* ç›‘å¬å¥½å‹ */
+    adaptListenAllFriends();
+    return 0;
+}
+

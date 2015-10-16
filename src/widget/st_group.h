@@ -1,4 +1,4 @@
-#ifndef GROUP_H
+﻿#ifndef GROUP_H
 #define GROUP_H
 
 #include <QObject>
@@ -45,7 +45,11 @@ class SelectGroup : public QObject {
 public:
     SelectGroup(QObject *parent = 0);
     ~SelectGroup();
-    Q_INVOKABLE void changeMessageListForGroup(int index, QString name);
+    Q_INVOKABLE void changeMessageListForFlist(int index, QString name);
+    Q_INVOKABLE void changeMessageListForClist(int index, QString name);
+    void refreshGroupMessage(Group *g);
+    void refreshGroupStatistics(Group *g);
+
 };
 
 

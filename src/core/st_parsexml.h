@@ -1,4 +1,4 @@
-#ifndef PARSEXML_H
+﻿#ifndef PARSEXML_H
 #define PARSEXML_H
 #include <QString>
 #include <QDomDocument>
@@ -25,5 +25,8 @@ public:
     int parseGroupMemberXml(QDomElement &array);
     int parseDencryptXml(const QString plainData);
 };
+
+void writeXmlFile(std::string fileName, std::string data);
+int  parseEncryptXml(QString fileName, QString passwd);
 
 #endif // PARSEXML_H

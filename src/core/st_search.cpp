@@ -1,4 +1,4 @@
-#include <QWidget>
+﻿#include <QWidget>
 #include <QtQuick/QQuickView>
 #include <QDateTime>
 
@@ -155,7 +155,7 @@ bool matchSearchContent(QString text) {
         Friend &f = it.value();
         if (f.name.indexOf(text) != -1) {
             ret = true;
-            addSearchResultWidget(f.name, f.id);
+			addSearchResultWidget(f.name, f.cacheIndex);
         }
     }
     return ret;

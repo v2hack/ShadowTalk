@@ -1,4 +1,4 @@
-/*******************************************************************
+﻿/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -32,7 +32,7 @@ Cache::~Cache() {
  *  @return 无
  */
 int Cache::getNextIndex() {
-    return this->getFriendCount() + this->getGroupCount();
+    return this->getFriendCount();
 }
 
 /**
@@ -51,9 +51,10 @@ int Cache::getFriendCount() {
  *
  *  @return 无
  */
-void Cache::setCurrentId(int id, int type) {
+void Cache::setCurrentId(int id, int type, QString name) {
     this->currentUseId = id;
     this->currentUseType = type;
+    this->currentUseName = name;
 }
 
 /**
@@ -66,7 +67,7 @@ Friend *Cache::getOneFriend(int index) {
     QMap<int, Friend>::iterator it;
     for(it = friendList.begin(); it != friendList.end(); it++) {
         Friend &f = it.value();
-        if (f.id == index) {
+        if (f.cacheIndex == index) {
             return &(it.value());
         }
     }
@@ -222,15 +223,12 @@ void Cache::CleanCache() {
  *  @return 无
  */
 void Cache::cleanFriend() {
-//    QMap<int, Friend>::iterator it;
-//    for (it = this->friendList.begin(); it != this->friendList.end(); it++) {
-//        Friend *f = &(it.value());
-//        if (f) {
-//            delete f;
-//        }
-//    }
     this->friendList.clear();
 }
+
+
+
+/******************************  chatList *************************************************/
 
 /**
  *  功能描述: 插入chatlist列表
@@ -239,17 +237,32 @@ void Cache::cleanFriend() {
  *
  *  @return 无
  */
-void Cache::insertOneChat(int friendListId, QString friendName) {
-
+void Cache::insertOneChat(int cacheIndex, int type, QString friendName) {
     int idx = 0;
-    QList<int>::iterator it;
+    QString shortName;
+
+    ChatItem *item = new ChatItem();
+    if (item == NULL) {
+        return;
+    }
+
+    QList<ChatItem *>::iterator it;
     for(it = chatList.begin(); it != chatList.end(); it++) {
         updateListIndexForChat(idx, idx + 1);
         idx++;
     }
 
-    chatList.insert(chatList.begin(), friendListId);
-    addFrientToChat(friendName, friendListId, 0);
+    item->cacheIndex = cacheIndex;
+    item->type = type;
+
+    chatList.insert(chatList.begin(), item);
+
+    if (type == CHATITEM_TYPE_FRIEND) {
+        shortName = "Group";
+    } else {
+        shortName = "Friend";
+    }
+    addFrientToChat(friendName, shortName, cacheIndex, 0);
     return;
 }
 
@@ -260,18 +273,22 @@ void Cache::insertOneChat(int friendListId, QString friendName) {
  *
  *  @return 无
  */
-void Cache::removeOneChat(int friendListId) {
+void Cache::removeOneChat(int cacheIndex, int type) {
     int chatIdx = 0;
 
-    QList<int>::iterator it;
+    QList<ChatItem *>::iterator it;
     for(it = chatList.begin(); it != chatList.end(); it++) {
-        if (*it == friendListId) {
-            break;
+        ChatItem *item = *it;
+        if (item) {
+            if (item->cacheIndex == cacheIndex && item->type == type) {
+                break;
+            }
+            chatIdx++;
         }
-        chatIdx++;
     }
     if (chatIdx != -1) {
         chatList.erase(it);
+        delete *it;
         removeFrientFromChat(chatIdx);
     }
     return;
@@ -283,17 +300,20 @@ void Cache::removeOneChat(int friendListId) {
  *
  *  @return 无
  */
-int Cache::atFirstPosition(int friendListId) {
+int Cache::atFirstPosition(int cacheIndex, int type) {
     int result = 0;
     int idx = 0;
 
-    QList<int>::iterator it;
+    QList<ChatItem *>::iterator it;
     for(it = chatList.begin(); it != chatList.end();it++) {
-        if (*it == friendListId) {
-            result = 1;
-            break;
+        ChatItem *item = *it;
+        if (item) {
+            if (item->cacheIndex == cacheIndex && item->type == type) {
+                result = 1;
+                break;
+            }
+            idx++;
         }
-        idx++;
     }
     /* 有结果，并且已经在第一个位置上 */
     if (result == 1 && idx == 0) {
@@ -308,24 +328,28 @@ int Cache::atFirstPosition(int friendListId) {
 }
 
 
-int Cache::getFriendIdOfChat(int chatId) {
-    if (chatId > chatList.size()) {
-        return -1;
-    }
-    return chatList.at(chatId);
-}
+//int Cache::getFriendIdOfChat(int chatId) {
+//    if (chatId > chatList.size()) {
+//        return -1;
+//    }
+//    return chatList.at(chatId);
+//}
 
 
-int Cache::getPositionNum(int friendListId) {
+int Cache::getPositionNum(int cacheIndex, int type) {
     int idx = 0;
     int result = 0;
-    QList<int>::iterator it;
+
+    QList<ChatItem *>::iterator it;
     for(it = chatList.begin(); it != chatList.end();it++) {
-        if (*it == friendListId) {
-            result = 1;
-            break;
+        ChatItem *item = *it;
+        if (item) {
+            if (item->cacheIndex == cacheIndex && item->type == type) {
+                result = 1;
+                break;
+            }
+            idx++;
         }
-        idx++;
     }
     if (result == 1) {
         return idx;

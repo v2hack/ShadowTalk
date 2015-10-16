@@ -1,4 +1,4 @@
-#ifndef  IM_HPP_
+﻿#ifndef  IM_HPP_
 #define  IM_HPP_
 
 #include <string>
