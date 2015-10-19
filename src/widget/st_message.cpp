@@ -311,7 +311,7 @@ void MessageManager::sendFriendMessage(QString &message) {
          "sendMessage", "send one message", c->currentUseId, message.toLatin1().data());
 
     /* impai 发送消息 */
-    adaptSendMessage(f->friendChannelId, 1, message, f->messageCount);
+    adaptSendMessage(f->friendChannelId, 1, message);
 
     refreshChatListPosition(f->cacheIndex, CHATITEM_TYPE_FRIEND);
     return;

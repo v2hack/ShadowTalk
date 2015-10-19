@@ -47,9 +47,7 @@ void getLocalIp() {
  *
  *  @return 无
  */
-void adaptSendMessage(QString channelId, int messageType,
-                      QString message, int messageId) {
-
+void adaptSendMessage(QString channelId, int messageType, QString message) {
     peersafe::im::Message_client *z = gCtx.zebra;
     if (z) {
         z->send_offline_message(StringToHex(channelId.toStdString()),
@@ -58,10 +56,11 @@ void adaptSendMessage(QString channelId, int messageType,
                                 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                                 message.toStdString().size(), 0);
         z->send_sync_message(gCtx.phoneSyncChannel, StringToHex(channelId.toStdString()),
-                                messageType + 2000,
-                                message.toStdString(),
-                                60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
-                                message.toStdString().size(), 0);
+                             messageType + 2000,
+                             message.toStdString(),
+                             60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                             message.toStdString().size(), 0);
+        qDebug() << "[c++] : adaptSendMessage - send sync message";
     }
     return;
 }
@@ -102,13 +101,13 @@ void adaptListenAllFriends() {
 
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
-       Friend &f = it.value();
-       ret = z->listen_friend(StringToHex(f.friendChannelId.toStdString()));
-       if (ret < 0) {
-           std::cout << "listen friend fail - " << f.friendChannelId.toStdString() << std::endl;
-           continue;
-       }
-       ShadowTalkSleep(200);
+        Friend &f = it.value();
+        ret = z->listen_friend(StringToHex(f.friendChannelId.toStdString()));
+        if (ret < 0) {
+            std::cout << "listen friend fail - " << f.friendChannelId.toStdString() << std::endl;
+            continue;
+        }
+        ShadowTalkSleep(200);
     }
     std::cout << "listen all friends ok" << std::endl;
     return;
@@ -150,13 +149,68 @@ void adaptUnlistenAllFriends() {
 
     QMap<int, Friend>::iterator it;
     for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
-       Friend &f = it.value();
-       ret = z->stop_listen_friend(StringToHex(f.friendChannelId.toStdString()));
-       if (ret < 0) {
-           std::cout << "unlisten all friend fail" << std::endl;
-           continue;
-       }
+        Friend &f = it.value();
+        ret = z->stop_listen_friend(StringToHex(f.friendChannelId.toStdString()));
+        if (ret < 0) {
+            std::cout << "unlisten all friend fail" << std::endl;
+            continue;
+        }
     }
     std::cout << "unlisten all friends ok" << std::endl;
     return;
 }
+
+
+void adaptSendGroupMessage(QString channelId, int messageType, QString message, QString myName) {
+    peersafe::im::Message_client *z = gCtx.zebra;
+    if (z) {
+        z->send_group_message(StringToHex(channelId.toStdString()),
+                              messageType, message.toStdString(),
+                              60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                              message.toStdString().size(), 0, myName.toStdString());
+        qDebug() << "[c++] : adaptSendGroupMessage";
+    }
+    return;
+}
+
+
+
+void adaptListenGroups(QString groupChannelId) {
+    Cache *c = gCtx.cache;
+    peersafe::im::Message_client *z = gCtx.zebra;
+    if (!z || !c) {
+        return;
+    }
+    z->listen_group_channel(StringToHex(groupChannelId.toStdString()));
+    std::cout << "[c++] : listen group ok" << std::endl;
+    return;
+}
+
+
+void adaptListenAllGroups() {
+    Cache *c = gCtx.cache;
+    peersafe::im::Message_client *z = gCtx.zebra;
+    if (!z || !c) {
+        return;
+    }
+
+    QMap<int, Group>::iterator it;
+    for (it = c->groupList.begin(); it != c->groupList.end(); it++) {
+        Group &g = it.value();
+        z->listen_group_channel(StringToHex(g.groupChannelId_.toStdString()));
+        ShadowTalkSleep(300);
+    }
+    std::cout << "[c+] : listen all group ok" << std::endl;
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+

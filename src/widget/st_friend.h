@@ -22,13 +22,14 @@ public:
                    int session, int status, int friendIndex);
     ~Friend();
 
-    int cacheIndex;                          // 好友id,用于界面
+    int cacheIndex;                  // 好友id,用于界面
     QString qrCode;                  // 二维码
     int defaultExpiredTime;          // 默认的超时时间
     QString friendChannelId;         // 好友通道
     int inSession;                   // 联系人是否在聊天列表中
     QString name;                    // 用户名
     QString firstLetter;
+
     int netStatus;                   // 在线状态
     int loadStatus;                  // 是否已经加载到界面
     int listViewIndex;               // 在listView中排序

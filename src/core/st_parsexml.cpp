@@ -72,7 +72,8 @@ extern struct ShadowTalkContext gCtx;
 *
 *  @return 0 成功  -1 失败
 */
-static void addCacheForKeyValue(const QString key, const QString value) {
+static void addCacheForKeyValue(const QString key, const QString value)
+{
     std::string cKey = key.toStdString();
     std::string cValue = value.toStdString();
 
@@ -102,11 +103,8 @@ static void addCacheForKeyValue(const QString key, const QString value) {
 *
 *  @return 0 成功  -1 失败
 */
-static void addCacheForChannel(
-         QString &channelId,
-         QString &createdTime,
-         QString &expiredTime,
-         QString &shortCode)
+static void addCacheForChannel(QString &channelId, QString &createdTime,
+         QString &expiredTime, QString &shortCode)
 {
     Cache *c = gCtx.cache;
     if (!c) {
@@ -1001,6 +999,8 @@ int parseEncryptXml(QString fileName, QString passwd) {
 
     /* 监听好友 */
     adaptListenAllFriends();
+    /* 监听组 */
+    adaptListenAllGroups();
     return 0;
 }
 
