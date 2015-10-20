@@ -59,25 +59,43 @@ std::string NormalPicture::findPictureCache(QString fidx, QString midx)
         return std::string("");
     }
 
-    /* 找到好友缓存 */
-    Friend *f = c->getOneFriend(fidx.toInt());
-    if (!f) {
-        qDebug() << "[c++] : can't find friend index - " << fidx;
+    if (c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
+        Friend *f = c->getOneFriend(fidx.toInt());
+        if (!f) {
+            qDebug() << "[c++] : can't find friend index - " << fidx;
+            return std::string("");
+        }
+
+        /* 如果是音频消息则返回内容 */
+        QMap<int, Message>::iterator it = f->messageList.find(midx.toInt());
+        if (it != f->messageList.end()) {
+            Message &m = it.value();
+            if (m.messageType == MessageTypeImage) {
+                return m.data;
+            }
+        }
+        qDebug() << "[c++] : friend findPictureCache - can't find image message - fid:"
+                 << fidx << " mid:" << midx;
+        return std::string("");
+    } else {
+        Group *g = c->getOneGroup(fidx.toInt());
+        if (!g) {
+            qDebug() << "[c++] : can't find group index - " << fidx;
+            return std::string("");
+        }
+
+        /* 如果是音频消息则返回内容 */
+        QMap<int, GroupMessage>::iterator it = g->messageList_.find(midx.toInt());
+        if (it != g->messageList_.end()) {
+            GroupMessage &m = it.value();
+            if (m.messageType == MessageTypeImage) {
+                return m.data;
+            }
+        }
+        qDebug() << "[c++] : group findPictureCache - can't find image message - fid:"
+                 << fidx << " mid:" << midx;
         return std::string("");
     }
-
-    /* 如果是音频消息则返回内容 */
-    QMap<int, Message>::iterator it = f->messageList.find(midx.toInt());
-    if (it != f->messageList.end()) {
-        Message &m = it.value();
-        if (m.messageType == MessageTypeImage) {
-            return m.data;
-        }
-    }
-
-    qDebug() << "[c++] : findPictureCache - can't find image message - fid:"
-             << fidx << " mid:" << midx;
-
     return std::string("");
 }
 
@@ -97,7 +115,7 @@ QUrl NormalPicture::displayPicture(QString fidx, QString midx, std::string pictu
     NormalPicture::writePictureFile(friendPictureFile, pictureData);
     /* 拼装文件绝对路径，并设置qml播放的source属性 */
     QString tempPath = QString("%0%1%2-%3%4").arg(QGuiApplication::applicationDirPath(),
-                "/temp/", fidx, midx, SHADOWTALK_IMAGE_PREFIX);
+                                                  "/temp/", fidx, midx, SHADOWTALK_IMAGE_PREFIX);
     const QUrl pictureUrl = QUrl::fromLocalFile(tempPath);
     return pictureUrl;
 }
