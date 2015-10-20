@@ -887,7 +887,7 @@ void zebraDeleagates::group_chat_message_received(
     QMap<int, Group>::iterator it;
     for (it = c->groupList_.begin(); it != c->groupList_.end(); it++) {
         Group &g = it.value();
-        int idx = g.messageList_.size();
+        int idx = g.messageList_.size() + 1;
         if (group_channel_id == StringToHex(g.groupChannelId_.toStdString())) {
 
             GroupMessage *m   = new GroupMessage;

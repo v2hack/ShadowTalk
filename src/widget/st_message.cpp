@@ -278,10 +278,19 @@ void MessageManager::sendGroupMessage(QString &message) {
     }
 
     qDebug() << "[c++] : message - " << message;
+    int idx = g->messageList_.size() + 1;
+    MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
 
-    // TODO 将消息加入缓存
+    /* 组装缓存 */
+    GroupMessage *m   = new GroupMessage;
+    m->data           = message.toStdString();
+    m->driect         = MessageDriectMe;
+    m->messageType    = MessageTypeWord;
+    m->MessageMethord = MessageMethodOffline;
 
-    // TODO 转发给手机端
+    g->insertOneMessage(m);
+
+    Adapt::adaptSendGroupMessage(g->groupChannelId_, 1, message, g->myNameInGroup_);
 
     Chat::refreshChatListPosition(g->gid_, CHATITEM_TYPE_GROUP);
     return;
@@ -296,9 +305,7 @@ void MessageManager::sendFriendMessage(QString &message) {
         return;
     }
     qDebug() << "[c++] : message - " << message;
-
     int idx = f->messageList.size() + 1;
-
     MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
 
     /* 组装缓存 */
