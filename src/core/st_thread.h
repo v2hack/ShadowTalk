@@ -8,6 +8,7 @@
 #include "st_cache.h"
 #include "st_utils.h"
 #include "st_search.h"
+
 class Sthread : public QThread
 {
     Q_OBJECT

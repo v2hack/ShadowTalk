@@ -1,13 +1,26 @@
-﻿#include "st_qrcode.h"
-
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_qrcode.cpp
+ *  简要描述: 主要负责生成二维码，及生成二维码图片
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
 #include <QPainter>
 #include <QImage>
+#include "st_qrcode.h"
 
-QrCode::QrCode() {
+QrCode::QrCode()
+{
     qr = NULL;
 }
 
-QrCode::~QrCode() {
+QrCode::~QrCode()
+{
     if(qr != NULL) {
         QRcode_free(qr);
     }
@@ -19,7 +32,8 @@ QrCode::~QrCode() {
  *
  *  @return 无
  */
-int QrCode::getQRWidth() const {
+int QrCode::getQRWidth() const
+{
     if(qr != NULL) {
         return qr->width;
     } else {
@@ -33,7 +47,8 @@ int QrCode::getQRWidth() const {
  *
  *  @return 无
  */
-void QrCode::setString(QString str) {
+void QrCode::setString(QString str)
+{
     string = str;
     if(qr != NULL) {
         QRcode_free(qr);
@@ -49,7 +64,8 @@ void QrCode::setString(QString str) {
  *
  *  @return 无
  */
-QSize QrCode::sizeHint() const {
+QSize QrCode::sizeHint() const
+{
     QSize s;
     if(qr != NULL){
         int qr_width = qr->width > 0 ? qr->width : 1;
@@ -66,7 +82,8 @@ QSize QrCode::sizeHint() const {
  *
  *  @return 无
  */
-QSize QrCode::minimumSizeHint() const {
+QSize QrCode::minimumSizeHint() const
+{
     QSize s;
     if(qr != NULL) {
         int qr_width = qr->width > 0 ? qr->width : 1;
@@ -84,7 +101,8 @@ QSize QrCode::minimumSizeHint() const {
  *
  *  @return 成功true  失败false
  */
-bool QrCode::saveImage(QString fileName, int size) {
+bool QrCode::saveImage(QString fileName, int size)
+{
     if(size != 0 && !fileName.isEmpty()) {
         QImage image(size, size, QImage::Format_Mono);
         QPainter painter(&image);
@@ -109,7 +127,8 @@ bool QrCode::saveImage(QString fileName, int size) {
  *
  *  @return 成功true  失败false
  */
-void QrCode::draw(QPainter &painter, int width, int height) {
+void QrCode::draw(QPainter &painter, int width, int height)
+{
     QColor foreground(Qt::black);
     painter.setBrush(foreground);
     const int qr_width = qr->width > 0 ? qr->width : 1;
@@ -124,4 +143,5 @@ void QrCode::draw(QPainter &painter, int width, int height) {
             }
         }
     }
+    return;
 }

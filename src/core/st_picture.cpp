@@ -1,14 +1,23 @@
-﻿
-#include <fstream>
-#include <string>
-
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_picture.cpp
+ *  简要描述: 主要处理图片的缩放、裁剪、显示及生成文件
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
 #include <QMap>
 #include <QDebug>
 #include <QString>
 #include <QGuiApplication>
 #include <QString>
 #include <QQuickView>
-
+#include <fstream>
+#include <string>
 #include "st_utils.h"
 #include "st_cache.h"
 #include "st_context.h"
@@ -27,7 +36,8 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void writePictureFile(std::string fileName, std::string data) {
+void NormalPicture::writePictureFile(std::string fileName, std::string data)
+{
     std::ofstream file;
     file.open(fileName, std::ios::out | std::ios::binary);
     file.write(data.c_str(), data.size());
@@ -42,19 +52,17 @@ void writePictureFile(std::string fileName, std::string data) {
  *
  *  @return 返回图片数据内容
  */
-std::string findPictureCache(QString fidx, QString midx) {
-
-    /* 寻找index的消息 */
+std::string NormalPicture::findPictureCache(QString fidx, QString midx)
+{
     Cache *c = gCtx.cache;
     if (!c) {
-        qDebug() << "gctx cache is empty";
         return std::string("");
     }
 
     /* 找到好友缓存 */
     Friend *f = c->getOneFriend(fidx.toInt());
     if (!f) {
-        qDebug() << "can't find friend index - " << fidx;
+        qDebug() << "[c++] : can't find friend index - " << fidx;
         return std::string("");
     }
 
@@ -67,7 +75,9 @@ std::string findPictureCache(QString fidx, QString midx) {
         }
     }
 
-    qDebug() << "[c++] : findPictureCache - can't find image message - fid:" << fidx << " mid:" << midx;
+    qDebug() << "[c++] : findPictureCache - can't find image message - fid:"
+             << fidx << " mid:" << midx;
+
     return std::string("");
 }
 
@@ -79,25 +89,18 @@ std::string findPictureCache(QString fidx, QString midx) {
  *
  *  @return 返回图片数据内容
  */
-QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
-
+QUrl NormalPicture::displayPicture(QString fidx, QString midx, std::string pictureData)
+{
     /* 组装文件路径及名字 */
-    QString tempFilePath = QString("%0%1-%2%3").arg(
-        SHADOWTALK_TEMP_DIR, fidx, midx, SHADOWTALK_IMAGE_PREFIX);
+    QString tempFilePath = QString("%0%1-%2%3").arg(SHADOWTALK_TEMP_DIR, fidx, midx, SHADOWTALK_IMAGE_PREFIX);
     std::string friendPictureFile = tempFilePath.toStdString();
-    writePictureFile(friendPictureFile, pictureData);
-
+    NormalPicture::writePictureFile(friendPictureFile, pictureData);
     /* 拼装文件绝对路径，并设置qml播放的source属性 */
-    QString tempPath = QString("%0%1%2-%3%4").arg(
-                QGuiApplication::applicationDirPath(),
-                "/temp/",
-                fidx,
-                midx,
-                SHADOWTALK_IMAGE_PREFIX);
+    QString tempPath = QString("%0%1%2-%3%4").arg(QGuiApplication::applicationDirPath(),
+                "/temp/", fidx, midx, SHADOWTALK_IMAGE_PREFIX);
     const QUrl pictureUrl = QUrl::fromLocalFile(tempPath);
     return pictureUrl;
 }
-
 
 /**
  *  功能描述: 缩放图片计算
@@ -108,8 +111,8 @@ QUrl displayPicture(QString fidx, QString midx, std::string pictureData) {
  *
  *  @return 返回0 -1
  */
-int shrinkPicture(QString filePath, int &height, int &width, int limit) {
-
+int NormalPicture::shrinkPicture(QString filePath, int &height, int &width, int limit)
+{
     double times = 0;
     QImage image;
 
@@ -144,9 +147,7 @@ int shrinkPicture(QString filePath, int &height, int &width, int limit) {
  *
  *  @return 返回0 -1
  */
-NormalPicture::NormalPicture(QObject *parent) : QObject(parent) {
-
-}
+NormalPicture::NormalPicture(QObject *parent) : QObject(parent) {}
 
 /**
  *  功能描述: 设置显示大图的显示框
@@ -156,7 +157,8 @@ NormalPicture::NormalPicture(QObject *parent) : QObject(parent) {
  *
  *  @return 返回0 -1
  */
-static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile) {
+static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile)
+{
     viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.setSource(QUrl(qmlFile));
 
@@ -172,7 +174,6 @@ static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString 
     return;
 }
 
-
 /**
  *  功能描述: 设置显示大图
  *  @param  friendIndex  好友索引
@@ -180,28 +181,27 @@ static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString 
  *
  *  @return 无
  */
-void NormalPicture::displayNormalPicture(QString friendIndex, QString messageIndex) {
-    qDebug() << "display large picture";
-
+void NormalPicture::displayNormalPicture(QString friendIndex, QString messageIndex)
+{
     if (gCtx.imager == NULL) {
         gCtx.imager = new QQuickView;
     }
     setViewerParameter(*gCtx.imager, "pictureWindow", "qrc:/qml/picture.qml");
 
-    std::string fileData = findPictureCache(friendIndex, messageIndex);
+    std::string fileData = NormalPicture::findPictureCache(friendIndex, messageIndex);
     if (fileData.empty()) {
-        qDebug() << "normal picture is empty";
+        qDebug() << "[c++] : normal picture is empty";
         return;
     }
     /* 持久化图片文件 */
-    QUrl picturePath = displayPicture(friendIndex, messageIndex, fileData);
+    QUrl picturePath = NormalPicture::displayPicture(friendIndex, messageIndex, fileData);
     if (picturePath.isEmpty()) {
         return;
     }
 
     int height = 0, width = 0;
-    if (shrinkPicture(picturePath.toLocalFile(), height, width, 600) < 0) {
-        qDebug() << "shrink picture fail";
+    if (NormalPicture::shrinkPicture(picturePath.toLocalFile(), height, width, 600) < 0) {
+        qDebug() << "[c++] : shrink picture fail";
         return;
     }
 
@@ -213,15 +213,12 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
 
     QObject *rect = rootObject->findChild<QObject*>("qmlNormalImage");
     if (rect) {
-        QMetaObject::invokeMethod(rect, "setPicture",
-                                  Q_ARG(QVariant, picturePath.toString()),
-                                  Q_ARG(QVariant, height),
-                                  Q_ARG(QVariant, width)
-                                  );
-        qDebug() << "insert one picture ok";
+        QMetaObject::invokeMethod(rect, "setPicture", Q_ARG(QVariant, picturePath.toString()),
+                                  Q_ARG(QVariant, height), Q_ARG(QVariant, width));
+        qDebug() << "[c++] : insert one picture ok";
     } else {
-        qDebug() << "insert one picture fail";
+        qDebug() << "[c++] : insert one picture fail";
     }
     gCtx.imager->show();
+    return;
 }
-

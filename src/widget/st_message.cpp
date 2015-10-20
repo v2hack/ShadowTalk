@@ -37,7 +37,7 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void addMessageToWidget(
+void MessageWidget::addMessageToWidget(
         int uid,
         QString name,
         int type,
@@ -88,7 +88,7 @@ void addMessageToWidget(
  *
  *  @return 无
  */
-void addImageToWidget(
+void MessageWidget::addImageToWidget(
         int uid,
         QString name,
         int type,
@@ -100,7 +100,7 @@ void addImageToWidget(
 
     int height = 0, width = 0;
     /* 持久化图片文件 */
-    QUrl picturePath = displayPicture(
+    QUrl picturePath = NormalPicture::displayPicture(
                 QString::number(uid),
                 QString::number(messageIndex),
                 messageData);
@@ -109,7 +109,7 @@ void addImageToWidget(
     }
 
     /* 图片缩放 */
-    if (shrinkPicture(picturePath.toLocalFile(), height, width, 300) < 0) {
+    if (NormalPicture::shrinkPicture(picturePath.toLocalFile(), height, width, 300) < 0) {
         return;
     }
 
@@ -153,7 +153,8 @@ void addImageToWidget(
  *
  *  @return 无
  */
-void addVoiceToWidget(int uid, QString name, int type, int direct, QString voiceData, int voiceSeconds, int messageIndex)
+void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
+       int direct, QString voiceData, int voiceSeconds, int messageIndex)
 {
     qDebug() << "receive one voice";
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -190,7 +191,8 @@ void addVoiceToWidget(int uid, QString name, int type, int direct, QString voice
  *
  *  @return 无
  */
-void clearMessageFromWidget() {
+void MessageWidget::clearMessageFromWidget()
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -212,7 +214,8 @@ void clearMessageFromWidget() {
  *
  *  @return 无
  */
-void clearFriendFromWidget() {
+void MessageWidget::clearFriendFromWidget()
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -236,7 +239,8 @@ void clearFriendFromWidget() {
  *
  *  @return 无
  */
-void removeMessageByIndex(int index, int count) {
+void MessageWidget::removeMessageByIndex(int index, int count)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -267,10 +271,9 @@ MessageManager::~MessageManager() {
 
 void MessageManager::sendGroupMessage(QString &message) {
     Cache *c = gCtx.cache;
-
-    Group *g = c->getOneGroup(c->currentUseId);
+    Group *g = c->getOneGroup(c->currentUseId_);
     if (!g) {
-        qDebug() << "[c++] : can't current group idx - " << c->currentUseId;
+        qDebug() << "[c++] : can't current group idx - " << c->currentUseId_;
         return;
     }
 
@@ -280,23 +283,23 @@ void MessageManager::sendGroupMessage(QString &message) {
 
     // TODO 转发给手机端
 
-    refreshChatListPosition(g->gid_, CHATITEM_TYPE_GROUP);
-
+    Chat::refreshChatListPosition(g->gid_, CHATITEM_TYPE_GROUP);
+    return;
 }
 
 void MessageManager::sendFriendMessage(QString &message) {
     Cache *c = gCtx.cache;
 
-    Friend *f = c->getOneFriend(c->currentUseId);
+    Friend *f = c->getOneFriend(c->currentUseId_);
     if (!f) {
-        qDebug() << "[c++] : can't current friend idx - " << c->currentUseId;
+        qDebug() << "[c++] : can't current friend idx - " << c->currentUseId_;
         return;
     }
     qDebug() << "[c++] : message - " << message;
 
     int idx = f->messageList.size() + 1;
 
-    addMessageToWidget(0, "Me", 1, 1, message, idx);
+    MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
 
     /* 组装缓存 */
     Message *m     = new Message;
@@ -308,15 +311,14 @@ void MessageManager::sendFriendMessage(QString &message) {
     /* 添加到缓存 */
     f->insertOneMessage(m);
     slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
-         "sendMessage", "send one message", c->currentUseId, message.toLatin1().data());
+         "sendMessage", "send one message", c->currentUseId_, message.toLatin1().data());
 
     /* impai 发送消息 */
-    adaptSendMessage(f->friendChannelId, 1, message);
+    Adapt::adaptSendMessage(f->friendChannelId, 1, message);
 
-    refreshChatListPosition(f->cacheIndex, CHATITEM_TYPE_FRIEND);
+    Chat::refreshChatListPosition(f->cacheIndex, CHATITEM_TYPE_FRIEND);
     return;
 }
-
 
 
 /**
@@ -330,11 +332,11 @@ void MessageManager::sendMessage(QString message) {
 
     /* 找到缓存 */
     Cache *c = gCtx.cache;
-    if (c->currentUseType == CHATITEM_TYPE_FRIEND) {
-        qDebug() << "[c++] : send one friend message - " << c->currentUseId;
+    if (c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
+        qDebug() << "[c++] : send one friend message - " << c->currentUseId_;
         this->sendFriendMessage(message);
     } else {
-        qDebug() << "[c++] : send one group message - " << c->currentUseId;
+        qDebug() << "[c++] : send one group message - " << c->currentUseId_;
         this->sendGroupMessage(message);
     }
     return;

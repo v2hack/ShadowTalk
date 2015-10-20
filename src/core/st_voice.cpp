@@ -1,13 +1,22 @@
-﻿
-#include <fstream>
-#include <string>
-
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_voice.cpp
+ *  简要描述: 主要负责语音的显示、播放
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
 #include <QMap>
 #include <QDebug>
 #include <QString>
 #include <QGuiApplication>
 #include <QString>
-
+#include <fstream>
+#include <string>
 #include "st_voice.h"
 #include "st_utils.h"
 #include "st_cache.h"
@@ -23,9 +32,7 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-Voice::Voice(QObject *parent) : QObject(parent) {
-
-}
+Voice::Voice(QObject *parent) : QObject(parent) {}
 
 /**
  *  功能描述: 将声音缓存写入文件
@@ -34,7 +41,8 @@ Voice::Voice(QObject *parent) : QObject(parent) {
  *
  *  @return 无
  */
-void Voice::writeVoiceFile(std::string fileName, std::string data) {
+void Voice::writeVoiceFile(std::string fileName, std::string data)
+{
     std::ofstream file;
     file.open(fileName, std::ios::out | std::ios::binary);
     file.write(data.c_str(), data.size());
@@ -49,9 +57,8 @@ void Voice::writeVoiceFile(std::string fileName, std::string data) {
  *
  *  @return 无
  */
-std::string Voice::findVoiceCache(QString fidx, QString midx) {
-
-    /* 寻找index的消息 */
+std::string Voice::findVoiceCache(QString fidx, QString midx)
+{
     Cache *c = gCtx.cache;
     if (!c) {
         return std::string("");
@@ -60,7 +67,7 @@ std::string Voice::findVoiceCache(QString fidx, QString midx) {
     /* 找到好友缓存 */
     Friend *f = c->getOneFriend(fidx.toInt());
     if (!f) {
-        qDebug() << "can't find friend index - " << fidx;
+        qDebug() << "[c++] : can't find friend index - " << fidx;
         return std::string("");
     }
 
@@ -82,8 +89,8 @@ std::string Voice::findVoiceCache(QString fidx, QString midx) {
  *
  *  @return 无
  */
-void Voice::playVoice(QString fidx, QString midx) {
-
+void Voice::playVoice(QString fidx, QString midx)
+{
     /* 找到缓存并生成声音文件 */
     std::string friendVoice = findVoiceCache(fidx, midx);
     if (friendVoice.empty()) {
@@ -92,33 +99,24 @@ void Voice::playVoice(QString fidx, QString midx) {
     }
 
 	/* 组装文件路径及名字 */
-	QString tempFilePath = QString("%0%1-%2%3").arg(
-		SHADOWTALK_TEMP_DIR, 
-		fidx, 
-		midx, 
-		SHADOWTALK_SOUND_PREFIX);
+    QString tempFilePath = QString("%0%1-%2%3").arg(SHADOWTALK_TEMP_DIR,
+        fidx, midx, SHADOWTALK_SOUND_PREFIX);
 
 	std::string friendVoiceFile = tempFilePath.toStdString();
     writeVoiceFile(friendVoiceFile, friendVoice);
 
     /* 拼装文件绝对路径，并设置qml播放的source属性 */
-    QString tempPath = QString("%0%1%2-%3%4").arg(
-                QGuiApplication::applicationDirPath(),
-                "/temp/",
-                fidx,
-                midx,
-                SHADOWTALK_SOUND_PREFIX);
+    QString tempPath = QString("%0%1%2-%3%4").arg(QGuiApplication::applicationDirPath(),
+                "/temp/", fidx, midx, SHADOWTALK_SOUND_PREFIX);
 
     const QUrl commandLineUrl = QUrl::fromLocalFile(tempPath);
     gCtx.viewer->rootContext()->setContextProperty(QStringLiteral("voiceUrl"), commandLineUrl);
-    qDebug() << "voice file :  - " << commandLineUrl;
+    qDebug() << "[c++] : voice file :  - " << commandLineUrl;
 
     /* 调用qml播放声音接口 */
-    playMessageVoice(tempPath);
+    Utils::playMessageVoice(tempPath);
     return;
 }
-
-
 
 /**
  *  功能描述: 休眠函数
@@ -126,6 +124,8 @@ void Voice::playVoice(QString fidx, QString midx) {
  *
  *  @return 无
  */
-void Voice::stopVoice() {
-    stopMessageVoice();
+void Voice::stopVoice()
+{
+    Utils::stopMessageVoice();
+    return;
 }

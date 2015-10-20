@@ -24,9 +24,10 @@ public:
     int parseGroupMemberDict(QDomElement dict);
     int parseGroupMemberXml(QDomElement &array);
     int parseDencryptXml(const QString plainData);
+
+    static void writeXmlFile(std::string fileName, std::string data);
+    static int parseEncryptXml(QString fileName, QString passwd);
 };
 
-void writeXmlFile(std::string fileName, std::string data);
-int  parseEncryptXml(QString fileName, QString passwd);
 
 #endif // PARSEXML_H

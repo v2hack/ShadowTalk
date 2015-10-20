@@ -24,7 +24,8 @@
 extern struct ShadowTalkContext gCtx;
 
 /* 设置界面上的同步进度 */
-void ShadowTalkSetSyncProcess(int processValue) {
+void Login::ShadowTalkSetSyncProcess(int processValue)
+{
     QQuickItem *rootObject = gCtx.loginer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -40,7 +41,8 @@ void ShadowTalkSetSyncProcess(int processValue) {
     return;
 }
 
-void ShadowTalkSetSyncProcessClean(int processValue) {
+void Login::ShadowTalkSetSyncProcessClean(int processValue)
+{
     QQuickItem *rootObject = gCtx.loginer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -75,7 +77,8 @@ void ShadowTalkSetQrImage(QString qrImagePath) {
 }
 
 /* 开始进入同步进度条 */
-void ShadowTalkLoginStartSync() {
+void Login::ShadowTalkLoginStartSync()
+{
     QQuickItem *rootObject = gCtx.loginer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -91,7 +94,8 @@ void ShadowTalkLoginStartSync() {
 }
 
 /* 恢复登录界面设置 */
-void ShadowTalkLoginClean() {
+void Login::ShadowTalkLoginClean()
+{
     QQuickItem *rootObject = gCtx.loginer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -108,7 +112,8 @@ void ShadowTalkLoginClean() {
 
 
 /* 登陆 */
-int ShadowTalkLogin() {
+int Login::ShadowTalkLogin()
+{
     int ret = 0, count = 0;
     int tryTimes = 5;
 
@@ -123,7 +128,7 @@ int ShadowTalkLogin() {
         }
         ret = gCtx.zebra->get_network_state();
         if (ret < 0) {
-            ShadowTalkSleep(1000);
+            Utils::ShadowTalkSleep(1000);
             count++;
             continue;
         } else {
@@ -164,6 +169,4 @@ int ShadowTalkLogin() {
     ShadowTalkSetQrImage(pictureUrl.toString());
     return 0;
 }
-
-
 

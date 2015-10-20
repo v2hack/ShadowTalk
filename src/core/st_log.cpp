@@ -19,7 +19,8 @@
 #define LOG_ENABLE 1
 #ifdef LOG_ENABLE
 
-void slog(const char *format, ...) {
+void slog(const char *format, ...)
+{
     FILE *logfile;
     va_list arg_ptr;
     va_start(arg_ptr, format);

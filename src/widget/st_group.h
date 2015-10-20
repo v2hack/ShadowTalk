@@ -5,10 +5,9 @@
 #include <QQuickItem>
 #include "st_message.h"
 
-class Group {
-
+class Group
+{
 public:
-
     Group(QString groupChannelId, QString localMemberId, QString gourpName,
           QString myNameInGroup, QString ownerID, QString showNotification, int gid);
     ~Group();
@@ -21,11 +20,11 @@ public:
     QString ownerID_;
     QString showNotification_;
 
-    int listViewIndex;
-    int messageUnreadCount;
+    int listViewIndex_;
+    int messageUnreadCount_;
 
-    QMap<int, GroupMessage> messageList;  // 消息列表 qmlId:struct
-    QMap<QString , QString> memberList;   // 成员列表 memberID:name
+    QMap<int, GroupMessage> messageList_;  // 消息列表 qmlId:struct
+    QMap<QString , QString> memberList_;   // 成员列表 memberID:name
 
     void insertOneMessage(GroupMessage *message);
     void insertOneMember(QString &memberId, QString &name);
@@ -39,9 +38,9 @@ public:
 *  类名: SelectFriend
 *  用途: 界面点击好友，动态切换聊天内容
 */
-class SelectGroup : public QObject {
+class SelectGroup : public QObject
+{
     Q_OBJECT
-
 public:
     SelectGroup(QObject *parent = 0);
     ~SelectGroup();
@@ -49,7 +48,6 @@ public:
     Q_INVOKABLE void changeMessageListForClist(int index, QString name);
     void refreshGroupMessage(Group *g);
     void refreshGroupStatistics(Group *g);
-
 };
 
 

@@ -29,7 +29,8 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-std::string Base64::encode(const std::string &binaryData) {
+std::string Base64::encode(const std::string &binaryData)
+{
     peersafe::im::Message_client *zebra = gCtx.zebra;
     if (!zebra) {
         return "";
@@ -37,11 +38,20 @@ std::string Base64::encode(const std::string &binaryData) {
     return zebra->base64Encode(binaryData);;
 }
 
-static std::string filterWords(const std::string oldData) {
+/**
+ *  功能描述: 过滤xml文件中的回车和tab字符
+ *  @param oldData  xml文件内容
+ *
+ *  @return 返回过滤后的文件内容
+ */
+static std::string filterWords(const std::string oldData)
+{
     std::string newData;
     unsigned long dataSize = oldData.size();
-
     char *cPtr = new char[dataSize];
+    if (cPtr == nullptr) {
+        return "";
+    }
     memcpy(cPtr, oldData.c_str(), dataSize);
 
     for (unsigned long i = 0; i < dataSize; i++) {
@@ -55,15 +65,14 @@ static std::string filterWords(const std::string oldData) {
     return newData;
 }
 
-
-
 /**
  *  功能描述: decode 将字符串变成二进制数据
  *  @param base64String  可见字符串
  *
  *  @return 无
  */
-std::string Base64::decode(const std::string &base64String) {
+std::string Base64::decode(const std::string &base64String)
+{
     peersafe::im::Message_client *zebra = gCtx.zebra;
     if (!zebra) {
         return "";

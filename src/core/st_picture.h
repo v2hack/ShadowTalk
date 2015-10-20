@@ -6,22 +6,16 @@
 #include <QUrl>
 #include <QObject>
 
-void writePictureFile(std::string fileName, std::string data);
-std::string findPictureCache(QString fidx, QString midx);
-QUrl displayPicture(QString friendIndex, QString messageIndex, std::string pictureData);
-int shrinkPicture(QString filePath, int &height, int &width, int limit);
-
-
 class NormalPicture : public QObject
 {
     Q_OBJECT
 public:
     explicit NormalPicture(QObject *parent = 0);
     Q_INVOKABLE void displayNormalPicture(QString friendIndex, QString messageIndex);
-
-signals:
-
-public slots:
+    static void writePictureFile(std::string fileName, std::string data);
+    static std::string findPictureCache(QString fidx, QString midx);
+    static QUrl displayPicture(QString friendIndex, QString messageIndex, std::string pictureData);
+    static int shrinkPicture(QString filePath, int &height, int &width, int limit);
 };
 
 #endif // PICTURE_H

@@ -34,7 +34,8 @@ extern struct ShadowTalkContext gCtx;
  *  @return 无
  */
 Friend::Friend(QString friendName, int friendIndex):
-    name(friendName), messageCount(0) {
+    name(friendName), messageCount(0)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -131,9 +132,7 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
  *
  *  @return 无
  */
-Friend::~Friend() {
-
-}
+Friend::~Friend() {}
 
 /**
  *  功能描述: 将消息放入缓存列表
@@ -141,7 +140,8 @@ Friend::~Friend() {
  *
  *  @return 无
  */
-void Friend::insertOneMessage(Message *message) {
+void Friend::insertOneMessage(Message *message)
+{
     this->messageList.insert(this->messageList.size(), *message);
     this->messageCount++;
     return;
@@ -154,8 +154,10 @@ void Friend::insertOneMessage(Message *message) {
  *
  *  @return 无
  */
-void Friend::setQrCode(QString qrCode) {
+void Friend::setQrCode(QString qrCode)
+{
     this->qrCode = qrCode;
+    return;
 }
 
 /**
@@ -164,8 +166,10 @@ void Friend::setQrCode(QString qrCode) {
  *
  *  @return 无
  */
-void Friend::setName(QString name) {
+void Friend::setName(QString name)
+{
     this->name = name;
+    return;
 }
 
 /**
@@ -174,8 +178,10 @@ void Friend::setName(QString name) {
  *
  *  @return 无
  */
-void Friend::setNetState(int state) {
+void Friend::setNetState(int state)
+{
     this->netStatus = state;
+    return;
 }
 
 /**
@@ -185,7 +191,8 @@ void Friend::setNetState(int state) {
  *
  *  @return 无
  */
-void Friend::displayUnreadCount(int idx, int count) {
+void Friend::displayUnreadCount(int idx, int count)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -203,6 +210,7 @@ void Friend::displayUnreadCount(int idx, int count) {
     } else {
         qDebug() << "set unread count fail";
     }
+    return;
 }
 
 /**
@@ -212,7 +220,8 @@ void Friend::displayUnreadCount(int idx, int count) {
  *
  *  @return 无
  */
-void Friend::setTimeAndState(int idx, int state) {
+void Friend::setTimeAndState(int idx, int state)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -232,6 +241,7 @@ void Friend::setTimeAndState(int idx, int state) {
     } else {
         qDebug() << "set time and state fail";
     }
+    return;
 }
 
 
@@ -240,7 +250,8 @@ void Friend::setTimeAndState(int idx, int state) {
  *
  *  @return 无
  */
-void Friend::setFriendlistBackGroundColor(int colorFlag) {
+void Friend::setFriendlistBackGroundColor(int colorFlag)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -248,11 +259,8 @@ void Friend::setFriendlistBackGroundColor(int colorFlag) {
 
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
-        QMetaObject::invokeMethod(
-                    rect,
-                    "modifyBackColor",
-                    Q_ARG(QVariant, listViewIndex),
-                    Q_ARG(QVariant, colorFlag));
+        QMetaObject::invokeMethod(rect, "modifyBackColor",
+              Q_ARG(QVariant, listViewIndex), Q_ARG(QVariant, colorFlag));
     }
     return;
 }
@@ -262,7 +270,8 @@ void Friend::setFriendlistBackGroundColor(int colorFlag) {
  *
  *  @return 无
  */
-void Friend::setChatlistBackGroundColor(int colorFlag, int chatListIndex) {
+void Friend::setChatlistBackGroundColor(int colorFlag, int chatListIndex)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -270,38 +279,31 @@ void Friend::setChatlistBackGroundColor(int colorFlag, int chatListIndex) {
 
     QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
     if (rect) {
-        QMetaObject::invokeMethod(
-                    rect,
-                    "modifyBackColor",
-                    Q_ARG(QVariant, chatListIndex),
-                    Q_ARG(QVariant, colorFlag));
+        QMetaObject::invokeMethod(rect, "modifyBackColor",
+             Q_ARG(QVariant, chatListIndex), Q_ARG(QVariant, colorFlag));
     }
     return;
 }
-
-
 
 /**
  *  功能描述: SelectFriend构造函数
  *  @return 无
  */
-SelectFriend::SelectFriend(QObject *parent) {
+SelectFriend::SelectFriend(QObject *parent)
+{
 	parent = parent;
-
+    return;
 }
-
 
 /**
  *  功能描述: SelectFriend的析构函数
  *  @return 无
  */
-SelectFriend::~SelectFriend() {
-
-}
+SelectFriend::~SelectFriend() {}
 
 
-void SelectFriend::refreshFriendMessage(Friend *f) {
-
+void SelectFriend::refreshFriendMessage(Friend *f)
+{
     /* 添加消息 */
     for (int i = 0; i < f->messageList.size(); i++) {
         int idx = i;
@@ -321,15 +323,15 @@ void SelectFriend::refreshFriendMessage(Friend *f) {
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            addMessageToWidget(f->cacheIndex, name, it->messageType,
+            MessageWidget::addMessageToWidget(f->cacheIndex, name, it->messageType,
                                it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeImage:
-            addImageToWidget(f->cacheIndex, name, it->messageType,
+            MessageWidget::addImageToWidget(f->cacheIndex, name, it->messageType,
                              it->driect, it->data, idx);
             break;
         case MessageTypeVoice:
-            addVoiceToWidget(f->cacheIndex, name, it->messageType, it->driect,
+            MessageWidget::addVoiceToWidget(f->cacheIndex, name, it->messageType, it->driect,
                              QString::fromStdString(it->data), it->voiceSeconds, idx);
             break;
         default:
@@ -339,11 +341,12 @@ void SelectFriend::refreshFriendMessage(Friend *f) {
     return;
 }
 
-void SelectFriend::refreshFriendStatistics(Friend *f) {
+void SelectFriend::refreshFriendStatistics(Friend *f)
+{
     /* 界面显示清零 */
-    displayCurrentFriendName(f->name);
+    Utils::displayCurrentFriendName(f->name);
     /* 未读消息计数清零 */
-    displayChatUnreadCount(f->cacheIndex, 0);
+    Chat::displayChatUnreadCount(f->cacheIndex, 0);
     f->messageUnreadCount = 0;
     return;
 }
@@ -355,10 +358,11 @@ void SelectFriend::refreshFriendStatistics(Friend *f) {
  *  @param name 好友名称
  *  @return 无
  */
-void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name) {
-	qDebug() << "changeMessageListForFlist index - " << friendCacheIndex;
+void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
+{
+    qDebug() << "[c++] : changeMessageListForFlist index - " << friendCacheIndex;
     /* 清理界面消息 */
-    clearMessageFromWidget();
+    MessageWidget::clearMessageFromWidget();
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -375,8 +379,8 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
 
     this->refreshFriendMessage(f);
     this->refreshFriendStatistics(f);
-    clearCurrentItemHighLight(c);
-	setFriendItemHighLight(c, f, friendCacheIndex);
+    Utils::clearCurrentItemHighLight(c);
+    Utils::setFriendItemHighLight(c, f, friendCacheIndex);
     return;
 }
 
@@ -386,10 +390,11 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
  *  @param name 好友名称
  *  @return 无
  */
-void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name) {
-	qDebug() << "changeMessageListForClist index - " << friendCacheIndex;
+void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
+{
+    qDebug() << "[c++] : changeMessageListForClist index - " << friendCacheIndex;
     /* 清理界面消息 */
-    clearMessageFromWidget();
+    MessageWidget::clearMessageFromWidget();
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -406,8 +411,8 @@ void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
 
     this->refreshFriendMessage(f);
     this->refreshFriendStatistics(f);
-    clearCurrentItemHighLight(c);
-	setFriendItemHighLight(c, f, friendCacheIndex);
+    Utils::clearCurrentItemHighLight(c);
+    Utils::setFriendItemHighLight(c, f, friendCacheIndex);
     return;
 }
 

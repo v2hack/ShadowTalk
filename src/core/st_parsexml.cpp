@@ -3,7 +3,7 @@
  *  All rights reserved.
  *
  *  文件名称: st_parsexml.cpp
- *  简要描述:
+ *  简要描述: 主要负责xml解析处理
  *
  *  当前版本:1.0
  *  作者: 南野
@@ -15,10 +15,8 @@
 #include <QDomDocument>
 #include <QDateTime>
 #include <QDebug>
-
 #include <iostream>
 #include <fstream>
-
 #include "st_parsexml.h"
 #include "st_cache.h"
 #include "st_context.h"
@@ -74,9 +72,8 @@ extern struct ShadowTalkContext gCtx;
 */
 static void addCacheForKeyValue(const QString key, const QString value)
 {
-    std::string cKey = key.toStdString();
-    std::string cValue = value.toStdString();
-
+    std::string cKey       = key.toStdString();
+    std::string cValue     = value.toStdString();
     std::string plainKey   = Base64::decode(cKey);
     std::string plainValue = Base64::decode(cValue);
 
@@ -86,7 +83,7 @@ static void addCacheForKeyValue(const QString key, const QString value)
         return;
     }
 
-    if (c->isExistChannel(cKey)){
+    if (c->isExistChannel(cKey)) {
         return;
     }
 
@@ -101,10 +98,10 @@ static void addCacheForKeyValue(const QString key, const QString value)
 *  @param  expiredTime    过期时间
 *  @param  shortCode      短码
 *
-*  @return 0 成功  -1 失败
+*  @return 无
 */
 static void addCacheForChannel(QString &channelId, QString &createdTime,
-         QString &expiredTime, QString &shortCode)
+                               QString &expiredTime, QString &shortCode)
 {
     Cache *c = gCtx.cache;
     if (!c) {
@@ -128,7 +125,6 @@ static void addCacheForChannel(QString &channelId, QString &createdTime,
     return;
 }
 
-
 /**
 *  功能描述: 将联系人信息加入到缓存
 *  @param  defaultExpiredTime  默认超时时间
@@ -138,15 +134,10 @@ static void addCacheForChannel(QString &channelId, QString &createdTime,
 *  @param  netStatus           网络状态
 *  @param  updateTime          更新时间
 *
-*  @return 0 成功  -1 失败
+*  @return 无
 */
-static void addCacheForContact(
-         QString &defaultExpiredTime,
-         QString &friendChannelId,
-         QString &inSession,
-         QString &friendName,
-         QString &netStatus,
-         QString &updateTime)
+static void addCacheForContact(QString &defaultExpiredTime, QString &friendChannelId,
+                               QString &inSession, QString &friendName, QString &netStatus, QString &updateTime)
 {
     updateTime = updateTime;
 
@@ -160,31 +151,32 @@ static void addCacheForContact(
         return;
     }
 
-    Friend *newOne = new Friend(
-                friendName,
-                defaultExpiredTime.toInt(),
-                friendChannelId,
-                inSession.toInt(),
-                netStatus.toInt(),
-                gCtx.cache->getNextIndex());
+    Friend *newOne = new Friend(friendName, defaultExpiredTime.toInt(), friendChannelId,
+                                inSession.toInt(), netStatus.toInt(), gCtx.cache->getNextIndex());
     if (!newOne) {
         return;
     }
-
 
     /* 加入缓存 */
     gCtx.cache->insertOneFriend(newOne);
     return;
 }
 
-static void addCacheForGroup(
-        QString groupChannelId,
-        QString localMemberId,
-        QString gourpName,
-        QString myNameInGroup,
-        QString ownerID,
-        QString showNotification,
-        QString status)
+/**
+*  功能描述: 将组信息加入到缓存
+*  @param  groupChannelId    组channelid
+*  @param  localMemberId     本地成员id
+*  @param  gourpName         组名称
+*  @param  myNameInGroup     自己在组中的名称
+*  @param  ownerID           组拥有者id
+*  @param  showNotification  有消息是否通知
+*  @param  status            组的状态
+*
+*  @return 无
+*/
+static void addCacheForGroup(QString groupChannelId, QString localMemberId,
+                             QString gourpName, QString myNameInGroup, QString ownerID, QString showNotification,
+                             QString status)
 {
     int status_ = status.toInt();
     if (status_ < 0) {
@@ -211,7 +203,7 @@ static void addCacheForGroup(
     }
 
     Group *newOne = new Group(groupChannelId, localMemberId, gourpName,
-                myNameInGroup, ownerID, showNotification, gCtx.cache->getNextGroupIndex());
+                              myNameInGroup, ownerID, showNotification, gCtx.cache->getNextGroupIndex());
     if (!newOne) {
         return;
     }
@@ -221,12 +213,17 @@ static void addCacheForGroup(
     return;
 }
 
-
-static void addCacheForGroupMember(
-         QString &memberId,
-         QString &name,
-         QString &status,
-         QString &groupChannelId)
+/**
+*  功能描述: 将组成员信息加入到缓存
+*  @param  memberId         成员id
+*  @param  name             成员名称
+*  @param  status           成员状态
+*  @param  groupChannelId   组的channelid
+*
+*  @return 无
+*/
+static void addCacheForGroupMember(QString &memberId, QString &name,
+                                   QString &status, QString &groupChannelId)
 {
     int status_ = status.toInt();
     if (status_ < 0) {
@@ -245,7 +242,7 @@ static void addCacheForGroupMember(
     }
 
     /* 找到组 */
-	Group *group = gCtx.cache->getOneGroup(groupChannelId);
+    Group *group = gCtx.cache->getOneGroup(groupChannelId);
     if (!group) {
         return;
     }
@@ -268,8 +265,8 @@ ParseXml::~ParseXml() {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseContactDict(QDomElement dict) {
-
+int ParseXml::parseContactDict(QDomElement dict)
+{
     QString defaultExpiredTime;
     QString friendChannelId;
     QString inSession;
@@ -362,8 +359,7 @@ int ParseXml::parseContactDict(QDomElement dict) {
 
     /* 加入缓存 */
     addCacheForContact(defaultExpiredTime, friendChannelId,
-            inSession, friendName, netStatus, updateTime);
-
+                       inSession, friendName, netStatus, updateTime);
     return 0;
 }
 
@@ -373,9 +369,11 @@ int ParseXml::parseContactDict(QDomElement dict) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseContactXml(QDomElement &array) {
+int ParseXml::parseContactXml(QDomElement &array)
+{
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
-    for (int i = 0; !dict.isNull(); dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++) {
+    for (int i = 0; !dict.isNull(); dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
+    {
         if (dict.isNull()) {
             qDebug() << "[c++] : can't find the dict child";
             return -1;
@@ -385,7 +383,6 @@ int ParseXml::parseContactXml(QDomElement &array) {
             }
         }
     }
-//    walkCacheAddFriend();
     return 0;
 }
 
@@ -395,8 +392,8 @@ int ParseXml::parseContactXml(QDomElement &array) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseQrChannelDict(QDomElement dict) {
-
+int ParseXml::parseQrChannelDict(QDomElement dict)
+{
     QString channelId;
     QString createdTime;
     QString expiredTime;
@@ -477,7 +474,8 @@ int ParseXml::parseQrChannelDict(QDomElement dict) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseQrChannelXml(QDomElement &array) {
+int ParseXml::parseQrChannelXml(QDomElement &array)
+{
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
     for (int i = 0; !dict.isNull();
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
@@ -500,8 +498,8 @@ int ParseXml::parseQrChannelXml(QDomElement &array) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseKeyValueDict(QDomElement dict) {
-
+int ParseXml::parseKeyValueDict(QDomElement dict)
+{
     QString key;
     QString value;
 
@@ -553,7 +551,8 @@ int ParseXml::parseKeyValueDict(QDomElement dict) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseKeyValueXml(QDomElement &array) {
+int ParseXml::parseKeyValueXml(QDomElement &array)
+{
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
     for (int i = 0; !dict.isNull();
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
@@ -576,8 +575,8 @@ int ParseXml::parseKeyValueXml(QDomElement &array) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseGroupDict(QDomElement dict) {
-
+int ParseXml::parseGroupDict(QDomElement dict)
+{
     QString groupChannelId;
     QString localMemberId;
     QString gourpName;
@@ -698,7 +697,8 @@ int ParseXml::parseGroupDict(QDomElement dict) {
 *
 *  @return 0 成功  -1 失败
 */
-int ParseXml::parseGroupXml(QDomElement &array) {
+int ParseXml::parseGroupXml(QDomElement &array)
+{
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
     for (int i = 0; !dict.isNull();
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
@@ -712,11 +712,17 @@ int ParseXml::parseGroupXml(QDomElement &array) {
             }
         }
     }
-	return 0;
+    return 0;
 }
 
-
-int ParseXml::parseGroupMemberDict(QDomElement dict) {
+/**
+*  功能描述: 解析xml中的组的标签
+*  @param  array   group中的dict标签元素结构
+*
+*  @return 0 成功  -1 失败
+*/
+int ParseXml::parseGroupMemberDict(QDomElement dict)
+{
     QString memberID;
     QString name;
     QString status;
@@ -788,10 +794,16 @@ int ParseXml::parseGroupMemberDict(QDomElement dict) {
     /* 加入缓存 */
     addCacheForGroupMember(memberID, name, status, groupChannelId);
     return 0;
-
 }
 
-int ParseXml::parseGroupMemberXml(QDomElement &array) {
+/**
+*  功能描述: 解析xml中的组成员标签
+*  @param  array   group中的array标签元素结构
+*
+*  @return 0 成功  -1 失败
+*/
+int ParseXml::parseGroupMemberXml(QDomElement &array)
+{
     QDomElement dict = array.firstChildElement(ST_XML_TAG_DICT);
     for (int i = 0; !dict.isNull();
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
@@ -805,10 +817,8 @@ int ParseXml::parseGroupMemberXml(QDomElement &array) {
             }
         }
     }
-	return 0;
+    return 0;
 }
-
-
 
 /**
 *  功能描述: 写xml明文文件
@@ -816,7 +826,8 @@ int ParseXml::parseGroupMemberXml(QDomElement &array) {
 *
 *  @return 无
 */
-void ParseXml::writeXmlFile(QString plainData) {
+void ParseXml::writeXmlFile(QString plainData)
+{
     QFile f("ShadTalk.xml");
     if(!f.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return;
@@ -827,13 +838,23 @@ void ParseXml::writeXmlFile(QString plainData) {
     return;
 }
 
-
-QString filterWords(const QString oldData) {
+/**
+ *  功能描述: 过滤xml文件中的回车和tab字符
+ *  @param oldData  xml文件内容
+ *
+ *  @return 返回过滤后的文件内容
+ */
+QString filterWords(const QString oldData)
+{
     std::string newData;
     std::string cppData = oldData.toStdString();
     unsigned long dataSize = cppData.size();
 
     char *cPtr = new char[dataSize];
+    if (cPtr == nullptr) {
+        return "";
+    }
+
     memcpy(cPtr, cppData.c_str(), dataSize);
 
     for (unsigned long i = 0; i < dataSize; i++) {
@@ -850,23 +871,24 @@ QString filterWords(const QString oldData) {
     return QString::fromStdString(newData);
 }
 
-
 /**
 *  功能描述: 解析xml文件入口函数
 *  @param  plainData  xml文件明文
 *
 *  @return 0成功  -1失败
 */
-int ParseXml::parseDencryptXml(const QString plainData) {
-
-    QDomDocument document;
+int ParseXml::parseDencryptXml(const QString plainData)
+{
+    int errLin = 0;
+    int errCol = 0;
     QString strError;
-    int errLin = 0, errCol = 0;
+    QDomDocument document;
 
     writeXmlFile(plainData);
 
     if (!document.setContent(plainData, false, &strError, &errLin, &errCol)) {
-        qDebug() << "[c++] : parse file failed at line " << errLin << " column " << errCol << " " << strError;
+        qDebug() << "[c++] : parse file failed at line " << errLin
+                 << " column " << errCol << " " << strError;
         return -1;
     }
 
@@ -927,13 +949,19 @@ int ParseXml::parseDencryptXml(const QString plainData) {
     }
     qDebug() << "[c++] : parse keyvalue success";
 
-    walkCacheAddFriendAndGroup();
+    Utils::walkCacheAddFriendAndGroup();
     return 0;
 }
 
-
-
-void writeXmlFile(std::string fileName, std::string data) {
+/**
+*  功能描述: 将数据写入文件
+*  @param  fileName  xml文件名
+*  @param  data      数据内容
+*
+*  @return 无
+*/
+void ParseXml::writeXmlFile(std::string fileName, std::string data)
+{
     std::ofstream file;
     file.open(fileName, std::ios::out | std::ios::binary);
     file.write(data.c_str(), data.size());
@@ -948,9 +976,9 @@ void writeXmlFile(std::string fileName, std::string data) {
  *
  *  @return
  */
-int parseEncryptXml(QString fileName, QString passwd) {
+int ParseXml::parseEncryptXml(QString fileName, QString passwd)
+{
     QString qPlainData;
-
     std::string sPasswd = passwd.toStdString();
     std::string sDecryptData;
     std::string sPlainData;
@@ -998,9 +1026,8 @@ int parseEncryptXml(QString fileName, QString passwd) {
     }
 
     /* 监听好友 */
-    adaptListenAllFriends();
+    Adapt::adaptListenAllFriends();
     /* 监听组 */
-    adaptListenAllGroups();
+    Adapt::adaptListenAllGroups();
     return 0;
 }
-

@@ -1,10 +1,20 @@
-﻿#include <QWidget>
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_search.cpp
+ *  简要描述: 主要负责搜索联系人及组
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
+#include <QWidget>
 #include <QtQuick/QQuickView>
 #include <QDateTime>
-
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "st_chat.h"
 #include "st_friend.h"
 #include "st_context.h"
@@ -16,7 +26,16 @@
 
 extern struct ShadowTalkContext gCtx;
 
-int checkSearchText()
+/* 用户保存搜寻输入的内容 */
+static QString searchText;
+
+/**
+ *  功能描述: 检测搜寻输入框的内容是否为空
+ *  @param  无
+ *
+ *  @return 返回输入框字符数量
+ */
+int Search::checkSearchText()
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -28,20 +47,22 @@ int checkSearchText()
 
     QObject *rect = rootObject->findChild<QObject*>("SearchTextEdit");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "searchTextIsEmpty",
-                    Qt::DirectConnection,
-                    Q_RETURN_ARG(QVariant, isEmptyText));
+        bool ret = QMetaObject::invokeMethod(rect, "searchTextIsEmpty",
+                    Qt::DirectConnection, Q_RETURN_ARG(QVariant, isEmptyText));
         if (ret == false) {
-            qDebug() << "invokeMethod (searchTextIsEmpty) fail";
+            qDebug() << "[c++] : invokeMethod (searchTextIsEmpty) fail";
         }
     }
     return isEmptyText.toInt();
 }
 
-
-void setSearchTextUnvisible()
+/**
+ *  功能描述: 设置搜寻结果框不可见
+ *  @param  无
+ *
+ *  @return 无
+ */
+void Search::setSearchTextUnvisible()
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -50,16 +71,20 @@ void setSearchTextUnvisible()
 
     QObject *rect = rootObject->findChild<QObject*>("SearchTextEdit");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "setSearchUnvisible",
-                    Qt::DirectConnection);
+        bool ret = QMetaObject::invokeMethod(rect, "setSearchUnvisible", Qt::DirectConnection);
         if (ret == false) {
-            qDebug() << "invokeMethod (setSearchUnvisible) fail";
+            qDebug() << "[c++] : invokeMethod (setSearchUnvisible) fail";
         }
     }
+    return;
 }
 
+/**
+ *  功能描述: 设置搜寻结果框可见
+ *  @param  无
+ *
+ *  @return 无
+ */
 void setSearchTextVisible()
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
@@ -69,18 +94,22 @@ void setSearchTextVisible()
 
     QObject *rect = rootObject->findChild<QObject*>("SearchTextEdit");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "setSearchVisible",
-                    Qt::DirectConnection);
+        bool ret = QMetaObject::invokeMethod(rect, "setSearchVisible", Qt::DirectConnection);
         if (ret == false) {
-            qDebug() << "invokeMethod (setSearchTextVisible) fail";
+            qDebug() << "[c++] : invokeMethod (setSearchTextVisible) fail";
         }
     }
+    return;
 }
 
-
-QString getSearchTextContent() {
+/**
+ *  功能描述: 获取搜索输入框内容
+ *  @param  无
+ *
+ *  @return 返回搜索关键字
+ */
+QString getSearchTextContent()
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return "";
@@ -89,20 +118,24 @@ QString getSearchTextContent() {
     QVariant text;
     QObject *rect = rootObject->findChild<QObject*>("SearchTextEdit");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "searchTextContent",
-                    Qt::DirectConnection,
-                    Q_RETURN_ARG(QVariant, text));
+        bool ret = QMetaObject::invokeMethod(rect, "searchTextContent",
+                    Qt::DirectConnection, Q_RETURN_ARG(QVariant, text));
         if (ret == false) {
-            qDebug() << "invokeMethod (searchTextContent) fail";
+            qDebug() << "[c++] : invokeMethod (searchTextContent) fail";
         }
     }
     return text.toString();
 }
 
-
-void addSearchResultWidget(QString friendName, int friendIndex) {
+/**
+ *  功能描述: 根据搜索结果显示在search listview上
+ *  @param  friendName    好友名
+ *  @param  friendIndex   好友索引
+ *
+ *  @return 无
+ */
+void addSearchResultWidget(QString friendName, int friendIndex)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -114,17 +147,23 @@ void addSearchResultWidget(QString friendName, int friendIndex) {
 
     QObject *rect = rootObject->findChild<QObject*>("SearchListModel");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "addFriend",
+        bool ret = QMetaObject::invokeMethod(rect,"addFriend",
                     Q_ARG(QVariant, QVariant::fromValue(newElement)));
         if (ret == false) {
-            qDebug() << "invokeMethod (addSearchResultWidget) fail";
+            qDebug() << "[c++] : invokeMethod (addSearchResultWidget) fail";
         }
     }
+    return;
 }
 
-void clearSearchWidget() {
+/**
+ *  功能描述: 清理search listview中的内容
+ *  @param 无
+ *
+ *  @return 无
+ */
+void Search::clearSearchWidget()
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -132,18 +171,22 @@ void clearSearchWidget() {
 
     QObject *rect = rootObject->findChild<QObject*>("SearchListModel");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "clearFriend");
+        bool ret = QMetaObject::invokeMethod(rect, "clearFriend");
         if (ret == false) {
-            qDebug() << "invokeMethod (clearSearchWidget) fail";
+            qDebug() << "[c++] : invokeMethod (clearSearchWidget) fail";
         }
     }
+    return;
 }
 
-
-bool matchSearchContent(QString text) {
-
+/**
+ *  功能描述: 根据输入关键字进行匹配
+ *  @param  text 关键字
+ *
+ *  @return 匹配上返回true  没有匹配结果返回false
+ */
+bool matchSearchContent(QString text)
+{
     bool ret = false;
     Cache *c = gCtx.cache;
     if (!c) {
@@ -151,7 +194,7 @@ bool matchSearchContent(QString text) {
     } 
 
     QMap<int, Friend>::iterator it;
-    for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
+    for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
         Friend &f = it.value();
         if (f.name.indexOf(text) != -1) {
             ret = true;
@@ -161,31 +204,36 @@ bool matchSearchContent(QString text) {
     return ret;
 }
 
-
-void clearSearchContent() {
+/**
+ *  功能描述: 清理搜索输入框的内容
+ *  @param  无
+ *
+ *  @return 无
+ */
+void clearSearchContent()
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
     }
 
-    QVariant text;
     QObject *rect = rootObject->findChild<QObject*>("SearchTextEdit");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "searchClearContent",
-                    Qt::DirectConnection);
+        bool ret = QMetaObject::invokeMethod(rect, "searchClearContent", Qt::DirectConnection);
         if (ret == false) {
-            qDebug() << "invokeMethod (searchClearContent) fail";
+            qDebug() << "[c++] : invokeMethod (searchClearContent) fail";
         }
     }
     return;
 }
 
-static QString searchText;
-
-
-void matchAndShowSearchResult() {
+/**
+ *  功能描述: 匹配并显示搜索结果
+ *
+ *  @return 无
+ */
+void Search::matchAndShowSearchResult()
+{
     QString text = getSearchTextContent();
     if (text.isEmpty()) {
         return;
@@ -197,4 +245,5 @@ void matchAndShowSearchResult() {
         }
         searchText = text;
     }
+    return;
 }

@@ -1,21 +1,34 @@
-﻿#include "st_thread.h"
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_thread.cpp
+ *  简要描述: 主要负责显示搜索的匹配窗口、登录和主窗口的切换
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
+#include "st_thread.h"
 
 Sthread::Sthread(struct ShadowTalkContext *ctx, QObject *parent) {
     parent = parent;
     c = ctx;
 }
 
-void Sthread::run() {
+void Sthread::run()
+{
     while (1) {
         if (c->threadStop == 1) {
             break;
         }
         /* 搜索框检查 */
-        if (checkSearchText() == 1) {
-            setSearchTextUnvisible();
-            clearSearchWidget();
+        if (Search::checkSearchText() == 1) {
+            Search::setSearchTextUnvisible();
+            Search::clearSearchWidget();
         } else {
-            matchAndShowSearchResult();
+            Search::matchAndShowSearchResult();
         }
 
         /* 登录界面切换检查 */
@@ -31,7 +44,7 @@ void Sthread::run() {
             }
             c->changeFlag = 0;
         } else {
-            ShadowTalkSleep(1000);
+            Utils::ShadowTalkSleep(1000);
         }
     }
 }

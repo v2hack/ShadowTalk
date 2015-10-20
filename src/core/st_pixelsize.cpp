@@ -2,8 +2,8 @@
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
- *  文件名称:
- *  简要描述:
+ *  文件名称: st_pixelsize.cpp
+ *  简要描述: 主要负责处理界面上文字和像素大小的相互转换
  *
  *  当前版本:1.0
  *  作者: 南野
@@ -28,11 +28,11 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-PointSizeToPixelSize::PointSizeToPixelSize(QObject *parent) {
+PointSizeToPixelSize::PointSizeToPixelSize(QObject *parent)
+{
 	parent = parent;
     return;
 }
-
 
 /**
  *  功能描述: 像素大小转换析构函数
@@ -40,10 +40,10 @@ PointSizeToPixelSize::PointSizeToPixelSize(QObject *parent) {
  *
  *  @return 无
  */
-PointSizeToPixelSize::~PointSizeToPixelSize() {
+PointSizeToPixelSize::~PointSizeToPixelSize()
+{
     return;
 }
-
 
 /**
  *  功能描述: 像素点支持尺寸大小计算
@@ -51,7 +51,8 @@ PointSizeToPixelSize::~PointSizeToPixelSize() {
  *
  *  @return 无
  */
-int PointSizeToPixelSize::pixelSize(int pointSize) {
+int PointSizeToPixelSize::pixelSize(int pointSize)
+{
     QScreen *screen = gCtx.app->primaryScreen();
     if (!screen) {
         return 0;
@@ -60,20 +61,19 @@ int PointSizeToPixelSize::pixelSize(int pointSize) {
     return point_size;
 }
 
-
 /**
  *  功能描述: 计算界面文字高度
  *  @param pointSize  文字像素点
  *
  *  @return 无
  */
-int PointSizeToPixelSize::height(int pointSize) {
+int PointSizeToPixelSize::height(int pointSize)
+{
     QFont font = gCtx.app->font();
     font.setPointSize(pointSize);
     QFontMetrics fm(font);
     return fm.height();
 }
-
 
 /**
  *  功能描述: 计算界面文字宽度
@@ -81,7 +81,8 @@ int PointSizeToPixelSize::height(int pointSize) {
  *
  *  @return 无
  */
-int PointSizeToPixelSize::width(int pointSize, QString text) {
+int PointSizeToPixelSize::width(int pointSize, QString text)
+{
     QFont font = gCtx.app->font();
     font.setPointSize(pointSize);
     QFontMetrics fm(font);

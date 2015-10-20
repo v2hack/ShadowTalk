@@ -37,19 +37,19 @@ Group::~Group() {
 }
 
 void Group::insertOneMessage(GroupMessage *message) {
-    this->messageList.insert(this->messageList.size(), *message);
+    this->messageList_.insert(this->messageList_.size(), *message);
     return;
 }
 
 void Group::insertOneMember(QString &memberId, QString &name) {
-    this->memberList.insert(memberId, name);
+    this->memberList_.insert(memberId, name);
     return;
 }
 
 bool Group::isExistMember(QString &memberId) {
     QMap<QString, QString>::iterator it;
-    it = this->memberList.find(memberId);
-    if (it == this->memberList.end()) {
+    it = this->memberList_.find(memberId);
+    if (it == this->memberList_.end()) {
         return false;
     }
     return true;
@@ -72,7 +72,7 @@ void Group::setFriendlistBackGroundColor(int colorFlag) {
         QMetaObject::invokeMethod(
                     rect,
                     "modifyBackColor",
-                    Q_ARG(QVariant, listViewIndex),
+                    Q_ARG(QVariant, listViewIndex_),
                     Q_ARG(QVariant, colorFlag));
     }
     return;
@@ -100,8 +100,6 @@ void Group::setChatlistBackGroundColor(int colorFlag, int chatListIndex) {
     return;
 }
 
-
-
 /**
  *  功能描述: SelectFriend构造函数
  *  @return 无
@@ -111,7 +109,6 @@ SelectGroup::SelectGroup(QObject *parent) {
 
 }
 
-
 /**
  *  功能描述: SelectFriend的析构函数
  *  @return 无
@@ -120,12 +117,13 @@ SelectGroup::~SelectGroup() {
 
 }
 
-void SelectGroup::refreshGroupMessage(Group *g) {
+void SelectGroup::refreshGroupMessage(Group *g)
+{
     /* 添加消息 */
-    for (int i = 0; i < g->messageList.size(); i++) {
+    for (int i = 0; i < g->messageList_.size(); i++) {
         int idx = i;
-        QMap<int, GroupMessage>::iterator it = g->messageList.find(i);
-        if (it == g->messageList.end()) {
+        QMap<int, GroupMessage>::iterator it = g->messageList_.find(i);
+        if (it == g->messageList_.end()) {
             return;
         }
 
@@ -140,15 +138,15 @@ void SelectGroup::refreshGroupMessage(Group *g) {
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            addMessageToWidget(g->gid_, name, it->messageType,
+            MessageWidget::addMessageToWidget(g->gid_, name, it->messageType,
                                it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeImage:
-            addImageToWidget(g->gid_, name, it->messageType,
+            MessageWidget::addImageToWidget(g->gid_, name, it->messageType,
                              it->driect, it->data, idx);
             break;
         case MessageTypeVoice:
-            addVoiceToWidget(g->gid_, name, it->messageType, it->driect,
+            MessageWidget::addVoiceToWidget(g->gid_, name, it->messageType, it->driect,
                              QString::fromStdString(it->data), it->voiceSeconds, idx);
             break;
         default:
@@ -158,15 +156,15 @@ void SelectGroup::refreshGroupMessage(Group *g) {
     return;
 }
 
-void SelectGroup::refreshGroupStatistics(Group *g) {
+void SelectGroup::refreshGroupStatistics(Group *g)
+{
     /* 界面显示清零 */
-    displayCurrentFriendName(g->gourpName_);
+    Utils::displayCurrentFriendName(g->gourpName_);
     /* 未读消息计数清零 */
-    displayChatUnreadCount(g->gid_, 0);
-    g->messageUnreadCount = 0;
+    Chat::displayChatUnreadCount(g->gid_, 0);
+    g->messageUnreadCount_ = 0;
     return;
 }
-
 
 /**
  *  功能描述: 改变界面上的消息列表
@@ -174,10 +172,11 @@ void SelectGroup::refreshGroupStatistics(Group *g) {
  *  @param name 好友名称
  *  @return 无
  */
-void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name) {
-	qDebug() << "changeMessageListForGroup cacheIndex - " << groupCacheIndex;
+void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
+{
+    qDebug() << "[c++] : changeMessageListForGroup cacheIndex - " << groupCacheIndex;
     /* 清理界面消息 */
-    clearMessageFromWidget();
+    MessageWidget::clearMessageFromWidget();
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -192,17 +191,16 @@ void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name) {
     }
     this->refreshGroupMessage(g);
     this->refreshGroupStatistics(g);
-    clearCurrentItemHighLight(c);
-    setGroupItemHighLight(c, g, groupCacheIndex);
+    Utils::clearCurrentItemHighLight(c);
+    Utils::setGroupItemHighLight(c, g, groupCacheIndex);
     return;
 }
 
-
-
-void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name) {
-    qDebug() << "changeMessageListForGroup cacheIndex - " << groupCacheIndex;
+void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
+{
+    qDebug() << "[c++] : changeMessageListForGroup cacheIndex - " << groupCacheIndex;
     /* 清理界面消息 */
-    clearMessageFromWidget();
+    MessageWidget::clearMessageFromWidget();
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -217,8 +215,8 @@ void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name) {
     }
     this->refreshGroupMessage(g);
     this->refreshGroupStatistics(g);
-    clearCurrentItemHighLight(c);
-    setGroupItemHighLight(c, g, groupCacheIndex);
+    Utils::clearCurrentItemHighLight(c);
+    Utils::setGroupItemHighLight(c, g, groupCacheIndex);
     return;
 }
 

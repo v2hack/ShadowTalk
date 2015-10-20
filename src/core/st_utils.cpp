@@ -3,7 +3,7 @@
  *  All rights reserved.
  *
  *  文件名称: st_utils.cpp
- *  简要描述:
+ *  简要描述: 通用接口封装
  *
  *  当前版本:1.0
  *  作者: 南野
@@ -16,7 +16,6 @@
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QString>
-
 #include "st_context.h"
 #include "st_cache.h"
 #include "st_utils.h"
@@ -36,7 +35,7 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void ShadowTalkSleep(unsigned int msec) {
+void Utils::ShadowTalkSleep(unsigned int msec) {
     QTime dieTime = QTime::currentTime().addMSecs(msec);
     while (QTime::currentTime() < dieTime) {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
@@ -49,7 +48,7 @@ void ShadowTalkSleep(unsigned int msec) {
  *
  *  @return 无
  */
-void playMessageSound() {
+void Utils::playMessageSound() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -67,7 +66,7 @@ void playMessageSound() {
  *
  *  @return 无
  */
-void playMessageVoice(QString voiceFilePath) {
+void Utils::playMessageVoice(QString voiceFilePath) {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -80,7 +79,7 @@ void playMessageVoice(QString voiceFilePath) {
 }
 
 
-void stopMessageVoice() {
+void Utils::stopMessageVoice() {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -98,7 +97,8 @@ void stopMessageVoice() {
  *
  *  @return 无
  */
-void displayCurrentFriendName(QString currentFriendName) {
+void Utils::displayCurrentFriendName(QString currentFriendName)
+{
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -111,42 +111,6 @@ void displayCurrentFriendName(QString currentFriendName) {
         qDebug() << "can't find object DispalyCurrentFriendName";
     }
     return;
-}
-
-
-/**
- *  功能描述: 设置主页面可见
- *  @param  无
- *
- *  @return
- */
-void setMainWindowVisible() {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
-    if (rootObject == NULL) {
-        return;
-    }
-    QObject *rect = rootObject->findChild<QObject*>("RootBaseWindow");
-    if (rect) {
-        QMetaObject::invokeMethod(rect, "setBaseWindowVisible");
-    }
-}
-
-
-/**
- *  功能描述: 设置主页面不可见
- *  @param  无
- *
- *  @return
- */
-void setMainWindowUnvisible() {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
-    if (rootObject == NULL) {
-        return;
-    }
-    QObject *rect = rootObject->findChild<QObject*>("RootBaseWindow");
-    if (rect) {
-        QMetaObject::invokeMethod(rect, "setBaseWindowUnvisible");
-    }
 }
 
 
@@ -185,29 +149,20 @@ void setLoginWindowUnvisible() {
 }
 
 /**
- *  功能描述: 界面切换，设置base页面隐藏
- *  @param  无
- *
- *  @return
- */
-void displayBaseView() {
-    gCtx.loginer->hide();
-    gCtx.viewer->show();
-}
-
-/**
  *  功能描述: 界面切换，设置登录页面隐藏
  *  @param  无
  *
  *  @return
  */
-void displayLoginView() {
+void Utils::displayLoginView()
+{
     for(int i = 0; i < 360; i++) {
-        ShadowTalkSetSyncProcessClean(i);
+        Login::ShadowTalkSetSyncProcessClean(i);
     }
     gCtx.changeFlag = 1; /* 通知线程切换窗口 */
     gCtx.windowFlag = 1; /* 当前应该显示主窗口 */
     setReceiveEnable(true);
+    return;
 }
 
 /**
@@ -216,7 +171,8 @@ void displayLoginView() {
  *
  *  @return
  */
-void walkCacheAddFriendAndGroup() {
+void Utils::walkCacheAddFriendAndGroup()
+{
     char firstLetter[27] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                             'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
                             'W', 'X', 'Y', 'Z', '#'};
@@ -228,24 +184,24 @@ void walkCacheAddFriendAndGroup() {
     int listViewIndex = 0;
 
     QMap<int, Group>::iterator it;
-    for(it = c->groupList.begin(); it != c->groupList.end(); it++) {
+    for(it = c->groupList_.begin(); it != c->groupList_.end(); it++) {
         Group &g = it.value();
         qDebug() << "[c++] : add group - " << g.gourpName_;
-        addGroupIntoWidget(g.gourpName_, it.key(), listViewIndex);
-        g.listViewIndex = listViewIndex;
+        Utils::addGroupIntoWidget(g.gourpName_, it.key(), listViewIndex);
+        g.listViewIndex_ = listViewIndex;
         listViewIndex++;
     }
 
     for (int i = 0; i < 27; i++) {
         QMap<int, Friend>::iterator it;
-        for (it = c->friendList.begin(); it != c->friendList.end(); it++) {
+        for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
             Friend &f = it.value();
             if (f.loadStatus == 1) {
                 continue;
             }
             if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
                 qDebug() << "[c++] : add friend - " << f.name;
-                addFriendIntoWidget(f.name, it.key(), listViewIndex);
+                Utils::addFriendIntoWidget(f.name, it.key(), listViewIndex);
                 f.listViewIndex = listViewIndex;
                 listViewIndex++;
                 f.loadStatus = 1;
@@ -263,7 +219,7 @@ void walkCacheAddFriendAndGroup() {
  *
  *  @return
  */
-void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex)
+void Utils::addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -311,7 +267,7 @@ void addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex)
  *
  *  @return
  */
-void addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex)
+void Utils::addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -354,40 +310,40 @@ void addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex)
 
 
 
-void clearCurrentItemHighLight(Cache *cache) {
+void Utils::clearCurrentItemHighLight(Cache *cache) {
 
     int chatListSeq = 0;
     /* 取消当前好友的背景高亮 */
-    if (cache->currentUseType == CHATITEM_TYPE_FRIEND) {
-		Friend *friend_ = cache->getOneFriend(cache->currentUseId);
+    if (cache->currentUseType_ == CHATITEM_TYPE_FRIEND) {
+        Friend *friend_ = cache->getOneFriend(cache->currentUseId_);
         if (friend_) {
             friend_->setFriendlistBackGroundColor(0);
-            chatListSeq = cache->getPositionNum(cache->currentUseId, CHATITEM_TYPE_FRIEND);
+            chatListSeq = cache->getPositionNum(cache->currentUseId_, CHATITEM_TYPE_FRIEND);
             if (chatListSeq >= 0) {
                 friend_->setChatlistBackGroundColor(0, chatListSeq);
             }
         } else {
-            qDebug() << "[c++] : can't friend - " << cache->currentUseId;
+            qDebug() << "[c++] : can't friend - " << cache->currentUseId_;
         }
 
     /* 取消当前组的背景高亮 */
     } else {
-        Group *group = cache->getOneGroup(cache->currentUseId);
+        Group *group = cache->getOneGroup(cache->currentUseId_);
         if (group) {
             group->setFriendlistBackGroundColor(0);
-            chatListSeq = cache->getPositionNum(cache->currentUseId, CHATITEM_TYPE_GROUP);
+            chatListSeq = cache->getPositionNum(cache->currentUseId_, CHATITEM_TYPE_GROUP);
             if (chatListSeq >= 0) {
                 group->setChatlistBackGroundColor(0, chatListSeq);
             }
         } else {
-            qDebug() << "[c++] : can't group - " << cache->currentUseId;
+            qDebug() << "[c++] : can't group - " << cache->currentUseId_;
         }
     }
 }
 
 
-void setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheindex) {
-
+void Utils::setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheindex)
+{
     /* 在chat listView中高亮 */
     int chatListSeq = cache->getPositionNum(groupCacheindex, CHATITEM_TYPE_GROUP);
     if (chatListSeq >= 0) {
@@ -401,7 +357,8 @@ void setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheindex) {
     return;
 }
 
-void setFriendItemHighLight(Cache *cache,  Friend *friend_, int friendCacheIndex) {
+void Utils::setFriendItemHighLight(Cache *cache,  Friend *friend_, int friendCacheIndex)
+{
     /* 在chat listView中高亮 */
     int chatListSeq = cache->getPositionNum(friendCacheIndex, CHATITEM_TYPE_FRIEND);
     if (chatListSeq >= 0) {
@@ -448,7 +405,7 @@ void WindowClose::closeWindowProcess() {
                                 "PC exit", 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
     }
     gCtx.threadStop = 1;
-    ShadowTalkSleep(3000);
+    Utils::ShadowTalkSleep(3000);
     exit(0);
 }
 

@@ -1,6 +1,16 @@
-﻿
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_context.h
+ *  简要描述: 程序上下文管理接口，主要处理程序的配置及设置
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
 #include <QString>
-
 #include "st_context.h"
 
 /* 全局上下文 */
@@ -12,7 +22,8 @@ extern struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-bool isSoundEnable() {
+bool isSoundEnable()
+{
     return gCtx.conf.soundEnable;
 }
 
@@ -22,7 +33,8 @@ bool isSoundEnable() {
  *
  *  @return 无
  */
-bool isReceiveEnable() {
+bool isReceiveEnable()
+{
     return gCtx.conf.reciveEnable;
 }
 
@@ -32,7 +44,8 @@ bool isReceiveEnable() {
  *
  *  @return 无
  */
-void setSoundEnable(bool set) {
+void setSoundEnable(bool set)
+{
     gCtx.conf.soundEnable = set;
 }
 
@@ -42,6 +55,7 @@ void setSoundEnable(bool set) {
  *
  *  @return 无
  */
-void setReceiveEnable(bool set) {
+void setReceiveEnable(bool set)
+{
     gCtx.conf.reciveEnable = set;
 }

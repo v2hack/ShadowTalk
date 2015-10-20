@@ -19,13 +19,10 @@
 #include <QtQuick/QQuickView>
 #include <QtQml>
 #include <QThread>
-
 #include <iostream>
 #include <fstream>
 #include <stdint.h>
-
 #include "im.h"
-
 #include "st_pixelsize.h"
 #include "st_friend.h"
 #include "st_group.h"
@@ -40,6 +37,8 @@
 #include "st_voice.h"
 #include "st_picture.h"
 #include "st_qrcode.h"
+#include "st_thread.h"
+#include "st_trayicon.h"
 
 peersafe::im::Message_client *zebraClient = new peersafe::im::Message_client();
 zebraDeleagates zebarDele;
@@ -53,7 +52,8 @@ struct ShadowTalkContext gCtx;
  *
  *  @return 无
  */
-void setAppParameter() {
+void setAppParameter()
+{
     /* 设置程序路径 */
     QString dir = QGuiApplication::applicationDirPath();
     qDebug() << "Application current dir - " << dir;
@@ -77,7 +77,8 @@ void setAppParameter() {
  *
  *  @return 无
  */
-void registerQmlTye() {
+void registerQmlTye()
+{
     /* 注册C++类型到QML */
     qmlRegisterType<PointSizeToPixelSize>("st.font.PointSizeToPixelSize", 1, 0, "PointSizeToPixelSize");
     qmlRegisterType<MessageManager>("st.info.MessageManager", 1, 0, "MessageManager");
@@ -95,7 +96,8 @@ void registerQmlTye() {
  *
  *  @return 无
  */
-void registerQMlProperty(QQuickView &viewer) {
+void registerQMlProperty(QQuickView &viewer)
+{
     /* 注册C++类型到QML为属性 */
     viewer.rootContext()->setContextProperty("ShadowTalkCache", gCtx.cache);
     return;
@@ -109,7 +111,8 @@ void registerQMlProperty(QQuickView &viewer) {
  *
  *  @return 无
  */
-void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile) {
+void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile)
+{
     viewer.setResizeMode(QQuickView::SizeRootObjectToView);
     viewer.setSource(QUrl(qmlFile));
 
@@ -131,10 +134,12 @@ void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile
  *
  *  @return 无
  */
-void createBaseViewer(QQuickView &viewer) {
+void createBaseViewer(QQuickView &viewer)
+{
     gCtx.viewer = &viewer;
     setViewerParameter(viewer, "mainwindow", "qrc:/qml/main.qml");
     viewer.hide();
+    return;
 }
 
 /**
@@ -143,15 +148,16 @@ void createBaseViewer(QQuickView &viewer) {
  *
  *  @return 无
  */
-void createLoginViewer(QQuickView &viewer) {
+void createLoginViewer(QQuickView &viewer)
+{
     gCtx.loginer = &viewer;
     setViewerParameter(viewer, "loginwindow", "qrc:/qml/login.qml");
-
     /* 生成二维码并显示到界面上 */
-    if (ShadowTalkLogin() < 0) {
+    if (Login::ShadowTalkLogin() < 0) {
         qDebug() << "create sync qrchannel fail";
     }
     viewer.show();
+    return;
 }
 
 /**
@@ -160,11 +166,13 @@ void createLoginViewer(QQuickView &viewer) {
  *
  *  @return 无
  */
-void createCache() {
+void createCache()
+{
     gCtx.cache = new Cache;
     if (!gCtx.cache) {
         exit(0);
     }
+    return;
 }
 
 
@@ -174,8 +182,8 @@ void createCache() {
  *
  *  @return
  */
-void initZebraEngine() {
-
+void initZebraEngine()
+{
     gCtx.zebra    = zebraClient;
     gCtx.delegate = &zebarDele;
 
@@ -191,9 +199,6 @@ void initZebraEngine() {
     qDebug() << "[imapi] << init zebra engine success";
     return;
 }
-
-#include "st_thread.h"
-#include "st_trayicon.h"
 
 /**
  *  功能描述: 主函数

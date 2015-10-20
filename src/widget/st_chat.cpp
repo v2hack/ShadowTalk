@@ -1,10 +1,20 @@
-﻿#include <QWidget>
+﻿/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_chat.cpp
+ *  简要描述: 主要负责程序聊天列表页面的处理
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/07/20
+ *  说明:
+ ******************************************************************/
+#include <QWidget>
 #include <QtQuick/QQuickView>
 #include <QDateTime>
-
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "st_chat.h"
 #include "st_friend.h"
 #include "st_context.h"
@@ -17,12 +27,15 @@ extern struct ShadowTalkContext gCtx;
 
 /**
  *  功能描述: 加好友到chatList页面
- *  @param friendName   好友名字
- *  @param friendIndex  好友索引
+ *  @param friendName     好友名字
+ *  @param shortName      好友索引
+ *  @param friendIndex    短名， 这里是Group后者Friend
+ *  @param listViewIndex  在listview中的索引
  *
  *  @return 无
  */
-void addFrientToChat(QString friendName, QString shortName, int friendIndex, int listViewIndex)
+void Chat::addFrientToChat(QString friendName, QString shortName,
+      int friendIndex, int listViewIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -41,9 +54,7 @@ void addFrientToChat(QString friendName, QString shortName, int friendIndex, int
 
     QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "insertFriend",
+        bool ret = QMetaObject::invokeMethod(rect, "insertFriend",
                     Q_ARG(QVariant, QVariant::fromValue(newElement)));
         if (ret == false) {
             qDebug() << "invokeMethod (addFriend) fail";
@@ -63,16 +74,16 @@ void addFrientToChat(QString friendName, QString shortName, int friendIndex, int
              friendIndex,
              friendName.toLatin1().data());
     }
+    return;
 }
 
 /**
  *  功能描述: 从chatlist界面删除好友
- *  @param friendName   好友名字
- *  @param friendIndex  好友索引
+ *  @param chatIndex   chat缓存中的索引
  *
  *  @return 无
  */
-void removeFrientFromChat(int chatIndex)
+void Chat::removeFrientFromChat(int chatIndex)
 {
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
@@ -81,46 +92,48 @@ void removeFrientFromChat(int chatIndex)
 
     QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "removeFriend",
-                    Q_ARG(QVariant, chatIndex));
+        bool ret = QMetaObject::invokeMethod(rect, "removeFriend", Q_ARG(QVariant, chatIndex));
         if (ret == false) {
-            qDebug() << "invokeMethod (removeFriend) fail";
+            qDebug() << "[c++] : invokeMethod (removeFriend) fail";
         }
     }
+    return;
 }
-
-
-void updateListIndexForChat(int index, int listViewIndex) {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
-    if (rootObject == NULL) {
-        return;
-    }
-
-    QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
-    if (rect) {
-        bool ret = QMetaObject::invokeMethod(
-                    rect,
-                    "updateListIndex",
-                    Q_ARG(QVariant, index),
-                    Q_ARG(QVariant, listViewIndex));
-        if (ret == false) {
-            qDebug() << "invokeMethod (updateListIndex) fail";
-        }
-    }
-}
-
-
 
 /**
- *  功能描述: 从chatlist界面删除好友
- *  @param friendName   好友名字
- *  @param friendIndex  好友索引
+ *  功能描述: 更新qml中listiew中的索引
+ *  @param index          chat缓存中的索引
+ *  @param listViewIndex  listViewIndex中的索引
  *
  *  @return 无
  */
-void displayChatNetState(int idx, int state) {
+void Chat::updateListIndexForChat(int index, int listViewIndex)
+{
+    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
+    if (rect) {
+        bool ret = QMetaObject::invokeMethod(rect, "updateListIndex",
+                    Q_ARG(QVariant, index), Q_ARG(QVariant, listViewIndex));
+        if (ret == false) {
+            qDebug() << "[c++] : invokeMethod (updateListIndex) fail";
+        }
+    }
+    return;
+}
+
+/**
+ *  功能描述: 从chatlist界面删除好友
+ *  @param idx    好友索引
+ *  @param state  在线或者离线
+ *
+ *  @return 无
+ */
+void Chat::displayChatNetState(int idx, int state)
+{
     Cache *c = gCtx.cache;
     if (!c) {
         return;
@@ -128,7 +141,7 @@ void displayChatNetState(int idx, int state) {
 
     int chatIdx = 0, flag = 0;
     QList<ChatItem *>::iterator it;
-    for (it = c->chatList.begin(); it != c->chatList.end(); it++) {
+    for (it = c->chatList_.begin(); it != c->chatList_.end(); it++) {
         ChatItem *item = *it;
         if (item) {
             if (item->cacheIndex == idx) {
@@ -149,24 +162,23 @@ void displayChatNetState(int idx, int state) {
 
     QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
     if (rect) {
-
         QDateTime currentTime = QDateTime::currentDateTime();
-        QMetaObject::invokeMethod(
-                    rect,
-                    "modifyFriendTime",
-                    Q_ARG(QVariant, chatIdx),
+        QMetaObject::invokeMethod(rect, "modifyFriendTime", Q_ARG(QVariant, chatIdx),
                     Q_ARG(QVariant, currentTime.toString("HH:mm:ss")),
-                    Q_ARG(QVariant, state)
-                    );
-        qDebug() << "set time and state ok";
-    } else {
-        qDebug() << "set time and state fail";
+                    Q_ARG(QVariant, state));
     }
+    return;
 }
 
-
-void displayChatUnreadCount(int idx, int count) {
-
+/**
+ *  功能描述: 设置chat listview中的未读消息数量
+ *  @param idx    好友索引
+ *  @param count  未读消息数量
+ *
+ *  @return 无
+ */
+void Chat::displayChatUnreadCount(int idx, int count)
+{
     Cache *c = gCtx.cache;
     if (!c) {
         return;
@@ -174,7 +186,7 @@ void displayChatUnreadCount(int idx, int count) {
 
     int chatIdx = 0, flag = 0;
     QList<ChatItem *>::iterator it;
-    for (it = c->chatList.begin(); it != c->chatList.end(); it++) {
+    for (it = c->chatList_.begin(); it != c->chatList_.end(); it++) {
         ChatItem *item = *it;
         if (item) {
             if (item->cacheIndex == idx) {
@@ -195,19 +207,21 @@ void displayChatUnreadCount(int idx, int count) {
 
     QObject *rect = rootObject->findChild<QObject*>("ChatListModel");
     if (rect) {
-        QMetaObject::invokeMethod(
-                    rect,
-                    "modifyUnreadCount",
-                    Q_ARG(QVariant, chatIdx),
-                    Q_ARG(QVariant, count)
-                    );
-    } else {
-        qDebug() << "set unread count fail";
+        QMetaObject::invokeMethod(rect, "modifyUnreadCount",
+                    Q_ARG(QVariant, chatIdx), Q_ARG(QVariant, count));
     }
+    return;
 }
 
-
-void refreshChatListPosition(int cacheIndex, int itemType) {
+/**
+ *  功能描述: 更新chat listview中的位置
+ *  @param cacheIndex  好友索引
+ *  @param itemType    类型:组还是好友
+ *
+ *  @return 无
+ */
+void Chat::refreshChatListPosition(int cacheIndex, int itemType)
+{
     QString name;
     Cache *c = gCtx.cache;
     if (!c) {
@@ -215,16 +229,14 @@ void refreshChatListPosition(int cacheIndex, int itemType) {
     }
 
     switch (itemType) {
-    case CHATITEM_TYPE_FRIEND:
-    {
+    case CHATITEM_TYPE_FRIEND: {
         Friend *f = c->getOneFriend(cacheIndex);
         if (f) {
             name = f->name;
         }
         break;
     }
-    case CHATITEM_TYPE_GROUP:
-    {
+    case CHATITEM_TYPE_GROUP: {
         Group *g = c->getOneGroup(cacheIndex);
         if (g) {
             name = g->gourpName_;
@@ -254,5 +266,3 @@ void refreshChatListPosition(int cacheIndex, int itemType) {
     }
     return;
 }
-
-
