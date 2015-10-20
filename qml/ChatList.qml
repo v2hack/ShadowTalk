@@ -283,14 +283,12 @@ Rectangle {
                         selectFriend.changeMessageListForClist(friendIndex, friendName);
 
                         if (shortName === "Group") {
-                            console.log("[qml] : select group item - " + friendIndex);
+                            console.log("[qml] : select group item - " + friendIndex + " - " + friendName);
                             selectGroup.changeMessageListForFlist(friendIndex, friendName);
                         } else {
-                            console.log("[qml] : select friend item - " + friendIndex);
+                            console.log("[qml] : select friend item - " + friendIndex + " - " + friendName);
                             selectFriend.changeMessageListForFlist(friendIndex, friendName);
                         }
-
-
                     }
                     onEntered: {
                         friendListScrollbar.visible = true;

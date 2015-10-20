@@ -69,12 +69,12 @@ void MessageWidget::addMessageToWidget(
                     "addMessage",
                     Q_ARG(QVariant, QVariant::fromValue(data))
                     );
-        qDebug() << "insert one message ok";
+        qDebug() << "[c++] : insert one message ok";
     } else {
-        qDebug() << "insert one message fail";
+        qDebug() << "[c++] : insert one message fail";
     }
 
-    qDebug() << "[widget] - addMessageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
+    qDebug() << "[c++] : addMessageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 /**
@@ -96,7 +96,7 @@ void MessageWidget::addImageToWidget(
         std::string messageData,
         int messageIndex)
 {
-    qDebug() << "receive one image";
+    qDebug() << "[c++] : receive one image";
 
     int height = 0, width = 0;
     /* 持久化图片文件 */
@@ -134,11 +134,11 @@ void MessageWidget::addImageToWidget(
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
-        qDebug() << "insert one voice ok";
+        qDebug() << "[c++] : insert one voice ok";
     } else {
-        qDebug() << "insert one voice fail";
+        qDebug() << "[c++] : insert one voice fail";
     }
-    qDebug() << "[widget] - addImageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
+    qDebug() << "[c++] : addImageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 /**
@@ -156,7 +156,7 @@ void MessageWidget::addImageToWidget(
 void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
        int direct, QString voiceData, int voiceSeconds, int messageIndex)
 {
-    qDebug() << "receive one voice";
+    qDebug() << "[c++] : receive one voice";
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -177,11 +177,11 @@ void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
-        qDebug() << "insert one voice ok";
+        qDebug() << "[c++] : insert one voice ok";
     } else {
-        qDebug() << "insert one voice fail";
+        qDebug() << "[c++] : insert one voice fail";
     }
-    qDebug() << "[widget] - addVoiceToWidget - fid:" <<  uid << " mid:"<< messageIndex;
+    qDebug() << "[c++] :  addVoiceToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 
@@ -201,9 +201,9 @@ void MessageWidget::clearMessageFromWidget()
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "clearMessage");
-        qDebug() << "clear message ok";
+        qDebug() << "[c++] : clear message ok";
     } else {
-        qDebug() << "clear message fail";
+        qDebug() << "[c++] : clear message fail";
     }
     return;
 }
@@ -224,9 +224,9 @@ void MessageWidget::clearFriendFromWidget()
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "clearFriend");
-        qDebug() << "clear friend ok";
+        qDebug() << "[c++] : clear friend ok";
     } else {
-        qDebug() << "clear friend fail";
+        qDebug() << "[c++] : clear friend fail";
     }
     return;
 }
@@ -253,9 +253,9 @@ void MessageWidget::removeMessageByIndex(int index, int count)
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "removeMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
-        qDebug() << "remove message ok";
+        qDebug() << "[c++] : remove message ok";
     } else {
-        qDebug() << "remove message fail";
+        qDebug() << "[c++] : remove message fail";
     }
     return;
 }

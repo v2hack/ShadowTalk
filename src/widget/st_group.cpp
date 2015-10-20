@@ -174,9 +174,8 @@ void SelectGroup::refreshGroupStatistics(Group *g)
  */
 void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
 {
-    qDebug() << "[c++] : changeMessageListForGroup cacheIndex - " << groupCacheIndex;
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
+    qDebug() << "[c++] : group changeMessageListForFlist cacheIndex - "
+             << groupCacheIndex << " name - " << name;
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -189,18 +188,21 @@ void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
     if (!g) {
         return;
     }
+
+    /* 清理界面消息 */
+    MessageWidget::clearMessageFromWidget();
     this->refreshGroupMessage(g);
     this->refreshGroupStatistics(g);
     Utils::clearCurrentItemHighLight(c);
+    c->setCurrentId(groupCacheIndex, CHATITEM_TYPE_GROUP, name);
     Utils::setGroupItemHighLight(c, g, groupCacheIndex);
     return;
 }
 
 void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
 {
-    qDebug() << "[c++] : changeMessageListForGroup cacheIndex - " << groupCacheIndex;
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
+    qDebug() << "[c++] : group changeMessageListForClist cacheIndex - "
+             << groupCacheIndex  << " name - " << name;;
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -213,9 +215,12 @@ void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
     if (!g) {
         return;
     }
+    /* 清理界面消息 */
+    MessageWidget::clearMessageFromWidget();
     this->refreshGroupMessage(g);
     this->refreshGroupStatistics(g);
     Utils::clearCurrentItemHighLight(c);
+    c->setCurrentId(groupCacheIndex, CHATITEM_TYPE_GROUP, name);
     Utils::setGroupItemHighLight(c, g, groupCacheIndex);
     return;
 }

@@ -219,6 +219,6 @@ void Adapt::adaptListenAllGroups()
         z->listen_group_channel(StringToHex(g.groupChannelId_.toStdString()));
         Utils::ShadowTalkSleep(300);
     }
-    std::cout << "[c+] : listen all group ok" << std::endl;
+    std::cout << "[c++] : listen all group ok" << std::endl;
     return;
 }

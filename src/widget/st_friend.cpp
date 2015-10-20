@@ -361,8 +361,6 @@ void SelectFriend::refreshFriendStatistics(Friend *f)
 void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
 {
     qDebug() << "[c++] : changeMessageListForFlist index - " << friendCacheIndex;
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -377,9 +375,12 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
         return;
     }
 
+    /* 清理界面消息 */
+    MessageWidget::clearMessageFromWidget();
     this->refreshFriendMessage(f);
     this->refreshFriendStatistics(f);
     Utils::clearCurrentItemHighLight(c);
+    c->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, name);
     Utils::setFriendItemHighLight(c, f, friendCacheIndex);
     return;
 }
@@ -393,8 +394,6 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
 void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
 {
     qDebug() << "[c++] : changeMessageListForClist index - " << friendCacheIndex;
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -409,9 +408,13 @@ void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
         return;
     }
 
+    /* 清理界面消息 */
+    MessageWidget::clearMessageFromWidget();
+
     this->refreshFriendMessage(f);
     this->refreshFriendStatistics(f);
     Utils::clearCurrentItemHighLight(c);
+    c->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, name);
     Utils::setFriendItemHighLight(c, f, friendCacheIndex);
     return;
 }
