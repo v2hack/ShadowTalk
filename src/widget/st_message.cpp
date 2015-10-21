@@ -69,12 +69,12 @@ void MessageWidget::addMessageToWidget(
                     "addMessage",
                     Q_ARG(QVariant, QVariant::fromValue(data))
                     );
-        qDebug() << "[c++] : insert one message ok";
+        qDebug() << "c++: insert one message ok";
     } else {
-        qDebug() << "[c++] : insert one message fail";
+        qDebug() << "c++: insert one message fail";
     }
 
-    qDebug() << "[c++] : addMessageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
+    qDebug() << "c++: addMessageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 /**
@@ -96,7 +96,7 @@ void MessageWidget::addImageToWidget(
         std::string messageData,
         int messageIndex)
 {
-    qDebug() << "[c++] : receive one image";
+    qDebug() << "c++: receive one image";
 
     int height = 0, width = 0;
     /* 持久化图片文件 */
@@ -134,11 +134,11 @@ void MessageWidget::addImageToWidget(
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
-        qDebug() << "[c++] : insert one voice ok";
+        qDebug() << "c++: insert one voice ok";
     } else {
-        qDebug() << "[c++] : insert one voice fail";
+        qDebug() << "c++: insert one voice fail";
     }
-    qDebug() << "[c++] : addImageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
+    qDebug() << "c++: addImageToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 /**
@@ -156,7 +156,7 @@ void MessageWidget::addImageToWidget(
 void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
        int direct, QString voiceData, int voiceSeconds, int messageIndex)
 {
-    qDebug() << "[c++] : receive one voice";
+    qDebug() << "c++: receive one voice";
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;
@@ -177,11 +177,11 @@ void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "addMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
-        qDebug() << "[c++] : insert one voice ok";
+        qDebug() << "c++: insert one voice ok";
     } else {
-        qDebug() << "[c++] : insert one voice fail";
+        qDebug() << "c++: insert one voice fail";
     }
-    qDebug() << "[c++] :  addVoiceToWidget - fid:" <<  uid << " mid:"<< messageIndex;
+    qDebug() << "c++:  addVoiceToWidget - fid:" <<  uid << " mid:"<< messageIndex;
 }
 
 
@@ -201,9 +201,9 @@ void MessageWidget::clearMessageFromWidget()
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "clearMessage");
-        qDebug() << "[c++] : clear message ok";
+        qDebug() << "c++: clear message ok";
     } else {
-        qDebug() << "[c++] : clear message fail";
+        qDebug() << "c++: clear message fail";
     }
     return;
 }
@@ -224,9 +224,9 @@ void MessageWidget::clearFriendFromWidget()
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "clearFriend");
-        qDebug() << "[c++] : clear friend ok";
+        qDebug() << "c++: clear friend ok";
     } else {
-        qDebug() << "[c++] : clear friend fail";
+        qDebug() << "c++: clear friend fail";
     }
     return;
 }
@@ -253,9 +253,9 @@ void MessageWidget::removeMessageByIndex(int index, int count)
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "removeMessage", Q_ARG(QVariant, QVariant::fromValue(data)));
-        qDebug() << "[c++] : remove message ok";
+        qDebug() << "c++: remove message ok";
     } else {
-        qDebug() << "[c++] : remove message fail";
+        qDebug() << "c++: remove message fail";
     }
     return;
 }
@@ -273,11 +273,11 @@ void MessageManager::sendGroupMessage(QString &message) {
     Cache *c = gCtx.cache;
     Group *g = c->getOneGroup(c->currentUseId_);
     if (!g) {
-        qDebug() << "[c++] : can't current group idx - " << c->currentUseId_;
+        qDebug() << "c++: can't current group idx - " << c->currentUseId_;
         return;
     }
 
-    qDebug() << "[c++] : message - " << message;
+    qDebug() << "c++: message - " << message;
     int idx = g->messageList_.size() + 1;
     MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
 
@@ -301,10 +301,10 @@ void MessageManager::sendFriendMessage(QString &message) {
 
     Friend *f = c->getOneFriend(c->currentUseId_);
     if (!f) {
-        qDebug() << "[c++] : can't current friend idx - " << c->currentUseId_;
+        qDebug() << "c++: can't current friend idx - " << c->currentUseId_;
         return;
     }
-    qDebug() << "[c++] : message - " << message;
+    qDebug() << "c++: message - " << message;
     int idx = f->messageList.size() + 1;
     MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
 
@@ -340,10 +340,10 @@ void MessageManager::sendMessage(QString message) {
     /* 找到缓存 */
     Cache *c = gCtx.cache;
     if (c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
-        qDebug() << "[c++] : send one friend message - " << c->currentUseId_;
+        qDebug() << "c++: send one friend message - " << c->currentUseId_;
         this->sendFriendMessage(message);
     } else {
-        qDebug() << "[c++] : send one group message - " << c->currentUseId_;
+        qDebug() << "c++: send one group message - " << c->currentUseId_;
         this->sendGroupMessage(message);
     }
     return;

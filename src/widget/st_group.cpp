@@ -23,13 +23,14 @@ extern struct ShadowTalkContext gCtx;
 
 Group::Group(QString groupChannelId, QString localMemberId, QString gourpName,
              QString myNameInGroup, QString ownerID, QString showNotification, int groupId) {
-    groupChannelId_   = groupChannelId;
-    localMemberId_    = localMemberId;
-    gourpName_        = gourpName;
-    myNameInGroup_    = myNameInGroup;
-    ownerID_          = ownerID;
-    showNotification_ = showNotification;
-    gid_ = groupId;
+    groupChannelId_     = groupChannelId;
+    localMemberId_      = localMemberId;
+    gourpName_          = gourpName;
+    myNameInGroup_      = myNameInGroup;
+    ownerID_            = ownerID;
+    showNotification_   = showNotification;
+    gid_                = groupId;
+    messageUnreadCount_ = 0;
 }
 
 Group::~Group() {
@@ -117,6 +118,7 @@ SelectGroup::~SelectGroup() {
 
 }
 
+
 void SelectGroup::refreshGroupMessage(Group *g)
 {
     /* 添加消息 */
@@ -132,7 +134,7 @@ void SelectGroup::refreshGroupMessage(Group *g)
         if (it->driect == MessageDriectMe) {
             name = "Me";
         } else {
-            name.fromStdString(it->senderName);
+            name = QString::fromStdString(it->senderName);
         }
 
         /* 添加消息到界面 */
@@ -174,7 +176,7 @@ void SelectGroup::refreshGroupStatistics(Group *g)
  */
 void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
 {
-    qDebug() << "[c++] : group changeMessageListForFlist cacheIndex - "
+    qDebug() << "c++: group changeMessageListForFlist cacheIndex - "
              << groupCacheIndex << " name - " << name;
 
     /* 寻找index的消息 */
@@ -196,12 +198,13 @@ void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(groupCacheIndex, CHATITEM_TYPE_GROUP, name);
     Utils::setGroupItemHighLight(c, g, groupCacheIndex);
+    qDebug() << "\n";
     return;
 }
 
 void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
 {
-    qDebug() << "[c++] : group changeMessageListForClist cacheIndex - "
+    qDebug() << "c++: group changeMessageListForClist cacheIndex - "
              << groupCacheIndex  << " name - " << name;;
 
     /* 寻找index的消息 */
@@ -222,6 +225,7 @@ void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(groupCacheIndex, CHATITEM_TYPE_GROUP, name);
     Utils::setGroupItemHighLight(c, g, groupCacheIndex);
+    qDebug() << "\n";
     return;
 }
 

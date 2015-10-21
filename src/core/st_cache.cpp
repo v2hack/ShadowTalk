@@ -18,7 +18,7 @@
 #include "st_context.h"
 #include "st_chat.h"
 
-Cache::Cache(): friendCount_(0), groupCount_(0), currentUseId_(-1) {}
+Cache::Cache(): friendCount_(0), groupCount_(0), currentUseId_(-1), currentUseType_(-1) {}
 Cache::~Cache() {}
 
 /***************************  联系人操作接口  ************************************/
@@ -284,9 +284,9 @@ void Cache::insertOneChat(int cacheIndex, int type, QString friendName)
     chatList_.insert(chatList_.begin(), item);
 
     if (type == CHATITEM_TYPE_FRIEND) {
-        shortName = "Group";
-    } else {
         shortName = "Friend";
+    } else {
+        shortName = "Group";
     }
     Chat::addFrientToChat(friendName, shortName, cacheIndex, 0);
     return;
@@ -303,22 +303,27 @@ void Cache::insertOneChat(int cacheIndex, int type, QString friendName)
 void Cache::removeOneChat(int cacheIndex, int type)
 {
     int chatIdx = 0;
+    int flag = 0;
 
     QList<ChatItem *>::iterator it;
     for(it = chatList_.begin(); it != chatList_.end(); it++) {
         ChatItem *item = *it;
         if (item) {
             if (item->cacheIndex == cacheIndex && item->type == type) {
+                flag = 1;
                 break;
             }
             chatIdx++;
         }
     }
-    if (chatIdx != -1) {
+    if (flag == 1) {
         chatList_.erase(it);
         delete *it;
         Chat::removeFrientFromChat(chatIdx);
+        qDebug() << "c++: remove chatIdx - " << chatIdx;
+        return;
     }
+    qDebug() << "c++: remove chat widget fail : cacheIdx - " << cacheIndex << " type - " << type;
     return;
 }
 

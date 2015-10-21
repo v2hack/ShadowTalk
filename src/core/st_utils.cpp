@@ -16,6 +16,7 @@
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QString>
+#include <QThread>
 #include "st_context.h"
 #include "st_cache.h"
 #include "st_utils.h"
@@ -108,7 +109,7 @@ void Utils::displayCurrentFriendName(QString currentFriendName)
     if (rect) {
         QMetaObject::invokeMethod(rect, "setCurrentFriendName",  Q_ARG(QVariant, currentFriendName));
     } else {
-        qDebug() << "can't find object DispalyCurrentFriendName";
+        qDebug() << "c++: can't find object DispalyCurrentFriendName";
     }
     return;
 }
@@ -186,7 +187,7 @@ void Utils::walkCacheAddFriendAndGroup()
     QMap<int, Group>::iterator it;
     for(it = c->groupList_.begin(); it != c->groupList_.end(); it++) {
         Group &g = it.value();
-        qDebug() << "[c++] : add group - " << g.gourpName_;
+        qDebug() << "c++: add group - " << g.gourpName_;
         Utils::addGroupIntoWidget(g.gourpName_, it.key(), listViewIndex);
         g.listViewIndex_ = listViewIndex;
         listViewIndex++;
@@ -200,7 +201,7 @@ void Utils::walkCacheAddFriendAndGroup()
                 continue;
             }
             if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
-                qDebug() << "[c++] : add friend - " << f.name;
+                qDebug() << "c++: add friend - " << f.name;
                 Utils::addFriendIntoWidget(f.name, it.key(), listViewIndex);
                 f.listViewIndex = listViewIndex;
                 listViewIndex++;
@@ -323,7 +324,7 @@ void Utils::clearCurrentItemHighLight(Cache *cache) {
                 friend_->setChatlistBackGroundColor(0, chatListSeq);
             }
         } else {
-            qDebug() << "[c++] : can't friend - " << cache->currentUseId_;
+            qDebug() << "c++: can't friend - " << cache->currentUseId_;
         }
 
     /* 取消当前组的背景高亮 */
@@ -336,7 +337,7 @@ void Utils::clearCurrentItemHighLight(Cache *cache) {
                 group->setChatlistBackGroundColor(0, chatListSeq);
             }
         } else {
-            qDebug() << "[c++] : can't group - " << cache->currentUseId_;
+            qDebug() << "c++: can't group - " << cache->currentUseId_;
         }
     }
 }

@@ -62,7 +62,7 @@ std::string NormalPicture::findPictureCache(QString fidx, QString midx)
     if (c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
         Friend *f = c->getOneFriend(fidx.toInt());
         if (!f) {
-            qDebug() << "[c++] : can't find friend index - " << fidx;
+            qDebug() << "c++: can't find friend index - " << fidx;
             return std::string("");
         }
 
@@ -74,13 +74,13 @@ std::string NormalPicture::findPictureCache(QString fidx, QString midx)
                 return m.data;
             }
         }
-        qDebug() << "[c++] : friend findPictureCache - can't find image message - fid:"
+        qDebug() << "c++: friend findPictureCache - can't find image message - fid:"
                  << fidx << " mid:" << midx;
         return std::string("");
     } else {
         Group *g = c->getOneGroup(fidx.toInt());
         if (!g) {
-            qDebug() << "[c++] : can't find group index - " << fidx;
+            qDebug() << "c++: can't find group index - " << fidx;
             return std::string("");
         }
 
@@ -92,7 +92,7 @@ std::string NormalPicture::findPictureCache(QString fidx, QString midx)
                 return m.data;
             }
         }
-        qDebug() << "[c++] : group findPictureCache - can't find image message - fid:"
+        qDebug() << "c++: group findPictureCache - can't find image message - fid:"
                  << fidx << " mid:" << midx;
         return std::string("");
     }
@@ -136,7 +136,7 @@ int NormalPicture::shrinkPicture(QString filePath, int &height, int &width, int 
 
     /* 计算图片的高和宽 */
     if (!image.load(filePath)) {
-        qDebug() << "open image fail";
+        qDebug() << "c++: open image fail";
         return -1;
     }
     QPixmap pix = QPixmap::fromImage(image);
@@ -208,7 +208,7 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
 
     std::string fileData = NormalPicture::findPictureCache(friendIndex, messageIndex);
     if (fileData.empty()) {
-        qDebug() << "[c++] : normal picture is empty";
+        qDebug() << "c++: normal picture is empty";
         return;
     }
     /* 持久化图片文件 */
@@ -219,7 +219,7 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
 
     int height = 0, width = 0;
     if (NormalPicture::shrinkPicture(picturePath.toLocalFile(), height, width, 600) < 0) {
-        qDebug() << "[c++] : shrink picture fail";
+        qDebug() << "c++: shrink picture fail";
         return;
     }
 
@@ -233,9 +233,9 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     if (rect) {
         QMetaObject::invokeMethod(rect, "setPicture", Q_ARG(QVariant, picturePath.toString()),
                                   Q_ARG(QVariant, height), Q_ARG(QVariant, width));
-        qDebug() << "[c++] : insert one picture ok";
+        qDebug() << "c++: insert one picture ok";
     } else {
-        qDebug() << "[c++] : insert one picture fail";
+        qDebug() << "c++: insert one picture fail";
     }
     gCtx.imager->show();
     return;

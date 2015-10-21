@@ -67,7 +67,7 @@ std::string Voice::findVoiceCache(QString fidx, QString midx)
     /* 找到好友缓存 */
     Friend *f = c->getOneFriend(fidx.toInt());
     if (!f) {
-        qDebug() << "[c++] : can't find friend index - " << fidx;
+        qDebug() << "c++: can't find friend index - " << fidx;
         return std::string("");
     }
 
@@ -94,7 +94,7 @@ void Voice::playVoice(QString fidx, QString midx)
     /* 找到缓存并生成声音文件 */
     std::string friendVoice = findVoiceCache(fidx, midx);
     if (friendVoice.empty()) {
-        qDebug() << "[c++] : voice is empty : fidx - " << fidx << " midx - " << midx;
+        qDebug() << "c++: voice is empty : fidx - " << fidx << " midx - " << midx;
         return;
     }
 
@@ -111,7 +111,7 @@ void Voice::playVoice(QString fidx, QString midx)
 
     const QUrl commandLineUrl = QUrl::fromLocalFile(tempPath);
     gCtx.viewer->rootContext()->setContextProperty(QStringLiteral("voiceUrl"), commandLineUrl);
-    qDebug() << "[c++] : voice file :  - " << commandLineUrl;
+    qDebug() << "c++: voice file :  - " << commandLineUrl;
 
     /* 调用qml播放声音接口 */
     Utils::playMessageVoice(tempPath);

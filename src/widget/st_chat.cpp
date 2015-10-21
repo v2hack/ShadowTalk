@@ -94,7 +94,7 @@ void Chat::removeFrientFromChat(int chatIndex)
     if (rect) {
         bool ret = QMetaObject::invokeMethod(rect, "removeFriend", Q_ARG(QVariant, chatIndex));
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (removeFriend) fail";
+            qDebug() << "c++: invokeMethod (removeFriend) fail";
         }
     }
     return;
@@ -119,7 +119,7 @@ void Chat::updateListIndexForChat(int index, int listViewIndex)
         bool ret = QMetaObject::invokeMethod(rect, "updateListIndex",
                     Q_ARG(QVariant, index), Q_ARG(QVariant, listViewIndex));
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (updateListIndex) fail";
+            qDebug() << "c++: invokeMethod (updateListIndex) fail";
         }
     }
     return;
@@ -248,20 +248,20 @@ void Chat::refreshChatListPosition(int cacheIndex, int itemType)
     }
 
     if (name.isEmpty()) {
-        qDebug() << "[c++] : refresh chat list position - get name fail";
+        qDebug() << "c++: refresh chat list position - get name fail";
         return;
     }
 
     int ret = c->atFirstPosition(cacheIndex, itemType);
     /* 需要交换位置 */
     if (ret == -2) {
-        qDebug() << "[c++] : chatlist - change position";
+        qDebug() << "c++: chatlist - change position";
         c->removeOneChat(cacheIndex, itemType);
         c->insertOneChat(cacheIndex, itemType, name);
     }
     /* 需要插入新成员 */
     if (ret == -1) {
-        qDebug() << "[c++] : chatlist - insert new one";
+        qDebug() << "c++: chatlist - insert new one";
         c->insertOneChat(cacheIndex, itemType, name);
     }
     return;

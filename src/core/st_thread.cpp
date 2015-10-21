@@ -34,11 +34,11 @@ void Sthread::run()
         /* 登录界面切换检查 */
         if (c->changeFlag == 1) {
             if (c->windowFlag == 1) {
-                qDebug() << "[c++] : show login";
+                qDebug() << "c++: show login";
                 c->loginer->show();
                 c->viewer->close();
             } else if (c->windowFlag == 2) {
-                qDebug() << "[c++] : show main";
+                qDebug() << "c++: show main";
                 c->loginer->close();
                 c->viewer->show();
             }

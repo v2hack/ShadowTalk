@@ -56,7 +56,7 @@ void setAppParameter()
 {
     /* 设置程序路径 */
     QString dir = QGuiApplication::applicationDirPath();
-    qDebug() << "Application current dir - " << dir;
+    qDebug() << "c++: application current dir - " << dir;
     QDir::setCurrent(dir);
     /* 库加载路径 */
     QGuiApplication::addLibraryPath("./plugins");
@@ -154,7 +154,7 @@ void createLoginViewer(QQuickView &viewer)
     setViewerParameter(viewer, "loginwindow", "qrc:/qml/login.qml");
     /* 生成二维码并显示到界面上 */
     if (Login::ShadowTalkLogin() < 0) {
-        qDebug() << "create sync qrchannel fail";
+        qDebug() << "c++: create sync qrchannel fail";
     }
     viewer.show();
     return;
@@ -195,8 +195,8 @@ void initZebraEngine()
     gCtx.phoneUpdateTime.start();
 
     zebraClient->init("127.0.0.1:6000 120.27.42.174:27053", &zebarDele, "17monipdb.dat");
-    zebraClient->enableLog();
-    qDebug() << "[imapi] << init zebra engine success";
+    //zebraClient->enableLog();
+    qDebug() << "c++: init zebra engine success";
     return;
 }
 

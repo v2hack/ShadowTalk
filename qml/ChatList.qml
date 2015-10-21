@@ -266,7 +266,7 @@ Rectangle {
                 SelectFriend {
                     id: selectFriend
                 }
-                SelectFriend {
+                SelectGroup {
                     id: selectGroup
                 }
 
@@ -276,18 +276,17 @@ Rectangle {
                     anchors.fill: parent;
                     hoverEnabled: true;
 
-
                     onClicked: {
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
                         selectFriend.changeMessageListForClist(friendIndex, friendName);
 
                         if (shortName === "Group") {
-                            console.log("[qml] : select group item - " + friendIndex + " - " + friendName);
-                            selectGroup.changeMessageListForFlist(friendIndex, friendName);
+                            console.log("select group item - " + friendIndex + " - " + friendName + " - " + shortName);
+                            selectGroup.changeMessageListForClist(friendIndex, friendName);
                         } else {
-                            console.log("[qml] : select friend item - " + friendIndex + " - " + friendName);
-                            selectFriend.changeMessageListForFlist(friendIndex, friendName);
+                            console.log("select friend item - " + friendIndex + " - " + friendName + " - " + shortName);
+                            selectFriend.changeMessageListForClist(friendIndex, friendName);
                         }
                     }
                     onEntered: {
@@ -298,7 +297,6 @@ Rectangle {
                         friendListScrollbar.visible = false;
                         chatListView.currentIndex = -1;
                     }
-
                     onWheel: {
                         if (wheel.angleDelta.y < 0) {
                             if (chatListView.contentY <= chatListView.contentHeight -

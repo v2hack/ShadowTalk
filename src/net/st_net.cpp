@@ -57,7 +57,7 @@ void Adapt::adaptSendMessage(QString channelId, int messageType, QString message
         z->send_sync_message(gCtx.phoneSyncChannel, StringToHex(channelId.toStdString()), messageType + 2000,
                message.toStdString(), 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                message.toStdString().size(), 0);
-        qDebug() << "[c++] : adaptSendMessage - send sync message";
+        qDebug() << "c++: adaptSendMessage - send sync message";
     }
     return;
 }
@@ -77,7 +77,7 @@ void Adapt::adaptListenFriends(std::string friendChannelId)
     }
     ret = z->listen_friend(friendChannelId);
     if (ret < 0) {
-        std::cout << "[c++] : listen friend fail" << std::endl;
+        std::cout << "c++: listen friend fail" << std::endl;
     }
     return;
 }
@@ -102,12 +102,12 @@ void Adapt::adaptListenAllFriends()
         Friend &f = it.value();
         ret = z->listen_friend(StringToHex(f.friendChannelId.toStdString()));
         if (ret < 0) {
-            std::cout << "[c++] : listen friend fail - " << f.friendChannelId.toStdString() << std::endl;
+            std::cout << "c++: listen friend fail - " << f.friendChannelId.toStdString() << std::endl;
             continue;
         }
         Utils::ShadowTalkSleep(200);
     }
-    std::cout << "[c++] : listen all friends ok" << std::endl;
+    std::cout << "c++: listen all friends ok" << std::endl;
     return;
 }
 
@@ -126,7 +126,7 @@ void Adapt::adaptUnistenFriends(std::string friendChannelId)
     }
     ret = z->stop_listen_friend(friendChannelId);
     if (ret < 0) {
-        std::cout << "[c++] : unlisten friend fail" << std::endl;
+        std::cout << "c++: unlisten friend fail" << std::endl;
     }
     return;
 }
@@ -151,11 +151,11 @@ void Adapt::adaptUnlistenAllFriends()
         Friend &f = it.value();
         ret = z->stop_listen_friend(StringToHex(f.friendChannelId.toStdString()));
         if (ret < 0) {
-            std::cout << "[c++] : unlisten all friend fail" << std::endl;
+            std::cout << "c++: unlisten all friend fail" << std::endl;
             continue;
         }
     }
-    std::cout << "[c++] : unlisten all friends ok" << std::endl;
+    std::cout << "c++: unlisten all friends ok" << std::endl;
     return;
 }
 
@@ -176,7 +176,7 @@ void Adapt::adaptSendGroupMessage(QString channelId, int messageType, QString me
                               messageType, message.toStdString(),
                               60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                               message.toStdString().size(), 0, myName.toStdString());
-        qDebug() << "[c++] : adaptSendGroupMessage";
+        qDebug() << "c++: adaptSendGroupMessage";
     }
     return;
 }
@@ -195,7 +195,7 @@ void Adapt::adaptListenGroups(QString groupChannelId)
         return;
     }
     z->listen_group_channel(StringToHex(groupChannelId.toStdString()));
-    std::cout << "[c++] : listen group ok" << std::endl;
+    std::cout << "c++: listen group ok" << std::endl;
     return;
 }
 
@@ -219,6 +219,6 @@ void Adapt::adaptListenAllGroups()
         z->listen_group_channel(StringToHex(g.groupChannelId_.toStdString()));
         Utils::ShadowTalkSleep(300);
     }
-    std::cout << "[c++] : listen all group ok" << std::endl;
+    std::cout << "c++: listen all group ok" << std::endl;
     return;
 }

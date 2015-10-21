@@ -36,7 +36,7 @@ void Login::ShadowTalkSetSyncProcess(int processValue)
     if (rect) {
         QMetaObject::invokeMethod(rect, "processPaint", Q_ARG(QVariant, newProcessValue));
     } else {
-        qDebug() << "paint login process fail";
+        qDebug() << "c++: paint login process fail";
     }
     return;
 }
@@ -53,7 +53,7 @@ void Login::ShadowTalkSetSyncProcessClean(int processValue)
     if (rect) {
         QMetaObject::invokeMethod(rect, "processPaintClean", Q_ARG(QVariant, newProcessValue));
     } else {
-        qDebug() << "paint login process fail";
+        qDebug() << "c++: paint login process fail";
     }
     return;
 }
@@ -71,7 +71,7 @@ void ShadowTalkSetQrImage(QString qrImagePath) {
     if (rect) {
         QMetaObject::invokeMethod(rect, "setQrImage", Q_ARG(QVariant, qrImagePath));
     } else {
-        qDebug() << "set login qr image fail";
+        qDebug() << "c++: set login qr image fail";
     }
     return;
 }
@@ -88,7 +88,7 @@ void Login::ShadowTalkLoginStartSync()
     if (rect) {
         QMetaObject::invokeMethod(rect, "loginQrStartSync");
     } else {
-        qDebug() << "login qr start sync fail";
+        qDebug() << "c++: login qr start sync fail";
     }
     return;
 }
@@ -105,7 +105,7 @@ void Login::ShadowTalkLoginClean()
     if (rect) {
         QMetaObject::invokeMethod(rect, "loginQrStartClean");
     } else {
-        qDebug() << "login qr clean fail";
+        qDebug() << "c++: login qr clean fail";
     }
     return;
 }
@@ -139,7 +139,7 @@ int Login::ShadowTalkLogin()
     /* 利用peersafe接口创建二维码 */
     qrCodeSource = gCtx.zebra->generate_qr_channel(1200);
     if (qrCodeSource.empty()) {
-        qDebug() << "generate qr channel fail";
+        qDebug() << "c++: generate qr channel fail";
         return -1;
     }
     gCtx.phoneQrChannel = qrCodeSource;
@@ -150,17 +150,17 @@ int Login::ShadowTalkLogin()
     /* 转换为特定的channel */
     qrChannelId = gCtx.zebra->hex_encode(qrCodeSource);
     qrEnCode = "C:" + qrChannelId;
-    std::cout << "sync qrcode - " << qrEnCode << std::endl;
+    std::cout << "c++: sync qrcode - " << qrEnCode << std::endl;
 
     /* 创建二维码图片 */
     QrCode code;
     code.setString(QString::fromStdString(qrEnCode));
     if (code.getQRWidth() == 0) {
-        qDebug() << "create qrcode fail";
+        qDebug() << "c++: create qrcode fail";
         return 0;
     }
     if (code.saveImage(SHADOW_QR_IMAGE_NAME, 250) == false) {
-        qDebug() << "save image fail";
+        qDebug() << "c++: save image fail";
     }
 
     /* 界面上设置二维码图片*/

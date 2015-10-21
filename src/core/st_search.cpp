@@ -50,7 +50,7 @@ int Search::checkSearchText()
         bool ret = QMetaObject::invokeMethod(rect, "searchTextIsEmpty",
                     Qt::DirectConnection, Q_RETURN_ARG(QVariant, isEmptyText));
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (searchTextIsEmpty) fail";
+            qDebug() << "c++: invokeMethod (searchTextIsEmpty) fail";
         }
     }
     return isEmptyText.toInt();
@@ -73,7 +73,7 @@ void Search::setSearchTextUnvisible()
     if (rect) {
         bool ret = QMetaObject::invokeMethod(rect, "setSearchUnvisible", Qt::DirectConnection);
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (setSearchUnvisible) fail";
+            qDebug() << "c++: invokeMethod (setSearchUnvisible) fail";
         }
     }
     return;
@@ -96,7 +96,7 @@ void setSearchTextVisible()
     if (rect) {
         bool ret = QMetaObject::invokeMethod(rect, "setSearchVisible", Qt::DirectConnection);
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (setSearchTextVisible) fail";
+            qDebug() << "c++: invokeMethod (setSearchTextVisible) fail";
         }
     }
     return;
@@ -121,7 +121,7 @@ QString getSearchTextContent()
         bool ret = QMetaObject::invokeMethod(rect, "searchTextContent",
                     Qt::DirectConnection, Q_RETURN_ARG(QVariant, text));
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (searchTextContent) fail";
+            qDebug() << "c++: invokeMethod (searchTextContent) fail";
         }
     }
     return text.toString();
@@ -150,7 +150,7 @@ void addSearchResultWidget(QString friendName, int friendIndex)
         bool ret = QMetaObject::invokeMethod(rect,"addFriend",
                     Q_ARG(QVariant, QVariant::fromValue(newElement)));
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (addSearchResultWidget) fail";
+            qDebug() << "c++: invokeMethod (addSearchResultWidget) fail";
         }
     }
     return;
@@ -173,7 +173,7 @@ void Search::clearSearchWidget()
     if (rect) {
         bool ret = QMetaObject::invokeMethod(rect, "clearFriend");
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (clearSearchWidget) fail";
+            qDebug() << "c++: invokeMethod (clearSearchWidget) fail";
         }
     }
     return;
@@ -221,7 +221,7 @@ void clearSearchContent()
     if (rect) {
         bool ret = QMetaObject::invokeMethod(rect, "searchClearContent", Qt::DirectConnection);
         if (ret == false) {
-            qDebug() << "[c++] : invokeMethod (searchClearContent) fail";
+            qDebug() << "c++: invokeMethod (searchClearContent) fail";
         }
     }
     return;

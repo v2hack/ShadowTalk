@@ -151,7 +151,7 @@ Rectangle {
         }
         /* 用于设置被选中的item的背景颜色 */
         function modifyBackColor(index, colorFlag) {
-            console.log("[qml] : backGroundColor : index " + index + " color " + colorFlag);
+            console.log("backGroundColor : index " + index + " color " + colorFlag);
             model.setProperty(index, "backGroundColor", colorFlag);
         }
     }
@@ -327,10 +327,10 @@ Rectangle {
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
                         if (shortName === "Group") {
-                            console.log("[qml] : select group item - " + friendIndex);
+                            console.log("select group item - " + friendIndex);
                             selectGroup.changeMessageListForFlist(friendIndex, friendName);
                         } else {
-                            console.log("[qml] : select friend item - " + friendIndex);
+                            console.log("select friend item - " + friendIndex);
                             selectFriend.changeMessageListForFlist(friendIndex, friendName);
                         }
                     }

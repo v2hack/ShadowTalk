@@ -79,7 +79,7 @@ static void addCacheForKeyValue(const QString key, const QString value)
 
     Cache *c = gCtx.cache;
     if (!c) {
-        qDebug() << "[c++] : insert cache fail";
+        qDebug() << "c++: insert cache fail";
         return;
     }
 
@@ -183,7 +183,7 @@ static void addCacheForGroup(QString groupChannelId, QString localMemberId,
         return;
     }
 
-    qDebug() << "[c++] : addCacheForGroup"
+    qDebug() << "c++: addCacheForGroup"
              << " groupChannelId - " << groupChannelId
              << " localMemberId - " << localMemberId
              << " gourpName - " << gourpName
@@ -230,7 +230,7 @@ static void addCacheForGroupMember(QString &memberId, QString &name,
         return;
     }
 
-    qDebug() << "[c++] : addCacheForGroupMember"
+    qDebug() << "c++: addCacheForGroupMember"
              << " memberID - " << memberId
              << " name - " << name
              << " status - " << status
@@ -375,7 +375,7 @@ int ParseXml::parseContactXml(QDomElement &array)
     for (int i = 0; !dict.isNull(); dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "[c++] : can't find the dict child";
+            qDebug() << "c++: can't find the dict child";
             return -1;
         } else {
             if (parseContactDict(dict) < 0) {
@@ -481,7 +481,7 @@ int ParseXml::parseQrChannelXml(QDomElement &array)
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "[c++] : can't find the dict child";
+            qDebug() << "c++: can't find the dict child";
             return -1;
         } else {
             if (parseQrChannelDict(dict) < 0) {
@@ -558,7 +558,7 @@ int ParseXml::parseKeyValueXml(QDomElement &array)
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "[c++] : can't find the dict child";
+            qDebug() << "c++: can't find the dict child";
             return -1;
         } else {
             if (parseKeyValueDict(dict) < 0) {
@@ -704,7 +704,7 @@ int ParseXml::parseGroupXml(QDomElement &array)
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "[c++] : can't find the dict child";
+            qDebug() << "c++: can't find the dict child";
             return -1;
         } else {
             if (parseGroupDict(dict) < 0) {
@@ -809,7 +809,7 @@ int ParseXml::parseGroupMemberXml(QDomElement &array)
          dict = dict.nextSiblingElement(ST_XML_TAG_DICT), i++)
     {
         if (dict.isNull()) {
-            qDebug() << "[c++] : can't find the dict child";
+            qDebug() << "c++: can't find the dict child";
             return -1;
         } else {
             if (parseGroupMemberDict(dict) < 0) {
@@ -887,13 +887,13 @@ int ParseXml::parseDencryptXml(const QString plainData)
     writeXmlFile(plainData);
 
     if (!document.setContent(plainData, false, &strError, &errLin, &errCol)) {
-        qDebug() << "[c++] : parse file failed at line " << errLin
+        qDebug() << "c++: parse file failed at line " << errLin
                  << " column " << errCol << " " << strError;
         return -1;
     }
 
     if (document.isNull()) {
-        qDebug() << "[c++] : document is null";
+        qDebug() << "c++: document is null";
         return -1;
     }
 
@@ -908,7 +908,7 @@ int ParseXml::parseDencryptXml(const QString plainData)
             break;
         }
         if (elt.isNull()) {
-            qDebug() << "[c++] : can't find the array child";
+            qDebug() << "c++: can't find the array child";
             return -1;
         } else {
             array[i] = elt;
@@ -917,7 +917,7 @@ int ParseXml::parseDencryptXml(const QString plainData)
     }
 
     if (arrayCount < 3) {
-        qDebug() << "[c++] : xml parse fail, array count is " << arrayCount;
+        qDebug() << "c++: xml parse fail, array count is " << arrayCount;
         return -1;
     }
 
@@ -926,28 +926,28 @@ int ParseXml::parseDencryptXml(const QString plainData)
         if (parseGroupXml(array[3]) < 0) {
             return -1;
         }
-        qDebug() << "[c++] : parse gourp success";
+        qDebug() << "c++: parse gourp success";
 
         if (parseGroupMemberXml(array[4]) < 0) {
             return -1;
         }
-        qDebug() << "[c++] : parse group member success";
+        qDebug() << "c++: parse group member success";
     }
 
     if (parseContactXml(array[0])  < 0) {
         return -1;
     }
-    qDebug() << "[c++] : parse contact success";
+    qDebug() << "c++: parse contact success";
 
     if (parseQrChannelXml(array[1]) < 0) {
         return -1;
     }
-    qDebug() << "[c++] : parse qrchannel success";
+    qDebug() << "c++: parse qrchannel success";
 
     if (parseKeyValueXml(array[2]) < 0) {
         return -1;
     }
-    qDebug() << "[c++] : parse keyvalue success";
+    qDebug() << "c++: parse keyvalue success";
 
     Utils::walkCacheAddFriendAndGroup();
     return 0;

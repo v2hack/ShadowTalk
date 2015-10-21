@@ -360,7 +360,7 @@ void SelectFriend::refreshFriendStatistics(Friend *f)
  */
 void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
 {
-    qDebug() << "[c++] : changeMessageListForFlist index - " << friendCacheIndex;
+    qDebug() << "c++: friend changeMessageListForFlist index - " << friendCacheIndex;
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -371,7 +371,7 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
     /* 找到好友缓存 */
 	Friend *f = c->getOneFriend(friendCacheIndex);
     if (!f) {
-		qDebug() << "[c++] : get friend fail by index - " << friendCacheIndex;
+        qDebug() << "c++: get friend fail by index - " << friendCacheIndex;
         return;
     }
 
@@ -382,6 +382,7 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, name);
     Utils::setFriendItemHighLight(c, f, friendCacheIndex);
+    qDebug() << "\n";
     return;
 }
 
@@ -393,7 +394,7 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
  */
 void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
 {
-    qDebug() << "[c++] : changeMessageListForClist index - " << friendCacheIndex;
+    qDebug() << "c++: friend changeMessageListForClist index - " << friendCacheIndex;
 
     /* 寻找index的消息 */
     Cache *c = gCtx.cache;
@@ -404,7 +405,7 @@ void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
     /* 找到好友缓存 */
 	Friend *f = c->getOneFriend(friendCacheIndex);
     if (!f) {
-		qDebug() << "[c++] : get friend fail by index - " << friendCacheIndex;
+        qDebug() << "c++: get friend fail by index - " << friendCacheIndex;
         return;
     }
 
@@ -416,6 +417,7 @@ void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, name);
     Utils::setFriendItemHighLight(c, f, friendCacheIndex);
+    qDebug() << "\n";
     return;
 }
 
