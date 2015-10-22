@@ -125,6 +125,7 @@ void Chat::updateListIndexForChat(int index, int listViewIndex)
     return;
 }
 
+
 /**
  *  功能描述: 从chatlist界面删除好友
  *  @param idx    好友索引
@@ -140,6 +141,7 @@ void Chat::displayChatNetState(int idx, int state)
     }
 
     int chatIdx = 0, flag = 0;
+    c->chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for (it = c->chatList_.begin(); it != c->chatList_.end(); it++) {
         ChatItem *item = *it;
@@ -151,6 +153,7 @@ void Chat::displayChatNetState(int idx, int state)
             chatIdx++;
         }
     }
+    c->chatMutex_.unlock();
     if (flag == 0) {
         return;
     }
@@ -185,6 +188,7 @@ void Chat::displayChatUnreadCount(int idx, int count)
     }
 
     int chatIdx = 0, flag = 0;
+    c->chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for (it = c->chatList_.begin(); it != c->chatList_.end(); it++) {
         ChatItem *item = *it;
@@ -196,10 +200,10 @@ void Chat::displayChatUnreadCount(int idx, int count)
             chatIdx++;
         }
     }
+    c->chatMutex_.unlock();
     if (flag == 0) {
         return;
     }
-
     QQuickItem *rootObject = gCtx.viewer->rootObject();
     if (rootObject == NULL) {
         return;

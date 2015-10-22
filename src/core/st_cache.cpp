@@ -271,7 +271,10 @@ void Cache::insertOneChat(int cacheIndex, int type, QString friendName)
     if (item == NULL) {
         return;
     }
+    item->type = 0;
+    item->cacheIndex = 0;
 
+    chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for(it = chatList_.begin(); it != chatList_.end(); it++) {
         Chat::updateListIndexForChat(idx, idx + 1);
@@ -280,8 +283,9 @@ void Cache::insertOneChat(int cacheIndex, int type, QString friendName)
 
     item->cacheIndex = cacheIndex;
     item->type = type;
-
+    qDebug() << "###### insert - " << cacheIndex << " " << type;
     chatList_.insert(chatList_.begin(), item);
+    chatMutex_.unlock();
 
     if (type == CHATITEM_TYPE_FRIEND) {
         shortName = "Friend";
@@ -304,10 +308,12 @@ void Cache::removeOneChat(int cacheIndex, int type)
 {
     int chatIdx = 0;
     int flag = 0;
+    ChatItem *item = NULL;
 
+    chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for(it = chatList_.begin(); it != chatList_.end(); it++) {
-        ChatItem *item = *it;
+        item = *it;
         if (item) {
             if (item->cacheIndex == cacheIndex && item->type == type) {
                 flag = 1;
@@ -318,11 +324,15 @@ void Cache::removeOneChat(int cacheIndex, int type)
     }
     if (flag == 1) {
         chatList_.erase(it);
-        delete *it;
+        if (item) {
+            delete item;
+        }
+        chatMutex_.unlock();
         Chat::removeFrientFromChat(chatIdx);
         qDebug() << "c++: remove chatIdx - " << chatIdx;
         return;
     }
+    chatMutex_.unlock();
     qDebug() << "c++: remove chat widget fail : cacheIdx - " << cacheIndex << " type - " << type;
     return;
 }
@@ -339,10 +349,12 @@ int Cache::atFirstPosition(int cacheIndex, int type)
     int result = 0;
     int idx = 0;
 
+    chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for(it = chatList_.begin(); it != chatList_.end();it++) {
         ChatItem *item = *it;
         if (item) {
+            qDebug() << "## index - " << item->cacheIndex << " type - " << item->type;
             if (item->cacheIndex == cacheIndex && item->type == type) {
                 result = 1;
                 break;
@@ -350,14 +362,18 @@ int Cache::atFirstPosition(int cacheIndex, int type)
             idx++;
         }
     }
+    chatMutex_.unlock();
     /* 有结果，并且已经在第一个位置上 */
     if (result == 1 && idx == 0) {
+        qDebug() << "c++: chatlist find idx - 0";
         return 0;
     }
     /* 有结果，但是不在第一个位置上 */
     if (result == 1 && idx != 0) {
+        qDebug() << "c++: chatlist find idx - " << idx;
         return -2;
     }
+    qDebug() << "c++: chatlist find idx - -1";
     /* 没有找到 */
     return -1;
 }
@@ -374,6 +390,7 @@ int Cache::getPositionNum(int cacheIndex, int type)
     int idx = 0;
     int result = 0;
 
+    chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for(it = chatList_.begin(); it != chatList_.end();it++) {
         ChatItem *item = *it;
@@ -385,6 +402,7 @@ int Cache::getPositionNum(int cacheIndex, int type)
             idx++;
         }
     }
+    chatMutex_.unlock();
     if (result == 1) {
         return idx;
     } else {

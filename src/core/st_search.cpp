@@ -171,7 +171,7 @@ void Search::clearSearchWidget()
 
     QObject *rect = rootObject->findChild<QObject*>("SearchListModel");
     if (rect) {
-        bool ret = QMetaObject::invokeMethod(rect, "clearFriend");
+         bool ret = QMetaObject::invokeMethod(rect, "clearFriend");
         if (ret == false) {
             qDebug() << "c++: invokeMethod (clearSearchWidget) fail";
         }

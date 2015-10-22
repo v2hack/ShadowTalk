@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QString>
+#include <QMutex>
 
 #include "st_group.h"
 #include "st_friend.h"
@@ -33,7 +34,10 @@ public:
     int currentUseType_;                                   /* 界面上当前类型 */
     QString currentUseName_;
     QMap<int, Friend> friendList_;                         /* 联系人列表 */
-    QList<ChatItem *> chatList_;                           /* 聊天列表 */
+
+    QMutex chatMutex_;
+    QList<ChatItem *> chatList_;                            /* 聊天列表 */
+
     QMap<QString, struct LocalChannel *> channelList_;     /* channel映射表 */
     std::map<std::string, std::string> keyValueList_;      /* 密钥映射表 */
     QMap<int, Group> groupList_;                            /* 组列表 */

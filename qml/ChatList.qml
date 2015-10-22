@@ -59,19 +59,19 @@ Rectangle {
                 property: "opacity";
                 from: 0;
                 to: 1.0;
-                duration: 80
+                duration: 20
             }
             NumberAnimation {
                 property: "scale";
                 from: 0;
                 to: 1.0;
-                duration: 80
+                duration: 20
             }
         }
         displaced: Transition {
             NumberAnimation {
                 properties: "x,y";
-                duration: 80;
+                duration: 20;
                 easing.type: Easing.OutBounce
             }
         }
