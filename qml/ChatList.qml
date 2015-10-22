@@ -136,7 +136,7 @@ Rectangle {
             /* 加载字帖 */
             FontLoader {
                 id: chineseFont
-                source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                source: "qrc:/res/fonts/fangzheng_gbk.ttf"
             }
 
             Rectangle {

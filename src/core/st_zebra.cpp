@@ -226,6 +226,7 @@ void zebraDeleagates::friend_offline_message(
              << "********************friend_offline_message***********************" ;
 
     int type = baseType;
+    int refreshBackColor = 0;
 
 
     /* 接收消息开关检查 */
@@ -284,6 +285,7 @@ void zebraDeleagates::friend_offline_message(
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseId_ == f.cacheIndex && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
                 f.messageUnreadCount = 0;
+                refreshBackColor = 1;
 
                 /* 判断类型 */
                 switch (type) {
@@ -331,7 +333,13 @@ void zebraDeleagates::friend_offline_message(
                 c->removeOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND);
                 c->insertOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND, f.name);
             }
-            Chat::displayChatUnreadCount(f.cacheIndex, f.messageUnreadCount);
+            Chat::displayChatNetState(f.cacheIndex, MessageMethodOffline);
+            if (refreshBackColor) {
+                Utils::clearCurrentItemHighLight(c);
+                Utils::setFriendItemHighLight(c, &f, f.cacheIndex);
+            } else {
+                Chat::displayChatUnreadCount(f.cacheIndex, f.messageUnreadCount, CHATITEM_TYPE_FRIEND);
+            }
         }
     }
     qDebug() << "\n";
@@ -363,6 +371,7 @@ void zebraDeleagates::friend_online_message(
         int timestamp)
 {
     int type = baseType;
+    int refreshBackColor = 0;
 
     qDebug() << _countMessage++
              << "********************friend_online_message***********************";
@@ -419,6 +428,7 @@ void zebraDeleagates::friend_online_message(
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseId_ == f.cacheIndex && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
                 f.messageUnreadCount = 0;
+                refreshBackColor = 1;
 
                 /* 判断类型 */
                 switch (type) {
@@ -466,8 +476,13 @@ void zebraDeleagates::friend_online_message(
                 c->removeOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND);
                 c->insertOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND, f.name);
             }
-            Chat::displayChatUnreadCount(f.cacheIndex, f.messageUnreadCount);
             Chat::displayChatNetState(f.cacheIndex, MessageMethodOnline);
+            if (refreshBackColor) {
+                Utils::clearCurrentItemHighLight(c);
+                Utils::setFriendItemHighLight(c, &f, f.cacheIndex);
+            } else {
+                Chat::displayChatUnreadCount(f.cacheIndex, f.messageUnreadCount, CHATITEM_TYPE_FRIEND);
+            }
         }
     }
     qDebug() << "\n";
@@ -801,6 +816,7 @@ void zebraDeleagates::group_chat_message_received(
     qDebug() << _countMessage++
              << "********************group_chat_message_received***********************";
     int messageDirection = 0;
+    int refreshBackColor = 0;
 
     /* 接收消息开关检查 */
     if (isReceiveEnable() == false) {
@@ -880,7 +896,15 @@ void zebraDeleagates::group_chat_message_received(
                 c->removeOneChat(g.gid_, CHATITEM_TYPE_GROUP);
                 c->insertOneChat(g.gid_, CHATITEM_TYPE_GROUP, g.gourpName_);
             }
-            Chat::displayChatUnreadCount(g.gid_, g.messageUnreadCount_);
+
+            if (refreshBackColor) {
+                Utils::clearCurrentItemHighLight(c);
+                Utils::setGroupItemHighLight(c, &g, g.gid_);
+            } else {
+                Chat::displayChatUnreadCount(g.gid_, g.messageUnreadCount_, CHATITEM_TYPE_GROUP);
+            }
+
+
         }
     }
     qDebug() << "\n";

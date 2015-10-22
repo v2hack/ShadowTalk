@@ -346,7 +346,7 @@ void SelectFriend::refreshFriendStatistics(Friend *f)
     /* 界面显示清零 */
     Utils::displayCurrentFriendName(f->name);
     /* 未读消息计数清零 */
-    Chat::displayChatUnreadCount(f->cacheIndex, 0);
+    Chat::displayChatUnreadCount(f->cacheIndex, 0, CHATITEM_TYPE_FRIEND);
     f->messageUnreadCount = 0;
     return;
 }
@@ -375,9 +375,11 @@ void SelectFriend::changeMessageListForFlist(int friendCacheIndex, QString name)
         return;
     }
 
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
-    this->refreshFriendMessage(f);
+    if (c->currentUseId_ != friendCacheIndex || c->currentUseType_ != CHATITEM_TYPE_FRIEND) {
+        MessageWidget::clearMessageFromWidget();
+        this->refreshFriendMessage(f);
+    }
+
     this->refreshFriendStatistics(f);
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, name);
@@ -409,10 +411,11 @@ void SelectFriend::changeMessageListForClist(int friendCacheIndex, QString name)
         return;
     }
 
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
+    if (c->currentUseId_ != friendCacheIndex || c->currentUseType_ != CHATITEM_TYPE_FRIEND) {
+        MessageWidget::clearMessageFromWidget();
+        this->refreshFriendMessage(f);
+    }
 
-    this->refreshFriendMessage(f);
     this->refreshFriendStatistics(f);
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, name);

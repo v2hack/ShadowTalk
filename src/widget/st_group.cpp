@@ -163,7 +163,7 @@ void SelectGroup::refreshGroupStatistics(Group *g)
     /* 界面显示清零 */
     Utils::displayCurrentFriendName(g->gourpName_);
     /* 未读消息计数清零 */
-    Chat::displayChatUnreadCount(g->gid_, 0);
+    Chat::displayChatUnreadCount(g->gid_, 0, CHATITEM_TYPE_GROUP);
     g->messageUnreadCount_ = 0;
     return;
 }
@@ -191,9 +191,11 @@ void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
         return;
     }
 
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
-    this->refreshGroupMessage(g);
+    if (c->currentUseId_ != groupCacheIndex || c->currentUseType_ != CHATITEM_TYPE_GROUP) {
+        MessageWidget::clearMessageFromWidget();
+        this->refreshGroupMessage(g);
+    }
+
     this->refreshGroupStatistics(g);
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(groupCacheIndex, CHATITEM_TYPE_GROUP, name);
@@ -213,14 +215,18 @@ void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
         return;
     }
 
+
     /* 找到好友缓存 */
     Group *g = c->getOneGroup(groupCacheIndex);
     if (!g) {
         return;
     }
-    /* 清理界面消息 */
-    MessageWidget::clearMessageFromWidget();
-    this->refreshGroupMessage(g);
+
+    if (c->currentUseId_ != groupCacheIndex || c->currentUseType_ != CHATITEM_TYPE_GROUP) {
+        MessageWidget::clearMessageFromWidget();
+        this->refreshGroupMessage(g);
+    }
+
     this->refreshGroupStatistics(g);
     Utils::clearCurrentItemHighLight(c);
     c->setCurrentId(groupCacheIndex, CHATITEM_TYPE_GROUP, name);

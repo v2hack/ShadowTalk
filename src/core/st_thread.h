@@ -17,4 +17,6 @@ public:
     explicit Sthread(struct ShadowTalkContext *ctx, QObject *parent = 0);
     void run();
 };
+
+
 #endif // STHREAD_H

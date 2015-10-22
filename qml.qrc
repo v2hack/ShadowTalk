@@ -50,7 +50,7 @@
         <file>img/sound/st_m_sound_3.png</file>
         <file>res/fonts/KhmerUI.ttf</file>
         <file>res/fonts/KhmerUIb.ttf</file>
-        <file>res/fonts/方正兰亭刊黑_GBK.ttf</file>
+        <file>res/fonts/fangzheng_gbk.ttf</file>
         <file>qml/picture.qml</file>
         <file>img/brower/st_pic_close.png</file>
         <file>img/brower/st_pic_last.png</file>

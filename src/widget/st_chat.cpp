@@ -180,20 +180,21 @@ void Chat::displayChatNetState(int idx, int state)
  *
  *  @return 无
  */
-void Chat::displayChatUnreadCount(int idx, int count)
+void Chat::displayChatUnreadCount(int idx, int count, int type)
 {
+    int chatIdx = 0, flag = 0;
+
     Cache *c = gCtx.cache;
     if (!c) {
         return;
     }
 
-    int chatIdx = 0, flag = 0;
     c->chatMutex_.lock();
     QList<ChatItem *>::iterator it;
     for (it = c->chatList_.begin(); it != c->chatList_.end(); it++) {
         ChatItem *item = *it;
         if (item) {
-            if (item->cacheIndex == idx) {
+            if (item->cacheIndex == idx && item->type == type) {
                 flag = 1;
                 break;
             }

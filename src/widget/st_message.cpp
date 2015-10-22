@@ -309,10 +309,10 @@ void MessageManager::sendFriendMessage(QString &message) {
     MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
 
     /* 组装缓存 */
-    Message *m     = new Message;
-    m->data        = message.toStdString();
-    m->driect      = MessageDriectMe;
-    m->messageType = MessageTypeWord;
+    Message *m        = new Message;
+    m->data           = message.toStdString();
+    m->driect         = MessageDriectMe;
+    m->messageType    = MessageTypeWord;
     m->MessageMethord = MessageMethodOffline;
 
     /* 添加到缓存 */

@@ -20,7 +20,7 @@ public:
     static void addFrientToChat(QString friendName,  QString shortName, int friendIndex, int listViewIndex);
     static void removeFrientFromChat(int chatIndex);
     static void displayChatNetState(int idx, int state);
-    static void displayChatUnreadCount(int idx, int count);
+    static void displayChatUnreadCount(int idx, int count, int type);
     static void updateListIndexForChat(int index, int listViewIndex);
     static void refreshChatListPosition(int cacheIndex, int itemType);
 };
