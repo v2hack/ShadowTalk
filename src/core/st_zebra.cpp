@@ -503,22 +503,30 @@ void zebraDeleagates::friend_request_via_qr(
         const string &info,
         const string &friend_channel_id)
 {
-
-    if (gCtx.phoneQrChannel != qr_channel_id) {
+    if (gCtx.phoneQrChannel == qr_channel_id) {
         qDebug() << "c++: is not sync channel id";
-        return;
-    }
+        g_io_service.service().dispatch([friend_channel_id](){
+            Utils::ShadowTalkSleep(500);
+            int ret = gCtx.zebra->handle_friend_request(friend_channel_id, true);
+            std::cout << "c++: add friend result: " << ret << std::endl;
+        });
 
-    g_io_service.service().dispatch([friend_channel_id](){
-        Utils::ShadowTalkSleep(500);
-        int ret = gCtx.zebra->handle_friend_request(friend_channel_id, true);
-        std::cout << "c++: add friend result: " << ret << std::endl;
-    });
-
-    if (gCtx.phoneSyncChannel.empty()) {
-        gCtx.phoneSyncChannel = friend_channel_id;
-        qDebug() << "c++: sync-channelid : "
-                 << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+        if (gCtx.phoneSyncChannel.empty()) {
+            gCtx.phoneSyncChannel = friend_channel_id;
+            qDebug() << "c++: sync-channelid : "
+                     << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+        }
+    } else {
+        if (!gCtx.phoneSyncChannel.empty()) {
+            g_io_service.service().dispatch([friend_channel_id](){
+                std::string message = "friend_request";
+                gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
+                    ImapiMessageType_AddFriendRequest + ImapiMessageType_ForwadOffset,
+                    message, 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                    message.size(), 0);
+                std::cout << "c++: sync add friend request: " << std::endl;
+            });
+        }
     }
     return;
 }
@@ -538,7 +546,6 @@ void zebraDeleagates::friend_request_reply(
     return;
 }
 
-
 /**
  *  功能描述: 已被对方通知删除好友
  *  @param friend_channel_id 好友通道id
@@ -548,6 +555,17 @@ void zebraDeleagates::friend_request_reply(
 void zebraDeleagates::friend_deleted(const string &friend_channel_id)
 {
     std::cout << "c++: friend_deleted" << std::endl;
+    if (!gCtx.phoneSyncChannel.empty()) {
+        g_io_service.service().dispatch([friend_channel_id](){
+            std::string message = "friend_request";
+            gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
+                ImapiMessageType_DeleteFriend + ImapiMessageType_ForwadOffset,
+                message, 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                message.size(), 0);
+            std::cout << "c++: sync delete friend request: " << std::endl;
+        });
+    }
+    return;
 }
 
 /**

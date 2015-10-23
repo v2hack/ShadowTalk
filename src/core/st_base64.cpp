@@ -35,7 +35,7 @@ std::string Base64::encode(const std::string &binaryData)
     if (!zebra) {
         return "";
     }
-    return zebra->base64Encode(binaryData);;
+    return zebra->base64Encode(binaryData);
 }
 
 /**

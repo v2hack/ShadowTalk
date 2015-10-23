@@ -195,7 +195,7 @@ Rectangle {
                 //字体先注释，编译太慢
                 FontLoader {
                     id: chineseFont
-                    source: "qrc:/res/fonts/方正兰亭刊黑_GBK.ttf"
+                    source: "qrc:/res/fonts/fangzheng_gbk.ttf"
                 }
 
                 /* 好友头像底色 */

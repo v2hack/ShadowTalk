@@ -9,14 +9,15 @@ namespace im {
 
 
 enum ImapiMessageType {
-	ImapiMessageType_PCBackup = 7,
-	ImapiMessageType_PCOffLine = 8,
-	ImapiMessageType_SyncMessage = 9,
-	ImapiMessageType_PingPC = 10,
-	ImapiMessageType_ResponeFromPC = 11,
-
-	ImapiMessageType_ForwadOffset = 1000,
-    ImapiMessageType_ForwadSelfOffset = 2000,
+    ImapiMessageType_PCBackup          = 7,       /* 同步文件 */
+    ImapiMessageType_PCOffLine         = 8,       /* 让PC端离线 */
+    ImapiMessageType_SyncMessage       = 9,       /* 同步消息 */
+    ImapiMessageType_PingPC            = 10,      /* ping客户端是否存在 */
+    ImapiMessageType_ResponeFromPC     = 11,      /* ping的相应 */
+    ImapiMessageType_DeleteFriend      = 12,      /* 删除好友 */
+    ImapiMessageType_AddFriendRequest  = 13,      /* 加好友请求 */
+    ImapiMessageType_ForwadOffset      = 1000,    /* 同步消息偏移 */
+    ImapiMessageType_ForwadSelfOffset  = 2000,    /* 同步自己的消息偏移 */
 };
 
 
