@@ -1,4 +1,4 @@
-﻿#ifndef  IM_HPP_
+#ifndef  IM_HPP_
 #define  IM_HPP_
 
 #include <string>
@@ -7,17 +7,30 @@ using namespace std;
 namespace peersafe {
 namespace im {
 
+enum ImapiMessageType
+{
+    ImapiMessageType_PCBackup           = 7,       /* 同步文件 */
+    ImapiMessageType_PCOffLine          = 8,       /* 让PC端离线 */
+    ImapiMessageType_SyncMessage        = 9,       /* 同步消息 */
+    ImapiMessageType_PingPC             = 10,      /* ping客户端是否存在 */
+    ImapiMessageType_ResponeFromPC      = 11,      /* ping的相应 */
+    ImapiMessageType_DeleteFriend       = 12,      /* 删除好友 */
+    ImapiMessageType_AddFriendRequest   = 13,      /* 加好友请求 */
+    ImapiMessageType_AddFriendReply     = 14,      /* 加好友回复 */
 
-enum ImapiMessageType {
-    ImapiMessageType_PCBackup          = 7,       /* 同步文件 */
-    ImapiMessageType_PCOffLine         = 8,       /* 让PC端离线 */
-    ImapiMessageType_SyncMessage       = 9,       /* 同步消息 */
-    ImapiMessageType_PingPC            = 10,      /* ping客户端是否存在 */
-    ImapiMessageType_ResponeFromPC     = 11,      /* ping的相应 */
-    ImapiMessageType_DeleteFriend      = 12,      /* 删除好友 */
-    ImapiMessageType_AddFriendRequest  = 13,      /* 加好友请求 */
-    ImapiMessageType_ForwadOffset      = 1000,    /* 同步消息偏移 */
-    ImapiMessageType_ForwadSelfOffset  = 2000,    /* 同步自己的消息偏移 */
+    ImapiMessageType_ForwadOffset       = 1000,    /* 同步消息偏移 */
+    ImapiMessageType_ForwadSelfOffset   = 2000,    /* 同步自己的消息偏移 */
+
+    ImapiMessageType_SyncGroupMessage   = 100,      /* 组消息同步 */
+    ImapiMessageType_GroupInviteRequest = 101,      /* 组邀请 */
+    ImapiMessageType_GroupInviteReply   = 102,      /* 组邀请恢复 */
+    ImapiMessageType_GroupNewMember     = 103,      /* 组新成员 */
+    ImapiMessageType_GroupRemoveMember  = 104,      /* 移除组成员 */
+    ImapiMessageType_GroupMessage       = 105,      /* 组消息 */
+	ImapiMessageType_GroupChangeName    = 106,      /* 组消息 */
+
+    ImapiMessageType_ForwadGOffset      = 3000,     /* 组同步偏移 */
+    ImapiMessageType_ForwadGSelfOffset  = 4000,     /* 组同步自己的消息偏移 */
 };
 
 
@@ -72,43 +85,29 @@ public:
     virtual void ice_session_state(const std::string &channel_id, int state) = 0;
 
     /* 底层回调上层判断是否能通过无网通道发送，能则异步发送并返回1，否则返回-1 */
-    virtual int send_message_via_direct_connection(const std::string &connection_id,
-              const std::string &friend_channel_id, unsigned long message_id, const std::string &data) = 0;
+	virtual int send_message_via_direct_connection(const std::string &connection_id, const std::string &friend_channel_id, unsigned long message_id, const std::string &data) = 0;
     /* 底层通知上层绑定connection_id和friend_channel_id */
 	virtual void bind_friend_channel(const std::string &connection_id, const std::string &friend_channel_id) = 0;
 
+
+
 	//group chat
-    //group chat invite from friend
-    virtual void group_chat_invite_received(const std::string &friend_channel_id,
-                                            const std::string &group_channel_id,
-                                            const std::string &my_name) = 0;
+	virtual void group_chat_invite_received(const std::string &friend_channel_id, const std::string &group_channel_id, const std::string &my_name) = 0; //group chat invite from friend
 
-    //group chat invite accepted by friend. friend_member_id will be empty if accepted = false
-    virtual void group_chat_invite_reply_received(const std::string &friend_channel_id,
-                                                  const std::string &group_channel_id,
-                                                  bool accepted,
-                                                  const std::string &friend_member_id) = 0;
-    //new group member
-    virtual void group_chat_member(const string &group_channel_id,
-                                   const string &member_id,
-                                   const std::string &name,
-                                   unsigned long join_time) = 0;
+	virtual void group_chat_invite_reply_received(const std::string &friend_channel_id, const std::string &group_channel_id, bool accepted, const std::string &friend_member_id) = 0; //group chat invite accepted by friend. friend_member_id will be empty if accepted = false
 
-    //group member removed
+	virtual void group_chat_member(const string &group_channel_id, const string &member_id, const std::string &name, unsigned long join_time) = 0; //new group member
+
 	virtual void group_chat_member_removed(const string &group_channel_id, const std::string &remover
-        , const string &member_id, unsigned long removed_time) = 0;
+		, const string &member_id, unsigned long removed_time) = 0; //group member removed
 
-    //group message
-    virtual void group_chat_message_received(const string &group_channel_id,
-                                             const string &author, const int type,
-                                             const string &message, unsigned long message_id,
-                                             int expired, int entire_expired,
-                                             int length, int timestamp, const std::string &author_name) = 0;
+	virtual void group_chat_message_received(const string &group_channel_id, const string &author, const int type,
+		const string &message, unsigned long message_id,
+		int expired, int entire_expired, int length, int timestamp, const std::string &author_name) = 0; //group message
 
-    //group channel name
-    virtual void group_channel_name_changed(const string &group_channel_id,
-                                            const string &channel_name,
-                                            unsigned long changed_time) = 0;
+	virtual void group_channel_name_changed(const string &group_channel_id, const string &channel_name, unsigned long changed_time) = 0; //group channel name
+
+//	virtual void group_channel_deleted(const string &group_channel_id, const string &info, unsigned long delete_time) = 0; //group channel deleted
 };
 
 class Message_client {
@@ -223,6 +222,23 @@ public:
 	std::string get_group_channel_name(const std::string &group_channel_id);					//get groupName by groupChannelId
 
 	void listen_group_channel(const string &group_channel_id);									//connect to a group chat so we can send/receive messages in this group chat
+
+
+	void sync_group_chat_invite_received(const std::string &pc_channel_id, const std::string &friend_channel_id,
+			const std::string &group_channel_id, const std::string &my_name);
+	void sync_group_chat_invite_reply_received(const std::string &pc_channel_id, const std::string &friend_channel_id,
+			const std::string &group_channel_id, bool accepted, const std::string &friend_member_id);
+	void sync_group_chat_member(const std::string &pc_channel_id, const std::string &group_channel_id, const std::string &member_id,
+			const std::string &name, unsigned long join_time);
+	void sync_group_chat_member_removed(const std::string &pc_channel_id,
+			const std::string &group_channel_id, const std::string &remover_id,
+			const std::string &member_id, unsigned long removed_time);
+	void sync_group_chat_message_received(const std::string &pc_channel_id,
+		const std::string &group_channel_id, const std::string &author, int type,
+		const std::string &message, unsigned long message_id,
+		int expired, int entire_expired, int length, int timestamp, const std::string &author_name);
+	void sync_group_channel_name_changed(const std::string &pc_channel_id, const std::string &group_channel_id,
+			const std::string &channel_name, unsigned long changed_time);
 
 private:
 	class im_api_impl *impl_;
