@@ -31,7 +31,7 @@ extern struct ShadowTalkContext gCtx;
  */
 std::string Base64::encode(const std::string &binaryData)
 {
-    peersafe::im::Message_client *zebra = gCtx.zebra;
+    peersafe::im::Message_client *zebra = gCtx.zebra_;
     if (!zebra) {
         return "";
     }
@@ -73,7 +73,7 @@ static std::string filterWords(const std::string oldData)
  */
 std::string Base64::decode(const std::string &base64String)
 {
-    peersafe::im::Message_client *zebra = gCtx.zebra;
+    peersafe::im::Message_client *zebra = gCtx.zebra_;
     if (!zebra) {
         return "";
     }

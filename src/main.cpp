@@ -136,7 +136,7 @@ void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString qmlFile
  */
 void createBaseViewer(QQuickView &viewer)
 {
-    gCtx.viewer = &viewer;
+    gCtx.viewer_ = &viewer;
     setViewerParameter(viewer, "mainwindow", "qrc:/qml/main.qml");
     viewer.hide();
     return;
@@ -150,7 +150,7 @@ void createBaseViewer(QQuickView &viewer)
  */
 void createLoginViewer(QQuickView &viewer)
 {
-    gCtx.loginer = &viewer;
+    gCtx.loginer_ = &viewer;
     setViewerParameter(viewer, "loginwindow", "qrc:/qml/login.qml");
     /* 生成二维码并显示到界面上 */
     if (Login::ShadowTalkLogin() < 0) {
@@ -184,14 +184,14 @@ void createCache()
  */
 void initZebraEngine()
 {
-    gCtx.zebra    = zebraClient;
-    gCtx.delegate = &zebarDele;
+    gCtx.zebra_    = zebraClient;
+    gCtx.delegate_ = &zebarDele;
 
     gCtx.conf.soundEnable  = true;
     gCtx.conf.reciveEnable = true;
 
-    gCtx.windowFlag = gCtx.changeFlag = 0;
-    gCtx.threadStop = 0;
+    gCtx.windowFlag_ = gCtx.changeFlag_ = 0;
+    gCtx.threadStop_ = 0;
     gCtx.phoneUpdateTime.start();
 
     zebraClient->init("127.0.0.1:6000 120.27.42.174:27053", &zebarDele, "17monipdb.dat");
@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     memset(&gCtx, 0, sizeof(gCtx));
-    gCtx.app = &app;
+    gCtx.app_ = &app;
 
     /* 缓存 */
     createCache();
@@ -226,8 +226,8 @@ int main(int argc, char *argv[])
     /* 聊天主界面 */
     QQuickView viewer;
     createBaseViewer(viewer);
-    gCtx.tray = new TrayIcon(&viewer);
-    gCtx.tray->onRemind("hello world");
+    gCtx.tray_ = new TrayIcon(&viewer);
+    gCtx.tray_->onRemind("hello world");
 
     /* 登录主页面 */
     QQuickView loginer;

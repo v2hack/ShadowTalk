@@ -110,7 +110,7 @@ void Voice::playVoice(QString fidx, QString midx)
                 "/temp/", fidx, midx, SHADOWTALK_SOUND_PREFIX);
 
     const QUrl commandLineUrl = QUrl::fromLocalFile(tempPath);
-    gCtx.viewer->rootContext()->setContextProperty(QStringLiteral("voiceUrl"), commandLineUrl);
+    gCtx.viewer_->rootContext()->setContextProperty(QStringLiteral("voiceUrl"), commandLineUrl);
     qDebug() << "c++: voice file :  - " << commandLineUrl;
 
     /* 调用qml播放声音接口 */
@@ -119,8 +119,8 @@ void Voice::playVoice(QString fidx, QString midx)
 }
 
 /**
- *  功能描述: 休眠函数
- *  @param msec 毫秒
+ *  功能描述: 停止播放语音
+ *  @param 无
  *
  *  @return 无
  */

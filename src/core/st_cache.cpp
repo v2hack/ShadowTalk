@@ -70,7 +70,7 @@ Friend *Cache::getOneFriend(int index)
     QMap<int, Friend>::iterator it;
     for(it = friendList_.begin(); it != friendList_.end(); it++) {
         Friend &f = it.value();
-        if (f.cacheIndex == index) {
+        if (f.cacheIndex_ == index) {
             return &(it.value());
         }
     }
@@ -88,7 +88,7 @@ bool Cache::isExistFriend(QString friendChannelId)
     QMap<int, Friend>::iterator it;
     for(it = friendList_.begin(); it != friendList_.end(); it++) {
         Friend &f = it.value();
-        if (f.friendChannelId.compare(friendChannelId) == 0) {
+        if (f.friendChannelId_.compare(friendChannelId) == 0) {
             return true;
         }
     }
@@ -486,7 +486,7 @@ Group *Cache::getOneGroup(int cacheIndex)
     QMap<int, Group>::iterator it;
     for(it = groupList_.begin(); it != groupList_.end(); it++) {
         Group &g = it.value();
-        if (g.gid_ == cacheIndex) {
+        if (g.cacheIndex_ == cacheIndex) {
             return &(it.value());
         }
     }

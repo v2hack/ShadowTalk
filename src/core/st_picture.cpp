@@ -201,10 +201,10 @@ static void setViewerParameter(QQuickView &viewer, QString qmlProperty, QString 
  */
 void NormalPicture::displayNormalPicture(QString friendIndex, QString messageIndex)
 {
-    if (gCtx.imager == NULL) {
-        gCtx.imager = new QQuickView;
+    if (gCtx.imager_ == NULL) {
+        gCtx.imager_ = new QQuickView;
     }
-    setViewerParameter(*gCtx.imager, "pictureWindow", "qrc:/qml/picture.qml");
+    setViewerParameter(*gCtx.imager_, "pictureWindow", "qrc:/qml/picture.qml");
 
     std::string fileData = NormalPicture::findPictureCache(friendIndex, messageIndex);
     if (fileData.empty()) {
@@ -224,7 +224,7 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     }
 
     /* 添加qml对象属性 */
-    QQuickItem *rootObject = gCtx.imager->rootObject();
+    QQuickItem *rootObject = gCtx.imager_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -237,6 +237,6 @@ void NormalPicture::displayNormalPicture(QString friendIndex, QString messageInd
     } else {
         qDebug() << "c++: insert one picture fail";
     }
-    gCtx.imager->show();
+    gCtx.imager_->show();
     return;
 }

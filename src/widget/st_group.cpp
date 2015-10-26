@@ -21,6 +21,11 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 
+/**
+ *  功能描述: 组构建函数
+ *  @param  无
+ *  @return 无
+ */
 Group::Group(QString groupChannelId, QString localMemberId, QString gourpName,
              QString myNameInGroup, QString ownerID, QString showNotification, int groupId) {
     groupChannelId_     = groupChannelId;
@@ -29,24 +34,45 @@ Group::Group(QString groupChannelId, QString localMemberId, QString gourpName,
     myNameInGroup_      = myNameInGroup;
     ownerID_            = ownerID;
     showNotification_   = showNotification;
-    gid_                = groupId;
+    cacheIndex_         = groupId;
     messageUnreadCount_ = 0;
 }
 
+/**
+ *  功能描述: 组构析构函数
+ *  @param  无
+ *  @return 无
+ */
 Group::~Group() {
 
 }
 
+/**
+ *  功能描述: 将一个消息加入缓存
+ *  @param  message 组消息指
+ *  @return 无
+ */
 void Group::insertOneMessage(GroupMessage *message) {
     this->messageList_.insert(this->messageList_.size(), *message);
     return;
 }
 
+/**
+ *  功能描述: 将一个组成员加入到组
+ *  @param  memberId  成员id
+ *  @param  name      成员名字
+ *  @return 无
+ */
 void Group::insertOneMember(QString &memberId, QString &name) {
     this->memberList_.insert(memberId, name);
     return;
 }
 
+/**
+ *  功能描述: 判断一个组成员是否存在
+ *  @param  memberId  成员id
+ *  @return 无
+ */
 bool Group::isExistMember(QString &memberId) {
     QMap<QString, QString>::iterator it;
     it = this->memberList_.find(memberId);
@@ -63,7 +89,7 @@ bool Group::isExistMember(QString &memberId) {
  *  @return 无
  */
 void Group::setFriendlistBackGroundColor(int colorFlag) {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -85,7 +111,7 @@ void Group::setFriendlistBackGroundColor(int colorFlag) {
  *  @return 无
  */
 void Group::setChatlistBackGroundColor(int colorFlag, int chatListIndex) {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -118,7 +144,11 @@ SelectGroup::~SelectGroup() {
 
 }
 
-
+/**
+ *  功能描述: 将组的消息刷新的到界面
+ *  @param  g  直结构指针
+ *  @return 无
+ */
 void SelectGroup::refreshGroupMessage(Group *g)
 {
     /* 添加消息 */
@@ -140,15 +170,15 @@ void SelectGroup::refreshGroupMessage(Group *g)
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            MessageWidget::addMessageToWidget(g->gid_, name, it->messageType,
+            MessageWidget::addMessageToWidget(g->cacheIndex_, name, it->messageType,
                                it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeImage:
-            MessageWidget::addImageToWidget(g->gid_, name, it->messageType,
+            MessageWidget::addImageToWidget(g->cacheIndex_, name, it->messageType,
                              it->driect, it->data, idx);
             break;
         case MessageTypeVoice:
-            MessageWidget::addVoiceToWidget(g->gid_, name, it->messageType, it->driect,
+            MessageWidget::addVoiceToWidget(g->cacheIndex_, name, it->messageType, it->driect,
                              QString::fromStdString(it->data), it->voiceSeconds, idx);
             break;
         default:
@@ -158,20 +188,25 @@ void SelectGroup::refreshGroupMessage(Group *g)
     return;
 }
 
+/**
+ *  功能描述: 刷新组界面上的未读消息数量
+ *  @param  g  直结构指针
+ *  @return 无
+ */
 void SelectGroup::refreshGroupStatistics(Group *g)
 {
     /* 界面显示清零 */
     Utils::displayCurrentFriendName(g->gourpName_);
     /* 未读消息计数清零 */
-    Chat::displayChatUnreadCount(g->gid_, 0, CHATITEM_TYPE_GROUP);
+    Chat::displayChatUnreadCount(g->cacheIndex_, 0, CHATITEM_TYPE_GROUP);
     g->messageUnreadCount_ = 0;
     return;
 }
 
 /**
- *  功能描述: 改变界面上的消息列表
- *  @param index 好友索引
- *  @param name 好友名称
+ *  功能描述: 改变friendListView界面上的消息列表
+ *  @param groupCacheIndex 组索引
+ *  @param name            组名称
  *  @return 无
  */
 void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
@@ -204,6 +239,12 @@ void SelectGroup::changeMessageListForFlist(int groupCacheIndex, QString name)
     return;
 }
 
+/**
+ *  功能描述: 改变chatListView界面上的消息列表
+ *  @param groupCacheIndex 组索引
+ *  @param name            组名称
+ *  @return 无
+ */
 void SelectGroup::changeMessageListForClist(int groupCacheIndex, QString name)
 {
     qDebug() << "c++: group changeMessageListForClist cacheIndex - "

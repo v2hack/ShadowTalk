@@ -28,45 +28,6 @@
 extern struct ShadowTalkContext gCtx;
 
 /**
- *  功能描述: 初始化一个好友
- *  @param friendIndex 好友索引
- *  @param friendName 好友名称
- *  @return 无
- */
-Friend::Friend(QString friendName, int friendIndex):
-    name(friendName), messageCount(0)
-{
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
-    if (rootObject == NULL) {
-        return;
-    }
-
-    QVariantMap newElement;
-    newElement.insert("friendName", friendName);
-    newElement.insert("friendIndex", friendIndex);
-
-    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
-    if (rect) {
-        QMetaObject::invokeMethod(
-                    rect,
-                    "addFriend",
-                    Q_ARG(QVariant, QVariant::fromValue(newElement))
-                    );
-        slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
-             "Friend",
-             "add friend to widget success",
-             friendIndex,
-             friendName.toLatin1().data());
-    } else {
-        slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
-             "Friend",
-             "add friend to widget fail",
-             friendIndex,
-             friendName.toLatin1().data());
-    }
-}
-
-/**
  *  功能描述: 好友构造函数，初始化一个好友
  *  @param friendName   好友名字
  *  @param expiredTime  过期时间
@@ -80,19 +41,20 @@ Friend::Friend(QString friendName, int friendIndex):
 Friend::Friend(QString friendName, int expiredTime, QString channelId,
                int session, int status, int friendIndex)
 {
-    cacheIndex = friendIndex;
-    messageCount = 0;
-    name = friendName;
-    inSession = session;
-    netStatus = status;
-    messageUnreadCount = 0;
-    friendChannelId    = channelId;
-    defaultExpiredTime = expiredTime;
-    firstLetter = QString("");
+    cacheIndex_   = friendIndex;
+    messageCount_ = 0;
+    name_         = friendName;
+    inSession_    = session;
+    netStatus_    = status;
+
+    messageUnreadCount_ = 0;
+    friendChannelId_    = channelId;
+    defaultExpiredTime_ = expiredTime;
+    firstLetter_        = QString("");
 
     QVariant tempLetter;
 
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -109,7 +71,7 @@ Friend::Friend(QString friendName, int expiredTime, QString channelId,
             qDebug() << "invokeMethod (firstLetter) fail";
         }
 
-        firstLetter = tempLetter.toString();
+        firstLetter_ = tempLetter.toString();
         slog("func<%s> : msg<%s> para<friendName - %d, friendIndex - %s>\n",
              "Friend",
              "add friend to widget success",
@@ -143,44 +105,7 @@ Friend::~Friend() {}
 void Friend::insertOneMessage(Message *message)
 {
     this->messageList.insert(this->messageList.size(), *message);
-    this->messageCount++;
-    return;
-}
-
-
-/**
- *  功能描述: 存储二维码到缓存
- *  @param qrCode 二维码串
- *
- *  @return 无
- */
-void Friend::setQrCode(QString qrCode)
-{
-    this->qrCode = qrCode;
-    return;
-}
-
-/**
- *  功能描述: 存储名字到缓存
- *  @param name 用户名设置
- *
- *  @return 无
- */
-void Friend::setName(QString name)
-{
-    this->name = name;
-    return;
-}
-
-/**
- *  功能描述: 设置用户网络状态
- *  @param state 网络状态值
- *
- *  @return 无
- */
-void Friend::setNetState(int state)
-{
-    this->netStatus = state;
+    this->messageCount_++;
     return;
 }
 
@@ -193,7 +118,7 @@ void Friend::setNetState(int state)
  */
 void Friend::displayUnreadCount(int idx, int count)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -222,7 +147,7 @@ void Friend::displayUnreadCount(int idx, int count)
  */
 void Friend::setTimeAndState(int idx, int state)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -252,7 +177,7 @@ void Friend::setTimeAndState(int idx, int state)
  */
 void Friend::setFriendlistBackGroundColor(int colorFlag)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -260,7 +185,7 @@ void Friend::setFriendlistBackGroundColor(int colorFlag)
     QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
     if (rect) {
         QMetaObject::invokeMethod(rect, "modifyBackColor",
-              Q_ARG(QVariant, listViewIndex), Q_ARG(QVariant, colorFlag));
+              Q_ARG(QVariant, listViewIndex_), Q_ARG(QVariant, colorFlag));
     }
     return;
 }
@@ -272,7 +197,7 @@ void Friend::setFriendlistBackGroundColor(int colorFlag)
  */
 void Friend::setChatlistBackGroundColor(int colorFlag, int chatListIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -297,11 +222,17 @@ SelectFriend::SelectFriend(QObject *parent)
 
 /**
  *  功能描述: SelectFriend的析构函数
+ *
  *  @return 无
  */
 SelectFriend::~SelectFriend() {}
 
-
+/**
+ *  功能描述: 根据选中的listView上的item，刷新界面上的消息
+ *  @param f    好友指针
+ *
+ *  @return 无
+ */
 void SelectFriend::refreshFriendMessage(Friend *f)
 {
     /* 添加消息 */
@@ -317,21 +248,21 @@ void SelectFriend::refreshFriendMessage(Friend *f)
         if (it->driect == MessageDriectMe) {
             name = "Me";
         } else {
-            name = f->name;
+            name = f->name_;
         }
 
         /* 添加消息到界面 */
         switch (it->messageType) {
         case MessageTypeWord:
-            MessageWidget::addMessageToWidget(f->cacheIndex, name, it->messageType,
+            MessageWidget::addMessageToWidget(f->cacheIndex_, name, it->messageType,
                                it->driect, QString::fromStdString(it->data), idx);
             break;
         case MessageTypeImage:
-            MessageWidget::addImageToWidget(f->cacheIndex, name, it->messageType,
+            MessageWidget::addImageToWidget(f->cacheIndex_, name, it->messageType,
                              it->driect, it->data, idx);
             break;
         case MessageTypeVoice:
-            MessageWidget::addVoiceToWidget(f->cacheIndex, name, it->messageType, it->driect,
+            MessageWidget::addVoiceToWidget(f->cacheIndex_, name, it->messageType, it->driect,
                              QString::fromStdString(it->data), it->voiceSeconds, idx);
             break;
         default:
@@ -341,13 +272,19 @@ void SelectFriend::refreshFriendMessage(Friend *f)
     return;
 }
 
+/**
+ *  功能描述: 根据选中的listView上的item，刷新界面上的未读消息数量
+ *  @param f    好友指针
+ *
+ *  @return 无
+ */
 void SelectFriend::refreshFriendStatistics(Friend *f)
 {
     /* 界面显示清零 */
-    Utils::displayCurrentFriendName(f->name);
+    Utils::displayCurrentFriendName(f->name_);
     /* 未读消息计数清零 */
-    Chat::displayChatUnreadCount(f->cacheIndex, 0, CHATITEM_TYPE_FRIEND);
-    f->messageUnreadCount = 0;
+    Chat::displayChatUnreadCount(f->cacheIndex_, 0, CHATITEM_TYPE_FRIEND);
+    f->messageUnreadCount_ = 0;
     return;
 }
 

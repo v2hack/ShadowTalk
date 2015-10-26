@@ -17,34 +17,39 @@
 */
 class Friend{
 public:
-    Friend(QString name, int friendIndex);
-    Friend(QString friendName, int expiredTime, QString channelId,
-                   int session, int status, int friendIndex);
+    Friend(QString friendName, int expiredTime,
+           QString channelId, int session, int status, int friendIndex);
     ~Friend();
 
-    int cacheIndex;                  // 好友id,用于界面
-    QString qrCode;                  // 二维码
-    int defaultExpiredTime;          // 默认的超时时间
-    QString friendChannelId;         // 好友通道
-    int inSession;                   // 联系人是否在聊天列表中
-    QString name;                    // 用户名
-    QString firstLetter;
+    QMap<int, Message> messageList;   // 消息列表
 
-    int netStatus;                   // 在线状态
-    int loadStatus;                  // 是否已经加载到界面
-    int listViewIndex;               // 在listView中排序
+    QString qrCode_;                  // 二维码
+    QString friendChannelId_;         // 好友通道
+    QString name_;                    // 用户名
+    QString firstLetter_;             // 名字的首字母
 
-    int messageCount;                // 消息数量
-    int messageUnreadCount;          // 消息未读数量
-    QMap<int, Message> messageList;  // 消息列表
+    int cacheIndex_;                  // 缓存索引
+    int defaultExpiredTime_;          // 默认的超时时间， 目前没有使用
+    int inSession_;                   // 联系人是否在聊天列表中, 目前没有使用
+    int netStatus_;                   // 在线状态
+    int loadStatus_;                  // 是否已经加载到界面
+    int listViewIndex_;               // 在friendListView中排序
+    int messageCount_;                // 消息数量
+    int messageUnreadCount_;          // 消息未读数量
 
+    /* 将消息放入缓存列表 */
     void insertOneMessage(Message *message);
-    void setQrCode(QString qrCode);
-    void setName(QString name);
-    void setNetState(int state);
+
+    /* 调用qml对象，设置好友界面未读消息数量*/
     void displayUnreadCount(int index, int count);
+
+    /* 调用qml对象，设置好友界面未读消息数量 */
     void setTimeAndState(int idx, int state);
+
+    /* 设置friendlistView中的item背景色为透明 */
     void setFriendlistBackGroundColor(int colorFlag);
+
+    /* 设置chatlistView中的item背景色为透明 */
     void setChatlistBackGroundColor(int colorFlag, int chatListIndex);
 };
 
@@ -59,9 +64,17 @@ class SelectFriend : public QObject {
 public:
     SelectFriend(QObject *parent = 0);
     ~SelectFriend();
+
+    /* 选中friendListVieww 改变界面上的消息列表 */
     Q_INVOKABLE void changeMessageListForFlist(int index, QString name);
+
+    /* 选中chatListView 改变界面上的消息列表 */
     Q_INVOKABLE void changeMessageListForClist(int index, QString name);
+
+    /* 根据选中的listView上的item，刷新界面上的消息 */
     void refreshFriendMessage(Friend *f);
+
+    /* 根据选中的listView上的item，刷新界面上的未读消息数量 */
     void refreshFriendStatistics(Friend *f);
 };
 

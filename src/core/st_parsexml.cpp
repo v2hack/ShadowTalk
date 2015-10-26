@@ -999,7 +999,7 @@ int ParseXml::parseEncryptXml(QString fileName, QString passwd)
     sEncryptData.assign(buffer, length);
 
     /* 开始解密 */
-    sDecryptData = gCtx.zebra->decrypt(sEncryptData, sPasswd);
+    sDecryptData = gCtx.zebra_->decrypt(sEncryptData, sPasswd);
     if (sDecryptData.empty()) {
         slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
              "parseEncryptXml", "decrypt xml file fail",
@@ -1011,7 +1011,7 @@ int ParseXml::parseEncryptXml(QString fileName, QString passwd)
          fileName.toStdString().c_str(), passwd.toStdString().c_str());
 
     /* 开始解压 */
-    sPlainData = gCtx.zebra->gzipUncompress(sDecryptData);
+    sPlainData = gCtx.zebra_->gzipUncompress(sDecryptData);
     if (sPlainData.empty()) {
         slog("func<%s> : msg<%s> para<file - %s>\n",
              "parseEncryptXml", "uncompress xml file fail", fileName.toStdString().c_str());

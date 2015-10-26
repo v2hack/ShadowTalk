@@ -45,7 +45,7 @@ void MessageWidget::addMessageToWidget(
         QString messageData,
         int messageIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -114,7 +114,7 @@ void MessageWidget::addImageToWidget(
     }
 
     /* 添加qml对象属性 */
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -157,7 +157,7 @@ void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
        int direct, QString voiceData, int voiceSeconds, int messageIndex)
 {
     qDebug() << "c++: receive one voice";
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -193,7 +193,7 @@ void MessageWidget::addVoiceToWidget(int uid, QString name, int type,
  */
 void MessageWidget::clearMessageFromWidget()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -216,7 +216,7 @@ void MessageWidget::clearMessageFromWidget()
  */
 void MessageWidget::clearFriendFromWidget()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -233,7 +233,7 @@ void MessageWidget::clearFriendFromWidget()
 
 
 /**
- *  功能描述: removeMessageByIndex
+ *  功能描述: 根据索引删除界面消息
  *  @param index     消息索引
  *  @param message   在index基础上删除消息的数量
  *
@@ -241,7 +241,7 @@ void MessageWidget::clearFriendFromWidget()
  */
 void MessageWidget::removeMessageByIndex(int index, int count)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -268,8 +268,14 @@ MessageManager::~MessageManager() {
 
 }
 
-
-void MessageManager::sendGroupMessage(QString &message) {
+/**
+ *  功能描述: 发送组消息
+ *  @param message   消息内容
+ *
+ *  @return 无
+ */
+void MessageManager::sendGroupMessage(QString &message)
+{
     Cache *c = gCtx.cache;
     Group *g = c->getOneGroup(c->currentUseId_);
     if (!g) {
@@ -289,14 +295,19 @@ void MessageManager::sendGroupMessage(QString &message) {
     m->MessageMethord = MessageMethodOffline;
 
     g->insertOneMessage(m);
-
     Adapt::adaptSendGroupMessage(g->groupChannelId_, 1, message, g->myNameInGroup_);
-
-    Chat::refreshChatListPosition(g->gid_, CHATITEM_TYPE_GROUP);
+    Chat::refreshChatListPosition(g->cacheIndex_, CHATITEM_TYPE_GROUP);
     return;
 }
 
-void MessageManager::sendFriendMessage(QString &message) {
+/**
+ *  功能描述: 发送好友消息
+ *  @param message   消息内容
+ *
+ *  @return 无
+ */
+void MessageManager::sendFriendMessage(QString &message)
+{
     Cache *c = gCtx.cache;
 
     Friend *f = c->getOneFriend(c->currentUseId_);
@@ -321,22 +332,20 @@ void MessageManager::sendFriendMessage(QString &message) {
          "sendMessage", "send one message", c->currentUseId_, message.toLatin1().data());
 
     /* impai 发送消息 */
-    Adapt::adaptSendMessage(f->friendChannelId, 1, message);
-
-    Chat::refreshChatListPosition(f->cacheIndex, CHATITEM_TYPE_FRIEND);
+    Adapt::adaptSendMessage(f->friendChannelId_, 1, message);
+    Chat::refreshChatListPosition(f->cacheIndex_, CHATITEM_TYPE_FRIEND);
     return;
 }
 
 
 /**
  *  功能描述: sendMessage
- *  @param index     用户索引，这里就是0
  *  @param message   发送的消息内容，已经在QML层过滤
  *
  *  @return 无
  */
-void MessageManager::sendMessage(QString message) {
-
+void MessageManager::sendMessage(QString message)
+{
     /* 找到缓存 */
     Cache *c = gCtx.cache;
     if (c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
@@ -348,4 +357,3 @@ void MessageManager::sendMessage(QString message) {
     }
     return;
 }
-

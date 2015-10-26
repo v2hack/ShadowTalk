@@ -37,7 +37,7 @@ extern struct ShadowTalkContext gCtx;
 void Chat::addFrientToChat(QString friendName, QString shortName,
       int friendIndex, int listViewIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -85,7 +85,7 @@ void Chat::addFrientToChat(QString friendName, QString shortName,
  */
 void Chat::removeFrientFromChat(int chatIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -109,7 +109,7 @@ void Chat::removeFrientFromChat(int chatIndex)
  */
 void Chat::updateListIndexForChat(int index, int listViewIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -127,7 +127,7 @@ void Chat::updateListIndexForChat(int index, int listViewIndex)
 
 
 /**
- *  功能描述: 从chatlist界面删除好友
+ *  功能描述: 改变chatlist中item的状态
  *  @param idx    好友索引
  *  @param state  在线或者离线
  *
@@ -158,7 +158,7 @@ void Chat::displayChatNetState(int idx, int state)
         return;
     }
 
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -174,7 +174,7 @@ void Chat::displayChatNetState(int idx, int state)
 }
 
 /**
- *  功能描述: 设置chat listview中的未读消息数量
+ *  功能描述: 设置chatlistview中的未读消息数量
  *  @param idx    好友索引
  *  @param count  未读消息数量
  *
@@ -205,7 +205,7 @@ void Chat::displayChatUnreadCount(int idx, int count, int type)
     if (flag == 0) {
         return;
     }
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -219,7 +219,7 @@ void Chat::displayChatUnreadCount(int idx, int count, int type)
 }
 
 /**
- *  功能描述: 更新chat listview中的位置
+ *  功能描述: 将item在chatlistview中的位置放到首位
  *  @param cacheIndex  好友索引
  *  @param itemType    类型:组还是好友
  *
@@ -237,7 +237,7 @@ void Chat::refreshChatListPosition(int cacheIndex, int itemType)
     case CHATITEM_TYPE_FRIEND: {
         Friend *f = c->getOneFriend(cacheIndex);
         if (f) {
-            name = f->name;
+            name = f->name_;
         }
         break;
     }

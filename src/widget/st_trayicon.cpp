@@ -17,6 +17,12 @@
 #include <QApplication>
 #include <QMenu>
 
+/**
+ *  功能描述: 系统托盘构建函数
+ *  @param 无
+ *
+ *  @return 无
+ */
 TrayIcon::TrayIcon(QWindow *win, QObject *parent) : QObject(parent), m_window(win)
     , m_icon(":/img/st_icon.png")
 {
@@ -33,9 +39,21 @@ TrayIcon::TrayIcon(QWindow *win, QObject *parent) : QObject(parent), m_window(wi
     m_trayIcon->show();
 }
 
+/**
+ *  功能描述: 析构函数
+ *  @param 无
+ *
+ *  @return 无
+ */
 TrayIcon::~TrayIcon() {
 }
 
+/**
+ *  功能描述: 系统托盘激活
+ *  @param 无
+ *
+ *  @return 无
+ */
 void TrayIcon::onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::DoubleClick && m_window) {
@@ -48,11 +66,25 @@ void TrayIcon::onTrayIconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-void TrayIcon::onExit() {
+/**
+ *  功能描述: 系统托盘拖出
+ *  @param 无
+ *
+ *  @return 无
+ */
+void TrayIcon::onExit()
+{
     m_trayIcon->hide();
     QApplication::exit(0);
 }
 
-void TrayIcon::onRemind(const QString &contents) {
+/**
+ *  功能描述: 系统托盘消息提醒
+ *  @param 无
+ *
+ *  @return 无
+ */
+void TrayIcon::onRemind(const QString &contents)
+{
     m_trayIcon->showMessage(tr("Notification"), contents);
 }

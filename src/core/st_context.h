@@ -31,31 +31,36 @@ struct ShadowTalkConfig
 /* 全局上下文索引 */
 struct ShadowTalkContext
 {
-    peersafe::im::Message_client *zebra;   /* peersafe底层类指针 */
-    zebraDeleagates *delegate;             /* peersafe回调类指针 */
-    struct ShadowTalkConfig conf;          /* 配置结构 */
+    peersafe::im::Message_client *zebra_;   /* peersafe底层类指针 */
+    zebraDeleagates *delegate_;             /* peersafe回调类指针 */
+    struct ShadowTalkConfig conf;           /* 配置结构 */
 
-    QGuiApplication *app;                  /* application 指针*/
-    QQuickView      *viewer;               /* 主窗口viewer指针 */
-    QQuickView      *loginer;              /* 登陆窗口viewer指针 */
-    QQuickView      *imager;               /* 图片浏览窗口指针 */
-    TrayIcon        *tray;                 /* 系统托图 */
+    QGuiApplication *app_;                  /* application 指针*/
+    QQuickView      *viewer_;               /* 主窗口viewer指针 */
+    QQuickView      *loginer_;              /* 登陆窗口viewer指针 */
+    QQuickView      *imager_;               /* 图片浏览窗口指针 */
+    TrayIcon        *tray_;                 /* 系统托图 */
 
-    Cache *cache;                          /* 缓存指针 */
-    std::string phoneQrChannel;            /* 与手机同步的qr channel id*/
-    std::string phoneSyncChannel;          /* 与手机同步的normal channel id*/
-    QTime phoneUpdateTime;                 /* 手机刷新时间 */
+    Cache *cache;                           /* 缓存指针 */
+    std::string phoneQrChannel;             /* 与手机同步的qr channel id*/
+    std::string phoneSyncChannel;           /* 与手机同步的normal channel id*/
+    QTime phoneUpdateTime;                  /* 手机刷新时间 */
 
-    int changeFlag;                        /* 窗口切换标记 */
-    int windowFlag;                        /* 窗口编号 */
-    int shadowFlag;                        /* 软件状态 */
-    int threadStop;
+    int changeFlag_;                        /* 窗口切换标记 */
+    int windowFlag_;                        /* 窗口编号 */
+    int threadStop_;
 };
 
-
+/* 检查声音快关 */
 bool isSoundEnable();
+
+/* 检查接受消息的开关*/
 bool isReceiveEnable();
+
+/* 设置声音的开关 */
 void setSoundEnable(bool set);
+
+/* 设置接收消息开关 */
 void setReceiveEnable(bool set);
 
 

@@ -13,9 +13,19 @@
 #include <Qstring>
 #include <QWidget>
 #include <QtQuick/QQuickView>
-
+/*******************************************************************
+ *  Copyright(c) 2014-2015 PeeSafe
+ *  All rights reserved.
+ *
+ *  文件名称: st_login.cpp
+ *  简要描述: 登录处理类函数
+ *
+ *  当前版本:1.0
+ *  作者: 南野
+ *  日期: 2015/08/11
+ *  说明:
+ ******************************************************************/
 #include <iostream>
-
 #include "st_login.h"
 #include "st_context.h"
 #include "st_utils.h"
@@ -23,10 +33,15 @@
 
 extern struct ShadowTalkContext gCtx;
 
-/* 设置界面上的同步进度 */
+/**
+ *  功能描述: 设置界面上的同步进度
+ *  @param  processValue   进度值，最大值360
+ *
+ *  @return 无
+ */
 void Login::ShadowTalkSetSyncProcess(int processValue)
 {
-    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    QQuickItem *rootObject = gCtx.loginer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -41,9 +56,15 @@ void Login::ShadowTalkSetSyncProcess(int processValue)
     return;
 }
 
+/**
+ *  功能描述: 设置界面上的同步进度清理
+ *  @param  processValue   进度值，最大值360
+ *
+ *  @return 无
+ */
 void Login::ShadowTalkSetSyncProcessClean(int processValue)
 {
-    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    QQuickItem *rootObject = gCtx.loginer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -58,11 +79,14 @@ void Login::ShadowTalkSetSyncProcessClean(int processValue)
     return;
 }
 
-
-
-/* 将二维码图片设置到页面上 */
+/**
+ *  功能描述: 将二维码图片设置到页面上
+ *  @param  qrImagePath   图片位置
+ *
+ *  @return 无
+ */
 void ShadowTalkSetQrImage(QString qrImagePath) {
-    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    QQuickItem *rootObject = gCtx.loginer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -76,10 +100,15 @@ void ShadowTalkSetQrImage(QString qrImagePath) {
     return;
 }
 
-/* 开始进入同步进度条 */
+/**
+ *  功能描述: 开始进入同步进度条
+ *  @param  无
+ *
+ *  @return 无
+ */
 void Login::ShadowTalkLoginStartSync()
 {
-    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    QQuickItem *rootObject = gCtx.loginer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -93,10 +122,15 @@ void Login::ShadowTalkLoginStartSync()
     return;
 }
 
-/* 恢复登录界面设置 */
+/**
+ *  功能描述: 恢复登录界面设置
+ *  @param  无
+ *
+ *  @return 无
+ */
 void Login::ShadowTalkLoginClean()
 {
-    QQuickItem *rootObject = gCtx.loginer->rootObject();
+    QQuickItem *rootObject = gCtx.loginer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -110,8 +144,12 @@ void Login::ShadowTalkLoginClean()
     return;
 }
 
-
-/* 登陆 */
+/**
+ *  功能描述: 登陆
+ *  @param  无
+ *
+ *  @return 无
+ */
 int Login::ShadowTalkLogin()
 {
     int ret = 0, count = 0;
@@ -126,7 +164,7 @@ int Login::ShadowTalkLogin()
         if (count > tryTimes) {
             return -1;
         }
-        ret = gCtx.zebra->get_network_state();
+        ret = gCtx.zebra_->get_network_state();
         if (ret < 0) {
             Utils::ShadowTalkSleep(1000);
             count++;
@@ -137,7 +175,7 @@ int Login::ShadowTalkLogin()
     }
 
     /* 利用peersafe接口创建二维码 */
-    qrCodeSource = gCtx.zebra->generate_qr_channel(1200);
+    qrCodeSource = gCtx.zebra_->generate_qr_channel(1200);
     if (qrCodeSource.empty()) {
         qDebug() << "c++: generate qr channel fail";
         return -1;
@@ -145,10 +183,10 @@ int Login::ShadowTalkLogin()
     gCtx.phoneQrChannel = qrCodeSource;
 
     /* listen 这个channel */
-    gCtx.zebra->listen_qr_channel(qrCodeSource);
+    gCtx.zebra_->listen_qr_channel(qrCodeSource);
 
     /* 转换为特定的channel */
-    qrChannelId = gCtx.zebra->hex_encode(qrCodeSource);
+    qrChannelId = gCtx.zebra_->hex_encode(qrCodeSource);
     qrEnCode = "C:" + qrChannelId;
     std::cout << "c++: sync qrcode - " << qrEnCode << std::endl;
 
@@ -169,4 +207,3 @@ int Login::ShadowTalkLogin()
     ShadowTalkSetQrImage(pictureUrl.toString());
     return 0;
 }
-

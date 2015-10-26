@@ -53,7 +53,7 @@ PointSizeToPixelSize::~PointSizeToPixelSize()
  */
 int PointSizeToPixelSize::pixelSize(int pointSize)
 {
-    QScreen *screen = gCtx.app->primaryScreen();
+    QScreen *screen = gCtx.app_->primaryScreen();
     if (!screen) {
         return 0;
     }
@@ -69,21 +69,21 @@ int PointSizeToPixelSize::pixelSize(int pointSize)
  */
 int PointSizeToPixelSize::height(int pointSize)
 {
-    QFont font = gCtx.app->font();
+    QFont font = gCtx.app_->font();
     font.setPointSize(pointSize);
     QFontMetrics fm(font);
     return fm.height();
 }
 
 /**
- *  功能描述: 计算界面文字宽度
+ *  功能描述: c
  *  @param index  文字像素点
  *
  *  @return 无
  */
 int PointSizeToPixelSize::width(int pointSize, QString text)
 {
-    QFont font = gCtx.app->font();
+    QFont font = gCtx.app_->font();
     font.setPointSize(pointSize);
     QFontMetrics fm(font);
     return fm.width(text);

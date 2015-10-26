@@ -17,11 +17,22 @@ struct ChatItem
 class Chat
 {
 public:
+    /* 加好友到chatList页面 */
     static void addFrientToChat(QString friendName,  QString shortName, int friendIndex, int listViewIndex);
+
+    /* 从chatlist界面删除好友 */
     static void removeFrientFromChat(int chatIndex);
+
+    /* 改变chatlist中item的状态 */
     static void displayChatNetState(int idx, int state);
+
+    /* 设置chatlistview中的未读消息数量 */
     static void displayChatUnreadCount(int idx, int count, int type);
+
+    /* 更新qml中listiew中的索引 */
     static void updateListIndexForChat(int index, int listViewIndex);
+
+    /* 将item在chatlistview中的位置放到首位 */
     static void refreshChatListPosition(int cacheIndex, int itemType);
 };
 

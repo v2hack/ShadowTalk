@@ -27,24 +27,24 @@ class Cache: public QObject
 {
     Q_OBJECT
 private:
-    int friendCount_;                                      /* 缓存中好友数量 */
-    int groupCount_;                                       /* 缓存中组数量 */
+    int friendCount_;                                       /* 缓存中好友数量 */
+    int groupCount_;                                        /* 缓存中组数量 */
 public:
-    int currentUseId_;                                     /* 界面上当前显示好友id */
-    int currentUseType_;                                   /* 界面上当前类型 */
+    int currentUseId_;                                      /* 界面上当前显示好友id */
+    int currentUseType_;                                    /* 界面上当前类型 */
     QString currentUseName_;
-    QMap<int, Friend> friendList_;                         /* 联系人列表 */
+    QMap<int, Friend> friendList_;                          /* 联系人列表 */
 
     QMutex chatMutex_;
     QList<ChatItem *> chatList_;                            /* 聊天列表 */
 
-    QMap<QString, struct LocalChannel *> channelList_;     /* channel映射表 */
-    std::map<std::string, std::string> keyValueList_;      /* 密钥映射表 */
+    QMap<QString, struct LocalChannel *> channelList_;      /* channel映射表 */
+    std::map<std::string, std::string> keyValueList_;       /* 密钥映射表 */
     QMap<int, Group> groupList_;                            /* 组列表 */
 
     Cache();
     ~Cache();
-    void CleanCache();                                     /* 清理缓存 */
+    void CleanCache();                                      /* 清理缓存 */
 
     /* 联系人操作函数 */
     void insertOneFriend(Friend *newFriend);

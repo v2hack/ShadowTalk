@@ -50,7 +50,7 @@ void Utils::ShadowTalkSleep(unsigned int msec) {
  *  @return 无
  */
 void Utils::playMessageSound() {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -68,7 +68,7 @@ void Utils::playMessageSound() {
  *  @return 无
  */
 void Utils::playMessageVoice(QString voiceFilePath) {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -79,9 +79,14 @@ void Utils::playMessageVoice(QString voiceFilePath) {
     }
 }
 
-
+/**
+ *  功能描述: 访问qml对象，停止播放语音
+ *  @param 无
+ *
+ *  @return 无
+ */
 void Utils::stopMessageVoice() {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -93,14 +98,14 @@ void Utils::stopMessageVoice() {
 }
 
 /**
- *  功能描述: 设置界面上当前还有的名字
+ *  功能描述: 设置界面上当前好友的名字
  *  @param  currentFriendName 当前好友名
  *
  *  @return 无
  */
 void Utils::displayCurrentFriendName(QString currentFriendName)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -122,7 +127,7 @@ void Utils::displayCurrentFriendName(QString currentFriendName)
  *  @return
  */
 void setLoginWindowVisible() {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -139,7 +144,7 @@ void setLoginWindowVisible() {
  *  @return
  */
 void setLoginWindowUnvisible() {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -160,8 +165,8 @@ void Utils::displayLoginView()
     for(int i = 0; i < 360; i++) {
         Login::ShadowTalkSetSyncProcessClean(i);
     }
-    gCtx.changeFlag = 1; /* 通知线程切换窗口 */
-    gCtx.windowFlag = 1; /* 当前应该显示主窗口 */
+    gCtx.changeFlag_ = 1; /* 通知线程切换窗口 */
+    gCtx.windowFlag_ = 1; /* 当前应该显示主窗口 */
     setReceiveEnable(true);
     return;
 }
@@ -197,15 +202,15 @@ void Utils::walkCacheAddFriendAndGroup()
         QMap<int, Friend>::iterator it;
         for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
             Friend &f = it.value();
-            if (f.loadStatus == 1) {
+            if (f.loadStatus_ == 1) {
                 continue;
             }
-            if (f.firstLetter.toLatin1().data()[0] == firstLetter[i]) {
-                qDebug() << "c++: add friend - " << f.name;
-                Utils::addFriendIntoWidget(f.name, it.key(), listViewIndex);
-                f.listViewIndex = listViewIndex;
+            if (f.firstLetter_.toLatin1().data()[0] == firstLetter[i]) {
+                qDebug() << "c++: add friend - " << f.name_;
+                Utils::addFriendIntoWidget(f.name_, it.key(), listViewIndex);
+                f.listViewIndex_ = listViewIndex;
                 listViewIndex++;
-                f.loadStatus = 1;
+                f.loadStatus_ = 1;
             } else {
                 continue;
             }
@@ -222,7 +227,7 @@ void Utils::walkCacheAddFriendAndGroup()
  */
 void Utils::addFriendIntoWidget(QString friendName, int friendIndex, int listViewIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -270,7 +275,7 @@ void Utils::addFriendIntoWidget(QString friendName, int friendIndex, int listVie
  */
 void Utils::addGroupIntoWidget(QString groupName, int groupIndex, int listViewIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -309,8 +314,12 @@ void Utils::addGroupIntoWidget(QString groupName, int groupIndex, int listViewIn
     return;
 }
 
-
-
+/**
+ *  功能描述: 清除当前用户选中的高亮
+ *  @param  cache 缓存指针
+ *
+ *  @return 无
+ */
 void Utils::clearCurrentItemHighLight(Cache *cache) {
 
     int chatListSeq = 0;
@@ -342,7 +351,14 @@ void Utils::clearCurrentItemHighLight(Cache *cache) {
     }
 }
 
-
+/**
+ *  功能描述: 设置组item高亮
+ *  @param  cache  缓存指针
+ *  @param  group  组成员指针
+ *  @param  groupCacheindex 组在缓存中的索引
+ *
+ *  @return 无
+ */
 void Utils::setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheindex)
 {
     /* 在chat listView中高亮 */
@@ -358,6 +374,14 @@ void Utils::setGroupItemHighLight(Cache *cache,  Group *group, int groupCacheind
     return;
 }
 
+/**
+ *  功能描述: 设置好友item高亮
+ *  @param  cache    缓存指针
+ *  @param  friend_  好友指针
+ *  @param  friendCacheIndex 好友在缓存中的索引
+ *
+ *  @return 无
+ */
 void Utils::setFriendItemHighLight(Cache *cache,  Friend *friend_, int friendCacheIndex)
 {
     /* 在chat listView中高亮 */
@@ -369,7 +393,7 @@ void Utils::setFriendItemHighLight(Cache *cache,  Friend *friend_, int friendCac
     friend_->setFriendlistBackGroundColor(1);
 
     /* 设置新的当前好友item */
-    cache->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, friend_->name);
+    cache->setCurrentId(friendCacheIndex, CHATITEM_TYPE_FRIEND, friend_->name_);
     return;
 }
 
@@ -392,20 +416,20 @@ WindowClose::~WindowClose() {}
  */
 void WindowClose::closeWindowProcess() {
 
-    QQuickView *v = gCtx.viewer;
-    QQuickView *l = gCtx.viewer;
+    QQuickView *v = gCtx.viewer_;
+    QQuickView *l = gCtx.loginer_;
 
     if (v) {
         v->close();
         l->close();
     }
 
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (z) {
         z->send_offline_message(gCtx.phoneSyncChannel, ImapiMessageType_PCOffLine,
                                 "PC exit", 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
     }
-    gCtx.threadStop = 1;
+    gCtx.threadStop_ = 1;
     Utils::ShadowTalkSleep(3000);
     exit(0);
 }

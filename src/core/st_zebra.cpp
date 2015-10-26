@@ -42,7 +42,7 @@ static unsigned long long _countMessage = 0;
  */
 std::string StringToHex(std::string s)
 {
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     return z->hex_decode(s);
 }
 
@@ -54,7 +54,7 @@ std::string StringToHex(std::string s)
  */
 std::string HexToString(std::string s)
 {
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z) {
         return "";
     }
@@ -102,7 +102,7 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     case MessagetypePCBackup:
     {
         /* 加载XML文件 */
-        string channel_id_128 = gCtx.zebra->hex_encode(channel_id);
+        string channel_id_128 = gCtx.zebra_->hex_encode(channel_id);
         string passwd = channel_id_128.substr(0, 16);
         ParseXml::writeXmlFile(SHADOW_SYNC_FILE, message);
         std::cout << "c++: xml file size - " << message.size() << std::endl;
@@ -120,9 +120,8 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
             Login::ShadowTalkSetSyncProcess(i);
         }
         /* 切换到聊天界面 */
-        gCtx.changeFlag = 1; /* 通知线程切换窗口 */
-        gCtx.windowFlag = 2; /* 当前应该显示主窗口 */
-        gCtx.shadowFlag = ST_NO_LOGIN; /* 状态为已经登录 */
+        gCtx.changeFlag_ = 1; /* 通知线程切换窗口 */
+        gCtx.windowFlag_ = 2; /* 当前应该显示主窗口 */
         return 1;
     }
     case MessagetypePCOffLine:
@@ -147,7 +146,7 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     case MessagetypePingPC:
     {
         qDebug() << "c++: receive pc ping";
-        gCtx.zebra->send_online_message(gCtx.phoneSyncChannel, MessagetypeResponeFromPC,
+        gCtx.zebra_->send_online_message(gCtx.phoneSyncChannel, MessagetypeResponeFromPC,
                                         "respone", 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
         gCtx.phoneUpdateTime.restart();
         return 1;
@@ -187,13 +186,13 @@ void forwardMessage(const string &friend_channel_id, const int type, const strin
     }
 
     qDebug() << "c++: sync channelid - "
-             << QString::fromStdString(gCtx.zebra->hex_encode(gCtx.phoneSyncChannel));
+             << QString::fromStdString(gCtx.zebra_->hex_encode(gCtx.phoneSyncChannel));
     qDebug() << "c++: frin channelid - "
-             << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+             << QString::fromStdString(gCtx.zebra_->hex_encode(friend_channel_id));
     qDebug() << "c++: sync message size - "
              << message.size() << " message id - " << message_id;
 
-    gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
+    gCtx.zebra_->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
                                   type, message, expired, entire_expired, timestamp, length, message_id);
     qDebug() << "c++: send sync message to phone ok";
     return;
@@ -270,7 +269,7 @@ void zebraDeleagates::friend_offline_message(
         Friend &f = it.value();
         int idx = f.messageList.size();
 
-        if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
+        if (friend_channel_id == StringToHex(f.friendChannelId_.toStdString())) {
             Message *m        = new Message;
             m->data           = message;
             m->driect         = messageDirection;
@@ -280,33 +279,33 @@ void zebraDeleagates::friend_offline_message(
 
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_offline_message", "receive one online message",
-                 f.cacheIndex, message.c_str());
+                 f.cacheIndex_, message.c_str());
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
-            if (c->currentUseId_ == f.cacheIndex && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
-                f.messageUnreadCount = 0;
+            if (c->currentUseId_ == f.cacheIndex_ && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
+                f.messageUnreadCount_ = 0;
                 refreshBackColor = 1;
 
                 /* 判断类型 */
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    MessageWidget::addMessageToWidget(f.cacheIndex, f.name, type,
+                    MessageWidget::addMessageToWidget(f.cacheIndex_, f.name_, type,
                                 messageDirection, QString::fromStdString(m->data), idx); break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    MessageWidget::addImageToWidget(f.cacheIndex, f.name, type,
+                    MessageWidget::addImageToWidget(f.cacheIndex_, f.name_, type,
                                 messageDirection, m->data, idx); break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    MessageWidget::addVoiceToWidget(f.cacheIndex, f.name, type, messageDirection,
+                    MessageWidget::addVoiceToWidget(f.cacheIndex_, f.name_, type, messageDirection,
                                 QString::fromStdString(m->data), length, idx); break;
                 default:
                     break;
                 }
             }
-            f.messageUnreadCount++;
+            f.messageUnreadCount_++;
 
             /* 判断类型 */
             switch (type) {
@@ -317,28 +316,28 @@ void zebraDeleagates::friend_offline_message(
                 break;
             }
 
-            f.setTimeAndState(f.cacheIndex, MessageMethodOffline);
+            f.setTimeAndState(f.cacheIndex_, MessageMethodOffline);
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_offline_message", "receive one online message",
-                 f.cacheIndex, message.c_str());
+                 f.cacheIndex_, message.c_str());
 
             /* 以下操作检查是否需要在chat页面显示好友 */
-            int ret = c->atFirstPosition(f.cacheIndex, CHATITEM_TYPE_FRIEND);
+            int ret = c->atFirstPosition(f.cacheIndex_, CHATITEM_TYPE_FRIEND);
             if (ret == -1) {
-                qDebug() << "c++: chatlist - add : " << f.cacheIndex;
-                c->insertOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND, f.name);
+                qDebug() << "c++: chatlist - add : " << f.cacheIndex_;
+                c->insertOneChat(f.cacheIndex_, CHATITEM_TYPE_FRIEND, f.name_);
             } else if (ret == -2) {
-                qDebug() << "c++: chatlist - move : " << f.cacheIndex;
-                c->removeOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND);
-                c->insertOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND, f.name);
+                qDebug() << "c++: chatlist - move : " << f.cacheIndex_;
+                c->removeOneChat(f.cacheIndex_, CHATITEM_TYPE_FRIEND);
+                c->insertOneChat(f.cacheIndex_, CHATITEM_TYPE_FRIEND, f.name_);
             }
-            Chat::displayChatNetState(f.cacheIndex, MessageMethodOffline);
+            Chat::displayChatNetState(f.cacheIndex_, MessageMethodOffline);
             if (refreshBackColor) {
                 Utils::clearCurrentItemHighLight(c);
-                Utils::setFriendItemHighLight(c, &f, f.cacheIndex);
+                Utils::setFriendItemHighLight(c, &f, f.cacheIndex_);
             } else {
-                Chat::displayChatUnreadCount(f.cacheIndex, f.messageUnreadCount, CHATITEM_TYPE_FRIEND);
+                Chat::displayChatUnreadCount(f.cacheIndex_, f.messageUnreadCount_, CHATITEM_TYPE_FRIEND);
             }
         }
     }
@@ -416,7 +415,7 @@ void zebraDeleagates::friend_online_message(
     for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
         Friend &f = it.value();
         int idx = f.messageList.size();
-        if (friend_channel_id == StringToHex(f.friendChannelId.toStdString())) {
+        if (friend_channel_id == StringToHex(f.friendChannelId_.toStdString())) {
 
             Message *m        = new Message;
             m->data           = message;
@@ -426,30 +425,30 @@ void zebraDeleagates::friend_online_message(
             m->voiceSeconds   = 0;
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
-            if (c->currentUseId_ == f.cacheIndex && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
-                f.messageUnreadCount = 0;
+            if (c->currentUseId_ == f.cacheIndex_ && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
+                f.messageUnreadCount_ = 0;
                 refreshBackColor = 1;
 
                 /* 判断类型 */
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    MessageWidget::addMessageToWidget(f.cacheIndex, f.name, type, messageDirection,
+                    MessageWidget::addMessageToWidget(f.cacheIndex_, f.name_, type, messageDirection,
                                 QString::fromStdString(m->data), idx); break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    MessageWidget::addImageToWidget(f.cacheIndex, f.name, type,
+                    MessageWidget::addImageToWidget(f.cacheIndex_, f.name_, type,
                                 messageDirection, m->data, idx); break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    MessageWidget::addVoiceToWidget(f.cacheIndex, f.name, type, messageDirection,
+                    MessageWidget::addVoiceToWidget(f.cacheIndex_, f.name_, type, messageDirection,
                                 QString::fromStdString(m->data), length, idx); break;
                 default:
                     break;
                 }
             }
-            f.messageUnreadCount++;
+            f.messageUnreadCount_++;
 
             /* 判断类型 */
             switch (type) {
@@ -460,28 +459,28 @@ void zebraDeleagates::friend_online_message(
                 break;
             }
 
-            f.setTimeAndState(f.cacheIndex, MessageMethodOnline);
+            f.setTimeAndState(f.cacheIndex_, MessageMethodOnline);
             f.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "friend_online_message", "receive one online message",
-                 f.cacheIndex, message.c_str());
+                 f.cacheIndex_, message.c_str());
 
             /* 以下操作检查是否需要在chat页面显示好友 */
-            int ret = c->atFirstPosition(f.cacheIndex, CHATITEM_TYPE_FRIEND);
+            int ret = c->atFirstPosition(f.cacheIndex_, CHATITEM_TYPE_FRIEND);
             if (ret == -1) {
-                qDebug() << "c++: chatlist - add : " << f.cacheIndex;
-                c->insertOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND, f.name);
+                qDebug() << "c++: chatlist - add : " << f.cacheIndex_;
+                c->insertOneChat(f.cacheIndex_, CHATITEM_TYPE_FRIEND, f.name_);
             } else if (ret == -2) {
-                qDebug() << "c++: chatlist - move : " << f.cacheIndex;
-                c->removeOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND);
-                c->insertOneChat(f.cacheIndex, CHATITEM_TYPE_FRIEND, f.name);
+                qDebug() << "c++: chatlist - move : " << f.cacheIndex_;
+                c->removeOneChat(f.cacheIndex_, CHATITEM_TYPE_FRIEND);
+                c->insertOneChat(f.cacheIndex_, CHATITEM_TYPE_FRIEND, f.name_);
             }
-            Chat::displayChatNetState(f.cacheIndex, MessageMethodOnline);
+            Chat::displayChatNetState(f.cacheIndex_, MessageMethodOnline);
             if (refreshBackColor) {
                 Utils::clearCurrentItemHighLight(c);
-                Utils::setFriendItemHighLight(c, &f, f.cacheIndex);
+                Utils::setFriendItemHighLight(c, &f, f.cacheIndex_);
             } else {
-                Chat::displayChatUnreadCount(f.cacheIndex, f.messageUnreadCount, CHATITEM_TYPE_FRIEND);
+                Chat::displayChatUnreadCount(f.cacheIndex_, f.messageUnreadCount_, CHATITEM_TYPE_FRIEND);
             }
         }
     }
@@ -507,20 +506,20 @@ void zebraDeleagates::friend_request_via_qr(
         qDebug() << "c++: is not sync channel id";
         g_io_service.service().dispatch([friend_channel_id](){
             Utils::ShadowTalkSleep(500);
-            int ret = gCtx.zebra->handle_friend_request(friend_channel_id, true);
+            int ret = gCtx.zebra_->handle_friend_request(friend_channel_id, true);
             std::cout << "c++: add friend result: " << ret << std::endl;
         });
 
         if (gCtx.phoneSyncChannel.empty()) {
             gCtx.phoneSyncChannel = friend_channel_id;
             qDebug() << "c++: sync-channelid : "
-                     << QString::fromStdString(gCtx.zebra->hex_encode(friend_channel_id));
+                     << QString::fromStdString(gCtx.zebra_->hex_encode(friend_channel_id));
         }
     } else {
         if (!gCtx.phoneSyncChannel.empty()) {
             g_io_service.service().dispatch([friend_channel_id](){
                 std::string message = "friend_request";
-                gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
+                gCtx.zebra_->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
                     ImapiMessageType_AddFriendRequest + ImapiMessageType_ForwadOffset,
                     message, 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                     message.size(), 0);
@@ -542,7 +541,7 @@ void zebraDeleagates::friend_request_via_qr(
 void zebraDeleagates::friend_request_reply(
         const string &friend_channel_id, bool accepted)
 {
-    qDebug() << "c++: friend_request_reply";
+    qDebug() << "c++: friend_request_reply - " << accepted;
     return;
 }
 
@@ -558,7 +557,7 @@ void zebraDeleagates::friend_deleted(const string &friend_channel_id)
     if (!gCtx.phoneSyncChannel.empty()) {
         g_io_service.service().dispatch([friend_channel_id](){
             std::string message = "friend_request";
-            gCtx.zebra->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
+            gCtx.zebra_->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
                 ImapiMessageType_DeleteFriend + ImapiMessageType_ForwadOffset,
                 message, 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                 message.size(), 0);
@@ -650,6 +649,7 @@ std::set<std::string> existSet;
 
 bool zebraDeleagates::isExisted(const string &item, unsigned int expire)
 {
+    qDebug() << "c++: isExisted - " << expire;
     std::set<std::string>::iterator it;
     it = existSet.find(item);
     if (it != existSet.end()) {
@@ -672,6 +672,7 @@ void zebraDeleagates::handler_write_message_reply(
         const std::string &channel_id,
         unsigned long message_id, int ret_code)
 {
+    qDebug() << "c++: handler_write_message_reply - " << message_id << " " << ret_code;
     return;
 }
 
@@ -741,8 +742,8 @@ void zebraDeleagates::group_chat_invite_received(
 {
     std::cout << "c++: group_chat_invite_received" << std::endl;
 
-    if (gCtx.zebra) {
-        gCtx.zebra->sync_group_chat_invite_received(gCtx.phoneSyncChannel,
+    if (gCtx.zebra_) {
+        gCtx.zebra_->sync_group_chat_invite_received(gCtx.phoneSyncChannel,
              friend_channel_id, group_channel_id, my_name);
     }
     return;
@@ -766,8 +767,8 @@ void zebraDeleagates::group_chat_invite_reply_received(
 {
     std::cout << "group_chat_invite_reply_received" << std::endl;
 
-    if (gCtx.zebra) {
-        gCtx.zebra->sync_group_chat_invite_reply_received(gCtx.phoneSyncChannel,
+    if (gCtx.zebra_) {
+        gCtx.zebra_->sync_group_chat_invite_reply_received(gCtx.phoneSyncChannel,
              friend_channel_id, group_channel_id, accepted, friend_member_id);
     }
     return;
@@ -790,8 +791,8 @@ void zebraDeleagates::group_chat_member(
         unsigned long join_time)
 {
     std::cout << "c++: group_chat_member" << std::endl;
-    if (gCtx.zebra) {
-        gCtx.zebra->sync_group_chat_member(gCtx.phoneSyncChannel,
+    if (gCtx.zebra_) {
+        gCtx.zebra_->sync_group_chat_member(gCtx.phoneSyncChannel,
              group_channel_id, member_id, name, join_time);
     }
     return;
@@ -815,8 +816,8 @@ void zebraDeleagates::group_chat_member_removed(
         unsigned long removed_time)
 {
     std::cout << "c++: group_chat_member_removed" << std::endl;
-    if (gCtx.zebra) {
-        gCtx.zebra->sync_group_chat_member_removed(gCtx.phoneSyncChannel,
+    if (gCtx.zebra_) {
+        gCtx.zebra_->sync_group_chat_member_removed(gCtx.phoneSyncChannel,
              group_channel_id, remover, member_id, removed_time);
     }
     return;
@@ -871,8 +872,8 @@ void zebraDeleagates::group_chat_message_received(
 
     /* 同步组消息 */
     if (type < ImapiMessageType_ForwadGOffset) {
-        if (gCtx.zebra) {
-            gCtx.zebra->sync_group_chat_message_received(gCtx.phoneSyncChannel,
+        if (gCtx.zebra_) {
+            gCtx.zebra_->sync_group_chat_message_received(gCtx.phoneSyncChannel,
                  group_channel_id, author, type + ImapiMessageType_ForwadGOffset, message, message_id, expired,
                  entire_expired, length, timestamp, author_name);
         }
@@ -893,22 +894,22 @@ void zebraDeleagates::group_chat_message_received(
             m->senderName     = author_name;
 
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
-            if (c->currentUseId_ == g.gid_ && c->currentUseType_ == CHATITEM_TYPE_GROUP)
+            if (c->currentUseId_ == g.cacheIndex_ && c->currentUseType_ == CHATITEM_TYPE_GROUP)
             {
                 g.messageUnreadCount_ = 0;
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
-                    MessageWidget::addMessageToWidget(g.gid_, QString::fromStdString(author_name),
+                    MessageWidget::addMessageToWidget(g.cacheIndex_, QString::fromStdString(author_name),
                         type, messageDirection, QString::fromStdString(m->data),idx); break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
-                    MessageWidget::addImageToWidget(g.gid_, QString::fromStdString(author_name),
+                    MessageWidget::addImageToWidget(g.cacheIndex_, QString::fromStdString(author_name),
                         type, messageDirection, m->data, idx); break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
-                    MessageWidget::addVoiceToWidget(g.gid_, QString::fromStdString(author_name),
+                    MessageWidget::addVoiceToWidget(g.cacheIndex_, QString::fromStdString(author_name),
                         type, messageDirection, QString::fromStdString(m->data), length, idx); break;
                 default:
                     break;
@@ -929,24 +930,24 @@ void zebraDeleagates::group_chat_message_received(
             g.insertOneMessage(m);
             slog("func<%s> : msg<%s> para<UserIndex - %d, Message - %s>\n",
                  "group_chat_message_received", "receive one group message",
-                 g.gid_, message.c_str());
+                 g.cacheIndex_, message.c_str());
 
             /* 以下操作检查是否需要在chat页面显示好友 */
-            int ret = c->atFirstPosition(g.gid_, CHATITEM_TYPE_GROUP);
+            int ret = c->atFirstPosition(g.cacheIndex_, CHATITEM_TYPE_GROUP);
             if (ret == -1) {
                 qDebug() << "c++: add new one to chatlist";
-                c->insertOneChat(g.gid_, CHATITEM_TYPE_GROUP, g.gourpName_);
+                c->insertOneChat(g.cacheIndex_, CHATITEM_TYPE_GROUP, g.gourpName_);
             } else if (ret == -2) {
                 qDebug() << "c++: move one to first position";
-                c->removeOneChat(g.gid_, CHATITEM_TYPE_GROUP);
-                c->insertOneChat(g.gid_, CHATITEM_TYPE_GROUP, g.gourpName_);
+                c->removeOneChat(g.cacheIndex_, CHATITEM_TYPE_GROUP);
+                c->insertOneChat(g.cacheIndex_, CHATITEM_TYPE_GROUP, g.gourpName_);
             }
 
             if (refreshBackColor) {
                 Utils::clearCurrentItemHighLight(c);
-                Utils::setGroupItemHighLight(c, &g, g.gid_);
+                Utils::setGroupItemHighLight(c, &g, g.cacheIndex_);
             } else {
-                Chat::displayChatUnreadCount(g.gid_, g.messageUnreadCount_, CHATITEM_TYPE_GROUP);
+                Chat::displayChatUnreadCount(g.cacheIndex_, g.messageUnreadCount_, CHATITEM_TYPE_GROUP);
             }
 
 
@@ -969,8 +970,8 @@ void zebraDeleagates::group_channel_name_changed(
         unsigned long changed_time)
 {
     std::cout << "c++: group_channel_name_changed" << std::endl;
-    if (gCtx.zebra) {
-        gCtx.zebra->sync_group_channel_name_changed(gCtx.phoneSyncChannel,
+    if (gCtx.zebra_) {
+        gCtx.zebra_->sync_group_channel_name_changed(gCtx.phoneSyncChannel,
              group_channel_id, channel_name, changed_time);
     }
     return;

@@ -20,7 +20,7 @@ Sthread::Sthread(struct ShadowTalkContext *ctx, QObject *parent) {
 void Sthread::run()
 {
     while (1) {
-        if (c->threadStop == 1) {
+        if (c->threadStop_ == 1) {
             break;
         }
         /* 搜索框检查 */
@@ -32,17 +32,17 @@ void Sthread::run()
         }
 
         /* 登录界面切换检查 */
-        if (c->changeFlag == 1) {
-            if (c->windowFlag == 1) {
+        if (c->changeFlag_ == 1) {
+            if (c->windowFlag_ == 1) {
                 qDebug() << "c++: show login";
-                c->loginer->show();
-                c->viewer->close();
-            } else if (c->windowFlag == 2) {
+                c->loginer_->show();
+                c->viewer_->close();
+            } else if (c->windowFlag_ == 2) {
                 qDebug() << "c++: show main";
-                c->loginer->close();
-                c->viewer->show();
+                c->loginer_->close();
+                c->viewer_->show();
             }
-            c->changeFlag = 0;
+            c->changeFlag_ = 0;
         } else {
             Utils::ShadowTalkSleep(1000);
         }

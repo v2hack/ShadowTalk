@@ -50,7 +50,7 @@ void Adapt::adaptGetLocalIp()
  */
 void Adapt::adaptSendMessage(QString channelId, int messageType, QString message)
 {
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (z) {
         z->send_offline_message(StringToHex(channelId.toStdString()), messageType, message.toStdString(),
                60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, message.toStdString().size(), 0);
@@ -71,7 +71,7 @@ void Adapt::adaptSendMessage(QString channelId, int messageType, QString message
 void Adapt::adaptListenFriends(std::string friendChannelId)
 {
     int ret = 0;
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z) {
         return;
     }
@@ -92,7 +92,7 @@ void Adapt::adaptListenAllFriends()
 {
     int ret = 0;
     Cache *c = gCtx.cache;
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z || !c) {
         return;
     }
@@ -100,9 +100,9 @@ void Adapt::adaptListenAllFriends()
     QMap<int, Friend>::iterator it;
     for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
         Friend &f = it.value();
-        ret = z->listen_friend(StringToHex(f.friendChannelId.toStdString()));
+        ret = z->listen_friend(StringToHex(f.friendChannelId_.toStdString()));
         if (ret < 0) {
-            std::cout << "c++: listen friend fail - " << f.friendChannelId.toStdString() << std::endl;
+            std::cout << "c++: listen friend fail - " << f.friendChannelId_.toStdString() << std::endl;
             continue;
         }
         Utils::ShadowTalkSleep(200);
@@ -120,7 +120,7 @@ void Adapt::adaptListenAllFriends()
 void Adapt::adaptUnistenFriends(std::string friendChannelId)
 {
     int ret = 0;
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z) {
         return;
     }
@@ -141,7 +141,7 @@ void Adapt::adaptUnlistenAllFriends()
 {
     int ret = 0;
     Cache *c = gCtx.cache;
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z || !c) {
         return;
     }
@@ -149,7 +149,7 @@ void Adapt::adaptUnlistenAllFriends()
     QMap<int, Friend>::iterator it;
     for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
         Friend &f = it.value();
-        ret = z->stop_listen_friend(StringToHex(f.friendChannelId.toStdString()));
+        ret = z->stop_listen_friend(StringToHex(f.friendChannelId_.toStdString()));
         if (ret < 0) {
             std::cout << "c++: unlisten all friend fail" << std::endl;
             continue;
@@ -170,7 +170,7 @@ void Adapt::adaptUnlistenAllFriends()
  */
 void Adapt::adaptSendGroupMessage(QString channelId, int messageType, QString message, QString myName)
 {
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (z) {
         z->send_group_message(StringToHex(channelId.toStdString()),
                               messageType, message.toStdString(),
@@ -190,7 +190,7 @@ void Adapt::adaptSendGroupMessage(QString channelId, int messageType, QString me
 void Adapt::adaptListenGroups(QString groupChannelId)
 {
     Cache *c = gCtx.cache;
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z || !c) {
         return;
     }
@@ -208,7 +208,7 @@ void Adapt::adaptListenGroups(QString groupChannelId)
 void Adapt::adaptListenAllGroups()
 {
     Cache *c = gCtx.cache;
-    peersafe::im::Message_client *z = gCtx.zebra;
+    peersafe::im::Message_client *z = gCtx.zebra_;
     if (!z || !c) {
         return;
     }

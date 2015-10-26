@@ -37,7 +37,7 @@ static QString searchText;
  */
 int Search::checkSearchText()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return 0;
     }
@@ -64,7 +64,7 @@ int Search::checkSearchText()
  */
 void Search::setSearchTextUnvisible()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -87,7 +87,7 @@ void Search::setSearchTextUnvisible()
  */
 void setSearchTextVisible()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -110,7 +110,7 @@ void setSearchTextVisible()
  */
 QString getSearchTextContent()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return "";
     }
@@ -136,7 +136,7 @@ QString getSearchTextContent()
  */
 void addSearchResultWidget(QString friendName, int friendIndex)
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -164,7 +164,7 @@ void addSearchResultWidget(QString friendName, int friendIndex)
  */
 void Search::clearSearchWidget()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
@@ -196,9 +196,9 @@ bool matchSearchContent(QString text)
     QMap<int, Friend>::iterator it;
     for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
         Friend &f = it.value();
-        if (f.name.indexOf(text) != -1) {
+        if (f.name_.indexOf(text) != -1) {
             ret = true;
-			addSearchResultWidget(f.name, f.cacheIndex);
+            addSearchResultWidget(f.name_, f.cacheIndex_);
         }
     }
     return ret;
@@ -212,7 +212,7 @@ bool matchSearchContent(QString text)
  */
 void clearSearchContent()
 {
-    QQuickItem *rootObject = gCtx.viewer->rootObject();
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
     if (rootObject == NULL) {
         return;
     }
