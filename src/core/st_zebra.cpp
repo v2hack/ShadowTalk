@@ -740,6 +740,11 @@ void zebraDeleagates::group_chat_invite_received(
         const std::string &my_name)
 {
     std::cout << "c++: group_chat_invite_received" << std::endl;
+
+    if (gCtx.zebra) {
+        gCtx.zebra->sync_group_chat_invite_received(gCtx.phoneSyncChannel,
+             friend_channel_id, group_channel_id, my_name);
+    }
     return;
 }
 
@@ -760,6 +765,11 @@ void zebraDeleagates::group_chat_invite_reply_received(
         const std::string &friend_member_id)
 {
     std::cout << "group_chat_invite_reply_received" << std::endl;
+
+    if (gCtx.zebra) {
+        gCtx.zebra->sync_group_chat_invite_reply_received(gCtx.phoneSyncChannel,
+             friend_channel_id, group_channel_id, accepted, friend_member_id);
+    }
     return;
 }
 
@@ -780,6 +790,10 @@ void zebraDeleagates::group_chat_member(
         unsigned long join_time)
 {
     std::cout << "c++: group_chat_member" << std::endl;
+    if (gCtx.zebra) {
+        gCtx.zebra->sync_group_chat_member(gCtx.phoneSyncChannel,
+             group_channel_id, member_id, name, join_time);
+    }
     return;
 }
 
@@ -801,6 +815,10 @@ void zebraDeleagates::group_chat_member_removed(
         unsigned long removed_time)
 {
     std::cout << "c++: group_chat_member_removed" << std::endl;
+    if (gCtx.zebra) {
+        gCtx.zebra->sync_group_chat_member_removed(gCtx.phoneSyncChannel,
+             group_channel_id, remover, member_id, removed_time);
+    }
     return;
 }
 
@@ -849,6 +867,15 @@ void zebraDeleagates::group_chat_message_received(
     Cache *c = gCtx.cache;
     if (!c) {
         return;
+    }
+
+    /* 同步组消息 */
+    if (type < ImapiMessageType_ForwadGOffset) {
+        if (gCtx.zebra) {
+            gCtx.zebra->sync_group_chat_message_received(gCtx.phoneSyncChannel,
+                 group_channel_id, author, type + ImapiMessageType_ForwadGOffset, message, message_id, expired,
+                 entire_expired, length, timestamp, author_name);
+        }
     }
 
     QMap<int, Group>::iterator it;
@@ -942,5 +969,9 @@ void zebraDeleagates::group_channel_name_changed(
         unsigned long changed_time)
 {
     std::cout << "c++: group_channel_name_changed" << std::endl;
+    if (gCtx.zebra) {
+        gCtx.zebra->sync_group_channel_name_changed(gCtx.phoneSyncChannel,
+             group_channel_id, channel_name, changed_time);
+    }
     return;
 }
