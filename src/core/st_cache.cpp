@@ -283,7 +283,7 @@ void Cache::insertOneChat(int cacheIndex, int type, QString friendName)
 
     item->cacheIndex = cacheIndex;
     item->type = type;
-    qDebug() << "###### insert - " << cacheIndex << " " << type;
+    qDebug() << "c++: insert - " << cacheIndex << " " << type;
     chatList_.insert(chatList_.begin(), item);
     chatMutex_.unlock();
 
@@ -354,7 +354,7 @@ int Cache::atFirstPosition(int cacheIndex, int type)
     for(it = chatList_.begin(); it != chatList_.end();it++) {
         ChatItem *item = *it;
         if (item) {
-            qDebug() << "## index - " << item->cacheIndex << " type - " << item->type;
+            qDebug() << "c++: index - " << item->cacheIndex << " type - " << item->type;
             if (item->cacheIndex == cacheIndex && item->type == type) {
                 result = 1;
                 break;

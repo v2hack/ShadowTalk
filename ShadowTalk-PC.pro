@@ -12,7 +12,7 @@ RC_FILE += ShadowTalk.rc
 #QMAKE_CXXFLAGS += /MD
 #QMAKE_CXXFLAGS += -fexceptions
 
-SHADOWTALK_DEBUG_ENABLE=YES
+SHADOWTALK_DEBUG_ENABLE=NO
 QMAKE_LFLAGS += /NODEFAULTLIB:libcmtd.lib
 
 INCLUDEPATH += include
@@ -30,50 +30,50 @@ HEADERS += \
     include/im.h \
     include/qrencode.h \
     include/maidsafe/common/asio_service.h \
+    src/net/st_net.h \
     src/core/st_cache.h \
     src/core/st_pixelsize.h \
     src/core/st_parsexml.h \
     src/core/st_log.h \
     src/core/st_context.h \
-    src/core/st_utils.h \
+    src/core/st_qrcode.h \
+    src/core/st_thread.h \
     src/core/st_zebra.h \
-    src/net/st_net.h \
+    src/core/st_base64.h \
+    src/widget/st_utils.h \
     src/widget/st_friend.h \
     src/widget/st_message.h \
     src/widget/st_login.h \
     src/widget/st_group.h \
     src/widget/st_trayicon.h \
     src/widget/st_chat.h \
-    src/core/st_base64.h \
-    src/core/st_voice.h \
-    src/core/st_picture.h \
-    src/core/st_qrcode.h \
-    src/core/st_thread.h \
-    src/core/st_search.h
+    src/widget/st_voice.h \
+    src/widget/st_picture.h \
+    src/widget/st_search.h
 	
 SOURCES += \
     src/main.cpp \
+    src/net/st_net.cpp \
     src/core/st_cache.cpp \
     src/core/st_log.cpp \
     src/core/st_parsexml.cpp \
     src/core/st_pixelsize.cpp \
-    src/core/st_utils.cpp \
     src/core/st_zebra.cpp \
     src/core/st_context.cpp \
-    src/net/st_net.cpp \
+    src/core/st_base64.cpp \
+    src/core/st_qrcode.cpp \
+    src/core/st_context.cpp \
+    src/core/st_thread.cpp \
+    src/widget/st_utils.cpp \
     src/widget/st_friend.cpp \
     src/widget/st_group.cpp \
     src/widget/st_login.cpp \
     src/widget/st_message.cpp \
     src/widget/st_trayicon.cpp \
     src/widget/st_chat.cpp \
-    src/core/st_base64.cpp \
-    src/core/st_voice.cpp \
-    src/core/st_picture.cpp \
-    src/core/st_qrcode.cpp \
-    src/core/st_context.cpp \
-    src/core/st_thread.cpp \
-    src/core/st_search.cpp
+    src/widget/st_voice.cpp \
+    src/widget/st_picture.cpp \
+    src/widget/st_search.cpp
    
 win32 {
     contains(SHADOWTALK_DEBUG_ENABLE, YES) {

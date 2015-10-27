@@ -19,9 +19,11 @@
 #include <QtQuick/QQuickView>
 #include <QtQml>
 #include <QThread>
+
 #include <iostream>
 #include <fstream>
 #include <stdint.h>
+
 #include "im.h"
 #include "st_pixelsize.h"
 #include "st_friend.h"
