@@ -35,7 +35,7 @@ public:
     QString currentUseName_;
     QMap<int, Friend> friendList_;                          /* 联系人列表 */
 
-    QMutex chatMutex_;
+    QMutex chatMutex_;                                      /* 聊天列表锁 */
     QList<ChatItem *> chatList_;                            /* 聊天列表 */
 
     QMap<QString, struct LocalChannel *> channelList_;      /* channel映射表 */
@@ -83,7 +83,6 @@ public:
     Group *getOneGroup(QString groupChannelId);
     bool isExistGroup(QString groupChannelId);
     void cleanGroup();
-
 };
 
 #endif // CACHE_H

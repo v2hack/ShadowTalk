@@ -237,6 +237,7 @@ void Cache::CleanCache()
     cleanFriend();
     cleanChannel();
     cleanKeyValue();
+    cleanGroup();
     return;
 }
 
