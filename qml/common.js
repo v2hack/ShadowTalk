@@ -60,20 +60,23 @@ function getColor(name) {
     var nameByte = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
                              "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
                              "w", "x", "y", "z");
-    if (JsCommon.isNum(name)) {
-        //        console.log("是数字");
-        return colorArr[name%26];
-    }  else if (JsCommon.isChinese(name)) {
-        //        console.log("是汉字");
-        var lowerName = PinYin.pinyin.getCamelChars(name);
-        var lastAph1 = lowerName.substr(lowerName.length - 1, 1);
+
+    var colorLetter = name.substr(-1, 1);
+    console.log(colorLetter);
+    if (JsCommon.isNum(colorLetter)) {
+//        console.log("是数字");
+        return colorArr[colorLetter];
+    }  else if (JsCommon.isChinese(colorLetter)) {
+//        console.log("是汉字");
+        var lowerName = PinYin.pinyin.getCamelChars(colorLetter);
+        var lastAph1 = lowerName.substr(0, 1);
         for (var i = 0; i < colorArr.length; i++) {
             if (lastAph1.toLowerCase() ===  nameByte[i]) {
                 return colorArr[i];
             }
         }
-    } else if (JsCommon.isAlphabet(name)) {
-        //        console.log("是字母");
+    } else if (JsCommon.isAlphabet(colorLetter)) {
+//        console.log("是字母");
         var lastAph2 = name.substr(name.length - 1, 1);
         for (var i = 0; i < colorArr.length; i++) {
             if (lastAph2.toLowerCase() ===  nameByte[i]) {
@@ -81,7 +84,7 @@ function getColor(name) {
             }
         }
     } else {
-        //        console.log("是其他字符");
+//        console.log("是其他字符");
         return "#7c509d";
     }
 }
