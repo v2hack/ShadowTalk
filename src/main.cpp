@@ -192,7 +192,7 @@ void initZebraEngine()
     gCtx.conf.soundEnable  = true;
     gCtx.conf.reciveEnable = true;
 
-    gCtx.windowFlag_ = gCtx.changeFlag_ = 0;
+    gCtx.windowFlag_ = gCtx.changeFlag_ = gCtx.loadXmlFlag_ = 0;
     gCtx.threadStop_ = 0;
     gCtx.phoneUpdateTime.start();
 

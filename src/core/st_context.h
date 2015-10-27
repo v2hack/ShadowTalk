@@ -48,7 +48,8 @@ struct ShadowTalkContext
 
     int changeFlag_;                        /* 窗口切换标记 */
     int windowFlag_;                        /* 窗口编号 */
-    int threadStop_;
+    int threadStop_;                        /* 线程状态 */
+    int loadXmlFlag_;                       /* 加载xml文件状态 */
 };
 
 /* 检查声音快关 */

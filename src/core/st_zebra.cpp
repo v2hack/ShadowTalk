@@ -13,6 +13,7 @@
 #include <iostream>
 #include <QThread>
 #include <QDebug>
+#include <QMutex>
 
 #include <map>
 
@@ -101,6 +102,12 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     switch (type) {
     case MessagetypePCBackup:
     {
+
+        if (gCtx.loadXmlFlag_ == 1) {
+            qDebug() << "c++: it is loading xml file";
+            return -1;
+        }
+
         /* 加载XML文件 */
         string channel_id_128 = gCtx.zebra_->hex_encode(channel_id);
         string passwd = channel_id_128.substr(0, 16);
@@ -120,8 +127,9 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
             Login::ShadowTalkSetSyncProcess(i);
         }
         /* 切换到聊天界面 */
-        gCtx.changeFlag_ = 1; /* 通知线程切换窗口 */
-        gCtx.windowFlag_ = 2; /* 当前应该显示主窗口 */
+        gCtx.changeFlag_  = 1; /* 通知线程切换窗口 */
+        gCtx.windowFlag_  = 2; /* 当前应该显示主窗口 */
+        gCtx.loadXmlFlag_ = 0; /* 允许再次加载xml文件 */
         return 1;
     }
     case MessagetypePCOffLine:
@@ -645,17 +653,23 @@ void zebraDeleagates::delete_data(const string &key_id)
  *  @return 无
  */
 
+
+QMutex existLock;
 std::set<std::string> existSet;
 
 bool zebraDeleagates::isExisted(const string &item, unsigned int expire)
 {
-    qDebug() << "c++: isExisted - " << expire;
+    existLock.lock();
     std::set<std::string>::iterator it;
     it = existSet.find(item);
     if (it != existSet.end()) {
+        existLock.unlock();
+        std::cout << "### c++: isExisted - exist message" << gCtx.zebra_->hex_encode(item) << std::endl;
         return true;
     } else {
+        std::cout << "### c++: isExisted - new message" << gCtx.zebra_->hex_encode(item) << std::endl;
         existSet.insert(item);
+        existLock.unlock();
         return false;
     }
 }

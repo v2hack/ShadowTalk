@@ -197,7 +197,7 @@ static void addCacheForGroup(QString groupChannelId, QString localMemberId,
         return;
     }
 
-    /* 检查好友是否已经存在 */
+    /* 检查组是否已经存在 */
     if (gCtx.cache->isExistGroup(groupChannelId)){
         return;
     }
@@ -236,7 +236,7 @@ static void addCacheForGroupMember(QString &memberId, QString &name,
              << " status - " << status
              << " groupChannelId - " << groupChannelId;
 
-    /* 检查好友是否已经存在 */
+    /* 检查组是否已经存在 */
     if (gCtx.cache->isExistGroup(groupChannelId)){
         return;
     }

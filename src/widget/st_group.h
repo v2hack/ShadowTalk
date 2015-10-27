@@ -29,6 +29,7 @@ public:
     int cacheIndex_;              // 组在缓存中的索引
     int listViewIndex_;           // 组在friendListView中的索引
     int messageUnreadCount_;      // 未读消息数量
+    int loadStatus_;              // 是否已经加载到界面
 
     /* 将一个消息加入缓存 */
     void insertOneMessage(GroupMessage *message);

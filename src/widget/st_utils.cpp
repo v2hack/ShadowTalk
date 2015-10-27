@@ -193,9 +193,13 @@ void Utils::walkCacheAddFriendAndGroup()
     for(it = c->groupList_.begin(); it != c->groupList_.end(); it++) {
         Group &g = it.value();
         qDebug() << "c++: add group - " << g.gourpName_;
+        if (g.loadStatus_ == 1) {
+            continue;
+        }
         Utils::addGroupIntoWidget(g.gourpName_, it.key(), listViewIndex);
         g.listViewIndex_ = listViewIndex;
         listViewIndex++;
+        g.loadStatus_ = 1;
     }
 
     for (int i = 0; i < 27; i++) {

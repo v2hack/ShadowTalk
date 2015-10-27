@@ -36,6 +36,7 @@ Group::Group(QString groupChannelId, QString localMemberId, QString gourpName,
     showNotification_   = showNotification;
     cacheIndex_         = groupId;
     messageUnreadCount_ = 0;
+    loadStatus_         = 0;
 }
 
 /**
