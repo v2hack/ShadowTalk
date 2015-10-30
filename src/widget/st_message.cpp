@@ -295,7 +295,7 @@ void MessageManager::sendGroupMessage(QString &message)
     m->MessageMethord = MessageMethodOffline;
 
     g->insertOneMessage(m);
-    Adapt::adaptSendGroupMessage(g->groupChannelId_, 1, message, g->myNameInGroup_);
+    Adapt::adaptSendGroupMessage(g->groupChannelId_, 1, message, g->myNameInGroup_, g->localMemberId_);
     Chat::refreshChatListPosition(g->cacheIndex_, CHATITEM_TYPE_GROUP);
     return;
 }

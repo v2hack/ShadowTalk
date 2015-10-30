@@ -27,6 +27,7 @@
 #include "st_net.h"
 #include "st_login.h"
 #include "st_chat.h"
+#include "st_thread.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -883,14 +884,23 @@ void zebraDeleagates::group_chat_message_received(
     if (!c) {
         return;
     }
+    int type_ = type;
 
     /* 同步组消息 */
-    if (type < ImapiMessageType_ForwadGOffset) {
+    qDebug() << "c++: group type - " << type_;
+    if (type_ < ImapiMessageType_ForwadGOffset) {
         if (gCtx.zebra_) {
             gCtx.zebra_->sync_group_chat_message_received(gCtx.phoneSyncChannel,
-                 group_channel_id, author, type + ImapiMessageType_ForwadGOffset, message, message_id, expired,
+                 group_channel_id, author, type_ + ImapiMessageType_ForwadGOffset, message, message_id, expired,
                  entire_expired, length, timestamp, author_name);
         }
+    }
+    if (type_ > ImapiMessageType_ForwadGOffset && type_ < ImapiMessageType_ForwadGSelfOffset) {
+        type_ -= ImapiMessageType_ForwadGOffset;
+    }
+    if (type_ > ImapiMessageType_ForwadGSelfOffset) {
+        type_ -= ImapiMessageType_ForwadGSelfOffset;
+        messageDirection = 1;
     }
 
     QMap<int, Group>::iterator it;
@@ -901,7 +911,7 @@ void zebraDeleagates::group_chat_message_received(
 
             GroupMessage *m   = new GroupMessage;
             m->data           = message;
-            m->driect         = 0;
+            m->driect         = messageDirection;
             m->messageType    = MessageTypeNone;
             m->MessageMethord = MessageMethodOffline;
             m->voiceSeconds   = 0;
@@ -911,29 +921,30 @@ void zebraDeleagates::group_chat_message_received(
             if (c->currentUseId_ == g.cacheIndex_ && c->currentUseType_ == CHATITEM_TYPE_GROUP)
             {
                 g.messageUnreadCount_ = 0;
-                switch (type) {
+                switch (type_) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
                     MessageWidget::addMessageToWidget(g.cacheIndex_, QString::fromStdString(author_name),
-                        type, messageDirection, QString::fromStdString(m->data),idx); break;
+                        type_, messageDirection, QString::fromStdString(m->data),idx); break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
                     MessageWidget::addImageToWidget(g.cacheIndex_, QString::fromStdString(author_name),
-                        type, messageDirection, m->data, idx); break;
+                        type_, messageDirection, m->data, idx); break;
                 case MessageTypeVoice:
                     m->messageType = MessageTypeVoice;
                     m->voiceSeconds = length;
                     MessageWidget::addVoiceToWidget(g.cacheIndex_, QString::fromStdString(author_name),
-                        type, messageDirection, QString::fromStdString(m->data), length, idx); break;
+                        type_, messageDirection, QString::fromStdString(m->data), length, idx); break;
                 default:
                     break;
                 }
             }
-
-            g.messageUnreadCount_++;
+            if (messageDirection == 0) {
+                g.messageUnreadCount_++;
+            }
 
             /* 判断类型 */
-            switch (type) {
+            switch (type_) {
             case MessageTypeWord : m->messageType = MessageTypeWord ; break;
             case MessageTypeImage: m->messageType = MessageTypeImage; break;
             case MessageTypeVoice: m->messageType = MessageTypeVoice; m->voiceSeconds = length; break;

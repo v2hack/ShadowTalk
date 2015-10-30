@@ -10,9 +10,13 @@
  *  日期: 2015/08/11
  *  说明:
  ******************************************************************/
+#include <iostream>
 #include "st_thread.h"
+#include "st_utils.h"
+#include "st_net.h"
 
-Sthread::Sthread(struct ShadowTalkContext *ctx, QObject *parent) {
+Sthread::Sthread(struct ShadowTalkContext *ctx, QObject *parent)
+{
     parent = parent;
     c = ctx;
 }
@@ -50,3 +54,17 @@ void Sthread::run()
 }
 
 
+Listenthread::Listenthread(struct ShadowTalkContext *ctx, QObject *parent)
+{
+    parent = parent;
+    context = ctx;
+}
+
+void Listenthread::run()
+{
+    /* 监听好友 */
+    Adapt::adaptListenAllFriends();
+    /* 监听组 */
+    Adapt::adaptListenAllGroups();
+    return;
+}

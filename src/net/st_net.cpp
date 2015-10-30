@@ -21,6 +21,7 @@
 #include "st_net.h"
 #include "st_zebra.h"
 #include "st_utils.h"
+#include "st_thread.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
@@ -53,10 +54,10 @@ void Adapt::adaptSendMessage(QString channelId, int messageType, QString message
     peersafe::im::Message_client *z = gCtx.zebra_;
     if (z) {
         z->send_offline_message(StringToHex(channelId.toStdString()), messageType, message.toStdString(),
-               60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, message.toStdString().size(), 0);
+                                60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, message.toStdString().size(), 0);
         z->send_sync_message(gCtx.phoneSyncChannel, StringToHex(channelId.toStdString()), messageType + 2000,
-               message.toStdString(), 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
-               message.toStdString().size(), 0);
+                             message.toStdString(), 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                             message.toStdString().size(), 0);
         qDebug() << "c++: adaptSendMessage - send sync message";
     }
     return;
@@ -105,7 +106,7 @@ void Adapt::adaptListenAllFriends()
             std::cout << "c++: listen friend fail - " << f.friendChannelId_.toStdString() << std::endl;
             continue;
         }
-        Utils::ShadowTalkSleep(200);
+        //        Utils::ShadowTalkSleep(240);
     }
     std::cout << "c++: listen all friends ok" << std::endl;
     return;
@@ -168,7 +169,8 @@ void Adapt::adaptUnlistenAllFriends()
  *
  *  @return
  */
-void Adapt::adaptSendGroupMessage(QString channelId, int messageType, QString message, QString myName)
+void Adapt::adaptSendGroupMessage(QString channelId, int messageType,
+                                  QString message, QString myName, QString localMemberId)
 {
     peersafe::im::Message_client *z = gCtx.zebra_;
     if (z) {
@@ -176,6 +178,15 @@ void Adapt::adaptSendGroupMessage(QString channelId, int messageType, QString me
                               messageType, message.toStdString(),
                               60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
                               message.toStdString().size(), 0, myName.toStdString());
+
+        z->sync_group_chat_message_received(gCtx.phoneSyncChannel,
+                                            StringToHex(channelId.toStdString()),
+                                            StringToHex(localMemberId.toStdString()),
+                                            messageType + ImapiMessageType_ForwadGSelfOffset,
+                                            message.toStdString(),
+                                            60, 3600, QDateTime::currentMSecsSinceEpoch()/1000,
+                                            message.toStdString().size(), 0, myName.toStdString());
+
         qDebug() << "c++: adaptSendGroupMessage";
     }
     return;
@@ -217,7 +228,6 @@ void Adapt::adaptListenAllGroups()
     for (it = c->groupList_.begin(); it != c->groupList_.end(); it++) {
         Group &g = it.value();
         z->listen_group_channel(StringToHex(g.groupChannelId_.toStdString()));
-        Utils::ShadowTalkSleep(300);
     }
     std::cout << "c++: listen all group ok" << std::endl;
     return;

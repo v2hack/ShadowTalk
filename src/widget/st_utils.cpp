@@ -434,7 +434,6 @@ void WindowClose::closeWindowProcess() {
                                 "PC exit", 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
     }
     gCtx.threadStop_ = 1;
-    Utils::ShadowTalkSleep(3000);
     exit(0);
 }
 

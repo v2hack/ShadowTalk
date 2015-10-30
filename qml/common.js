@@ -62,7 +62,7 @@ function getColor(name) {
                              "w", "x", "y", "z");
 
     var colorLetter = name.substr(-1, 1);
-    console.log(colorLetter);
+//   console.log(colorLetter);
     if (JsCommon.isNum(colorLetter)) {
 //        console.log("是数字");
         return colorArr[colorLetter];

@@ -12,7 +12,8 @@ public:
     static void adaptUnistenFriends(std::string friendChannelId);
     static void adaptListenAllFriends();
     static void adaptUnlistenAllFriends();
-    static void adaptSendGroupMessage(QString channelId, int messageType, QString message, QString myName);
+    static void adaptSendGroupMessage(QString channelId, int messageType,
+                    QString message, QString myName, QString localMemberId);
     static void adaptListenGroups(QString groupChannelId);
     static void adaptListenAllGroups();
 };
