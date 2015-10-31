@@ -51,13 +51,13 @@ void Voice::writeVoiceFile(std::string fileName, std::string data)
 }
 
 /**
- *  功能描述: 根据qml索引，查找相应的缓存
+ *  功能描述: 根据qml索引，查找好友相应的声音缓存
  *  @param fidx 好友id
  *  @param midx 消息id
  *
- *  @return 无
+ *  @return 成功返回声音缓存  失败返回空字符串
  */
-std::string Voice::findVoiceCache(QString fidx, QString midx)
+std::string Voice::findFriendVoiceCache(QString fidx, QString midx)
 {
     Cache *c = gCtx.cache;
     if (!c) {
@@ -83,6 +83,38 @@ std::string Voice::findVoiceCache(QString fidx, QString midx)
 }
 
 /**
+ *  功能描述: 根据qml索引，查找组相应的声音缓存
+ *  @param fidx 好友id
+ *  @param midx 消息id
+ *
+ *  @return 成功返回声音缓存  失败返回空字符串
+ */
+std::string Voice::findGroupVoiceCache(QString fidx, QString midx)
+{
+    Cache *c = gCtx.cache;
+    if (!c) {
+        return std::string("");
+    }
+
+    /* 找到好友缓存 */
+    Group *g = c->getOneGroup(fidx.toInt());
+    if (!g) {
+        qDebug() << "c++: can't find group index - " << fidx;
+        return std::string("");
+    }
+
+    /* 如果是音频消息则返回内容 */
+    QMap<int, GroupMessage>::iterator it = g->messageList_.find(midx.toInt());
+    if (it != g->messageList_.end()) {
+        GroupMessage &m = it.value();
+        if (m.messageType == MessageTypeVoice) {
+            return m.data;
+        }
+    }
+    return std::string("");
+}
+
+/**
  *  功能描述: 播放语音操作
  *  @param fidx 好友id
  *  @param midx 消息id
@@ -91,23 +123,36 @@ std::string Voice::findVoiceCache(QString fidx, QString midx)
  */
 void Voice::playVoice(QString fidx, QString midx)
 {
-    /* 找到缓存并生成声音文件 */
-    std::string friendVoice = findVoiceCache(fidx, midx);
-    if (friendVoice.empty()) {
-        qDebug() << "c++: voice is empty : fidx - " << fidx << " midx - " << midx;
+    std::string friendVoice;
+
+    Cache *c = gCtx.cache;
+    if (!c) {
         return;
     }
 
-	/* 组装文件路径及名字 */
-    QString tempFilePath = QString("%0%1-%2%3").arg(SHADOWTALK_TEMP_DIR,
-        fidx, midx, SHADOWTALK_SOUND_PREFIX);
+    if (c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
+        friendVoice = findFriendVoiceCache(fidx, midx);
+        if (friendVoice.empty()) {
+            qDebug() << "c++: friend voice is empty : fidx - " << fidx << " midx - " << midx;
+            return;
+        }
+    } else {
+        friendVoice = findGroupVoiceCache(fidx, midx);
+        if (friendVoice.empty()) {
+            qDebug() << "c++: group voice is empty : fidx - " << fidx << " midx - " << midx;
+            return;
+        }
+    }
 
-	std::string friendVoiceFile = tempFilePath.toStdString();
+    /* 组装文件路径及名字 */
+    QString tempFilePath = QString("%0%1-%2%3").arg(SHADOWTALK_TEMP_DIR,
+                        fidx, midx, SHADOWTALK_SOUND_PREFIX);
+    std::string friendVoiceFile = tempFilePath.toStdString();
     writeVoiceFile(friendVoiceFile, friendVoice);
 
     /* 拼装文件绝对路径，并设置qml播放的source属性 */
     QString tempPath = QString("%0%1%2-%3%4").arg(QGuiApplication::applicationDirPath(),
-                "/temp/", fidx, midx, SHADOWTALK_SOUND_PREFIX);
+                                                  "/temp/", fidx, midx, SHADOWTALK_SOUND_PREFIX);
 
     const QUrl commandLineUrl = QUrl::fromLocalFile(tempPath);
     gCtx.viewer_->rootContext()->setContextProperty(QStringLiteral("voiceUrl"), commandLineUrl);

@@ -938,10 +938,12 @@ void zebraDeleagates::group_chat_message_received(
                 default:
                     break;
                 }
+            } else {
+                if (messageDirection == 0) {
+                    g.messageUnreadCount_++;
+                }
             }
-            if (messageDirection == 0) {
-                g.messageUnreadCount_++;
-            }
+
 
             /* 判断类型 */
             switch (type_) {
@@ -974,8 +976,6 @@ void zebraDeleagates::group_chat_message_received(
             } else {
                 Chat::displayChatUnreadCount(g.cacheIndex_, g.messageUnreadCount_, CHATITEM_TYPE_GROUP);
             }
-
-
         }
     }
     qDebug() << "\n";

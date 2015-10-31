@@ -15,7 +15,10 @@ public:
     void writeVoiceFile(std::string fileName, std::string data);
 
     /* 根据qml索引，查找相应的缓存 */
-    std::string findVoiceCache(QString fidx, QString midx);
+    std::string findFriendVoiceCache(QString fidx, QString midx);
+
+    /* 找到组的缓存 */
+    std::string findGroupVoiceCache(QString fidx, QString midx);
 
     /* 播放语音操作 */
     Q_INVOKABLE void playVoice(QString friendIndex, QString messageIndex);
