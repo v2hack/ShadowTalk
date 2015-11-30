@@ -5,8 +5,8 @@
  *  时间: 2015年7月15日
  */
 import QtQuick 2.4
-import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Window 2.2
 
 Rectangle {

@@ -18,7 +18,7 @@
 #include "st_base64.h"
 #include "st_cache.h"
 #include "st_context.h"
-#include "im.h"
+#include "peersafe/imapi/im.h"
 
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;

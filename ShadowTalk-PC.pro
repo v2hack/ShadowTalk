@@ -1,35 +1,44 @@
 TEMPLATE = app
+TARGET = ShadowTalk
 
 QT += qml quick widgets core network xml multimedia
 
+#CONFIG += console
 CONFIG += c++11
-CONFIG += console
+CONFIG += qtquickcompiler
 
 RESOURCES += qml.qrc
-RC_FILE += ShadowTalk.rc
+RCC_DIR = GeneratedFiles
+
+win32:RC_FILE += ShadowTalk.rc
+macx:ICON = shadowtalk.icns
+#macx:{
+  #QT+= macextras
+  #QMAKE_INFO_PLIST = app.plist
+#}
+
+MOC_DIR = GeneratedFiles
 
 # This
 #QMAKE_CXXFLAGS += /MD
 #QMAKE_CXXFLAGS += -fexceptions
 
 SHADOWTALK_DEBUG_ENABLE=YES
-QMAKE_LFLAGS += /NODEFAULTLIB:libcmtd.lib
+win32:QMAKE_LFLAGS += /NODEFAULTLIB:libcmtd.lib
 
 INCLUDEPATH += include
 INCLUDEPATH += src/core
 INCLUDEPATH += src/net
 INCLUDEPATH += src/widget
-INCLUDEPATH += include/boost
-INCLUDEPATH += include/maidsafe
 
 # Default rules for deployment.
-include(deployment.pri)
+#include(deployment.pri)
 
 
 HEADERS += \
-    include/im.h \
+    include/peersafe/imapi/im.h \
     include/qrencode.h \
-    include/maidsafe/common/asio_service.h \
+    include/maidsafe/common/active.h \
     src/net/st_net.h \
     src/core/st_cache.h \
     src/core/st_pixelsize.h \
@@ -62,7 +71,6 @@ SOURCES += \
     src/core/st_context.cpp \
     src/core/st_base64.cpp \
     src/core/st_qrcode.cpp \
-    src/core/st_context.cpp \
     src/core/st_thread.cpp \
     src/widget/st_utils.cpp \
     src/widget/st_friend.cpp \
@@ -77,13 +85,13 @@ SOURCES += \
    
 win32 {
     contains(SHADOWTALK_DEBUG_ENABLE, YES) {
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_chrono-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_date_time-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_filesystem-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_program_options-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_regex-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_system-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_thread-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_chrono-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_date_time-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_filesystem-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_program_options-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_regex-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_system-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_thread-vc120-mt-gd-1_57
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lcryptopp
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lmaidsafe_common
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lmaidsafe_passport
@@ -93,23 +101,18 @@ win32 {
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_network
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_visit
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lpeersafe_oudp
-        LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lproto_compiler
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lprotobuf_lite
-        LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lprotobuf
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -ltorrent-rasterbar
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -ludt
-        LIBS += -L$$PWD/lib/x32/debug/ice/       -llibpj
-        LIBS += -L$$PWD/lib/x32/debug/ice/       -llibpjlib-util
-        LIBS += -L$$PWD/lib/x32/debug/ice/       -llibpjnath
-        LIBS += -L$$PWD/lib/x32/debug/qrcode/    -llibqrcode
+        LIBS += -L$$PWD/lib/x32/debug/qrcode/    -lqrcode
     } else {
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_chrono-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_date_time-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_filesystem-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_program_options-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_regex-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_system-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_thread-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_chrono-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_date_time-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_filesystem-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_program_options-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_regex-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_system-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_thread-vc120-mt-1_57
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lcryptopp-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lmaidsafe_common-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lmaidsafe_passport-msr
@@ -119,19 +122,36 @@ win32 {
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_nat-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_network-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lpeersafe_visit-msr
-        LIBS += -L$$PWD/lib/x32/release/peersafe/  -lproto_compiler-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lprotobuf_lite-msr
-        LIBS += -L$$PWD/lib/x32/release/peersafe/  -lprotobuf-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -ltorrent-rasterbar
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -ludt-msr
-        LIBS += -L$$PWD/lib/x32/release/ice/       -llibpj
-        LIBS += -L$$PWD/lib/x32/release/ice/       -llibpjlib-util
-        LIBS += -L$$PWD/lib/x32/release/ice/       -llibpjnath
-        LIBS += -L$$PWD/lib/x32/release/qrcode/    -llibqrcode
+        LIBS += -L$$PWD/lib/x32/release/qrcode/    -lqrcode
     }
 } else {
     macx {
-
+        LIBS += -dead_strip
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_chrono-mt
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_date_time-mt
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_filesystem-mt
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_program_options-mt
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_regex-mt
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_system-mt
+        LIBS += -L$$PWD/lib/osx/boost/     -lboost_thread-mt
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lcryptopp
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lmaidsafe_common
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lmaidsafe_passport
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lpeersafe_channel
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lpeersafe_imapi
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lpeersafe_oudp
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lpeersafe_nat
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lpeersafe_network
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lpeersafe_visit
+        LIBS += -L$$PWD/lib/osx/peersafe/  -lprotobuf_lite
+        LIBS += -L$$PWD/lib/osx/peersafe/  -ltorrent-rasterbar
+        LIBS += -L$$PWD/lib/osx/peersafe/  -ludt
+        LIBS += -L$$PWD/lib/osx/qrencode/  -lqrencode
+        
+        #QMAKE_POST_LINK = ~/qt/5.5/clang_64/bin/macdeployqt $(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH) -qmldir=$$PWD/qml/ -verbose=2
     } else {
 
     }

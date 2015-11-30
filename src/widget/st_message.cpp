@@ -55,6 +55,21 @@ void MessageWidget::addMessageToWidget(
     data.insert("name", name);
     data.insert("dataType", type);
     data.insert("direct", direct);
+    QString msg = messageData;
+    if (!msg.isEmpty() &&!msg.trimmed().isEmpty()){
+        qDebug()<<"c++ insert message-----------------------msg is:"+msg;
+        QString str="\U0001F601";
+        qDebug()<<"c++ insert message-----------------------position str:"+str;
+        int pos=msg.indexOf(str);
+        qDebug()<<"c++ insert message-----------------------position is:"+pos;
+        if (pos>=0){
+        msg=msg.replace(pos,9,"<img scr='img/emoji/1f601.png'>");
+        qDebug()<<"c++ insert message-----------------------replace msg is:"+msg;
+        messageData=msg;
+        }
+    }
+    data.insert("msgContent","");
+    data.insert("emojiCount",0);
     data.insert("userMessage", messageData);
     data.insert("voiceSeconds", 0);
     data.insert("messageIndex", messageIndex);
@@ -68,7 +83,7 @@ void MessageWidget::addMessageToWidget(
                     rect,
                     "addMessage",
                     Q_ARG(QVariant, QVariant::fromValue(data))
-                    );
+                    );        
         qDebug() << "c++: insert one message ok";
     } else {
         qDebug() << "c++: insert one message fail";

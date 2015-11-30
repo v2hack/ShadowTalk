@@ -11,8 +11,8 @@
  *  说明:
  ******************************************************************/
 import QtQuick 2.4
-import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Window 2.2
 
 import st.info.MessageManager 1.0
@@ -73,10 +73,12 @@ Rectangle {
             }
             source: "qrc:/img/st_chat_expression.png";
             fillMode: Image.PreserveAspectFit
-        }
+        }       
         MouseArea {
 
         }
+        //显示选择表情列表qml add by hsf 2015年11月27日
+
         Image {
             id: sendPictureFile;
             height : 22

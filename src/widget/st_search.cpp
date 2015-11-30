@@ -79,6 +79,25 @@ void Search::setSearchTextUnvisible()
     return;
 }
 
+void LoadAllToWidget()
+{
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    qDebug()<<"c++: invokeMethod LoadAllToWidget  add by hsf";
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        bool ret = QMetaObject::invokeMethod(rect,"loadallFriend",Qt::DirectConnection);
+        if (ret == false) {
+            qDebug() << "c++: invokeMethod (addSearchResultWidget) fail";
+        }
+    }
+    return;
+}
+
 /**
  *  功能描述: 设置搜寻结果框可见
  *  @param  无
@@ -180,6 +199,33 @@ void Search::clearSearchWidget()
 }
 
 /**
+ *  功能描述: 根据搜索结果显示在search listview上
+ *  @param  friendName    好友名
+ *  @param  friendIndex   好友索引
+ *
+ *  @return 无
+ */
+void SearchResultWidget(QString friendName)
+{
+    QQuickItem *rootObject = gCtx.viewer_->rootObject();
+    if (rootObject == NULL) {
+        return;
+    }
+
+    qDebug()<<"c++: SearchResultWidget invokeMethod ,friendName is "+friendName;
+
+    QObject *rect = rootObject->findChild<QObject*>("FriendListModel");
+    if (rect) {
+        bool ret = QMetaObject::invokeMethod(rect,"searchFriend",
+                    Q_ARG(QVariant, QVariant::fromValue(friendName)));
+        if (ret == false) {
+            qDebug() << "c++: invokeMethod (addSearchResultWidget) fail";
+        }
+    }
+    return;
+}
+
+/**
  *  功能描述: 根据输入关键字进行匹配
  *  @param  text 关键字
  *
@@ -192,7 +238,10 @@ bool matchSearchContent(QString text)
     if (!c) {
         return ret;
     } 
+    //add by hsf 2015年11月12日10:31:53
+    SearchResultWidget(text);
 
+    /*close by hsf 2015年11月12日10:31:22
     QMap<int, Friend>::iterator it;
     for (it = c->friendList_.begin(); it != c->friendList_.end(); it++) {
         Friend &f = it.value();
@@ -201,6 +250,7 @@ bool matchSearchContent(QString text)
             addSearchResultWidget(f.name_, f.cacheIndex_);
         }
     }
+    */
     return ret;
 }
 
@@ -235,15 +285,52 @@ void clearSearchContent()
 void Search::matchAndShowSearchResult()
 {
     QString text = getSearchTextContent();
-    if (text.isEmpty()) {
+    if (text.trimmed().isEmpty() || text.trimmed().isNull() ||text.trimmed()=="") {
+        qDebug() << "c++ Search::matchAndShowSearchResult,Empty ,begin to LoadAllToWidget";
+        LoadAllToWidget();
         return;
     }
 
     if (searchText.indexOf(text) == -1) {
         if (matchSearchContent(text)) {
-            setSearchTextVisible();
+            //setSearchTextVisible();
         }
         searchText = text;
     }
     return;
+}
+
+
+GoSearch::GoSearch(QObject *parent) {
+    parent = parent;
+
+}
+
+/**
+ *  功能描述: 匹配并显示搜索结果
+ *  对好友列表进行搜索，采用model的过滤
+ *  hsf 2015-11-3
+ *  @return
+ */
+GoSearch::~GoSearch() {
+
+}
+
+void GoSearch::goSearchFriend(QString name)
+{
+    qDebug() <<"goSearchFriend---name:"<<name;
+    if (matchSearchContent(name)){
+        qDebug()<<"c++ load goSearchFriend success...";
+    }
+}
+
+/**
+ *  功能描述: 匹配并显示搜索结果
+ *  加载全部好友
+ *  hsf 2015-11-3
+ *  @return
+ */
+void GoSearch::goLoadAllFriend()
+{
+    LoadAllToWidget();
 }

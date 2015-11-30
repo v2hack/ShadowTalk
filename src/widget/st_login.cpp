@@ -1,4 +1,4 @@
-﻿/*******************************************************************
+/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -175,7 +175,7 @@ int Login::ShadowTalkLogin()
     }
 
     /* 利用peersafe接口创建二维码 */
-    qrCodeSource = gCtx.zebra_->generate_qr_channel(0);
+    qrCodeSource = gCtx.zebra_->generate_qr_channel(24*60*60);
     if (qrCodeSource.empty()) {
         qDebug() << "c++: generate qr channel fail";
         return -1;
@@ -183,7 +183,7 @@ int Login::ShadowTalkLogin()
     gCtx.phoneQrChannel = qrCodeSource;
 
     /* listen 这个channel */
-    gCtx.zebra_->listen_qr_channel(qrCodeSource);
+    //gCtx.zebra_->listen_qr_channel(qrCodeSource);
 
     /* 转换为特定的channel */
     qrChannelId = gCtx.zebra_->hex_encode(qrCodeSource);
@@ -202,7 +202,7 @@ int Login::ShadowTalkLogin()
     }
 
     /* 界面上设置二维码图片*/
-    QString tempPath = QString("%0%1").arg(QGuiApplication::applicationDirPath(), SHADOW_QR_IMAGE_NAME);
+    QString tempPath = QString("%0/%1").arg(QGuiApplication::applicationDirPath(), SHADOW_QR_IMAGE_NAME);
     const QUrl pictureUrl = QUrl::fromLocalFile(tempPath);
     ShadowTalkSetQrImage(pictureUrl.toString());
     return 0;

@@ -25,8 +25,6 @@
 #include <queue>
 #include <thread>
 
-#include "boost/thread/thread.hpp"
-
 namespace maidsafe {
 
 class Active {
@@ -45,7 +43,7 @@ class Active {
   std::queue<Functor> functors_;
   std::mutex flags_mutex_, mutex_;
   std::condition_variable condition_;
-  boost::thread thread_;
+  std::thread thread_;
 };
 
 }  // namespace maidsafe

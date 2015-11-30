@@ -11,7 +11,7 @@
 #include "st_zebra.h"
 #include "st_trayicon.h"
 
-#include "im.h"
+#include "peersafe/imapi/im.h"
 
 
 enum shadowTalkFlag

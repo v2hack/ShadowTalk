@@ -1,4 +1,4 @@
-﻿/*******************************************************************
+/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -24,7 +24,7 @@
 #include <fstream>
 #include <stdint.h>
 
-#include "im.h"
+#include "peersafe/imapi/im.h"
 #include "st_pixelsize.h"
 #include "st_friend.h"
 #include "st_group.h"
@@ -61,7 +61,7 @@ void setAppParameter()
     qDebug() << "c++: application current dir - " << dir;
     QDir::setCurrent(dir);
     /* 库加载路径 */
-    QGuiApplication::addLibraryPath("./plugins");
+    //QGuiApplication::addLibraryPath("./plugins");
 
     /* 创建工作目录 */
     QDir workDir(dir + "/temp");
@@ -89,6 +89,7 @@ void registerQmlTye()
     qmlRegisterType<Voice>("st.info.Voice", 1, 0, "Voice");
     qmlRegisterType<NormalPicture>("st.info.NormalPicture", 1, 0, "NormalPicture");
     qmlRegisterType<WindowClose>("st.info.WindowClose", 1, 0, "WindowClose");
+    qmlRegisterType<GoSearch>("st.info.GoSearch", 1, 0, "GoSearch");
     return;
 }
 
@@ -196,7 +197,7 @@ void initZebraEngine()
     gCtx.threadStop_ = 0;
     gCtx.phoneUpdateTime.start();
 
-    zebraClient->init("127.0.0.1:6000 120.27.42.174:27053", &zebarDele, "17monipdb.dat");
+    zebraClient->init("0.0.0.0:49987 107.150.98.47:27053 52.68.228.63:27054 54.169.92.238:27053 45.32.70.172:27053 182.254.219.210:27054 182.254.219.210:27055 123.56.156.198:27054 115.159.70.71:27054", &zebarDele, "17monipdb.dat");
     //zebraClient->enableLog();
     qDebug() << "c++: init zebra engine success";
     return;
@@ -229,7 +230,7 @@ int main(int argc, char *argv[])
     QQuickView viewer;
     createBaseViewer(viewer);
     gCtx.tray_ = new TrayIcon(&viewer);
-    gCtx.tray_->onRemind("hello world");
+    //gCtx.tray_->onRemind("hello world");
 
     /* 登录主页面 */
     QQuickView loginer;

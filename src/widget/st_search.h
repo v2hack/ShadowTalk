@@ -1,4 +1,5 @@
-﻿#ifndef ST_SEARCH_H
+﻿#include <QObject>
+#ifndef ST_SEARCH_H
 #define ST_SEARCH_H
 
 
@@ -18,6 +19,17 @@ public:
     static void clearSearchWidget();
 };
 
+class GoSearch : public QObject
+{
+     Q_OBJECT
+public:
+    GoSearch(QObject *parent = 0);
+    ~GoSearch();
+
+    Q_INVOKABLE void goSearchFriend(QString name);
+    Q_INVOKABLE void goLoadAllFriend();
+
+};
 
 #endif // ST_SEARCH_H
 

@@ -11,13 +11,15 @@
  *  说明:
  ******************************************************************/
 import QtQuick 2.4
-import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Window 2.2
 import QtMultimedia 5.0
+import QtQuick.Layouts 1.1;
 
 import "functions.js" as PinYin
 import "common.js" as JsCommon
+import "js_st_emoji.js" as EMOJI
 
 /* 导入文字与像素计算类型 */
 import st.font.PointSizeToPixelSize 1.0
@@ -30,7 +32,7 @@ Rectangle {
 
     property int wordsType: 1
     property int imageType: 2
-    property int voiceType: 3
+    property int voiceType: 3    
 
     /* 消息提示声音 */
     MediaPlayer {
@@ -112,20 +114,33 @@ Rectangle {
 
         /* c++调用: 添加消息
          * 这里item是QVariant类型：包含
-         * index、name、dataType、dircect、user_messsage、messageIndex
+         * index、name、dataType、dircect、userMesssage、messageIndex
          */
         function addMessage(data) {
+
+            var str=data.userMessage;
+            //console.log("c+++ javascript : userMessage---------------------:"+str);
+            str=EMOJI.getEMOmap(str);
+            console.log("c+++ javascript : userMessage---------------------:u"+str);
+            var arrstr=str.split("@*@");         
+            data.emojiCount=arrstr[2];
+            data.userMessage=arrstr[0];
+            data.msgContent=arrstr[1];
+            console.log("c+++ javascript : after repalce data.msgContent is :---------------------:"+data.msgContent);
             model.append(data);
             var height =  JsCommon.getMessageFrameHeight(
                         getPixelSize.height(10),
-                        getPixelSize.width(10 , data.userMessage),
+                        getPixelSize.width(10 , data.msgContent),
                         250);
-
+            console.log("c+++ javascript height----:"+height);
             if (data.dataType === imageType) {
                 messageView.contentY += data.pictureHeight + (150);
             } else {
-                messageView.contentY += height + (100);
-            }
+//                messageView.contentY += height + (100);
+                messageView.contentY += getMsgHeight() + 100;
+
+            }            
+
         }
         /* c++调用:清除消息 */
         function clearMessage() { model.clear(); }
@@ -155,21 +170,40 @@ Rectangle {
 
     Component {
         id: messageDelegate
+
         Item {
             id: messageDelegateItem
+            anchors.topMargin: 4;
             function getItemHeight() {
                 var height =  JsCommon.getMessageFrameHeight(
                             getPixelSize.height(10),
-                            getPixelSize.width(10 , userMessage), 250);
+                            getPixelSize.width(10 , msgContent), 250);
                 var row_num = height/17;
+                console.log("c++ fun:getItemHeight()______:"+(row_num * 17) + 10 + 40);
                 return (row_num * 17) + 10 + 40;
+            }
+            function getMsgHeight(){
+                //listview 行与行之间的间距
+                console.log("c++ do messageDelegateItem:________________");
+                var mHeight=0;
+                if (dataType == wordsType){
+                    console.log("c++ do messageDelegateItem:________________wordsType.");
+
+                    console.log("c++ do messageDelegateItem:________________emojiCount"+emojiCount);
+                    var countLen=EMOJI.countStrLength(msgContent,parseInt(emojiCount));
+                    console.log("c++ do messageDelegateItem:__________countLen:"+countLen);
+                    var arrstr=countLen.split("@@");
+                    mHeight=parseInt(arrstr[1]);
+                }
+                return mHeight+30;
             }
 
             height: {
-                if (dataType == wordsType) { return getItemHeight();     }
+                if (dataType == wordsType) { return getMsgHeight();     }
                 if (dataType == voiceType) { return 90;                  }
                 if (dataType == imageType) { return pictureHeight + 100; }
             }
+//            height: friendMessageContent.height + 40
             width: parent.width;
 
             /* C++ 计算像素的类 */
@@ -280,32 +314,71 @@ Rectangle {
                         fillMode: Image.PreserveAspectFit
                     }
 
+
                     /* 消息内容 */
                     Rectangle {
                         id: friendMessageContent
-                        radius: 3
-                        color: "transparent"
+                        Layout.minimumHeight: 20;
+                        Layout.minimumWidth: 20;
+                        radius: 3                        
 
-                        function getMessageHeight() {
+                        function getMessageHeight() {                            
                             var height =  JsCommon.getMessageFrameHeight(
                                         getPixelSize.height(10),
-                                        getPixelSize.width(10 , userMessage), 250);
-                            return height + 10
+                                        getPixelSize.width(10 , msgContent), 250);
+                            return height + 20
                         }
 
                         function getMessageWidth() {
                             var width = JsCommon.getMessageFrameWidth(
-                                        getPixelSize.width(10, userMessage)) + 20;
+                                        getPixelSize.width(10, msgContent)) + 20;
                             return width + 10;
                         }
 
+                        function getMsgHeight(){
+                            console.log("c++ do oncompleted:________________");
+                            var mHeight=0;
+                            if (dataType == wordsType){
+                                console.log("c++ do oncompleted:________________wordsType.");
+                                var st_max_width=280;
+                                var countLen=EMOJI.countStrLength(msgContent,parseInt(emojiCount));
+                                var arrstr=countLen.split("@@");
+                                mHeight=parseInt(arrstr[1]);
+                                console.log("c++ do oncompleted:__________mHeight:"+mHeight);
+                            }
+                            return mHeight;
+                        }
+                        function getMsgWidth(){
+                            console.log("c++ do oncompleted:________________");
+                            var mWidth=0;
+                            if (dataType == wordsType){
+                                console.log("c++ do oncompleted:________________wordsType.");
+                                var st_max_width=260;
+                                var countLen=EMOJI.countStrLength(msgContent,parseInt(emojiCount));
+                                console.log("c++ do oncompleted:__________countLen:"+countLen);
+                                var arrstr=countLen.split("@@");
+                                mWidth=parseInt(arrstr[0]);
+                                if (mWidth<=st_max_width){
+                                    mWidth=mWidth;
+                                }else
+                                {
+                                    mWidth=260;
+                                }
+                            }
+                            return mWidth+10;
+                        }
                         height: {
-                            if (dataType == wordsType) { return getMessageHeight(); }
+                            if (dataType == wordsType) {                   
+                                return getMsgHeight();
+                            }
                             if (dataType == voiceType) { return 35                  }
                             if (dataType == imageType) { return pictureHeight + 10; }
                         }
                         width: {
-                            if (dataType == wordsType) { return getMessageWidth();  }
+                            if (dataType == wordsType) {
+                                console.log("c++ do get the width--------:"+getMessageWidth())
+                                return getMsgWidth();
+                            }
                             if (dataType == voiceType) {
                                 if (voiceSeconds < 10) {
                                     return 70;
@@ -389,7 +462,6 @@ Rectangle {
                                 fillMode: Image.PreserveAspectFit
                                 mirror: direct === 0 ? false : true
                             }
-
 
                             Text {
                                 id: voicePlaySeconds;
@@ -481,19 +553,20 @@ Rectangle {
                         }
 
                         /* 文字显示 */
-                        Text {
-                            id: friendMessageText
-                            width: parent.width
-                            anchors {
-                                fill: friendMessageContent
-                                left:parent.left
-                                leftMargin: 10
-                            }
-                            text: dataType == wordsType ? userMessage : ""
-                            wrapMode: Text.WrapAnywhere
+                        TextWithImage {
+                            id: friendMessageText                
+                            anchors.fill: parent;
+                            anchors.topMargin: 4;
+                            anchors.leftMargin: 4;
+                            anchors.rightMargin: 2;
+                            Layout.fillWidth: true;
+                            text: dataType == wordsType ? userMessage : ""                            
+                            wrapMode: Text.WrapAnywhere;
+                            textFormat : Text.RichText;
                             color: "black"
-                            font.pointSize: 10
-                            verticalAlignment: Text.AlignVCenter
+                            font.pointSize: 10                                                        
+                            verticalAlignment: Text.AlignJustify;
+                            horizontalAlignment: Text.AlignJustify;
                             visible: dataType == wordsType ? true : false
                             font.family: chineseFont.name;
                         }
@@ -519,6 +592,7 @@ Rectangle {
                                 }
                             }
                         }
+
                     }
                 }
             }

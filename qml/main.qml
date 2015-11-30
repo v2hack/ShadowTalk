@@ -12,6 +12,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.0
+import st.info.GoSearch 1.0
 
 Rectangle {
     id: baseWindows;
@@ -253,6 +254,9 @@ Rectangle {
                     }
                 }
             }
+            GoSearch{
+                id:goSearch;
+            }
 
             /* 搜索组件 */
             Component {
@@ -263,7 +267,7 @@ Rectangle {
                     height: Math.round(26)
                     radius: 3
                     color: "#515050"
-
+                    property bool canSearch: false;
                     Image {
                         id: searchButton;
                         height: 16
@@ -296,11 +300,11 @@ Rectangle {
                         }
 
                         function setSearchUnvisible() {
-                            searchDisplay.visible = false;
+                            //searchDisplay.visible = false;
                         }
 
                         function setSearchVisible() {
-                            searchDisplay.visible = true;
+                            //searchDisplay.visible = true;
                         }
 
                         function searchTextContent() {
@@ -324,19 +328,24 @@ Rectangle {
                         selectByMouse: true
                         backgroundVisible: false
                         frameVisible: false
-                        font.family: chineseFont.name;
-                        focus: true
+                        font.family: chineseFont.name;                        
                         textColor: "white"
-
                         horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
                         verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-
-                        Keys.onReturnPressed: {
+                        onTextChanged: {
+                            console.log("c++ onTextChanged:----------searchTextEdit:"+searchTextEdit.text);
+                            if (canSearch) {
                             if (searchTextEdit.text != "") {
-                                searchDisplay.visible = true
+                                console.log("c++ onTextChanged:goSearchFriend(****)");
+                                goSearch.goSearchFriend(searchTextEdit.text);
                             } else {
-                                searchDisplay.visible = false
+                                console.log("c++ onTextChanged:goLoadAllFriend()");
+                                goSearch.goLoadAllFriend();
                             }
+                            }
+                        }
+                        Keys.onPressed: {
+                            canSearch=true;
                         }
                     }
                 }
@@ -445,6 +454,7 @@ Rectangle {
         }
 
         /* 搜索结果显示框 */
+        /*close by hsf 2015年11月12日10:23:03
         Rectangle {
             id: searchDisplay
             visible: false
@@ -458,9 +468,10 @@ Rectangle {
             height: 400;
             color: "#464646"
             opacity: 0.9
-
+        */
             /* 聊天列表细节动态 */
-            SearchList {
+        /*
+        SearchList {
                 id: searchListDisplay;
                 height: parent.height;
                 width: parent.width
@@ -471,6 +482,7 @@ Rectangle {
             }
             z: 1000
         }
+        */
     }
 
 }

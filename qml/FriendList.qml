@@ -5,8 +5,8 @@
  *  时间: 2015年7月20日
  */
 import QtQuick 2.4
-import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Window 2.2
 
 import "functions.js" as PinYin
@@ -78,6 +78,8 @@ Rectangle {
     ListView {
         id: friendListView
         objectName: "FriendListModel"
+        property string bakData: ""
+
         anchors.fill: parent;
         delegate: friendListDelegate
         model: friendListModel.createObject(friendListView)
@@ -127,11 +129,77 @@ Rectangle {
             if (data.shortName === undefined) {
                 data.shortName = "#"
             }
-            model.append(data)
+            model.append(data);
+            backup();
+        }
+        function searchFriend(kw){
+            if (kw==="") return;
+            for(var i=friendListView.model.count-1;i>=0;i--){
+                console.log("js--searchFriend_count:"+friendListView.model.count);
+                console.log("js--searchFriend_name:"+friendListView.model.get(i).friendName);
+                var name=friendListView.model.get(i).friendName;
+                var pos=name.indexOf(kw);
+                console.log("js--searchFriend,pos:"+pos);
+                if (pos===-1){
+                   friendListView.model.remove(i);
+                }
+            }
+
+        }
+
+        function loadallFriend(){
+            if (bakData!=""){
+               console.log(" FriendListModel begin loadallFriend ...");
+               friendListView.model.clear();
+               var jsonData=eval(bakData);
+               friendListView.model.append(jsonData);
+            }
+        }
+
+        function backup(){
+          bakData="";
+            bakData+="[";
+            var len=friendListView.model.count-1;
+            for(var i=0;i<friendListView.model.count;i++){
+               if (len===i){
+               bakData+=
+                        "{"+"\""+"friendId"+"\""+":"+"\""+friendListView.model.get(i).friendId+"\","+
+                        "\""+"friendName"+"\""+":"+"\""+friendListView.model.get(i).friendName+"\","+
+                        "\""+"friendDesc"+"\""+":"+"\""+friendListView.model.get(i).friendDesc+"\","+
+                        "\""+"messageTime"+"\""+":"+"\""+friendListView.model.get(i).messageTime+"\","+
+                        "\""+"netState"+"\""+":"+"\""+friendListView.model.get(i).netState+"\","+
+                        "\""+"listViewIndex"+"\""+":"+"\""+friendListView.model.get(i).listViewIndex+"\","+
+                        "\""+"backGroundColor"+"\""+":"+"\""+friendListView.model.get(i).backGroundColor+"\","+
+                        "\""+"unReadCount"+"\""+":"+"\""+friendListView.model.get(i).unReadCount+"\","+
+                        "\""+"friendIndex"+"\""+":"+"\""+friendListView.model.get(i).friendIndex+"\","+
+                        "\""+"msgContent"+"\""+":"+"\""+friendListView.model.get(i).msgContent+"\","+
+                        "\""+"emojiCount"+"\""+":"+"\""+friendListView.model.get(i).emojiCount+"\","+
+                        "\""+"shortName"+"\""+":"+"\""+friendListView.model.get(i).shortName+"\""+
+                       "}]"
+               } else
+               {
+                   bakData+=
+                           "{"+"\""+"friendId"+"\""+":"+"\""+friendListView.model.get(i).friendId+"\","+
+                           "\""+"friendName"+"\""+":"+"\""+friendListView.model.get(i).friendName+"\","+
+                           "\""+"friendDesc"+"\""+":"+"\""+friendListView.model.get(i).friendDesc+"\","+
+                           "\""+"messageTime"+"\""+":"+"\""+friendListView.model.get(i).messageTime+"\","+
+                           "\""+"netState"+"\""+":"+"\""+friendListView.model.get(i).netState+"\","+
+                           "\""+"listViewIndex"+"\""+":"+"\""+friendListView.model.get(i).listViewIndex+"\","+
+                           "\""+"unReadCount"+"\""+":"+"\""+friendListView.model.get(i).unReadCount+"\","+
+                           "\""+"backGroundColor"+"\""+":"+"\""+friendListView.model.get(i).backGroundColor+"\","+
+                           "\""+"friendIndex"+"\""+":"+"\""+friendListView.model.get(i).friendIndex+"\","+
+                           "\""+"msgContent"+"\""+":"+"\""+friendListView.model.get(i).msgContent+"\","+
+                           "\""+"emojiCount"+"\""+":"+"\""+friendListView.model.get(i).emojiCount+"\","+
+                           "\""+"shortName"+"\""+":"+"\""+friendListView.model.get(i).shortName+"\""+
+                          "},"
+               }
+            }
+            console.log("json string is:"+bakData);
         }
 
         function addGroup(data) {
-            model.append(data)
+            model.append(data);
+            backup();
         }
 
         /* 清理所有好友 */
@@ -142,17 +210,19 @@ Rectangle {
         /* 修改未读消息数量 */
         function modifyUnreadCount(index, count) {
             model.setProperty(index, "unReadCount", count);
+            backup();
         }
 
         /* 修改还有最后一条信息的时间 */
         function modifyFriendTime(index, time, state) {
             model.setProperty(index, "messageTime", time);
             model.setProperty(index, "netState", state);
+            backup();
         }
         /* 用于设置被选中的item的背景颜色 */
         function modifyBackColor(index, colorFlag) {
             console.log("backGroundColor : index " + index + " color " + colorFlag);
-            model.setProperty(index, "backGroundColor", colorFlag);
+            model.setProperty(index, "backGroundColor", colorFlag);            
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿#ifndef ZEBRA_H
 #define ZEBRA_H
 
-#include "im.h"
+#include "peersafe/imapi/im.h"
 
 using namespace peersafe::im;
 using namespace std;
@@ -127,6 +127,34 @@ public:
             const string &group_channel_id,
             const string &channel_name,
             unsigned long changed_time);
+
+    //send file result
+    virtual int send_file_result(
+            const int result,
+            unsigned long fileid,
+            const std::string &channel_id);
+
+    virtual int recv_file_result(
+            const int result,
+            const std::string &channel_id,
+            const std::string &digest);
+
+    //Description  The callback was invoked
+    // when filestream recieved digest.
+    virtual int handle_file_digest(
+            const std::string &channel_id,
+            const std::string &digest,
+            std::string &path);
+
+    virtual int handle_send_file_process(
+            const std::string &channel_id,
+            unsigned long fileid,
+            long offset);
+
+    virtual int handle_recv_file_process(
+            const std::string &channel_id,
+            const std::string &digest,
+            long offset);
 };
 
 

@@ -884,6 +884,8 @@ int ParseXml::parseDencryptXml(const QString plainData)
     QString strError;
     QDomDocument document;
 
+   qDebug() << "c++: begin writeXmlFile(plainData)..";
+
     writeXmlFile(plainData);
 
     if (!document.setContent(plainData, false, &strError, &errLin, &errCol)) {
@@ -896,6 +898,7 @@ int ParseXml::parseDencryptXml(const QString plainData)
         qDebug() << "c++: document is null";
         return -1;
     }
+
 
     QDomElement plist = document.documentElement();
     QDomElement rootArray = plist.firstChildElement(ST_XML_TAG_ARRAY);
@@ -984,6 +987,7 @@ int ParseXml::parseEncryptXml(QString fileName, QString passwd)
     std::string sPlainData;
     std::string sEncryptData;
     ParseXml xml;
+    qDebug() << "c++: begin  parseEncryptXml1";
 
     /* 读入文件 */
     std::ifstream file;
@@ -998,6 +1002,9 @@ int ParseXml::parseEncryptXml(QString fileName, QString passwd)
     file.read(buffer, length);
     sEncryptData.assign(buffer, length);
 
+    qDebug() << "c++: begin  parseEncryptXml  decrypt";
+    std::cout<<"c++: begin  password is" << sPasswd <<std::endl;
+
     /* 开始解密 */
     sDecryptData = gCtx.zebra_->decrypt(sEncryptData, sPasswd);
     if (sDecryptData.empty()) {
@@ -1006,6 +1013,8 @@ int ParseXml::parseEncryptXml(QString fileName, QString passwd)
              fileName.toStdString().c_str(), passwd.toStdString().c_str());
         return -1;
     }
+     qDebug() << "c++: decrypt success";
+
     slog("func<%s> : msg<%s> para<file - %s, pwd - %s>\n",
          "parseEncryptXml", "decrypt xml file success",
          fileName.toStdString().c_str(), passwd.toStdString().c_str());
@@ -1017,6 +1026,8 @@ int ParseXml::parseEncryptXml(QString fileName, QString passwd)
              "parseEncryptXml", "uncompress xml file fail", fileName.toStdString().c_str());
         return -1;
     }
+    qDebug() << "c++: gzipUncompress success";
+
     slog("func<%s> : msg<%s> para<file - %s>\n",
          "parseEncryptXml", "uncompress xml file success", fileName.toStdString().c_str());
 

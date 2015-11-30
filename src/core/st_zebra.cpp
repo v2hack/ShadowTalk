@@ -1,4 +1,4 @@
-﻿/*******************************************************************
+/*******************************************************************
  *  Copyright(c) 2014-2015 PeeSafe
  *  All rights reserved.
  *
@@ -16,8 +16,9 @@
 #include <QMutex>
 
 #include <map>
+#include <set>
 
-#include "maidsafe/common/asio_service.h"
+#include "maidsafe/common/active.h"
 #include "st_cache.h"
 #include "st_context.h"
 #include "st_zebra.h"
@@ -32,7 +33,7 @@
 /* 全局上下文 */
 extern struct ShadowTalkContext gCtx;
 /* asio 异步处理 */
-maidsafe::BoostAsioService g_io_service(1);
+maidsafe::Active g_io_service;
 /* 用于调试信息打印 */
 static unsigned long long _countMessage = 0;
 
@@ -90,6 +91,53 @@ void zebraDeleagates::friend_state(const string &friend_channel_id, int state_co
     qDebug() << "c++: friend_state - " << state_code;
 }
 
+/**
+ *  功能描述: 处理手机端的特殊指令
+ *  @param type 指令类型
+ *  @param message 消息内容
+ *
+ *  @return 无
+ */
+int processPhoneCommandEX(int type, const string &message, const string &channel_id){
+    switch (type) {
+    case MessagetypePCBackup:
+    {
+
+        if (gCtx.loadXmlFlag_ == 1) {
+            qDebug() << "c++: it is loading xml file";
+            return -1;
+        }
+        /* 加载XML文件 */
+        string channel_id_128 = gCtx.zebra_->hex_encode(channel_id);
+        string passwd = channel_id_128.substr(0, 16);
+        //close by hsf 2015-11-11 改为从send_file_to获取文件
+        //ParseXml::writeXmlFile(SHADOW_SYNC_FILE, message);
+        //std::cout << "c++: xml file size - " << message.size() << std::endl;
+        //std::cout << "c++: parse xml : passwd - " << passwd << std::endl;
+        qDebug() << "c++: begin loading xml file";
+
+        if (ParseXml::parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
+            std::cout << "c++: parse xml file fail" << std::endl;
+            return -1;
+        }
+         qDebug() << "c++: begin loading qrCode";
+        /* 切换二维码为进度条 */
+        Login::ShadowTalkLoginStartSync();
+        /* 加载动画走起 */
+        for (int i = 0 ; i < 360; i++) {
+            Utils::ShadowTalkSleep(3);
+            Login::ShadowTalkSetSyncProcess(i);
+        }
+        /* 切换到聊天界面 */
+        gCtx.changeFlag_  = 1; /* 通知线程切换窗口 */
+        gCtx.windowFlag_  = 2; /* 当前应该显示主窗口 */
+        gCtx.loadXmlFlag_ = 0; /* 允许再次加载xml文件 */
+        return 1;
+    }
+    default:
+        return 0;
+    }
+}
 
 /**
  *  功能描述: 处理手机端的特殊指令
@@ -104,34 +152,28 @@ int processPhoneCommand(int type, const string &message, const string &channel_i
     case MessagetypePCBackup:
     {
 
-        if (gCtx.loadXmlFlag_ == 1) {
-            qDebug() << "c++: it is loading xml file";
-            return -1;
-        }
-
         /* 加载XML文件 */
-        string channel_id_128 = gCtx.zebra_->hex_encode(channel_id);
-        string passwd = channel_id_128.substr(0, 16);
-        ParseXml::writeXmlFile(SHADOW_SYNC_FILE, message);
-        std::cout << "c++: xml file size - " << message.size() << std::endl;
-        std::cout << "c++: parse xml : passwd - " << passwd << std::endl;
+              string channel_id_128 = gCtx.zebra_->hex_encode(channel_id);
+              string passwd = channel_id_128.substr(0, 16);
+              ParseXml::writeXmlFile(SHADOW_SYNC_FILE, message);
+              std::cout << "c++: xml file size - " << message.size() << std::endl;
+              std::cout << "c++: parse xml : passwd - " << passwd << std::endl;
 
-        if (ParseXml::parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
-            std::cout << "c++: parse xml file fail" << std::endl;
-            return -1;
-        }
-        /* 切换二维码为进度条 */
-        Login::ShadowTalkLoginStartSync();
-        /* 加载动画走起 */
-        for (int i = 0 ; i < 360; i++) {
-            Utils::ShadowTalkSleep(3);
-            Login::ShadowTalkSetSyncProcess(i);
-        }
-        /* 切换到聊天界面 */
-        gCtx.changeFlag_  = 1; /* 通知线程切换窗口 */
-        gCtx.windowFlag_  = 2; /* 当前应该显示主窗口 */
-        gCtx.loadXmlFlag_ = 0; /* 允许再次加载xml文件 */
-        return 1;
+              if (ParseXml::parseEncryptXml(QString(SHADOW_SYNC_FILE), QString::fromStdString(passwd)) < 0) {
+                  std::cout << "c++: parse xml file fail" << std::endl;
+                  return -1;
+              }
+              /* 切换二维码为进度条 */
+              Login::ShadowTalkLoginStartSync();
+              /* 加载动画走起 */
+              for (int i = 0 ; i < 360; i++) {
+                  Utils::ShadowTalkSleep(3);
+                  Login::ShadowTalkSetSyncProcess(i);
+              }
+              /* 切换到聊天界面 */
+              gCtx.changeFlag_ = 1; /* 通知线程切换窗口 */
+              gCtx.windowFlag_ = 2; /* 当前应该显示主窗口 */
+              return 1;
     }
     case MessagetypePCOffLine:
     {
@@ -513,7 +555,7 @@ void zebraDeleagates::friend_request_via_qr(
 {
     if (gCtx.phoneQrChannel == qr_channel_id) {
         qDebug() << "c++: is not sync channel id";
-        g_io_service.service().dispatch([friend_channel_id](){
+        g_io_service.Send([friend_channel_id](){
             Utils::ShadowTalkSleep(500);
             int ret = gCtx.zebra_->handle_friend_request(friend_channel_id, true);
             std::cout << "c++: add friend result: " << ret << std::endl;
@@ -526,7 +568,7 @@ void zebraDeleagates::friend_request_via_qr(
         }
     } else {
         if (!gCtx.phoneSyncChannel.empty()) {
-            g_io_service.service().dispatch([friend_channel_id](){
+            g_io_service.Send([friend_channel_id](){
                 std::string message = "friend_request";
                 gCtx.zebra_->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
                     ImapiMessageType_AddFriendRequest + ImapiMessageType_ForwadOffset,
@@ -564,7 +606,7 @@ void zebraDeleagates::friend_deleted(const string &friend_channel_id)
 {
     std::cout << "c++: friend_deleted" << std::endl;
     if (!gCtx.phoneSyncChannel.empty()) {
-        g_io_service.service().dispatch([friend_channel_id](){
+        g_io_service.Send([friend_channel_id](){
             std::string message = "friend_request";
             gCtx.zebra_->send_sync_message(gCtx.phoneSyncChannel, friend_channel_id,
                 ImapiMessageType_DeleteFriend + ImapiMessageType_ForwadOffset,
@@ -1000,4 +1042,83 @@ void zebraDeleagates::group_channel_name_changed(
              group_channel_id, channel_name, changed_time);
     }
     return;
+}
+
+/**
+ *  功能描述: 发送完文件数据后，回调传送接口
+ *  @param result    传送结果
+ *  @param fileid        文件的id
+ *  @param channel_id        发送的好友id
+ *  @return 无
+ */
+
+int zebraDeleagates::send_file_result(
+        const int result,
+        unsigned long fileid,
+        const string &channel_id){
+    qDebug("c++: zebraDeleagates::send_file_result");
+    if (result!=0){
+      qDebug()<<"c++ zebraDeleagates::send_file_result:send file failed.";
+    }
+
+    return 0;
+}
+int zebraDeleagates::recv_file_result(
+        const int result,
+        const string &channel_id,
+        const string &digest){
+   qDebug()<<"c++: zebraDeleagates::recv_file_result: beginning....";
+   if (result!=0){
+        qDebug()<<"c++: zebraDeleagates::recv_file_result recv file failed.";
+        return -1;
+   }
+   std::cout << "digest:" << digest <<std::endl;
+   qDebug() << "result:" << result;
+   if (digest=="send_contact_file" && result==0){
+      qDebug()<<"c++: zebraDeleagates::recv_file_result recv contact_file.";
+      //通知开始读取文件
+      int ret = 0;
+      ret=processPhoneCommandEX(MessagetypePCBackup,"", channel_id);
+      return 0;
+   }
+   return 0;
+}
+
+int zebraDeleagates::handle_file_digest(
+        const string &channel_id,
+        const string &digest,
+        string &path)
+{
+    if (digest=="send_contact_file"){
+      //联系人列表自动接收；并制定路径
+      path=SHADOW_SYNC_FILE;
+      //通知接收文件并显示到聊天的界面
+      return 0;
+    }
+    else
+    {
+      QString tagpath= QCoreApplication::applicationDirPath()+"/temp";
+      path=tagpath.toStdString();
+    }
+    return 0;
+}
+//offset 已完成传输数据
+int zebraDeleagates::handle_send_file_process(
+        const string &channel_id,
+        unsigned long fileid,
+        long offset)
+{
+   //offset 给聊天界面显示传输进度；单位：字节
+   //需要在聊天的页面做一个显示接收的进度条
+   //在聊天的页面做一个自动接收
+    return 0;
+}
+
+int zebraDeleagates::handle_recv_file_process(
+        const string &channel_id,
+        const string &digest,
+        long offset)
+{
+
+    return 0;
 }
