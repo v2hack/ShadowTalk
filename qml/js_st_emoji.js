@@ -874,7 +874,7 @@ var EMOJI_MAP = {
     var k=unicodelist[i];
     var v=filelist[i];
     v=v.substr(2,v.length).toLowerCase();
-    var str="<img src=\"qrc:/qml/emoji/"+v+".png\" source=\"qrc:/qml/emoji/"+v+".png\" width=\"24\" height=\"24\" />";
+    var str="<img src=\"qrc:/img/emoji/"+v+".png\" source=\"qrc:/img/emoji/"+v+".png\" width=\"24\" height=\"24\" />";
     var reg=new RegExp(k,"g");
     if (reg.test(strtext)){
      strtext=strtext.replace(reg,str);

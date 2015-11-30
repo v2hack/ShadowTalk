@@ -3,7 +3,7 @@ TARGET = ShadowTalk
 
 QT += qml quick widgets core network xml multimedia
 
-#CONFIG += console
+CONFIG += console
 CONFIG += c++11
 CONFIG += qtquickcompiler
 
@@ -85,13 +85,13 @@ SOURCES += \
    
 win32 {
     contains(SHADOWTALK_DEBUG_ENABLE, YES) {
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_chrono-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_date_time-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_filesystem-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_program_options-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_regex-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_system-vc120-mt-gd-1_57
-        LIBS += -L$$PWD/lib/x32/debug/boost/     -lboost_thread-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_chrono-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_date_time-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_filesystem-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_program_options-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_regex-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_system-vc120-mt-gd-1_57
+        LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_thread-vc120-mt-gd-1_57
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lcryptopp
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lmaidsafe_common
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lmaidsafe_passport
@@ -104,15 +104,15 @@ win32 {
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lprotobuf_lite
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -ltorrent-rasterbar
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -ludt
-        LIBS += -L$$PWD/lib/x32/debug/qrcode/    -lqrcode
+        LIBS += -L$$PWD/lib/x32/debug/qrcode/    -llibqrcode
     } else {
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_chrono-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_date_time-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_filesystem-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_program_options-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_regex-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_system-vc120-mt-1_57
-        LIBS += -L$$PWD/lib/x32/release/boost/     -lboost_thread-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_chrono-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_date_time-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_filesystem-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_program_options-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_regex-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_system-vc120-mt-1_57
+        LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_thread-vc120-mt-1_57
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lcryptopp-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lmaidsafe_common-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lmaidsafe_passport-msr
@@ -125,7 +125,7 @@ win32 {
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -lprotobuf_lite-msr
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -ltorrent-rasterbar
         LIBS += -L$$PWD/lib/x32/release/peersafe/  -ludt-msr
-        LIBS += -L$$PWD/lib/x32/release/qrcode/    -lqrcode
+        LIBS += -L$$PWD/lib/x32/release/qrcode/    -llibqrcode
     }
 } else {
     macx {
