@@ -116,31 +116,33 @@ Rectangle {
          * 这里item是QVariant类型：包含
          * index、name、dataType、dircect、userMesssage、messageIndex
          */
-        function addMessage(data) {
+        function getMsgHeight_(data){
+            var mHeight=0;
+            if (data.dataType === wordsType){
+                var countLen=EMOJI.countStrLength(data.msgContent, parseInt(data.emojiCount));
+                var arrstr=countLen.split("@@");
+                mHeight=parseInt(arrstr[1]);
+            }
+            return mHeight + 30;
+        }
 
+        function addMessage(data) {
             var str=data.userMessage;
-            //console.log("c+++ javascript : userMessage---------------------:"+str);
             str=EMOJI.getEMOmap(str);
-            console.log("c+++ javascript : userMessage---------------------:u"+str);
             var arrstr=str.split("@*@");         
             data.emojiCount=arrstr[2];
             data.userMessage=arrstr[0];
             data.msgContent=arrstr[1];
-            console.log("c+++ javascript : after repalce data.msgContent is :---------------------:"+data.msgContent);
             model.append(data);
             var height =  JsCommon.getMessageFrameHeight(
                         getPixelSize.height(10),
                         getPixelSize.width(10 , data.msgContent),
                         250);
-            console.log("c+++ javascript height----:"+height);
             if (data.dataType === imageType) {
                 messageView.contentY += data.pictureHeight + (150);
             } else {
-//                messageView.contentY += height + (100);
-                messageView.contentY += getMsgHeight() + 100;
-
+                messageView.contentY += getMsgHeight_(data) + 100;
             }            
-
         }
         /* c++调用:清除消息 */
         function clearMessage() { model.clear(); }
@@ -183,15 +185,9 @@ Rectangle {
                 return (row_num * 17) + 10 + 40;
             }
             function getMsgHeight(){
-                //listview 行与行之间的间距
-                console.log("c++ do messageDelegateItem:________________");
                 var mHeight=0;
                 if (dataType == wordsType){
-                    console.log("c++ do messageDelegateItem:________________wordsType.");
-
-                    console.log("c++ do messageDelegateItem:________________emojiCount"+emojiCount);
                     var countLen=EMOJI.countStrLength(msgContent,parseInt(emojiCount));
-                    console.log("c++ do messageDelegateItem:__________countLen:"+countLen);
                     var arrstr=countLen.split("@@");
                     mHeight=parseInt(arrstr[1]);
                 }
@@ -199,11 +195,10 @@ Rectangle {
             }
 
             height: {
-                if (dataType == wordsType) { return getMsgHeight();     }
+                if (dataType == wordsType) { return getMsgHeight() + 10;     }
                 if (dataType == voiceType) { return 90;                  }
                 if (dataType == imageType) { return pictureHeight + 100; }
             }
-//            height: friendMessageContent.height + 40
             width: parent.width;
 
             /* C++ 计算像素的类 */
@@ -336,26 +331,20 @@ Rectangle {
                         }
 
                         function getMsgHeight(){
-                            console.log("c++ do oncompleted:________________");
                             var mHeight=0;
                             if (dataType == wordsType){
-                                console.log("c++ do oncompleted:________________wordsType.");
                                 var st_max_width=280;
                                 var countLen=EMOJI.countStrLength(msgContent,parseInt(emojiCount));
                                 var arrstr=countLen.split("@@");
                                 mHeight=parseInt(arrstr[1]);
-                                console.log("c++ do oncompleted:__________mHeight:"+mHeight);
                             }
                             return mHeight;
                         }
                         function getMsgWidth(){
-                            console.log("c++ do oncompleted:________________");
                             var mWidth=0;
                             if (dataType == wordsType){
-                                console.log("c++ do oncompleted:________________wordsType.");
                                 var st_max_width=260;
                                 var countLen=EMOJI.countStrLength(msgContent,parseInt(emojiCount));
-                                console.log("c++ do oncompleted:__________countLen:"+countLen);
                                 var arrstr=countLen.split("@@");
                                 mWidth=parseInt(arrstr[0]);
                                 if (mWidth<=st_max_width){
@@ -369,14 +358,13 @@ Rectangle {
                         }
                         height: {
                             if (dataType == wordsType) {                   
-                                return getMsgHeight();
+                                return getMsgHeight() + 10;
                             }
                             if (dataType == voiceType) { return 35                  }
                             if (dataType == imageType) { return pictureHeight + 10; }
                         }
                         width: {
                             if (dataType == wordsType) {
-                                console.log("c++ do get the width--------:"+getMessageWidth())
                                 return getMsgWidth();
                             }
                             if (dataType == voiceType) {
