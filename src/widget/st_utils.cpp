@@ -433,7 +433,10 @@ void WindowClose::closeWindowProcess() {
         z->send_offline_message(gCtx.phoneSyncChannel, ImapiMessageType_PCOffLine,
                                 "PC exit", 60, 3600, QDateTime::currentMSecsSinceEpoch()/1000, 7, 0);
     }
+    Utils::ShadowTalkSleep(3000);
+
     gCtx.threadStop_ = 1;
+    delete gCtx.zebra_;
     exit(0);
 }
 

@@ -3,7 +3,7 @@ TARGET = ShadowTalk
 
 QT += qml quick widgets core network xml multimedia
 
-CONFIG += console
+#CONFIG += console
 CONFIG += c++11
 CONFIG += qtquickcompiler
 

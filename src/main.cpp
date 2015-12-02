@@ -197,8 +197,8 @@ void initZebraEngine()
     gCtx.threadStop_ = 0;
     gCtx.phoneUpdateTime.start();
 
-//    zebraClient->init("0.0.0.0:49987 107.150.98.47:27053 52.68.228.63:27054 54.169.92.238:27053 45.32.70.172:27053 182.254.219.210:27054 182.254.219.210:27055 123.56.156.198:27054 115.159.70.71:27054", &zebarDele, "17monipdb.dat");
-    zebraClient->init("0.0.0.0:49987 192.168.0.140:27053", &zebarDele, "17monipdb.dat");
+    zebraClient->init("0.0.0.0:49987 107.150.98.47:27053 52.68.228.63:27054 54.169.92.238:27053 45.32.70.172:27053 182.254.219.210:27054 182.254.219.210:27055 123.56.156.198:27054 115.159.70.71:27054", &zebarDele, "17monipdb.dat");
+//    zebraClient->init("0.0.0.0:49987 192.168.0.140:27053", &zebarDele, "17monipdb.dat");
     //zebraClient->enableLog();
     qDebug() << "c++: init zebra engine success";
     return;
