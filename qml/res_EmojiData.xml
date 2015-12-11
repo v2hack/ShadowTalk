@@ -1,0 +1,9 @@
+﻿ 
+ <?xml version="1.0" encoding="utf-8"?>
+ <peersafe version="2.0">
+     <emoji>
+ <item>   <path>qrc:/img/emoji/1f601.png</path>  </item> <item>   <path>qrc:/img/emoji/1f603.png</path>  </item> <item>   <path>qrc:/img/emoji/1f600.png</path>  </item> <item>   <path>qrc:/img/emoji/1f60a.png</path>  </item> 
+ <item>   <path>qrc:/img/emoji/263a.png</path>  </item> <item>   <path>qrc:/img/emoji/1f609.png</path>  </item> <item>   <path>qrc:/img/emoji/1f60d.png</path>  </item> <item>   <path>qrc:/img/emoji/1f618.png</path>  </item> <item>   <path>qrc:/img/emoji/1f61a.png</path>  </item> <item>   <path>qrc:/img/emoji/1f617.png</path>  </item> <item>   <path>qrc:/img/emoji/1f619.png</path>  </item> <item>   <path>qrc:/img/emoji/1f61c.png</path>  </item> <item>   <path>qrc:/img/emoji/1f61d.png</path>  </item> <item>   <path>qrc:/img/emoji/1f61b.png</path>  </item> <item>   <path>qrc:/img/emoji/1f633.png</path>  </item> <item>   <path>qrc:/img/emoji/1f62c.png</path>  </item> <item>   <path>qrc:/img/emoji/1f614.png</path>  </item> <item>   <path>qrc:/img/emoji/1f60c.png</path>  </item> <item>   <path>qrc:/img/emoji/1f612.png</path>  </item> <item>   <path>qrc:/img/emoji/1f61e.png</path>  </item>  <item>   <path>qrc:/img/emoji/1f4ad.png</path>  </item>
+
+     </emoji>
+ </peersafe>

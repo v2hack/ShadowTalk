@@ -1,0 +1,81 @@
+option optimize_for = LITE_RUNTIME;
+package peersafe.share;
+
+// 存储文件格式
+message ShareFile 
+{
+    enum FileType {
+        FILE_TYPE_SHARE_LIST=1;      // 分享列表类型
+        FILE_TYPE_SHARE_CONTENT=2;   // 分享的真实内容类型
+        FILE_TYPE_SHARE_COMMENT=3;   // 分享评论类型
+    }
+    required FileType file_type=1;
+    optional bytes file_data=2;      //此处是ShareList,ShareContent,ShareContent
+}
+
+// --------------------------------------------------------------------
+
+// 每条分享中具体的内容: 文字 图片 视频 语音
+message ShareListSubItem 
+{
+	enum ContentType {
+        SHARE_CONTENT_TYPE_WORDS=1; 
+        SHARE_CONTENT_TYPE_IMAGE=2; 
+        SHARE_CONTENT_TYPE_AUDIO=3;
+        SHARE_CONTENT_TYPE_VEDIO=4;
+        SHARE_CONTENT_TYPE_PDF=5;  
+        SHARE_CONTENT_TYPE_OFFICE_WORD=6;
+        SHARE_CONTENT_TYPE_OFFICE_EXCEL=7;
+    }
+
+	required uint32 share_content_type=1;      // 是ContentType
+	required bytes  share_file_name=2;         // 提取数据存储的文件名
+	required bytes  thumbnail_file_name=3;     // 缩略图文件名
+	required bytes  thumbnail_data=4;          // 缩略图数据内容
+    required bytes  share_content_hash=5;      // 对应的是ShareContent
+    required bytes  share_comment_hash=6;      // 对应的是ShareComment
+}
+
+// 分享列表中每条内容的格式
+message ShareListItem 
+{
+    required int32  share_index=1;          //  索引编号
+    required uint32 create_time=2;          //  创建的时间
+    required uint32 exist_period=3;         //  存活的时间
+    required bytes  friend_channelid=4;     //  可以访问的好友列表
+	repeated ShareListSubItem sub_item=5;   //  具体的分享内容
+}
+
+// 分享列表格式
+message ShareList 
+{
+	required bytes share_list_hash=1;
+	repeated ShareListItem share_item=2;
+}
+
+
+// ------------------------------------------------------------------------
+
+// 评论细节
+message ShareSubCommen 
+{
+    required uint32 create_time=1;
+    required bytes friend_channel_id=2;
+    required bytes comment_data=3;
+}
+
+// 分享评论
+message ShareComment
+{
+	repeated ShareSubCommen every_comment=1;
+}
+
+
+// ------------------------------------------------------------------------
+
+// 分享内容的格式 
+message ShareContent
+{
+    required bytes content_data=1;
+}
+ 

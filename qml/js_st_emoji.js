@@ -1,7 +1,3 @@
-
-
-function getEMOmap(text){
-	
 var EMOJI_MAP = {
   // missing
   "👬": ["U+1F46C", "man and man holding hands", "1f46c", ["-", "-"], ["-", "-"], ["", "U+E428"], ["󾆠", "U+FE1A0"]],
@@ -853,7 +849,99 @@ var EMOJI_MAP = {
   "😙": ["U+1F619", "kissing face with smiling eyes", "1f619", ["-", "-"], ["-", "-"], ["-", "-"], ["-", "-"]],
   "🚊": ["U+1F68A", "tram", "1f68a", ["-", "-"], ["-", "-"], ["-", "-"], ["-", "-"]]
 };
-    
+
+function creatjson(){
+    var keys="hsf";
+    var values="hsf";
+    var strtext="";
+    var astr="";
+    for (var k in EMOJI_MAP) {
+    var em = EMOJI_MAP[k];
+    keys=keys+","+k;
+    values=values+","+em[0];
+    }
+
+    keys=keys.substr(4,keys.length);
+    values=values.substr(4,values.length);
+    var unicodelist=keys.split(",");
+    var filelist=values.split(",");
+    strtext="";
+
+    for (var i=0;i<unicodelist.length;i++){
+      var k=unicodelist[i];
+      var v=filelist[i];
+      v=v.substr(2,v.length).toLowerCase()+".png";
+      var str=" <item>  "+
+              " <path>qrc:/img/emoji/"+v+"</path> "+
+              " </item>";
+      strtext=strtext+str;
+      console.log(str);
+    }
+    //console.log(strtext);
+    return strtext;
+}
+
+function getEMOContentReExp(text){
+    var keys="hsf";
+    var values="hsf";
+    var strtext=text;
+    for (var k in EMOJI_MAP) {
+    var em = EMOJI_MAP[k];
+    keys=keys+","+k;
+    values=values+","+em[0];
+    }
+
+    keys=keys.substr(4,keys.length);
+    values=values.substr(4,values.length);
+    var unicodelist=keys.split(",");
+    var filelist=values.split(",");
+
+    for (var i=0;i<unicodelist.length;i++){
+      var k=unicodelist[i];
+      var v=filelist[i];
+      v="<img src=\"qrc:/img/emoji/"+v.substring(2,v.length).toLowerCase()+".png\"" +" width=\"24\" height=\"24\" />";
+      var str=k;
+      var reg=new RegExp(v,"g");
+      if (reg.test(strtext)){
+       console.log("reg emoji char+++++++++++++++++++++++:"+strtext);
+       strtext=strtext.replace(reg,str);
+       console.log("replace emoji char+++++++++++++++++++++++:"+strtext);
+      }
+    }
+    return strtext;
+}
+
+function getEMOContent(text){
+    var keys="hsf";
+    var values="hsf";
+    var strtext=text;
+    for (var k in EMOJI_MAP) {
+    var em = EMOJI_MAP[k];
+    keys=keys+","+k;
+    values=values+","+em[0];
+    }
+
+    keys=keys.substr(4,keys.length);
+    values=values.substr(4,values.length);
+    var unicodelist=keys.split(",");
+    var filelist=values.split(",");
+
+    for (var i=0;i<unicodelist.length;i++){
+      var k=unicodelist[i];
+      var v=filelist[i];
+      v="U@"+v.substring(2,v.length);
+      var str=k;      
+      var reg=new RegExp(v,"g");
+      if (reg.test(strtext)){
+       console.log("reg emoji char+++++++++++++++++++++++:"+strtext);
+       strtext=strtext.replace(reg,str);
+      }
+    }
+    return strtext;
+
+}
+
+function getEMOmap(text){
   var keys="hsf";
   var values="hsf";
   var strtext=text;
@@ -865,7 +953,7 @@ var EMOJI_MAP = {
   	keys=keys+","+k;
   	values=values+","+em[0];
 	} 		
-	keys=keys.substr(4,keys.length);
+  keys=keys.substr(4,keys.length);
   values=values.substr(4,values.length); 
   var unicodelist=keys.split(",");
   var filelist=values.split(",");
@@ -874,7 +962,7 @@ var EMOJI_MAP = {
     var k=unicodelist[i];
     var v=filelist[i];
     v=v.substr(2,v.length).toLowerCase();
-    var str="<img src=\"qrc:/img/emoji/"+v+".png\" source=\"qrc:/img/emoji/"+v+".png\" width=\"24\" height=\"24\" />";
+    var str="<img src=\"qrc:/img/emoji/"+v+".png\""+" width=\"24\" height=\"24\" />";
     var reg=new RegExp(k,"g");
     if (reg.test(strtext)){
      strtext=strtext.replace(reg,str);

@@ -27,15 +27,6 @@ void Sthread::run()
         if (c->threadStop_ == 1) {
             break;
         }
-        /* 搜索框检查 */
-        /* close by hsf 2015年11月12日10:43:28
-        if (Search::checkSearchText() == 1) {
-            Search::setSearchTextUnvisible();
-            Search::clearSearchWidget();
-        } else {
-            Search::matchAndShowSearchResult();
-        }
-        */
 
         /* 登录界面切换检查 */
         if (c->changeFlag_ == 1) {

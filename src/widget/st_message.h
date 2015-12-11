@@ -20,8 +20,8 @@ enum MessageContentType
 /* 发送方向 */
 enum MessageDriectType
 {
-    MessageDriectMe = 1,     /* 我发的消息 */
-    MessageDirectOpposite,   /* 对方发的消息 */
+    MessageDriectMe = 0,     /* 我发的消息 */
+    MessageDirectOpposite=1,   /* 对方发的消息 */
 };
 
 /* 消息发送方式 */

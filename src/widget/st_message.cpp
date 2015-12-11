@@ -55,28 +55,14 @@ void MessageWidget::addMessageToWidget(
     data.insert("name", name);
     data.insert("dataType", type);
     data.insert("direct", direct);
-    QString msg = messageData;
-    if (!msg.isEmpty() &&!msg.trimmed().isEmpty()){
-        qDebug()<<"c++ insert message-----------------------msg is:"+msg;
-        QString str="\U0001F601";
-        qDebug()<<"c++ insert message-----------------------position str:"+str;
-        int pos=msg.indexOf(str);
-        qDebug()<<"c++ insert message-----------------------position is:"+pos;
-        if (pos>=0){
-        msg=msg.replace(pos,9,"<img scr='img/emoji/1f601.png'>");
-        qDebug()<<"c++ insert message-----------------------replace msg is:"+msg;
-        messageData=msg;
-        }
-    }
     data.insert("msgContent","");
     data.insert("emojiCount",0);
     data.insert("userMessage", messageData);
     data.insert("voiceSeconds", 0);
     data.insert("messageIndex", messageIndex);
     data.insert("userPicture", "");
-    data.insert("pictureHeight", "");
-    data.insert("pictureWidth", "");
-
+    data.insert("pictureHeight", 0);
+    data.insert("pictureWidth", 0);
     QObject *rect = rootObject->findChild<QObject*>("MessageListModel");
     if (rect) {
         QMetaObject::invokeMethod(
@@ -300,7 +286,7 @@ void MessageManager::sendGroupMessage(QString &message)
 
     qDebug() << "c++: message - " << message;
     int idx = g->messageList_.size() + 1;
-    MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
+    MessageWidget::addMessageToWidget(0, "我", 1, 0, message, idx);
 
     /* 组装缓存 */
     GroupMessage *m   = new GroupMessage;
@@ -332,7 +318,7 @@ void MessageManager::sendFriendMessage(QString &message)
     }
     qDebug() << "c++: message - " << message;
     int idx = f->messageList.size() + 1;
-    MessageWidget::addMessageToWidget(0, "Me", 1, 1, message, idx);
+    MessageWidget::addMessageToWidget(0, "我", 1, 0, message, idx);
 
     /* 组装缓存 */
     Message *m        = new Message;

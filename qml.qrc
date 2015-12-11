@@ -21,8 +21,6 @@
         <file>img/st_setting_no_sound_2.png</file>
         <file>img/st_setting_sound_1.png</file>
         <file>img/st_setting_sound_2.png</file>
-        <file>qml/ChatDisplay.qml</file>
-        <file>qml/ChatTextInput.qml</file>
         <file>img/st_chat_delivery.png</file>
         <file>img/st_chat_expression.png</file>
         <file>img/st_chat_screenshot.png</file>
@@ -259,6 +257,17 @@
         <file>img/emoji/2764.png</file>
         <file>qml/js_st_emoji.js</file>
         <file>qml/TextWithImage.qml</file>
-        <file>qml/ChatDisplayEx.qml</file>
+        <file>qml/STChatView.qml</file>
+        <file>qml/STChatItem.qml</file>
+        <file>qml/STChatScrollBar.qml</file>
+        <file>qml/STChatInput.qml</file>
+        <file>qml/st_EmojiData.xml</file>
+        <file>qml/STChatEmojiImage.qml</file>
+        <file>qml/js_st_showemoji.js</file>
+        <file>qml/js_st_const.js</file>
+        <file>qml/STChatContentWH.qml</file>
+        <file>qml/STChatBlank.qml</file>
+        <file>qml/STChatEmojiView.qml</file>
+        <file>img/st_title_logo.png</file>
     </qresource>
 </RCC>

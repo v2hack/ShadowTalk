@@ -3,7 +3,7 @@ TARGET = ShadowTalk
 
 QT += qml quick widgets core network xml multimedia
 
-#CONFIG += console
+CONFIG += console
 CONFIG += c++11
 CONFIG += qtquickcompiler
 
@@ -58,16 +58,19 @@ HEADERS += \
     src/widget/st_chat.h \
     src/widget/st_voice.h \
     src/widget/st_picture.h \
-    src/widget/st_search.h
+    src/widget/st_search.h \
+    src/share/share.pb.h \
+    src/share/st_share_proto.h \
+    src/share/st_share_file.h \
+    src/share/st_share_xml.h \
+    src/share/st_share_thread.h
 	
 SOURCES += \
     src/main.cpp \
-    src/net/st_net.cpp \
     src/core/st_cache.cpp \
     src/core/st_log.cpp \
     src/core/st_parsexml.cpp \
     src/core/st_pixelsize.cpp \
-    src/core/st_zebra.cpp \
     src/core/st_context.cpp \
     src/core/st_base64.cpp \
     src/core/st_qrcode.cpp \
@@ -81,8 +84,15 @@ SOURCES += \
     src/widget/st_chat.cpp \
     src/widget/st_voice.cpp \
     src/widget/st_picture.cpp \
-    src/widget/st_search.cpp
-   
+    src/widget/st_search.cpp \
+    src/core/st_zebra.cpp \
+    src/net/st_net.cpp \
+    src/share/share.pb.cpp \
+    src/share/st_share_file.cpp \
+    src/share/st_share_proto.cpp \
+    src/share/st_share_thread.cpp \
+    src/share/st_share_xml.cpp
+
 win32 {
     contains(SHADOWTALK_DEBUG_ENABLE, YES) {
         LIBS += -L$$PWD/lib/x32/debug/boost/     -llibboost_chrono-vc120-mt-gd-1_57
@@ -104,6 +114,9 @@ win32 {
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lprotobuf_lite
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -ltorrent-rasterbar
         LIBS += -L$$PWD/lib/x32/debug/peersafe/  -ludt
+        LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lprotobuf
+        LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lproto_compiler
+        LIBS += -L$$PWD/lib/x32/debug/peersafe/  -lprotobuf_lite
         LIBS += -L$$PWD/lib/x32/debug/qrcode/    -llibqrcode
     } else {
         LIBS += -L$$PWD/lib/x32/release/boost/     -llibboost_chrono-vc120-mt-1_57
@@ -156,5 +169,7 @@ win32 {
 
     }
 }
+
+DISTFILES +=
 
 

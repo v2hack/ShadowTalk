@@ -11,6 +11,7 @@ import QtQuick.Window 2.2
 
 import "functions.js" as PinYin
 import "common.js" as JsCommon
+import "js_st_const.js" as JSConst;
 
 /* 选择好友，动态改变消息栏内容 */
 import st.info.SelectFriend 1.0
@@ -28,12 +29,16 @@ Rectangle {
 
     property int colorTransparent  : 0
 
+    function goFirst(){
+        friendListView.positionViewAtBeginning();
+    }
+
     Component {
         id: sectionHeading
         Rectangle {
-            width: 292
+            width: 250
             height: 24
-            color: "#343434"
+            color: "#dcdcdc"
 
             FontLoader {
                 id: chineseFont
@@ -67,7 +72,7 @@ Rectangle {
     Component {
         id: highlight
         Rectangle {
-            width: 292
+            width: 250
             height:44;
             color: "#3a3a3a";
             radius: 5
@@ -134,12 +139,9 @@ Rectangle {
         }
         function searchFriend(kw){
             if (kw==="") return;
-            for(var i=friendListView.model.count-1;i>=0;i--){
-                console.log("js--searchFriend_count:"+friendListView.model.count);
-                console.log("js--searchFriend_name:"+friendListView.model.get(i).friendName);
+            for(var i=friendListView.model.count-1;i>=0;i--){                
                 var name=friendListView.model.get(i).friendName;
-                var pos=name.indexOf(kw);
-                console.log("js--searchFriend,pos:"+pos);
+                var pos=name.indexOf(kw);                
                 if (pos===-1){
                    friendListView.model.remove(i);
                 }
@@ -148,12 +150,14 @@ Rectangle {
         }
 
         function loadallFriend(){
-            if (bakData!=""){
-               console.log(" FriendListModel begin loadallFriend ...");
+            if (bakData!=""){               
                friendListView.model.clear();
                var jsonData=eval(bakData);
                friendListView.model.append(jsonData);
             }
+        }
+        function goFirst(){
+            friendListView.positionViewAtBeginning();
         }
 
         function backup(){
@@ -194,7 +198,7 @@ Rectangle {
                           "},"
                }
             }
-            console.log("json string is:"+bakData);
+            JSConst.showLog("json string is:"+bakData);
         }
 
         function addGroup(data) {
@@ -220,8 +224,7 @@ Rectangle {
             backup();
         }
         /* 用于设置被选中的item的背景颜色 */
-        function modifyBackColor(index, colorFlag) {
-            console.log("backGroundColor : index " + index + " color " + colorFlag);
+        function modifyBackColor(index, colorFlag) {            
             model.setProperty(index, "backGroundColor", colorFlag);            
         }
     }
@@ -310,7 +313,7 @@ Rectangle {
                         leftMargin: 12
                         verticalCenter: parent.verticalCenter
                     }
-                    color: "white"
+                    color: "black"
                     font.pixelSize: 15
                     font.letterSpacing: 1
                     text: friendName
@@ -396,11 +399,11 @@ Rectangle {
                     onClicked: {
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
-                        if (shortName === "Group") {
-                            console.log("select group item - " + friendIndex);
-                            selectGroup.changeMessageListForFlist(friendIndex, friendName);
-                        } else {
-                            console.log("select friend item - " + friendIndex);
+                        JSConst.showLog("has select friend .........---------------------------");
+                        baseWindows.showContent(2);
+                        if (shortName === "Group") {                            
+                            selectGroup.changeMessageListForFlist(friendIndex, friendName);                            
+                        } else {                            
                             selectFriend.changeMessageListForFlist(friendIndex, friendName);
                         }
                     }
@@ -431,7 +434,7 @@ Rectangle {
     /* 滚动条 */
     Rectangle {
         id: friendListScrollbar
-        x: 291
+        x: 251
         y: 0
         width: 4
         height: parent.height

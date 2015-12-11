@@ -297,11 +297,11 @@ void zebraDeleagates::friend_offline_message(
     }
 
     /* 消息转发类型处理 */
-    int messageDirection = 0;
+    int messageDirection = 1;
     if (type > ImapiMessageType_ForwadSelfOffset) {
         type -= ImapiMessageType_ForwadSelfOffset;
         qDebug() << "c++: sync self messaage";
-        messageDirection = 1;
+        messageDirection = 0;
     } else if (type > ImapiMessageType_ForwadOffset && type < ImapiMessageType_ForwadSelfOffset) {
         type -= ImapiMessageType_ForwadOffset;
         qDebug() << "c++: sync oppsite messaage";
@@ -332,6 +332,7 @@ void zebraDeleagates::friend_offline_message(
                  "friend_offline_message", "receive one online message",
                  f.cacheIndex_, message.c_str());
 
+           qDebug() << "c++: friend_online_message ---- type "<<type;
             /* 如果是当前界面显示的好友，那么添加到界面，否则不加 */
             if (c->currentUseId_ == f.cacheIndex_ && c->currentUseType_ == CHATITEM_TYPE_FRIEND) {
                 f.messageUnreadCount_ = 0;
@@ -345,6 +346,7 @@ void zebraDeleagates::friend_offline_message(
                                 messageDirection, QString::fromStdString(m->data), idx); break;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
+                    qDebug() << "c++: friend_online_message ------------- cacheIndex_ "<<f.cacheIndex_;
                     MessageWidget::addImageToWidget(f.cacheIndex_, f.name_, type,
                                 messageDirection, m->data, idx); break;
                 case MessageTypeVoice:
@@ -439,11 +441,11 @@ void zebraDeleagates::friend_online_message(
     }
 
     /* 消息转发类型检查 */
-    int messageDirection = 0;
+    int messageDirection = 1;
     if (type > ImapiMessageType_ForwadSelfOffset) {
         type -= ImapiMessageType_ForwadSelfOffset;
         qDebug() << "c++: sync self messaage";
-        messageDirection = 1;
+        messageDirection = 0;
     } else if (type > ImapiMessageType_ForwadOffset && type < ImapiMessageType_ForwadSelfOffset) {
         type -= ImapiMessageType_ForwadOffset;
         qDebug() << "c++: sync opppsite messaage";
@@ -480,12 +482,14 @@ void zebraDeleagates::friend_online_message(
                 f.messageUnreadCount_ = 0;
                 refreshBackColor = 1;
 
+                qDebug() << "c++:  friend_online_message---- type "<<type;
                 /* 判断类型 */
                 switch (type) {
                 case MessageTypeWord:
                     m->messageType = MessageTypeWord;
                     MessageWidget::addMessageToWidget(f.cacheIndex_, f.name_, type, messageDirection,
                                 QString::fromStdString(m->data), idx); break;
+                    qDebug()<<"c++  .............messageDirection is : "<<messageDirection;
                 case MessageTypeImage:
                     m->messageType = MessageTypeImage;
                     MessageWidget::addImageToWidget(f.cacheIndex_, f.name_, type,
@@ -909,7 +913,7 @@ void zebraDeleagates::group_chat_message_received(
 {
     qDebug() << _countMessage++
              << "********************group_chat_message_received***********************";
-    int messageDirection = 0;
+    int messageDirection = 1;
     int refreshBackColor = 0;
 
     /* 接收消息开关检查 */
@@ -942,7 +946,7 @@ void zebraDeleagates::group_chat_message_received(
     }
     if (type_ > ImapiMessageType_ForwadGSelfOffset) {
         type_ -= ImapiMessageType_ForwadGSelfOffset;
-        messageDirection = 1;
+        messageDirection = 0;
     }
 
     QMap<int, Group>::iterator it;

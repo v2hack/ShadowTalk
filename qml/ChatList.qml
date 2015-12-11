@@ -194,7 +194,7 @@ Rectangle {
                         leftMargin: 12
                         verticalCenter: parent.verticalCenter
                     }
-                    color: "white"
+                    color: "black"
                     font.pixelSize: 15
                     font.letterSpacing: 1
                     text: friendName
@@ -279,6 +279,7 @@ Rectangle {
                     onClicked: {
                         friendListScrollbar.visible = true;
                         /* 选中好友，消息栏同步更新 */
+                        baseWindows.showContent(0);
                         selectFriend.changeMessageListForClist(friendIndex, friendName);
 
                         if (shortName === "Group") {

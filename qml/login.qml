@@ -11,6 +11,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.3
 import QtGraphicalEffects 1.0
+import "js_st_const.js" as JSConst;
 
 Rectangle {
     id: loginWindow;
@@ -72,7 +73,7 @@ Rectangle {
         width:320
         height: 450
         radius: 5;
-        color: "#efefef"
+        color: JSConst.login_recct_loginQrWindow_color;
         z:500
 
         anchors {
